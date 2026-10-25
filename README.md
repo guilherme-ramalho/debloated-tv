@@ -18,7 +18,7 @@ The iPhone connects directly to Android TV Remote Service v2 on the local networ
 
 The app name comes from the foreground package reported by the existing remote service. It updates over the same connection used for navigation and volume, with no extra TV process.
 
-This identifies the open app, not whether a video is playing. The icon stays static and Play/Pause remains a neutral toggle. Titles, detailed HDMI device names, and playback-state collection are intentionally omitted. TV inputs show “TV input”; unknown apps show “Another app.”
+This identifies the open app, not whether a video is playing. The icon stays static and Play/Pause remains a neutral toggle. Titles, detailed HDMI device names, and playback-state collection are intentionally omitted. The entire app indicator is hidden on Home, inputs, unknown apps, standby, disconnection, or an empty app report. A streaming app being open does not prove active playback.
 
 ## Build and install
 
@@ -48,7 +48,7 @@ cd ios
 swift test
 ```
 
-Nine tests cover fragmented/coalesced frames, malformed input, protobuf fields, certificate generation, pairing proofs, wake expiry/cancellation/single-use behavior, and foreground app names. The iPhone UI is also built with Xcode. Existing controls and standby wake have been tested on the physical TV and iPhone.
+Ten tests cover fragmented/coalesced frames, malformed input, protobuf fields, certificate generation, pairing proofs, wake expiry/cancellation/single-use behavior, foreground app names, and explicit empty-app updates. The iPhone UI is also built with Xcode. Existing controls and standby wake have been tested on the physical TV and iPhone.
 
 ## Privacy and security
 

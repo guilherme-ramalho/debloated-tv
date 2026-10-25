@@ -200,9 +200,8 @@ import Security
     private func releaseAll() { for key in Array(pressed) { release(key) } }
     func launch(_ url: String) { if ready { session?.launch(url) } }
 
-    var currentAppName: String {
-        if powerOn == false { return "Standby" }
-        if !ready { return "On TV" }
-        return TVSession.appName(for: foregroundPackage) ?? (foregroundPackage.isEmpty ? "Waiting for TV…" : "Another app")
+    var currentAppName: String? {
+        guard ready, powerOn != false else { return nil }
+        return TVSession.appName(for: foregroundPackage)
     }
 }

@@ -7,10 +7,16 @@ final class ProtocolTests: XCTestCase {
     func testForegroundNamesDoNotClaimPlaybackOrInventUnknownApps() {
         XCTAssertEqual(TVSession.appName(for: "com.google.android.youtube.tv"), "YouTube")
         XCTAssertEqual(TVSession.appName(for: "com.netflix.ninja"), "Netflix")
-        XCTAssertEqual(TVSession.appName(for: "com.tcl.tv"), "TV input")
-        XCTAssertEqual(TVSession.appName(for: "com.gathin.tvhome"), "Home")
+        XCTAssertNil(TVSession.appName(for: "com.tcl.tv"))
+        XCTAssertNil(TVSession.appName(for: "com.gathin.tvhome"))
         XCTAssertNil(TVSession.appName(for: "com.unknown.player"))
         XCTAssertNil(TVSession.appName(for: ""))
+    }
+    func testForegroundAppPayloadAndExplicitClear() throws {
+        XCTAssertEqual(try TVSession.foregroundPackage(in: Wire.bytes(1, Wire.string(12, "com.netflix.ninja"))), "com.netflix.ninja")
+        XCTAssertEqual(try TVSession.foregroundPackage(in: Wire.bytes(1, Wire.string(12, ""))), "")
+        XCTAssertNil(try TVSession.foregroundPackage(in: Wire.bytes(1, Wire.int(1, 3))))
+        XCTAssertNil(try TVSession.foregroundPackage(in: Wire.bytes(1, Wire.bytes(12, Data([255])))))
     }
     func testWakeIntentExpiresAndCannotReplay() {
         var request = WakeRequest()

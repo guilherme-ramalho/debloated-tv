@@ -4,7 +4,13 @@ import CryptoKit
 
 public final class TVSession {
     public static func appName(for package: String) -> String? {
-        ["com.google.android.youtube.tv":"YouTube", "com.netflix.ninja":"Netflix", "com.amazon.amazonvideo.livingroom":"Prime Video", "com.disney.disneyplus":"Disney+", "com.wbd.stream":"HBO Max", "com.hbo.hbonow":"HBO Max", "com.crunchyroll.crunchyroid":"Crunchyroll", "com.spotify.tv.android":"Spotify", "com.gathin.tvhome":"Home", "com.google.android.apps.tv.launcherx":"Home", "com.tcl.tv":"TV input", "com.tcl.tvinput":"TV input"][package]
+        ["com.google.android.youtube.tv":"YouTube", "com.netflix.ninja":"Netflix", "com.amazon.amazonvideo.livingroom":"Prime Video", "com.disney.disneyplus":"Disney+", "com.wbd.stream":"HBO Max", "com.hbo.hbonow":"HBO Max", "com.crunchyroll.crunchyroid":"Crunchyroll", "com.spotify.tv.android":"Spotify"][package]
+    }
+    static func foregroundPackage(in body: Data) throws -> String? {
+        guard let info = try Wire.fields(body).first(where: { $0.number == 1 })?.bytes,
+              let package = try Wire.fields(info).first(where: { $0.number == 12 })?.bytes,
+              let value = String(data: package, encoding: .utf8), value.count <= 180 else { return nil }
+        return value
     }
     public enum Event {
         case pairingCodeNeeded
@@ -123,11 +129,7 @@ public final class TVSession {
                 }
                 event?(.power(try Wire.number(1, in: body) != 0))
             case 20:
-                if let info = try Wire.fields(body).first(where: { $0.number == 1 })?.bytes,
-                   let package = try Wire.fields(info).first(where: { $0.number == 12 })?.bytes,
-                   let value = String(data: package, encoding: .utf8), !value.isEmpty, value.count <= 180 {
-                    event?(.foreground(value))
-                }
+                if let value = try Self.foregroundPackage(in: body) { event?(.foreground(value)) }
             case 50:
                 event?(.volume(Int(try Wire.number(7, in: body)), Int(try Wire.number(6, in: body)), try Wire.number(8, in: body) != 0))
             case 3: throw RemoteFailure.message("The TV rejected a remote command")

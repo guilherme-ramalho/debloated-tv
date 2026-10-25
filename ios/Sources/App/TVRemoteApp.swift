@@ -26,6 +26,7 @@ struct RemoteView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 12) {
+                    statusHeader
                     if !model.error.isEmpty && !model.showingPIN {
                         Text(model.error).font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     }
@@ -85,26 +86,7 @@ struct RemoteView: View {
             }
             .background(Color("LaunchBackground"))
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    HStack(spacing: 7) {
-                        Image(systemName: "tv").font(.system(size: 19, weight: .medium))
-                        Text(model.currentAppName).font(.subheadline.weight(.semibold))
-                            .lineLimit(1).minimumScaleFactor(0.8)
-                    }.foregroundStyle(.white).frame(maxWidth: 155, alignment: .leading)
-                        .accessibilityElement(children: .ignore).accessibilityLabel("On TV: " + model.currentAppName)
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    HStack(spacing: 14) {
-                        HStack(spacing: 6) {
-                            Circle().fill(model.ready ? Color.green : Color.orange).frame(width: 6, height: 6)
-                            Text(model.status).font(.caption).foregroundStyle(.secondary).lineLimit(1)
-                        }.accessibilityElement(children: .combine)
-                        Button { address = model.host; settings = true } label: { Image(systemName: "slider.horizontal.3") }
-                            .accessibilityLabel("Connection settings").tint(.white).buttonStyle(RemotePressStyle(radius: 12))
-                    }
-                }
-            }
+            .toolbar(.hidden, for: .navigationBar)
             .sheet(isPresented: $settings) {
                 NavigationStack {
                     Form {
@@ -137,6 +119,24 @@ struct RemoteView: View {
                 }.presentationDetents([.medium, .large]).interactiveDismissDisabled()
             }
         }
+    }
+    private var statusHeader: some View {
+        HStack(spacing: 12) {
+            if let name = model.currentAppName {
+                Label { Text(name).font(.subheadline.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.8) }
+                    icon: { Image(systemName: "tv").font(.system(size: 19, weight: .medium)) }
+                    .labelStyle(.titleAndIcon).foregroundStyle(.white)
+                    .accessibilityElement(children: .ignore).accessibilityLabel("On TV: " + name)
+            }
+            Spacer(minLength: 8)
+            HStack(spacing: 6) {
+                Circle().fill(model.ready ? Color.green : Color.orange).frame(width: 6, height: 6)
+                Text(model.status).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+            }.fixedSize(horizontal: true, vertical: false).accessibilityElement(children: .combine)
+            Button { address = model.host; settings = true } label: {
+                Image(systemName: "slider.horizontal.3").frame(width: 44, height: 44)
+            }.accessibilityLabel("Connection settings").tint(.white).buttonStyle(RemotePressStyle(radius: 12))
+        }.frame(minHeight: 44)
     }
     private func command(_ symbol: String, _ label: String, _ key: TVKey) -> some View {
         Button { model.tap(key) } label: {
