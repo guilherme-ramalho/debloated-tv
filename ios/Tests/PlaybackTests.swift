@@ -2,6 +2,14 @@ import XCTest
 @testable import TVRemoteCore
 
 final class PlaybackTests: XCTestCase {
+    func testForegroundNamesDoNotClaimPlaybackOrInventUnknownApps() {
+        XCTAssertEqual(TVPlayback.appName(for: "com.google.android.youtube.tv"), "YouTube")
+        XCTAssertEqual(TVPlayback.appName(for: "com.netflix.ninja"), "Netflix")
+        XCTAssertEqual(TVPlayback.appName(for: "com.tcl.tv"), "TV input")
+        XCTAssertEqual(TVPlayback.appName(for: "com.gathin.tvhome"), "Home")
+        XCTAssertNil(TVPlayback.appName(for: "com.unknown.player"))
+        XCTAssertNil(TVPlayback.appName(for: ""))
+    }
     private func state(_ changes: [String: Any] = [:]) throws -> Data {
         var value: [String: Any] = ["access": true, "kind": "app", "package": "com.example.player", "source": "Player", "title": "A title", "playback": "playing", "input": ""]
         value.merge(changes) { _, new in new }

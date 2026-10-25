@@ -11,6 +11,7 @@ import Security
     @Published var volume = "Volume"
     @Published var powerOn: Bool?
     @Published var waking = false
+    @Published var playbackDetailsRequested = false
     @Published var playbackInfo: TVPlayback?
     @Published var playbackStatus = "Connect playback information"
     @Published var playbackError = ""
@@ -48,16 +49,17 @@ import Security
                     switch result {
                     case .success(let identity):
                         self.identity = identity
-                        if self.active { self.connect(); self.connectPlayback() }
+                        if self.active { self.connect() }
                     case .failure(let error): self.status = "Pairing identity unavailable"; self.error = error.localizedDescription
                     }
                 }
             }
-        } else if identity != nil { attempt = 0; connect(); connectPlayback() }
+        } else if identity != nil { attempt = 0; connect() }
     }
 
     func deactivate() {
         active = false
+        stopPlayback()
         cancelWake()
         releaseAll()
         retry?.cancel(); retry = nil
@@ -78,7 +80,7 @@ import Security
         }
         deactivate()
         host = value; UserDefaults.standard.set(value, forKey: "tvHost")
-        foregroundPackage = ""; attempt = 0; active = true; connect(); connectPlayback(); return true
+        foregroundPackage = ""; attempt = 0; active = true; connect(); return true
     }
 
     private func pin(service: String = RemoteModel.pinService) -> Data? {
@@ -103,7 +105,7 @@ import Security
         guard active, let identity else { return nil }
         wakeSend?.cancel(); wakeSend = nil
         retry?.cancel(); retry = nil
-        releaseAll(); ready = false; powerOn = nil
+        releaseAll(); ready = false; powerOn = nil; foregroundPackage = ""; playbackInfo = nil
         token += 1
         let generation = token
         session?.disconnect()
@@ -123,10 +125,11 @@ import Security
                 self.ready = true; self.status = "Connected"; self.attempt = 0; self.error = ""
             case .power(let on):
                 self.powerOn = on
-                if on { self.cancelWake() }
+                if on { self.cancelWake(); if self.playbackVisible && self.playbackSession == nil && self.playbackStart == nil { self.startPlaybackOnDemand() } }
                 else if self.waking { self.scheduleWake() }
                 self.status = on ? "Connected" : (self.waking ? "Waking TV…" : "Standby")
             case .foreground(let package):
+                guard package != "com.guilhermeramalho.tvplayback" else { return }
                 self.foregroundPackage = package
                 if self.playbackInfo?.packageName != package { self.playbackInfo = nil }
                 self.playbackSession?.watch(package: package, visible: self.playbackVisible)
@@ -221,7 +224,33 @@ import Security
         switch playbackInfo?.playback { case "playing": return "pause.fill"; case "paused": return "play.fill"; default: return "playpause.fill" }
     }
     var playbackAction: String { playbackInfo?.playback == "playing" ? "Pause" : playbackInfo?.playback == "paused" ? "Play" : "Play or pause" }
-    func setPlaybackVisible(_ visible: Bool) { playbackVisible = visible; playbackSession?.watch(package: foregroundPackage, visible: visible) }
+    func setPlaybackVisible(_ visible: Bool) {
+        playbackVisible = visible
+        playbackPaired = pin(service: Self.playbackPinService) != nil
+        if !visible { playbackDetailsRequested = false; stopPlayback() }
+    }
+    func requestPlaybackDetails() { playbackDetailsRequested = true; startPlaybackOnDemand() }
+    func hidePlaybackDetails() { playbackDetailsRequested = false; stopPlayback() }
+    private var playbackStart: DispatchWorkItem?
+    private func stopPlayback() {
+        playbackStart?.cancel(); playbackStart = nil
+        playbackRetry?.cancel(); playbackRetry = nil
+        playbackGeneration += 1
+        playbackSession?.watch(package: foregroundPackage, visible: false)
+        playbackSession?.disconnect(); playbackSession = nil
+        playbackInfo = nil; playbackPairing = false; showingPlaybackPIN = false
+    }
+    private func startPlaybackOnDemand() {
+        guard active, playbackVisible, playbackDetailsRequested, ready, !playbackPairing, powerOn != false else { return }
+        playbackPaired = pin(service: Self.playbackPinService) != nil
+        guard playbackPaired else { playbackStatus = "Connect playback information"; return }
+        playbackStatus = "Starting playback information…"
+        session?.launch("tvplayback://watch")
+        playbackStart?.cancel()
+        let task = DispatchWorkItem { [weak self] in self?.connectPlayback() }
+        playbackStart = task
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: task)
+    }
     private func newPlaybackSession(pairing: Bool) -> PlaybackSession? {
         guard active, let identity else { return nil }
         playbackRetry?.cancel(); playbackRetry = nil
@@ -245,8 +274,8 @@ import Security
             case .error(let message):
                 self.playbackInfo = nil; self.playbackError = message
                 self.playbackStatus = self.playbackPairing ? "Pairing needs attention" : "Playback information unavailable"
-                if !self.playbackPairing && self.active {
-                    let retry = DispatchWorkItem { [weak self] in self?.connectPlayback() }
+                if !self.playbackPairing && self.active && self.playbackVisible && self.playbackDetailsRequested {
+                    let retry = DispatchWorkItem { [weak self] in self?.startPlaybackOnDemand() }
                     self.playbackRetry = retry
                     let delay = min(15.0, pow(2.0, Double(min(self.playbackAttempt, 4))))
                     self.playbackAttempt += 1
@@ -257,13 +286,16 @@ import Security
         return result
     }
     private func connectPlayback() {
-        guard active, !playbackPairing, identity != nil else { return }
+        playbackStart = nil
+        guard active, playbackVisible, playbackDetailsRequested, !playbackPairing, identity != nil else { return }
         guard let pin = pin(service: Self.playbackPinService) else { playbackPaired = false; playbackStatus = "Connect playback information"; return }
         playbackPaired = true; playbackStatus = "Connecting…"
         newPlaybackSession(pairing: false)?.connect(pin: pin)
     }
     func beginPlaybackPairing() {
         guard active, identity != nil else { return }
+        playbackDetailsRequested = true
+        playbackStart?.cancel(); playbackStart = nil
         playbackPairing = true; showingPlaybackPIN = false; playbackError = ""; playbackStatus = "Waiting for the TV…"
         newPlaybackSession(pairing: true)?.pair()
     }

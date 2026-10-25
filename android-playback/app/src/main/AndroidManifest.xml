@@ -6,7 +6,10 @@
     <application android:label="TV Playback" android:icon="@drawable/banner" android:banner="@drawable/banner" android:theme="@android:style/Theme.Material.NoActionBar" android:allowBackup="false" android:usesCleartextTraffic="false">
         <activity android:name=".MainActivity" android:exported="true" android:screenOrientation="landscape">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LEANBACK_LAUNCHER" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
-            <intent-filter><action android:name="android.intent.action.VIEW" /><category android:name="android.intent.category.DEFAULT" /><category android:name="android.intent.category.BROWSABLE" /><data android:scheme="tvplayback" /></intent-filter>
+            <intent-filter><action android:name="android.intent.action.VIEW" /><category android:name="android.intent.category.DEFAULT" /><category android:name="android.intent.category.BROWSABLE" /><data android:scheme="tvplayback" android:host="setup" /></intent-filter>
+        </activity>
+        <activity android:name=".WatchActivity" android:exported="true" android:theme="@android:style/Theme.NoDisplay" android:noHistory="true" android:excludeFromRecents="true" android:taskAffinity="com.guilhermeramalho.tvplayback.watch" android:launchMode="singleInstance">
+            <intent-filter><action android:name="android.intent.action.VIEW" /><category android:name="android.intent.category.DEFAULT" /><category android:name="android.intent.category.BROWSABLE" /><data android:scheme="tvplayback" android:host="watch" /></intent-filter>
         </activity>
         <service android:name=".PlaybackListener" android:label="TV Playback — media information" android:exported="true" android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter><action android:name="android.service.notification.NotificationListenerService" /></intent-filter>

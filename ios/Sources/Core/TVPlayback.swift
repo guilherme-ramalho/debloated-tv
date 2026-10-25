@@ -3,6 +3,9 @@ import Security
 import CryptoKit
 
 public struct TVPlayback: Decodable, Equatable {
+    public static func appName(for package: String) -> String? {
+        ["com.google.android.youtube.tv":"YouTube", "com.netflix.ninja":"Netflix", "com.amazon.amazonvideo.livingroom":"Prime Video", "com.disney.disneyplus":"Disney+", "com.wbd.stream":"HBO Max", "com.hbo.hbonow":"HBO Max", "com.crunchyroll.crunchyroid":"Crunchyroll", "com.spotify.tv.android":"Spotify", "com.gathin.tvhome":"Home", "com.google.android.apps.tv.launcherx":"Home", "com.tcl.tv":"TV input", "com.tcl.tvinput":"TV input"][package]
+    }
     public let access: Bool
     public let kind: String
     public let packageName: String

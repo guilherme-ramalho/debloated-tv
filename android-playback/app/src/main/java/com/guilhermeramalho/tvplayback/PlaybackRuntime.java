@@ -23,7 +23,9 @@ import java.util.concurrent.*;
 final class PlaybackRuntime {
     static final int PORT=9765;
     private static PlaybackRuntime instance;
+    static synchronized PlaybackRuntime current(){return instance;}
     static synchronized PlaybackRuntime get(Context c){if(instance==null)instance=new PlaybackRuntime(c.getApplicationContext());return instance;}
+    static PlaybackRuntime request(Context c){PlaybackRuntime r=get(c);r.leaseUntil=SystemClock.elapsedRealtime()+20000;android.service.notification.NotificationListenerService.requestRebind(new ComponentName(c,PlaybackListener.class));return r;}
     private final Context context;
     private final Handler main=new Handler(Looper.getMainLooper());
     private final SharedPreferences prefs;
@@ -36,6 +38,24 @@ final class PlaybackRuntime {
     private byte[] expectedProof;
     private int attempts;
     private boolean attached;
+    private PlaybackListener listener;
+    private volatile long leaseUntil=SystemClock.elapsedRealtime()+20000;
+    private volatile boolean stopping;
+    private boolean setupVisible;
+    private SSLServerSocket serverSocket;
+    private TvInputManager.TvInputCallback inputCallback;
+    void setupVisible(boolean visible){setupVisible=visible;if(!visible)leaseUntil=SystemClock.elapsedRealtime()+3000;}
+    private void stopIfIdle(){
+        if(stopping||setupVisible||pairingOpen()||SystemClock.elapsedRealtime()<leaseUntil||clients.stream().anyMatch(cl->cl.trusted&&cl.visible))return;
+        stopping=true;detach();if(listener!=null)listener.requestUnbind();
+        for(Client cl:clients)cl.close();
+        try{if(serverSocket!=null)serverSocket.close();}catch(IOException ignored){}
+        TvInputManager inputs=(TvInputManager)context.getSystemService(Context.TV_INPUT_SERVICE);if(inputs!=null&&inputCallback!=null)inputs.unregisterCallback(inputCallback);
+        main.removeCallbacksAndMessages(null);
+        // requestUnbind prevents Android from keeping or restarting the listener.
+        // End this dedicated process as well, rather than retaining a cached setup UI.
+        main.postDelayed(()->android.os.Process.killProcess(android.os.Process.myPid()),300);
+    }
     private java.security.cert.Certificate serverCertificate;
     private final MediaController.Callback callback=new MediaController.Callback(){
         @Override public void onMetadataChanged(MediaMetadata data){publish();}
@@ -47,21 +67,22 @@ final class PlaybackRuntime {
         context=c;prefs=c.getSharedPreferences("paired-clients",Context.MODE_PRIVATE);sessions=(MediaSessionManager)c.getSystemService(Context.MEDIA_SESSION_SERVICE);
         thread("tv-playback-tls",this::listen).start();
         TvInputManager inputs=(TvInputManager)c.getSystemService(Context.TV_INPUT_SERVICE);
-        if(inputs!=null)inputs.registerCallback(new TvInputManager.TvInputCallback(){
+        inputCallback=new TvInputManager.TvInputCallback(){
             @Override public void onInputAdded(String id){publish();}
             @Override public void onInputRemoved(String id){publish();}
             @Override public void onInputUpdated(String id){publish();}
             @Override public void onInputStateChanged(String id,int state){publish();}
-        },main);
+        };if(inputs!=null)inputs.registerCallback(inputCallback,main);
         main.post(new Runnable(){public void run(){
             // Input selection has no public callback on Android 11. Poll the TCL input property
             // only while an authenticated phone is viewing HDMI information.
+            stopIfIdle();if(stopping)return;
             if(clients.stream().anyMatch(cl->cl.visible&&isTv(cl.foreground)))publish();
             main.postDelayed(this,2000);
         }});
     }
     boolean accessEnabled(){String enabled=Settings.Secure.getString(context.getContentResolver(),"enabled_notification_listeners");if(enabled==null)return false;ComponentName ours=new ComponentName(context,PlaybackListener.class);for(String value:enabled.split(":"))if(ours.equals(ComponentName.unflattenFromString(value)))return true;return false;}
-    void attach(){if(!attached){attached=true;try{sessions.addOnActiveSessionsChangedListener(sessionsChanged,new ComponentName(context,PlaybackListener.class),main);}catch(SecurityException e){attached=false;}}reload();}
+    void attach(PlaybackListener service){listener=service;if(!attached){attached=true;try{sessions.addOnActiveSessionsChangedListener(sessionsChanged,new ComponentName(context,PlaybackListener.class),main);}catch(SecurityException e){attached=false;}}reload();}
     void detach(){attached=false;try{sessions.removeOnActiveSessionsChangedListener(sessionsChanged);}catch(Exception ignored){}for(MediaController c:controllers)c.unregisterCallback(callback);controllers.clear();publish();}
     private void reload(){
         for(MediaController c:controllers)c.unregisterCallback(callback);controllers.clear();
@@ -75,12 +96,13 @@ final class PlaybackRuntime {
     private static Thread thread(String name,Runnable r){Thread t=new Thread(r,name);t.setDaemon(true);return t;}
     private SSLContext tls() throws Exception {
         KeyStore store=KeyStore.getInstance("AndroidKeyStore");store.load(null);
-        String alias="tv-playback-server-v1";
+        String alias="tv-playback-server-v2";
+        if(store.containsAlias("tv-playback-server-v1"))store.deleteEntry("tv-playback-server-v1");
         if(!store.containsAlias(alias)){
             KeyPairGenerator gen=KeyPairGenerator.getInstance("RSA","AndroidKeyStore");
             gen.initialize(new KeyGenParameterSpec.Builder(alias,KeyProperties.PURPOSE_SIGN|KeyProperties.PURPOSE_DECRYPT)
-                .setKeySize(2048).setDigests(KeyProperties.DIGEST_SHA256,KeyProperties.DIGEST_SHA512)
-                .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1).setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1)
+                .setKeySize(2048).setDigests(KeyProperties.DIGEST_NONE,KeyProperties.DIGEST_SHA256,KeyProperties.DIGEST_SHA384,KeyProperties.DIGEST_SHA512)
+                .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1).setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1,KeyProperties.ENCRYPTION_PADDING_NONE)
                 .setCertificateSubject(new X500Principal("CN=TV Playback"))
                 .setCertificateSerialNumber(new BigInteger(96,new SecureRandom()))
                 .setCertificateNotBefore(new Date(System.currentTimeMillis()-86400000L))
@@ -101,11 +123,12 @@ final class PlaybackRuntime {
     }
     private void listen(){
         try(SSLServerSocket server=(SSLServerSocket)tls().getServerSocketFactory().createServerSocket(PORT)){
+            serverSocket=server;
             server.setEnabledProtocols(new String[]{"TLSv1.2"});server.setNeedClientAuth(true);
             while(true){SSLSocket socket=(SSLSocket)server.accept();if(!slots.tryAcquire()){socket.close();continue;}
                 thread("tv-playback-client",()->{Client client=null;try{socket.setSoTimeout(15000);socket.setTcpNoDelay(true);socket.startHandshake();client=new Client(socket);clients.add(client);client.run();}catch(Exception ignored){}finally{if(client!=null){clients.remove(client);client.close();}else try{socket.close();}catch(IOException ignored){}slots.release();}}).start();
             }
-        }catch(Exception e){serverError="Playback server could not start: "+e.getClass().getSimpleName();android.util.Log.e("TVPlayback","Server startup failed",e);}
+        }catch(Exception e){if(!stopping){serverError="Playback server could not start: "+e.getClass().getSimpleName();android.util.Log.e("TVPlayback","Server startup failed",e);}}
     }
     private synchronized void beginPair(Client cl) throws Exception {
         if(!pairingOpen())throw new IOException("Open Connect iPhone on the TV first");
@@ -168,7 +191,7 @@ final class PlaybackRuntime {
                     if(type.equals("pair")){beginPair(this);continue;}
                     if(type.equals("proof")){finishPair(this,request.optString("proof"));continue;}
                     if(!trusted)throw new IOException("Pairing required");
-                    if(type.equals("watch")){String value=request.optString("package");if(!value.isEmpty()&&!value.matches("[A-Za-z0-9_.]{1,180}"))throw new IOException("Invalid package");foreground=value;visible=request.optBoolean("visible");last="";snapshot();}
+                    if(type.equals("watch")){String value=request.optString("package");if(!value.isEmpty()&&!value.matches("[A-Za-z0-9_.]{1,180}"))throw new IOException("Invalid package");foreground=value;visible=request.optBoolean("visible");if(!visible){leaseUntil=SystemClock.elapsedRealtime()+1000;return;}leaseUntil=0;last="";snapshot();}
                     else if(type.equals("ping"))send(new JSONObject().put("type","pong"));
                     else throw new IOException("Unknown request");
                 }catch(Exception e){send(new JSONObject().put("type","error").put("message",e.getMessage()==null?"Request failed":e.getMessage()));}

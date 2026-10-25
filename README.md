@@ -10,7 +10,7 @@ The iPhone connects directly to the TV over the local network. Normal use needs 
 - Press feedback and light haptics. D-pad and volume support holding; release is sent when the gesture ends or the app backgrounds.
 - Six logo-only streaming tiles: Netflix, YouTube, Prime Video, Disney+, HBO Max, and Crunchyroll.
 - Automatic reconnect and certificate-bound pairing, with private identity stored in the iPhone Keychain.
-- Playback-aware Play/Pause icon and a separate On TV screen for app, title, playback state, and HDMI device labels.
+- The current app name beside Power, obtained directly from the built-in TV remote service. Tap it to open On TV. Optional title, playback state, and HDMI device details start only after tapping Show title & device details. The main remote keeps a neutral Play/Pause icon when details are closed. Confirmed playback uses an animated white waveform; unknown playback stays static and Reduce Motion is respected.
 - Standby wake on supported TCL firmware with Network Standby and Screenless Service enabled.
 
 ## Project layout
@@ -69,7 +69,7 @@ To revoke it:
 adb shell cmd notification disallow_listener com.guilhermeramalho.tvplayback/.PlaybackListener
 ```
 
-ADB is only needed for installation/setup on these TVs. The system-bound notification listener keeps the metadata service available. Disable debugging again after setup. To reset paired playback clients, clear TV Playback's app data; then pair again. Clearing app data also regenerates its TLS identity.
+ADB is only needed for installation/setup on these TVs. Requesting optional details in On TV starts a no-display TV entry point through the existing paired remote. It requests media access and starts the TLS listener for that viewing session. Hiding details, leaving On TV, or backgrounding the iPhone closes the metadata connection. Merely viewing the app name never starts the companion. Once no authenticated viewer or setup/pairing window remains, the companion unbinds its notification listener, closes sockets, and terminates its dedicated process. It does not retain a cached setup activity or an idle server. An unused startup request expires after 20 seconds; an unclean network loss can take up to the socket read timeout (45 seconds) to release. Setup stays active while visible, and an explicit pairing window lasts two minutes. Disable debugging again after setup. To reset paired playback clients, clear TV Playback's app data; then pair again. Clearing app data also regenerates its TLS identity.
 
 ## Behavior and limitations
 
@@ -81,15 +81,17 @@ Standby wake depends on the TV keeping its remote service reachable. On the test
 
 The app has no AirPlay receiver, photo sharing, discovery, voice input, or text keyboard. The remote's IME protocol feature is enabled only to obtain the foreground app; it does not replace the TV keyboard.
 
+The current debug APK is approximately 43 KiB. This file size is distinct from Android process RAM: a short measurement after setup showed about 47 MiB PSS while resident. In ordinary app-name-only use, the companion is stopped and has no resident process. Measurements are specific to the tested TV, not a guarantee for other firmware.
+
 ## Security and privacy
 
 Each iPhone generates its own RSA identity. Pairing proofs bind the TV code to both devices' keys, and subsequent connections pin the TV certificate. The companion stores its private key in AndroidKeyStore and trusts only explicitly paired phone certificates outside the short pairing window. No private keys, pairing state, device logs, viewing titles, build products, or signing profiles belong in this repository.
 
-The companion uses bounded frames, limited simultaneous clients, pairing attempt limits, and background socket writes. Media callbacks deliver changes; TCL input polling runs only while an authenticated phone is viewing input information. No screenshots, microphone, location, cloud API, or notification-body processing is used.
+The companion uses bounded frames, limited simultaneous clients, pairing attempt limits, and background socket writes. Media callbacks deliver changes; TCL input polling runs only while an authenticated phone is viewing input information. There is no periodic polling while the companion process is stopped. No screenshots, microphone, location, cloud API, or notification-body processing is used.
 
 ## Validation
 
-The source currently passes 10 Swift core tests, three Android protocol tests, Android debug assembly and lint, and an iOS device-target UI build. Companion startup has been checked on the TCL. End-to-end playback pairing and the new On TV screen still need physical-device validation. Existing remote control and standby wake were previously confirmed on the iPhone; those checks should be repeated after this update.
+The source passes 11 Swift core tests, three Android protocol tests, Android debug assembly and lint, and an iOS device-target UI build. Real-TV protocol checks passed certificate-bound metadata pairing, live YouTube title/state, preserving the foreground app during startup, saved pairing after restart, and process exit within four seconds after a disconnected details session. Setup pairing windows intentionally hold the process for up to two minutes. The TV reported no remaining companion service or process when idle. The installed UI changes and existing remote controls have been checked on the iPhone; final optional-details pairing through the iPhone UI remains to be confirmed. Standby wake was previously confirmed on this hardware.
 
 ## References and assets
 
