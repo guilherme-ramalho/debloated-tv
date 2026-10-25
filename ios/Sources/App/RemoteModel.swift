@@ -11,20 +11,7 @@ import Security
     @Published var volume = "Volume"
     @Published var powerOn: Bool?
     @Published var waking = false
-    @Published var playbackDetailsRequested = false
-    @Published var playbackInfo: TVPlayback?
-    @Published var playbackStatus = "Connect playback information"
-    @Published var playbackError = ""
-    @Published var playbackPaired = false
-    @Published var showingPlaybackPIN = false
     @Published var foregroundPackage = ""
-    private var playbackSession: PlaybackSession?
-    private var playbackRetry: DispatchWorkItem?
-    private var playbackGeneration = 0
-    private var playbackAttempt = 0
-    private var playbackPairing = false
-    private var playbackVisible = false
-    private static let playbackPinService = "PersonalTVRemote.PlaybackPin.v1"
     private var identity: ClientIdentity?
     private var session: TVSession?
     private var active = false
@@ -59,16 +46,12 @@ import Security
 
     func deactivate() {
         active = false
-        stopPlayback()
         cancelWake()
         releaseAll()
         retry?.cancel(); retry = nil
         token += 1
         session?.disconnect(); session = nil
         ready = false; powerOn = nil
-        playbackGeneration += 1; playbackSession?.disconnect(); playbackSession = nil
-        playbackRetry?.cancel(); playbackRetry = nil; playbackInfo = nil
-        playbackPairing = false; showingPlaybackPIN = false
         if pairing { pairing = false; showingPIN = false }
     }
 
@@ -83,17 +66,17 @@ import Security
         foregroundPackage = ""; attempt = 0; active = true; connect(); return true
     }
 
-    private func pin(service: String = RemoteModel.pinService) -> Data? {
+    private func pin() -> Data? {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service, kSecAttrAccount as String: host,
+            kSecAttrService as String: Self.pinService, kSecAttrAccount as String: host,
             kSecReturnData as String: true, kSecMatchLimit as String: kSecMatchLimitOne]
         var result: CFTypeRef?
         guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess else { return nil }
         return result as? Data
     }
-    private func savePin(_ data: Data, service: String = RemoteModel.pinService) throws {
+    private func savePin(_ data: Data) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service, kSecAttrAccount as String: host]
+            kSecAttrService as String: Self.pinService, kSecAttrAccount as String: host]
         let attributes: [String: Any] = [kSecValueData as String: data,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly]
         var status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
@@ -105,7 +88,7 @@ import Security
         guard active, let identity else { return nil }
         wakeSend?.cancel(); wakeSend = nil
         retry?.cancel(); retry = nil
-        releaseAll(); ready = false; powerOn = nil; foregroundPackage = ""; playbackInfo = nil
+        releaseAll(); ready = false; powerOn = nil; foregroundPackage = ""
         token += 1
         let generation = token
         session?.disconnect()
@@ -125,14 +108,11 @@ import Security
                 self.ready = true; self.status = "Connected"; self.attempt = 0; self.error = ""
             case .power(let on):
                 self.powerOn = on
-                if on { self.cancelWake(); if self.playbackVisible && self.playbackSession == nil && self.playbackStart == nil { self.startPlaybackOnDemand() } }
+                if on { self.cancelWake() }
                 else if self.waking { self.scheduleWake() }
                 self.status = on ? "Connected" : (self.waking ? "Waking TV…" : "Standby")
             case .foreground(let package):
-                guard package != "com.guilhermeramalho.tvplayback" else { return }
                 self.foregroundPackage = package
-                if self.playbackInfo?.packageName != package { self.playbackInfo = nil }
-                self.playbackSession?.watch(package: package, visible: self.playbackVisible)
             case .volume(let current, let max, let muted):
                 self.volume = muted ? "Muted" : (max == 100 ? "Volume \(current)" : "Volume \(current)/\(max)")
             case .error(let message):
@@ -220,88 +200,9 @@ import Security
     private func releaseAll() { for key in Array(pressed) { release(key) } }
     func launch(_ url: String) { if ready { session?.launch(url) } }
 
-    var playbackSymbol: String {
-        switch playbackInfo?.playback { case "playing": return "pause.fill"; case "paused": return "play.fill"; default: return "playpause.fill" }
-    }
-    var playbackAction: String { playbackInfo?.playback == "playing" ? "Pause" : playbackInfo?.playback == "paused" ? "Play" : "Play or pause" }
-    func setPlaybackVisible(_ visible: Bool) {
-        playbackVisible = visible
-        playbackPaired = pin(service: Self.playbackPinService) != nil
-        if !visible { playbackDetailsRequested = false; stopPlayback() }
-    }
-    func requestPlaybackDetails() { playbackDetailsRequested = true; startPlaybackOnDemand() }
-    func hidePlaybackDetails() { playbackDetailsRequested = false; stopPlayback() }
-    private var playbackStart: DispatchWorkItem?
-    private func stopPlayback() {
-        playbackStart?.cancel(); playbackStart = nil
-        playbackRetry?.cancel(); playbackRetry = nil
-        playbackGeneration += 1
-        playbackSession?.watch(package: foregroundPackage, visible: false)
-        playbackSession?.disconnect(); playbackSession = nil
-        playbackInfo = nil; playbackPairing = false; showingPlaybackPIN = false
-    }
-    private func startPlaybackOnDemand() {
-        guard active, playbackVisible, playbackDetailsRequested, ready, !playbackPairing, powerOn != false else { return }
-        playbackPaired = pin(service: Self.playbackPinService) != nil
-        guard playbackPaired else { playbackStatus = "Connect playback information"; return }
-        playbackStatus = "Starting playback information…"
-        session?.launch("tvplayback://watch")
-        playbackStart?.cancel()
-        let task = DispatchWorkItem { [weak self] in self?.connectPlayback() }
-        playbackStart = task
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: task)
-    }
-    private func newPlaybackSession(pairing: Bool) -> PlaybackSession? {
-        guard active, let identity else { return nil }
-        playbackRetry?.cancel(); playbackRetry = nil
-        playbackSession?.disconnect(); playbackGeneration += 1
-        let token = playbackGeneration
-        let result = PlaybackSession(host: host, identity: identity); playbackSession = result
-        result.watch(package: foregroundPackage, visible: playbackVisible)
-        result.event = { [weak self] event in
-            guard let self, token == self.playbackGeneration else { return }
-            switch event {
-            case .code: self.showingPlaybackPIN = true; self.playbackStatus = "Enter the code on your TV"
-            case .paired(let pin):
-                do { try self.savePin(pin, service: Self.playbackPinService) }
-                catch { self.playbackError = error.localizedDescription; return }
-                self.showingPlaybackPIN = false; self.playbackPairing = false; self.playbackPaired = true
-                self.connectPlayback()
-            case .state(let state):
-                guard self.foregroundPackage.isEmpty || state.packageName == self.foregroundPackage else { return }
-                self.playbackInfo = state; self.playbackError = ""; self.playbackAttempt = 0
-                self.playbackStatus = state.access ? "Connected" : "Enable playback access on TV"
-            case .error(let message):
-                self.playbackInfo = nil; self.playbackError = message
-                self.playbackStatus = self.playbackPairing ? "Pairing needs attention" : "Playback information unavailable"
-                if !self.playbackPairing && self.active && self.playbackVisible && self.playbackDetailsRequested {
-                    let retry = DispatchWorkItem { [weak self] in self?.startPlaybackOnDemand() }
-                    self.playbackRetry = retry
-                    let delay = min(15.0, pow(2.0, Double(min(self.playbackAttempt, 4))))
-                    self.playbackAttempt += 1
-                    DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: retry)
-                }
-            }
-        }
-        return result
-    }
-    private func connectPlayback() {
-        playbackStart = nil
-        guard active, playbackVisible, playbackDetailsRequested, !playbackPairing, identity != nil else { return }
-        guard let pin = pin(service: Self.playbackPinService) else { playbackPaired = false; playbackStatus = "Connect playback information"; return }
-        playbackPaired = true; playbackStatus = "Connecting…"
-        newPlaybackSession(pairing: false)?.connect(pin: pin)
-    }
-    func beginPlaybackPairing() {
-        guard active, identity != nil else { return }
-        playbackDetailsRequested = true
-        playbackStart?.cancel(); playbackStart = nil
-        playbackPairing = true; showingPlaybackPIN = false; playbackError = ""; playbackStatus = "Waiting for the TV…"
-        newPlaybackSession(pairing: true)?.pair()
-    }
-    func submitPlaybackCode(_ code: String) { playbackError = ""; playbackSession?.submit(code) }
-    func cancelPlaybackPairing() {
-        playbackPairing = false; showingPlaybackPIN = false
-        playbackGeneration += 1; playbackSession?.disconnect(); playbackSession = nil; connectPlayback()
+    var currentAppName: String {
+        if powerOn == false { return "Standby" }
+        if !ready { return "On TV" }
+        return TVSession.appName(for: foregroundPackage) ?? (foregroundPackage.isEmpty ? "Waiting for TV…" : "Another app")
     }
 }

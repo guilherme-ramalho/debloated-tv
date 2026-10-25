@@ -38,18 +38,7 @@ struct RemoteView: View {
 
                     HStack(spacing: 14) {
                         topCommand("power", "Power", .power, Color(red: 1, green: 0.34, blue: 0.36))
-                        NavigationLink { PlaybackView(model: model) } label: {
-                            HStack(spacing: 9) {
-                                PlaybackIndicator(playing: model.playbackInfo?.playback == "playing")
-                                VStack(alignment: .leading, spacing: 3) {
-                                    Text("ON TV").font(.system(size: 9, weight: .semibold)).foregroundStyle(.secondary)
-                                    Text(model.powerOn == false ? "Standby" : !model.ready ? "Connecting…" : TVPlayback.appName(for: model.foregroundPackage) ?? (model.foregroundPackage.isEmpty ? "Waiting for TV…" : "Another app"))
-                                        .font(.subheadline.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.8)
-                                }
-                                Spacer(minLength: 0)
-                                Image(systemName: "chevron.right").font(.caption2).foregroundStyle(.secondary)
-                            }.foregroundStyle(.white).frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
-                        }.buttonStyle(RemotePressStyle(radius: 14)).accessibilityHint("Shows the current app and optional title or device details")
+                        Spacer()
                         topCommand("rectangle.on.rectangle", "Input", .inputs, Color(red: 0.36, green: 0.72, blue: 1))
                     }
 
@@ -72,7 +61,7 @@ struct RemoteView: View {
                     HStack(spacing: 25) {
                         command("arrow.uturn.backward", "Back", .back)
                         command("house.fill", "Home", .home)
-                        command(model.playbackSymbol, model.playbackAction, .playPause)
+                        command("playpause.fill", "Play or pause", .playPause)
                     }
                     HStack(spacing: 0) {
                         HoldKey(symbol: "minus", key: .volumeDown, model: model).frame(width: 64, height: 56)
@@ -97,6 +86,14 @@ struct RemoteView: View {
             .background(Color("LaunchBackground"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    HStack(spacing: 7) {
+                        Image(systemName: "tv").font(.system(size: 19, weight: .medium))
+                        Text(model.currentAppName).font(.subheadline.weight(.semibold))
+                            .lineLimit(1).minimumScaleFactor(0.8)
+                    }.foregroundStyle(.white).frame(maxWidth: 155, alignment: .leading)
+                        .accessibilityElement(children: .ignore).accessibilityLabel("On TV: " + model.currentAppName)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 14) {
                         HStack(spacing: 6) {
@@ -170,18 +167,6 @@ struct RemoteView: View {
             .opacity(model.ready ? 1 : 0.45).accessibilityLabel("Open " + name)
     }
 
-}
-
-struct PlaybackIndicator: View {
-    let playing: Bool
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Environment(\.scenePhase) private var scenePhase
-    var body: some View {
-        Image(systemName: playing ? "waveform" : "tv")
-            .font(.system(size: 19, weight: .medium)).foregroundStyle(.white)
-            .symbolEffect(.variableColor.iterative, options: .repeating, isActive: playing && !reduceMotion && scenePhase == .active)
-            .frame(width: 24, height: 26).accessibilityHidden(true)
-    }
 }
 
 struct HoldKey: View {

@@ -1,97 +1,62 @@
 # TV Remote — Quiet Signal
 
-A personal SwiftUI remote for Android TV, with a navy interface, white controls, streaming shortcuts, and a separate **On TV** screen for playback information. Developed against a TCL Smart TV Pro running Android 11.
+A personal native SwiftUI remote for Android TV, developed against a TCL Smart TV Pro running Android 11.
 
-The iPhone connects directly to the TV over the local network. Normal use needs no Mac server, ADB connection, Google account, cloud relay, or analytics service.
+The iPhone connects directly to Android TV Remote Service v2 on the local network. Normal use requires no Mac server, ADB, Google account, cloud relay, or additional TV companion app.
 
 ## Features
 
-- D-pad with a large OK target; Home, Back, inputs, mute, volume, and power.
-- Press feedback and light haptics. D-pad and volume support holding; release is sent when the gesture ends or the app backgrounds.
-- Six logo-only streaming tiles: Netflix, YouTube, Prime Video, Disney+, HBO Max, and Crunchyroll.
-- Automatic reconnect and certificate-bound pairing, with private identity stored in the iPhone Keychain.
-- The current app name beside Power, obtained directly from the built-in TV remote service. Tap it to open On TV. Optional title, playback state, and HDMI device details start only after tapping Show title & device details. The main remote keeps a neutral Play/Pause icon when details are closed. Confirmed playback uses an animated white waveform; unknown playback stays static and Reduce Motion is respected.
-- Standby wake on supported TCL firmware with Network Standby and Screenless Service enabled.
+- D-pad with a 116-point OK target; Home, Back, playback toggle, inputs, power, volume, and mute.
+- White SF Symbols, visible press feedback, and light haptics. D-pad and volume support holding and release on backgrounding.
+- Two-column, logo-only streaming shortcuts: Netflix, YouTube, Prime Video, Disney+, HBO Max, and Crunchyroll.
+- Current streaming app on the left of the header; connection dot, status text, and Settings on the right.
+- Power and Input sit above the D-pad with separate touch areas and no overlap.
+- Saved secure pairing and automatic reconnect.
+- Standby wake on supported TCL firmware with the required TV standby settings.
 
-## Project layout
+## What’s on TV
 
-| Directory | Purpose |
-| --- | --- |
-| `ios` | iPhone app, shared protocol core, Xcode project, bundled assets, Swift tests |
-| `android-playback` | Small read-only TV companion for media-session and input information |
+The app name comes from the foreground package reported by the existing remote service. It updates over the same connection used for navigation and volume, with no extra TV process.
 
-The main remote uses Android TV Remote Service v2 (TCP 6466 control, 6467 pairing). Playback information uses an independent mutually authenticated TLS connection to the companion on TCP 9765. Failure of the metadata connection does not disable remote control. Devices must be on the same trusted local network; do not forward these ports to the internet.
+This identifies the open app, not whether a video is playing. The icon stays static and Play/Pause remains a neutral toggle. Titles, detailed HDMI device names, and playback-state collection are intentionally omitted. TV inputs show “TV input”; unknown apps show “Another app.”
 
-## Build the iPhone app
+## Build and install
 
 Requires Xcode with an iOS SDK and an iPhone running iOS 17 or newer.
 
-1. Open `ios/TVRemote.xcodeproj` and select the `TVRemote` target.
-2. Choose your own signing Team and a bundle identifier available to that team. The repository contains no developer credentials or provisioning profiles.
-3. Select your iPhone and build/run. Wireless installation requires the phone to have been paired with Xcode first.
-4. Open the app, allow Local Network access, enter the TV's IPv4 address in Connection settings, and tap **Pair TV**. Enter the six-character code displayed by the TV.
+1. Open `ios/TVRemote.xcodeproj` and select the TVRemote target.
+2. Choose your signing Team and an available bundle identifier. The repository contains no signing credentials or provisioning profiles.
+3. Choose your iPhone and build/run. Wireless installation requires the phone to have been paired with Xcode first.
+4. Open TV Remote, allow Local Network access, enter the TV’s IPv4 address in Connection settings, and tap Pair TV. Enter the six-character code displayed by the TV.
 
-The shared run scheme uses Release without debugger attachment. Personal Team development builds require periodic re-signing; the provisioning profile determines expiry. Pairing identities persist in Keychain across ordinary updates.
+The shared Run scheme uses Release without debugger attachment. Personal Team development builds require periodic re-signing; the provisioning profile determines expiry. Ordinary app updates preserve the pairing identity in Keychain.
 
-Run the protocol tests on macOS:
+The TV must have Android TV Remote Service enabled. Control and pairing use TCP 6466 and 6467 respectively. Use the same trusted local network; do not forward these ports to the internet. Debugging is only needed for initial TV maintenance, not normal remote operation.
+
+## Standby wake
+
+On the tested TCL, Network Standby and Screenless Service were required to keep the built-in remote service reachable. Quick Start was already enabled.
+
+Power refreshes the reported state, waits briefly for the TCL virtual input bridge, and sends one Power toggle only if the TV still reports standby. Wake expires after 30 seconds and cancels on backgrounding. A sent toggle is not automatically replayed. Overnight standby behavior and other TV models are not guaranteed.
+
+## Tests
+
+Run the shared core tests on macOS:
 
 ```sh
 cd ios
 swift test
 ```
 
-## Build and set up playback information
+Nine tests cover fragmented/coalesced frames, malformed input, protobuf fields, certificate generation, pairing proofs, wake expiry/cancellation/single-use behavior, and foreground app names. The iPhone UI is also built with Xcode. Existing controls and standby wake have been tested on the physical TV and iPhone.
 
-Requires JDK 17 and Android SDK 34. The project includes a Gradle 8.9 wrapper and uses Android Gradle Plugin 8.5.2, with no third-party runtime dependencies.
+## Privacy and security
 
-```sh
-cd android-playback
-export JAVA_HOME=/path/to/jdk-17
-export ANDROID_HOME=/path/to/Android/sdk
-./gradlew assembleDebug testDebugUnitTest lintDebug
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-```
+Each iPhone generates its own RSA identity. Pairing proofs bind the TV code to both devices’ keys, and subsequent connections verify the saved TV certificate fingerprint. Private keys are stored in Keychain, not bundled in source.
 
-1. Open **TV Playback** on the TV.
-2. Choose **Enable playback access** and explicitly approve Android's Notification access permission for this companion. This framework permission allows access to media sessions; the companion does not read notification contents. Revoking it stops metadata access.
-3. Choose **Connect iPhone** on the TV. This opens a two-minute pairing window.
-4. In the iPhone app, open **On TV → Connect playback information** and enter the code displayed on the TV. This pairing is separate from remote-control pairing.
+There is no viewing-history storage, screenshot scanning, notification access, analytics, or separate metadata server. The Android playback companion has been removed. Commands are not queued while disconnected.
 
-Some Android TV builds omit the Notification access settings screen. After the owner explicitly approves this permission, initial setup can use ADB:
-
-```sh
-adb shell cmd notification allow_listener com.guilhermeramalho.tvplayback/.PlaybackListener
-```
-
-To revoke it:
-
-```sh
-adb shell cmd notification disallow_listener com.guilhermeramalho.tvplayback/.PlaybackListener
-```
-
-ADB is only needed for installation/setup on these TVs. Requesting optional details in On TV starts a no-display TV entry point through the existing paired remote. It requests media access and starts the TLS listener for that viewing session. Hiding details, leaving On TV, or backgrounding the iPhone closes the metadata connection. Merely viewing the app name never starts the companion. Once no authenticated viewer or setup/pairing window remains, the companion unbinds its notification listener, closes sockets, and terminates its dedicated process. It does not retain a cached setup activity or an idle server. An unused startup request expires after 20 seconds; an unclean network loss can take up to the socket read timeout (45 seconds) to release. Setup stays active while visible, and an explicit pairing window lasts two minutes. Disable debugging again after setup. To reset paired playback clients, clear TV Playback's app data; then pair again. Clearing app data also regenerates its TLS identity.
-
-## Behavior and limitations
-
-Titles and playback state come from Android media sessions. A streaming app may omit either; the interface displays **Title unavailable** or an unknown playback state rather than guessing. The companion filters media sessions using the foreground package reported by the remote service. It does not scrape screenshots or store viewing history.
-
-HDMI names come from Android TV input labels and HDMI-CEC. A console must advertise a name, or the input must be named manually. The selected-input property is TCL-specific (`persist.sys.curInput`); other manufacturers may require an adapter. Unknown devices remain generic inputs.
-
-Standby wake depends on the TV keeping its remote service reachable. On the tested TCL, Network Standby and Screenless Service were required. Wake refreshes power state, waits briefly for the virtual input bridge, then sends at most one Power toggle if the TV still reports standby. It expires and cancels on backgrounding; stale commands are not replayed. Overnight standby behavior and other TV models are not guaranteed.
-
-The app has no AirPlay receiver, photo sharing, discovery, voice input, or text keyboard. The remote's IME protocol feature is enabled only to obtain the foreground app; it does not replace the TV keyboard.
-
-The current debug APK is approximately 43 KiB. This file size is distinct from Android process RAM: a short measurement after setup showed about 47 MiB PSS while resident. In ordinary app-name-only use, the companion is stopped and has no resident process. Measurements are specific to the tested TV, not a guarantee for other firmware.
-
-## Security and privacy
-
-Each iPhone generates its own RSA identity. Pairing proofs bind the TV code to both devices' keys, and subsequent connections pin the TV certificate. The companion stores its private key in AndroidKeyStore and trusts only explicitly paired phone certificates outside the short pairing window. No private keys, pairing state, device logs, viewing titles, build products, or signing profiles belong in this repository.
-
-The companion uses bounded frames, limited simultaneous clients, pairing attempt limits, and background socket writes. Media callbacks deliver changes; TCL input polling runs only while an authenticated phone is viewing input information. There is no periodic polling while the companion process is stopped. No screenshots, microphone, location, cloud API, or notification-body processing is used.
-
-## Validation
-
-The source passes 11 Swift core tests, three Android protocol tests, Android debug assembly and lint, and an iOS device-target UI build. Real-TV protocol checks passed certificate-bound metadata pairing, live YouTube title/state, preserving the foreground app during startup, saved pairing after restart, and process exit within four seconds after a disconnected details session. Setup pairing windows intentionally hold the process for up to two minutes. The TV reported no remaining companion service or process when idle. The installed UI changes and existing remote controls have been checked on the iPhone; final optional-details pairing through the iPhone UI remains to be confirmed. Standby wake was previously confirmed on this hardware.
+Do not commit private keys, pairing state, device logs, build products, or provisioning profiles. The included `.gitignore` excludes these common artifacts.
 
 ## References and assets
 
@@ -101,4 +66,4 @@ The source passes 11 Swift core tests, three Android protocol tests, Android deb
 - Disney+ logo: [Disney-authored artwork on Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Disney_Plus_logo.svg).
 - HBO Max logo: [official brand portal](https://brand.hbomax.com/logos).
 
-Streaming marks belong to their respective owners. This personal project is not affiliated with those services, Apple, Google, or TCL. The Gradle wrapper is distributed by the Gradle project under its applicable license; see [Gradle licensing](https://github.com/gradle/gradle/blob/master/LICENSE).
+Streaming marks belong to their respective owners. This personal project is not affiliated with those services, Apple, Google, or TCL. AirPlay, photo sharing, voice input, discovery, and text keyboard input are not implemented.

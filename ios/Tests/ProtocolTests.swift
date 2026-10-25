@@ -4,6 +4,14 @@ import CryptoKit
 @testable import TVRemoteCore
 
 final class ProtocolTests: XCTestCase {
+    func testForegroundNamesDoNotClaimPlaybackOrInventUnknownApps() {
+        XCTAssertEqual(TVSession.appName(for: "com.google.android.youtube.tv"), "YouTube")
+        XCTAssertEqual(TVSession.appName(for: "com.netflix.ninja"), "Netflix")
+        XCTAssertEqual(TVSession.appName(for: "com.tcl.tv"), "TV input")
+        XCTAssertEqual(TVSession.appName(for: "com.gathin.tvhome"), "Home")
+        XCTAssertNil(TVSession.appName(for: "com.unknown.player"))
+        XCTAssertNil(TVSession.appName(for: ""))
+    }
     func testWakeIntentExpiresAndCannotReplay() {
         var request = WakeRequest()
         let start = Date(timeIntervalSince1970: 1000)
