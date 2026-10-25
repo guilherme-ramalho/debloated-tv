@@ -74,7 +74,7 @@ import Security
         let value = value.trimmingCharacters(in: .whitespacesAndNewlines)
         let parts = value.split(separator: ".", omittingEmptySubsequences: false)
         guard parts.count == 4, parts.allSatisfy({ Int($0).map { (0...255).contains($0) } ?? false }) else {
-            error = "Enter the TV’s IPv4 address, for example 192.168.0.21"; return false
+            error = "Enter the TV’s IPv4 address, for example 192.168.1.100"; return false
         }
         deactivate()
         host = value; UserDefaults.standard.set(value, forKey: "tvHost")
