@@ -37,7 +37,6 @@ import SwiftUI
 
 struct RemoteView: View {
     @EnvironmentObject private var preferences: AppSettings
-    @State private var touchpad = false
     @State private var keyboard = false
     @State private var inputs = false
     @ObservedObject var model: RemoteModel
@@ -56,32 +55,20 @@ struct RemoteView: View {
                     if !model.ready {
                         HStack {
                             Button("Connect") { model.connect() }.buttonStyle(.bordered)
-                            Button("Pair TV") { model.beginPairing() }.buttonStyle(.borderedProminent)
+                            Button("Pair TV") { model.beginPairing() }.buttonStyle(QuietPrimaryStyle())
                         }.disabled(model.preparing)
                     }
 
                     HStack(spacing: 8) {
                         topCommand("power", "Power", .power, Color(red: 1, green: 0.34, blue: 0.36))
-                        Picker("Navigation mode", selection: $touchpad) { Text("Pad").tag(false); Text("Swipe").tag(true) }.pickerStyle(.segmented).labelsHidden()
+                        Spacer()
                         Button { keyboard = true } label: { Image(systemName: "keyboard").frame(width: 36, height: 44) }.accessibilityLabel("Type on TV").buttonStyle(RemotePressStyle(radius: 12))
+                        Spacer()
                         Button { inputs = true } label: { Image(systemName: "rectangle.on.rectangle").font(.system(size: 24, weight: .medium)).frame(width: 52, height: 52).background(Color.blue.opacity(0.11), in: Circle()) }.accessibilityLabel("Favorite inputs").buttonStyle(RemotePressStyle(radius: 26))
                     }
 
-                    if touchpad { TouchpadView(model: model) } else { ZStack {
-                        Circle().fill(ink).overlay(Circle().stroke(.white.opacity(0.08), lineWidth: 1))
-                        HoldKey(symbol: "chevron.up", key: .up, model: model)
-                            .frame(width: 100, height: 66).offset(y: -103)
-                        HoldKey(symbol: "chevron.down", key: .down, model: model)
-                            .frame(width: 100, height: 66).offset(y: 103)
-                        HoldKey(symbol: "chevron.left", key: .left, model: model)
-                            .frame(width: 66, height: 100).offset(x: -103)
-                        HoldKey(symbol: "chevron.right", key: .right, model: model)
-                            .frame(width: 66, height: 100).offset(x: 103)
-                        HoldKey(symbol: "", key: .select, model: model)
-                            .frame(width: 116, height: 116)
-                            .background(.white.opacity(0.09), in: Circle())
-                            .overlay(Circle().stroke(.white.opacity(0.12), lineWidth: 1))
-                    }.frame(width: 284, height: 284).opacity(model.ready ? 1 : 0.45) }
+                    UnifiedDPad(model: model, haptics: preferences.value.haptics).frame(width: 284, height: 284)
+                        .accessibilityElement(children: .contain).accessibilityLabel("Directional pad. Swipe to navigate, tap an arrow or OK, or hold to repeat.")
 
                     HStack(spacing: 25) {
                         command("arrow.uturn.backward", "Back", .back)
@@ -99,18 +86,19 @@ struct RemoteView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 8) {
                             ForEach(preferences.remoteApps) { item in
-                                app(item.name, item.launchURL, item.logo ?? "", brandColor(item.id))
+                                app(item.name, item.launchURL, StreamingBrand.logo(item.id) ?? item.logo ?? "", StreamingBrand.color(item.id))
                             }
                         }
                     }
                 }.padding(.horizontal, 30).padding(.top, 4).padding(.bottom, 12)
             }
-            .background(Color("LaunchBackground"))
+            .background(QuietTheme.background).tint(.white)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .navigationBar)
             .sheet(isPresented: $settings) {
                 NavigationStack {
                     Form {
+                Group {
                         Section("TV address") {
                             if !model.error.isEmpty { Text(model.error).font(.footnote).foregroundStyle(.orange) }
                             TextField("192.168.1.100", text: $address).keyboardType(.decimalPad).textInputAutocapitalization(.never)
@@ -121,7 +109,9 @@ struct RemoteView: View {
                             Text("Use the same local network as the TV. Pair once using the code on screen; the app remembers your TV and reconnects when opened.")
                                 .font(.footnote).foregroundStyle(.secondary)
                         }
-                    }.navigationTitle("Connection").toolbar { Button("Done") { settings = false } }
+
+                }.listRowBackground(QuietTheme.panel)
+}.navigationTitle("Connection").toolbar { Button("Done") { settings = false } }
                 }.presentationDetents([.medium, .large])
             }
             .sheet(isPresented: $keyboard) { KeyboardView(model: model) }
@@ -164,23 +154,13 @@ struct RemoteView: View {
             .opacity(available ? 1 : 0.45)
             .accessibilityLabel(key == .power && (!model.ready || model.powerOn == false) ? "Wake TV" : label)
     }
-    private func brandColor(_ id: String) -> Color {
-        switch id {
-        case "com.netflix.ninja": return Color(red: 0.898, green: 0.035, blue: 0.078)
-        case "com.google.android.youtube.tv": return .red
-        case "com.amazon.amazonvideo.livingroom": return Color(red: 0, green: 0.51, blue: 0.73)
-        case "com.disney.disneyplus": return Color(red: 0, green: 0.36, blue: 0.39)
-        case "com.crunchyroll.crunchyroid": return .orange
-        default: return Color(red: 0.075, green: 0.075, blue: 0.09)
-        }
-    }
     private func app(_ name: String, _ link: String, _ logo: String, _ color: Color) -> some View {
         Button { model.launch(link) } label: {
             Group { if !logo.isEmpty { Image(logo).resizable().renderingMode(.template).scaledToFit() } else { Text(name).font(.headline) } }
                 .frame(maxWidth: 108).frame(height: name == "Disney+" ? 42 : name == "HBO Max" ? 36 : 33).foregroundStyle(.white)
-            .frame(maxWidth: .infinity).frame(height: 64)
-            .background(color, in: RoundedRectangle(cornerRadius: 21))
-            .overlay(RoundedRectangle(cornerRadius: 21).stroke(.white.opacity(0.12), lineWidth: 1))
+            .frame(maxWidth: .infinity).frame(height: 58)
+            .background(color, in: RoundedRectangle(cornerRadius: 17))
+            .overlay(RoundedRectangle(cornerRadius: 17).stroke(.white.opacity(0.07), lineWidth: 1))
             .contentShape(RoundedRectangle(cornerRadius: 21))
         }.buttonStyle(RemotePressStyle()).disabled(!model.ready)
             .opacity(model.ready ? 1 : 0.45).accessibilityLabel("Open " + name)

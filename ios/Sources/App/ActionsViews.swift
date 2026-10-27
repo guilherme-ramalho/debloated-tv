@@ -34,35 +34,44 @@ struct ActionsView: View {
     @State private var editing: QuickAction?
     var body: some View {
         NavigationStack {
-            List {
-                Section("Quick actions") {
-                    ForEach(settings.value.actions) { action in
+            QuietPage {
+                QuietHeading(title: "Actions") {
+                    Button { editing = QuickAction(name: "New action", steps: [.init(.wake)]) } label: { Image(systemName: "plus").frame(width: 44, height: 44) }
+                        .foregroundStyle(QuietTheme.cyan).accessibilityLabel("Create quick action").disabled(settings.value.actions.count >= 30)
+                }
+                ForEach(settings.value.actions) { action in
+                    QuietCard {
                         VStack(alignment: .leading, spacing: 12) {
-                            HStack {
-                                Label(action.name, systemImage: "sparkles").font(.headline)
-                                Spacer(); Button { editing = action } label: { Image(systemName: "ellipsis").frame(width: 44, height: 44) }.accessibilityLabel("Edit " + action.name)
+                            HStack(spacing: 11) {
+                                Image(systemName: action.steps.contains(where: { $0.kind == .input }) ? "gamecontroller" : "movieclapper").font(.system(size: 21)).frame(width: 25)
+                                Text(action.name).font(.system(size: 17, weight: .medium)); Spacer()
+                                Button { editing = action } label: { Image(systemName: "ellipsis").frame(width: 44, height: 44) }.accessibilityLabel("Edit " + action.name)
                             }
-                            Text(action.steps.map { stepName($0, settings: settings) }.joined(separator: " → ")).font(.caption).foregroundStyle(.secondary)
+                            Text(action.steps.map { stepName($0, settings: settings) }.joined(separator: " → "))
+                                .font(.system(size: 12)).foregroundStyle(QuietTheme.muted).lineSpacing(4)
                             if actions.running == action.id {
-                                HStack { ProgressView(); Text("\(actions.progress) of \(action.steps.count)"); Spacer(); Button("Cancel") { actions.cancel() } }
-                            } else { Button("Run", systemImage: "play") { actions.run(action, model: model, settings: settings) }.disabled(actions.running != nil) }
-                        }.padding(.vertical, 5)
-                    }.onDelete { offsets in settings.update { $0.actions.remove(atOffsets: offsets) } }
-                    if settings.value.actions.isEmpty { Text("Create a quick action to run a short sequence.").foregroundStyle(.secondary) }
+                                HStack { ProgressView(); Text("\(actions.progress) of \(action.steps.count)"); Spacer(); Button("Cancel") { actions.cancel() } }.font(.footnote).frame(minHeight: 44)
+                            } else {
+                                Button("Run", systemImage: "play") { actions.run(action, model: model, settings: settings) }
+                                    .font(.system(size: 13)).padding(.horizontal, 14).frame(minHeight: 44)
+                                    .background(.white.opacity(0.055), in: RoundedRectangle(cornerRadius: 11))
+                                    .overlay(RoundedRectangle(cornerRadius: 11).stroke(QuietTheme.edge, lineWidth: 1)).disabled(actions.running != nil)
+                            }
+                        }.padding(18)
+                    }
                 }
-                if !actions.message.isEmpty { Section { Text(actions.message).font(.footnote).textSelection(.enabled) } }
-                Section("Hands-free & quick access") {
-                    NavigationLink { SiriSettingsView() } label: { Label("Siri & Shortcuts", systemImage: "mic") }
-                    NavigationLink { WidgetHelpView() } label: { Label("Widgets & Control Center", systemImage: "rectangle.grid.2x2") }
-                    NavigationLink { SleepTimerView(model: model) } label: { Label("Sleep timer", systemImage: "moon") }
+                if settings.value.actions.isEmpty { QuietCaption(text: "Create a quick action to run a short sequence.") }
+                if !actions.message.isEmpty { QuietCaption(text: actions.message) }
+                QuietSectionTitle(title: "Hands-free & quick access")
+                QuietCard {
+                    NavigationLink { SiriSettingsView() } label: { QuietRow(title: "Siri & Shortcuts", detail: "Control the TV without opening the app", symbol: "mic") }
+                    Divider().overlay(QuietTheme.edge)
+                    NavigationLink { WidgetHelpView() } label: { QuietRow(title: "Widgets & Control Center", detail: "Your favorite actions, one tap away", symbol: "rectangle.grid.2x2") }
+                    Divider().overlay(QuietTheme.edge)
+                    NavigationLink { SleepTimerView(model: model) } label: { QuietRow(title: "Sleep timer", detail: "Switch off after a delay", symbol: "moon", value: "") }
                 }
-                Section {
-                    Label("Photos & videos", systemImage: "photo.on.rectangle")
-                    Text("Photo and video casting is a separate exploratory feature. It is not enabled in this build; native AirPlay support is not assumed.").font(.footnote).foregroundStyle(.secondary)
-                }
-            }.buttonStyle(.borderless).remoteForm().navigationTitle("Actions").toolbar {
-                Button { editing = QuickAction(name: "New action", steps: [.init(.wake)]) } label: { Image(systemName: "plus") }.accessibilityLabel("Create quick action").disabled(settings.value.actions.count >= 30)
-            }.sheet(item: $editing) { QuickActionForm(action: $0).environmentObject(settings) }
+            }.buttonStyle(.plain).toolbar(.hidden, for: .navigationBar)
+                .sheet(item: $editing) { QuickActionForm(action: $0).environmentObject(settings) }
         }
     }
 }
@@ -89,6 +98,7 @@ private struct QuickActionForm: View {
     var body: some View {
         NavigationStack {
             Form {
+                Group {
                 TextField("Action name", text: $action.name)
                 Section("Steps") {
                     ForEach(action.steps) { step in Text(stepName(step, settings: settings)) }
@@ -105,8 +115,13 @@ private struct QuickActionForm: View {
                         Button("Play / Pause") { action.steps.append(.init(.playPause)) }
                     }.disabled(action.steps.count >= 12)
                 }
+                if settings.value.actions.contains(where: { $0.id == action.id }) {
+                    Button("Delete action", role: .destructive) { settings.update { $0.actions.removeAll { $0.id == action.id } }; dismiss() }
+                }
                 Text("Steps run once in order. A failed step stops the sequence. Actions are cancelled when you leave the app.").font(.footnote).foregroundStyle(.secondary)
-            }.navigationTitle("Quick action").environment(\.editMode, .constant(.active)).toolbar {
+
+                }.listRowBackground(QuietTheme.panel)
+}.navigationTitle("Quick action").environment(\.editMode, .constant(.active)).toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) { Button("Save") {
                     do {
@@ -123,6 +138,7 @@ private struct QuickActionForm: View {
 struct SiriSettingsView: View {
     var body: some View {
         List {
+                Group {
             Section {
                 Text("“Hey Siri, open Netflix with TV Remote.”").font(.title2.weight(.semibold)).padding(.vertical, 10)
                 SiriTipView(intent: TVCommandIntent(command: .wake))
@@ -135,13 +151,16 @@ struct SiriSettingsView: View {
                 Label("Run a saved quick action", systemImage: "sparkles")
                 ShortcutsLink()
             } header: { Text("Available actions") } footer: { Text("In Shortcuts, add Control TV or Run TV Quick Action, choose its action, and give it the name you want to say to Siri. The phone must reach the paired TV on your local network. Unlock may be required.") }
-        }.remoteForm().navigationTitle("Siri & Shortcuts")
+
+                }.listRowBackground(QuietTheme.panel)
+}.remoteForm().navigationTitle("Siri & Shortcuts")
     }
 }
 
 struct WidgetHelpView: View {
     var body: some View {
         List {
+                Group {
             Section("Home Screen") {
                 Label("TV Remote controls", systemImage: "rectangle.grid.2x2")
                 Text("Add the TV Remote widget using your iPhone’s widget gallery. Edit the widget to choose its four actions.")
@@ -151,7 +170,9 @@ struct WidgetHelpView: View {
                 Text("In Control Center’s controls gallery, add TV Remote and choose the action it should run.")
             }
             Section { Text("Pair in TV Remote first. Controls use the existing pairing in the app’s background process; they do not install another TV service. Unlock may be required.").font(.footnote).foregroundStyle(.secondary) }
-        }.remoteForm().navigationTitle("Quick access")
+
+                }.listRowBackground(QuietTheme.panel)
+}.remoteForm().navigationTitle("Quick access")
     }
 }
 
@@ -161,24 +182,51 @@ struct SleepTimerView: View {
     @EnvironmentObject private var settings: AppSettings
     @State private var minutes = 30
     @State private var working = false
-    var body: some View {
-        Form {
-            Section {
-                if let deadline = editor.snapshot?.sleepDeadline, deadline > Date().timeIntervalSince1970 {
-                    Label { Text("Scheduled for \(Date(timeIntervalSince1970: deadline).formatted(date: .omitted, time: .shortened))") } icon: { Image(systemName: "moon") }
-                } else { Label("No confirmed timer", systemImage: "moon") }
-                Stepper("Turn off in \(minutes) minutes", value: $minutes, in: 1...240, step: 5)
-            } footer: { Text("The timer must be confirmed by the TV so it can finish after your phone disconnects. No phone-only timer is used.") }
-            Section { EditorConnectionView(model: model) }
-            Button("Set sleep timer") { schedule(minutes) }.disabled(!editor.ready || working)
-            Button("Cancel TV timer", role: .destructive) { schedule(0) }.disabled(!editor.ready || working)
-        }.remoteForm().navigationTitle("Sleep timer").onDisappear { editor.close() }
+    @State private var custom = false
+    @State private var selected: Int?
+    private var deadline: Date? {
+        guard let value = editor.snapshot?.sleepDeadline, value > Date().timeIntervalSince1970 else { return nil }
+        return Date(timeIntervalSince1970: value)
     }
-    private func schedule(_ minutes: Int) {
+    var body: some View {
+        QuietPage {
+            QuietCard {
+                VStack(alignment: .leading, spacing: 12) {
+                    Label(deadline.map { "Turn off at " + $0.formatted(date: .omitted, time: .shortened) } ?? "No confirmed timer", systemImage: "moon")
+                        .font(.system(size: 17, weight: .medium))
+                    QuietCaption(text: "The timer runs on the TV so it can finish after your phone disconnects.")
+                }.padding(18)
+            }
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 9), count: 3), spacing: 9) {
+                ForEach([15, 30, 45, 60, 90, 120], id: \.self) { value in
+                    Button { schedule(value) } label: {
+                        Text("\(value) min").font(.system(size: 14)).frame(maxWidth: .infinity, minHeight: 52)
+                            .background(selected == value && deadline != nil ? Color(red: 50/255, green: 67/255, blue: 94/255) : QuietTheme.panel, in: RoundedRectangle(cornerRadius: 13))
+                            .overlay(RoundedRectangle(cornerRadius: 13).stroke(selected == value && deadline != nil ? QuietTheme.cyan : QuietTheme.edge, lineWidth: 1))
+                    }.buttonStyle(.plain).disabled(!editor.ready || working)
+                }
+            }
+            Button("Custom duration") { custom = true }.buttonStyle(QuietSecondaryStyle())
+            if deadline != nil { Button("Cancel timer") { schedule(0) }.buttonStyle(QuietSecondaryStyle()).disabled(!editor.ready || working) }
+            if working { ProgressView("Confirming on TV…").font(.footnote) }
+            QuietCard { EditorConnectionView(model: model).padding(14) }
+            QuietCaption(text: "A timer is shown as active only after the TV confirms it. Connect the TV editor to schedule one.")
+        }.quietNavigation("Sleep timer").onDisappear { editor.close() }
+            .sheet(isPresented: $custom) {
+                NavigationStack {
+                    QuietPage {
+                        TextField("Minutes", value: $minutes, format: .number).keyboardType(.numberPad).padding(14).background(QuietTheme.panel, in: RoundedRectangle(cornerRadius: 12))
+                        QuietCaption(text: "Choose between 1 and 240 minutes.")
+                        Button("Set timer", systemImage: "moon") { custom = false; schedule(minutes) }.buttonStyle(QuietPrimaryStyle()).disabled(!editor.ready || working || !(1...240).contains(minutes))
+                    }.quietNavigation("Custom timer").toolbar { Button("Cancel") { custom = false } }
+                }.presentationDetents([.medium])
+            }
+    }
+    private func schedule(_ value: Int) {
         working = true
         Task {
             defer { working = false }
-            do { try await editor.sleepTimer(minutes: minutes) } catch { settings.notice = error.localizedDescription }
+            do { try await editor.sleepTimer(minutes: value); selected = value == 0 ? nil : value } catch { settings.notice = error.localizedDescription }
         }
     }
 }
@@ -188,22 +236,36 @@ struct SettingsView: View {
     @EnvironmentObject private var settings: AppSettings
     var body: some View {
         NavigationStack {
-            Form {
-                Section {
-                    NavigationLink { ConnectionView(model: model) } label: { Label("Connection", systemImage: "wifi") }
-                    NavigationLink { ShortcutSettingsView() } label: { Label("Remote shortcuts", systemImage: "square.grid.2x2") }
-                    NavigationLink { InputSettingsView(model: model) } label: { Label("Favorite inputs", systemImage: "gamecontroller") }
-                    NavigationLink { BackupsView() } label: { Label("Backup & restore", systemImage: "archivebox") }
+            QuietPage {
+                QuietHeading(title: "Settings") { EmptyView() }
+                QuietCard {
+                    NavigationLink { ConnectionView(model: model) } label: { QuietRow(title: "Connection", detail: "Paired TV · local network", symbol: "wifi", value: model.status) }
+                    Divider().overlay(QuietTheme.edge)
+                    NavigationLink { ShortcutSettingsView() } label: { QuietRow(title: "Remote shortcuts", detail: "Visibility and order", symbol: "square.grid.2x2") }
+                    Divider().overlay(QuietTheme.edge)
+                    NavigationLink { InputSettingsView(model: model) } label: { QuietRow(title: "Favorite inputs", detail: "Names and HDMI assignments", symbol: "gamecontroller") }
+                    Divider().overlay(QuietTheme.edge)
+                    NavigationLink { BackupsView() } label: { QuietRow(title: "Backup & restore", detail: "Launcher layouts and wallpaper", symbol: "archivebox") }
+                }.buttonStyle(.plain)
+                QuietSectionTitle(title: "Remote preferences")
+                QuietCard {
+                    Toggle(isOn: settings.binding(\.haptics)) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Touch feedback").font(.system(size: 14, weight: .medium))
+                            Text("Light haptics on button presses").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+                        }
+                    }.toggleStyle(QuietToggleStyle()).padding(.horizontal, 13).padding(.vertical, 10)
+                    Divider().overlay(QuietTheme.edge)
+                    Toggle(isOn: settings.binding(\.autoReconnect)) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Reconnect automatically").font(.system(size: 14, weight: .medium))
+                            Text("When returning to TV Remote").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+                        }
+                    }.toggleStyle(QuietToggleStyle()).padding(.horizontal, 13).padding(.vertical, 10)
                 }
-                Section("Remote preferences") {
-                    Toggle("Touch feedback", isOn: settings.binding(\.haptics))
-                    Toggle("Reconnect automatically", isOn: settings.binding(\.autoReconnect))
-                }
-                Section("Performance") {
-                    Label("No background TV companion", systemImage: "leaf")
-                    Text("TV Home editing connects only while you use its editing session. Ordinary remote controls and the current app name use the built-in TV service.").font(.footnote).foregroundStyle(.secondary)
-                }
-            }.remoteForm().navigationTitle("Settings")
+                QuietSectionTitle(title: "Performance")
+                QuietCard { QuietRow(title: "No background TV companion", detail: "Home customization connects only while you edit.", symbol: "leaf", chevron: false) }
+            }.toolbar(.hidden, for: .navigationBar)
         }
     }
 }
@@ -216,6 +278,7 @@ struct ConnectionView: View {
     @State private var check: Task<Void, Never>?
     var body: some View {
         Form {
+                Group {
             Section("TV address") {
                 TextField("192.168.1.100", text: $address).keyboardType(.decimalPad).textInputAutocapitalization(.never)
                 Button("Save and connect") { _ = model.saveHost(address) }
@@ -236,6 +299,8 @@ struct ConnectionView: View {
                 if !result.isEmpty { Text(result).font(.footnote).textSelection(.enabled) }
             } header: { Text("Diagnostics") } footer: { Text("Use the same local network as the TV. A connection test cannot distinguish every router, Local Network permission, or TV standby problem.") }
             if !model.error.isEmpty { Text(model.error).font(.footnote).foregroundStyle(.secondary) }
-        }.remoteForm().navigationTitle("Connection").onAppear { address = model.host }.onDisappear { check?.cancel() }
+
+                }.listRowBackground(QuietTheme.panel)
+}.remoteForm().navigationTitle("Connection").onAppear { address = model.host }.onDisappear { check?.cancel() }
     }
 }

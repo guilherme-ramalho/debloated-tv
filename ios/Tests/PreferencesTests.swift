@@ -2,6 +2,17 @@ import XCTest
 @testable import TVRemoteCore
 
 final class PreferencesTests: XCTestCase {
+    func testPadSwipesUseScreenDirectionsAndIgnoreJitter() {
+        XCTAssertEqual(TVKey.swipeDirection(dx: 100, dy: 8), .right)
+        XCTAssertEqual(TVKey.swipeDirection(dx: -100, dy: 8), .left)
+        XCTAssertEqual(TVKey.swipeDirection(dx: 5, dy: -70), .up)
+        XCTAssertEqual(TVKey.swipeDirection(dx: 5, dy: 70), .down)
+        XCTAssertEqual(TVKey.swipeDirection(dx: 28, dy: 0), .right)
+        XCTAssertNil(TVKey.swipeDirection(dx: 27, dy: 20))
+        XCTAssertNil(TVKey.swipeDirection(dx: 0, dy: 0))
+        XCTAssertNil(TVKey.swipeDirection(dx: .nan, dy: 20))
+        XCTAssertNil(TVKey.swipeDirection(dx: .infinity, dy: 20))
+    }
     func testDefaultPreferencesRoundTripAndIndependentProfiles() throws {
         let initial = RemotePreferences()
         try initial.validate()

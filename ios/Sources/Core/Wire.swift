@@ -111,3 +111,12 @@ public struct WakeRequest {
         return .power
     }
 }
+
+extension TVKey {
+    /// Screen coordinates: right/down are positive. A short drag is not a swipe.
+    public static func swipeDirection(dx: Double, dy: Double) -> TVKey? {
+        guard dx.isFinite, dy.isFinite, max(abs(dx), abs(dy)) >= 28 else { return nil }
+        if abs(dx) > abs(dy) { return dx > 0 ? .right : .left }
+        return dy > 0 ? .down : .up
+    }
+}

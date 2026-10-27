@@ -8,42 +8,67 @@ struct TVHomeView: View {
     @EnvironmentObject private var editor: HomeEditor
     @State private var applying = false
     @State private var importLayout = false
+    @State private var addingProfile = false
+    @State private var profileName = ""
+    private var wallpaperName: String { switch settings.layout.wallpaper { case "quiet-night": return "Quiet night"; case "aurora": return "Aurora"; case "dusk": return "Dusk"; default: return "Photo" } }
     var body: some View {
         NavigationStack {
-            Form {
-                Section {
-                    Picker("Profile", selection: settings.binding(\.profileID)) {
-                        ForEach(settings.value.profiles) { Text($0.name).tag(Optional($0.id)) }
-                    }
-                    HomePreview(layout: settings.layout)
-                        .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 10, trailing: 0)).listRowBackground(Color.clear)
-                }
-                Section {
-                    Stepper("Dock icons: \(settings.layout.dockCount)", value: settings.layoutBinding(\.dockCount), in: 1...7)
-                    NavigationLink { WallpaperView() } label: { Label("Wallpaper", systemImage: "photo") }
-                    NavigationLink { HomeAppsView() } label: { Label("Apps & order", systemImage: "square.grid.2x2") }
-                    NavigationLink { ProfilesView() } label: { Label("Profiles", systemImage: "person.2") }
-                }
-                Section {
-                    EditorConnectionView(model: model)
-                    if editor.ready {
-                        Button("Refresh installed apps", systemImage: "arrow.clockwise") { Task {
-                            do { try await editor.refresh() } catch { settings.notice = error.localizedDescription }
-                        } }
-                        Button("Load current TV layout", systemImage: "arrow.down.doc") { importLayout = true }
-                    }
-                    Button(applying ? "Applying…" : "Apply to TV", systemImage: "checkmark") {
-                        applying = true
-                        Task {
-                            defer { applying = false }
-                            do {
-                                _ = try settings.backup(name: "Before applying · " + settings.profile.name)
-                                try await editor.apply(settings.layout, wallpaper: settings.wallpaperData(settings.layout))
-                            } catch { settings.notice = error.localizedDescription }
+            QuietPage {
+                QuietHeading(title: "TV Home") { EmptyView() }
+                HStack {
+                    Menu {
+                        ForEach(settings.value.profiles) { profile in
+                            Button { settings.update { $0.profileID = profile.id } } label: {
+                                if settings.profile.id == profile.id { Label(profile.name, systemImage: "checkmark") } else { Text(profile.name) }
+                            }
                         }
-                    }.disabled(!editor.ready || applying || !model.ready)
-                } footer: { Text("Edits are drafts on this phone until you apply them. The TV editor closes when you leave this section or background the app.") }
-            }.remoteForm().navigationTitle("TV Home")
+                    } label: {
+                        HStack(spacing: 12) { Text(settings.profile.name); Image(systemName: "chevron.down").font(.caption) }
+                            .font(.system(size: 14, weight: .medium)).foregroundStyle(.white).padding(.horizontal, 12).frame(minHeight: 44)
+                            .background(Color(red: 29/255, green: 45/255, blue: 70/255), in: RoundedRectangle(cornerRadius: 12))
+                            .overlay(RoundedRectangle(cornerRadius: 12).stroke(QuietTheme.edge, lineWidth: 1))
+                    }.accessibilityLabel("Launcher profile").accessibilityValue(settings.profile.name)
+                    Spacer()
+                    Button("New profile", systemImage: "plus") { addingProfile = true }.font(.system(size: 13)).foregroundStyle(QuietTheme.cyan).frame(minHeight: 44)
+                }
+                HomePreview(layout: settings.layout)
+                QuietCard {
+                    HStack {
+                        Text("Dock icons").font(.system(size: 14, weight: .medium)); Spacer()
+                        QuietCounter(label: "dock icons", value: settings.layoutBinding(\.dockCount), range: 1...7)
+                    }.padding(13).frame(minHeight: 61)
+                }
+                QuietCard {
+                    NavigationLink { WallpaperView() } label: { QuietRow(title: "Wallpaper", symbol: "photo", value: wallpaperName) }
+                    Divider().overlay(QuietTheme.edge)
+                    NavigationLink { HomeAppsView() } label: { QuietRow(title: "Apps & order", detail: "Reorder, hide or uninstall", symbol: "square.grid.2x2") }
+                    Divider().overlay(QuietTheme.edge)
+                    NavigationLink { ProfilesView() } label: { QuietRow(title: "Profiles", detail: "Save a layout for each person", symbol: "person.2") }
+                }.buttonStyle(.plain)
+                Button(applying ? "Applying…" : "Apply to TV", systemImage: "checkmark") {
+                    applying = true
+                    Task {
+                        defer { applying = false }
+                        do {
+                            _ = try settings.backup(name: "Before applying · " + settings.profile.name)
+                            try await editor.apply(settings.layout, wallpaper: settings.wallpaperData(settings.layout))
+                        } catch { settings.notice = error.localizedDescription }
+                    }
+                }.buttonStyle(QuietPrimaryStyle()).disabled(!editor.ready || applying || !model.ready)
+                QuietCaption(text: "Edits are saved on this phone until you apply them to the TV.")
+                QuietCard(spacing: 12) {
+                    EditorConnectionView(model: model).padding(14)
+                    if editor.ready {
+                        Button("Refresh installed apps", systemImage: "arrow.clockwise") { Task { do { try await editor.refresh() } catch { settings.notice = error.localizedDescription } } }.padding(.horizontal, 14)
+                        Button("Load current TV layout", systemImage: "arrow.down.doc") { importLayout = true }.padding([.horizontal, .bottom], 14)
+                    }
+                }
+            }.toolbar(.hidden, for: .navigationBar)
+                .alert("New profile", isPresented: $addingProfile) {
+                    TextField("Profile name", text: $profileName)
+                    Button("Cancel", role: .cancel) { profileName = "" }
+                    Button("Create") { settings.addProfile(profileName); profileName = "" }
+                }
                 .confirmationDialog("Replace this profile’s draft with the TV layout?", isPresented: $importLayout) {
                     Button("Load TV layout") {
                         guard let snapshot = editor.snapshot else { return }
@@ -71,8 +96,8 @@ struct EditorConnectionView: View {
             Label(editor.ready ? "TV editor connected" : "TV editor", systemImage: editor.ready ? "checkmark.shield" : "tv")
             Text(editor.message).font(.footnote).foregroundStyle(.secondary)
             HStack {
-                Button(editor.busy ? "Connecting…" : "Connect editor") { editor.connect(model: model) }
-                Button("Pair TV Home") { code = ""; editor.connect(model: model, pair: true) }
+                Button(editor.busy ? "Connecting…" : "Connect editor") { editor.connect(model: model) }.buttonStyle(QuietSecondaryStyle())
+                Button("Pair TV Home") { code = ""; editor.connect(model: model, pair: true) }.buttonStyle(QuietPrimaryStyle())
             }.disabled(editor.busy || !model.ready)
             if !model.ready { Text("TV unavailable. Local drafts remain editable.").font(.caption).foregroundStyle(.secondary) }
         }
@@ -87,20 +112,22 @@ struct HomePreview: View {
         ZStack {
             WallpaperSurface(id: layout.wallpaper)
             VStack(alignment: .leading) {
-                Text(Date(), style: .time).font(.headline)
+                HStack {
+                    Text(Date(), style: .time).font(.system(size: 13, weight: .medium))
+                    Spacer()
+                    Text(settings.profile.name).font(.system(size: 12))
+                }.foregroundStyle(.white).shadow(radius: 3)
                 Spacer()
-                HStack(spacing: 5) {
+                HStack(spacing: 6) {
                     ForEach(layout.dock, id: \.self) { id in
-                        Group {
-                            if let logo = settings.app(id)?.logo { Image(logo).resizable().renderingMode(.template).scaledToFit().padding(5) }
-                            else { Image(systemName: "app").resizable().scaledToFit().padding(7) }
-                        }.foregroundStyle(.white).frame(maxWidth: .infinity).frame(height: 30)
-                            .background(.black.opacity(0.25), in: RoundedRectangle(cornerRadius: 7))
+                        StreamingLogo(app: settings.app(id))
+                            .frame(maxWidth: .infinity).frame(height: 18).padding(.vertical, 5).padding(.horizontal, 5)
+                            .background(StreamingBrand.color(id), in: RoundedRectangle(cornerRadius: 7))
                     }
                 }
-            }.padding(17)
-        }.aspectRatio(16 / 9, contentMode: .fit).clipShape(RoundedRectangle(cornerRadius: 17))
-            .overlay(RoundedRectangle(cornerRadius: 17).stroke(.black.opacity(0.75), lineWidth: 5))
+            }.padding(.horizontal, 15).padding(.vertical, 15)
+        }.aspectRatio(16 / 9, contentMode: .fit).clipShape(RoundedRectangle(cornerRadius: 14))
+            .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color(red: 5/255, green: 11/255, blue: 20/255), lineWidth: 5))
             .accessibilityElement(children: .ignore).accessibilityLabel("TV Home preview with \(layout.dock.count) dock apps")
     }
 }
@@ -166,6 +193,7 @@ struct HomeAppsView: View {
     @State private var selected: RemoteApp?
     var body: some View {
         List {
+                Group {
             Section("Order") {
                 ForEach(settings.layout.order, id: \.self) { id in
                     if let app = settings.app(id) {
@@ -184,7 +212,9 @@ struct HomeAppsView: View {
                 Section("More apps") { ForEach(extra) { app in Button("Add " + app.name, systemImage: "plus") { settings.editLayout { $0.order.append(app.id) } } } }
             }
             Section { Text("Use Edit to reorder. Hiding changes the Home layout only; uninstalling requires a connected TV and confirmation on its screen.").font(.footnote).foregroundStyle(.secondary) }
-        }.remoteForm().navigationTitle("Apps & order").toolbar { EditButton() }
+
+                }.listRowBackground(QuietTheme.panel)
+}.remoteForm().navigationTitle("Apps & order").toolbar { EditButton() }
             .sheet(item: $selected) { app in HomeAppForm(app: app).environmentObject(settings).environmentObject(editor) }
     }
 }
@@ -199,6 +229,7 @@ private struct HomeAppForm: View {
     var body: some View {
         NavigationStack {
             Form {
+                Group {
                 Toggle("Show on TV Home", isOn: Binding(get: { !settings.layout.hidden.contains(app.id) }, set: { visible in
                     settings.editLayout { $0.hidden.removeAll { $0 == app.id }; if !visible { $0.hidden.append(app.id) } }
                 }))
@@ -208,7 +239,9 @@ private struct HomeAppForm: View {
                     if app.system { Text("System app · cannot uninstall") }
                     else { Button("Uninstall from TV", systemImage: "trash", role: .destructive) { uninstall = true }.disabled(!editor.ready || app.installed != true || busy) }
                 } footer: { Text(editor.ready ? "The TV will ask for confirmation. Nothing is removed until you approve there." : "Connect the TV editor and sync installed apps to uninstall.") }
-            }.navigationTitle(app.name).toolbar { Button("Done") { dismiss() } }
+
+                }.listRowBackground(QuietTheme.panel)
+}.navigationTitle(app.name).toolbar { Button("Done") { dismiss() } }
                 .confirmationDialog("Uninstall \(app.name) and its local data?", isPresented: $uninstall, titleVisibility: .visible) {
                     Button("Continue on TV", role: .destructive) { busy = true; Task {
                         defer { busy = false }
@@ -231,6 +264,7 @@ struct ProfilesView: View {
     @State private var name = ""
     var body: some View {
         List {
+                Group {
             ForEach(settings.value.profiles) { profile in
                 Button { settings.update { $0.profileID = profile.id } } label: { HStack { Label(profile.name, systemImage: "person"); Spacer(); if settings.profile.id == profile.id { Image(systemName: "checkmark") } } }
             }.onDelete { offsets in
@@ -239,7 +273,9 @@ struct ProfilesView: View {
             }
             Button("New profile", systemImage: "plus") { name = ""; adding = true }.disabled(settings.value.profiles.count >= 20)
             Text("Each profile’s draft is saved automatically on this phone. Switching profiles does not apply anything to the TV.").font(.footnote).foregroundStyle(.secondary)
-        }.remoteForm().navigationTitle("Profiles").toolbar { EditButton() }
+
+                }.listRowBackground(QuietTheme.panel)
+}.remoteForm().navigationTitle("Profiles").toolbar { EditButton() }
             .alert("New profile", isPresented: $adding) { TextField("Profile name", text: $name); Button("Create") { settings.addProfile(name) }; Button("Cancel", role: .cancel) {} }
     }
 }
@@ -252,6 +288,7 @@ struct BackupsView: View {
     @State private var restoring: HomeBackup?
     var body: some View {
         List {
+                Group {
             Section {
                 Button("Create backup", systemImage: "plus") { do { _ = try settings.backup() } catch { settings.notice = error.localizedDescription } }
                 Button("Import backup", systemImage: "square.and.arrow.down") { importing = true }
@@ -266,7 +303,9 @@ struct BackupsView: View {
                 }
                 if settings.backups.isEmpty { Text("No backups yet").foregroundStyle(.secondary) }
             }
-        }.remoteForm().navigationTitle("Backup & restore")
+
+                }.listRowBackground(QuietTheme.panel)
+}.remoteForm().navigationTitle("Backup & restore")
             .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
                 do {
                     let url = try result.get(); let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() } }
@@ -287,5 +326,5 @@ struct BackupsView: View {
 }
 
 extension View {
-    func remoteForm() -> some View { scrollContentBackground(.hidden).background(Color("LaunchBackground")) }
+    func remoteForm() -> some View { scrollContentBackground(.hidden).background(QuietTheme.background).tint(QuietTheme.cyan).toolbar(.visible, for: .navigationBar).toolbarBackground(QuietTheme.background, for: .navigationBar).toolbarBackground(.visible, for: .navigationBar) }
 }

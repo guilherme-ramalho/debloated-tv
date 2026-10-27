@@ -6,11 +6,11 @@ The iPhone connects directly to Android TV Remote Service v2 on the local networ
 
 ## Development branch: mobile expansion
 
-`feature/personalization-and-actions` contains the next mobile version (build 12). TV installation and live testing are deliberately deferred until the TV is available. The accepted baseline is build 11 on `main`.
+`feature/personalization-and-actions` contains the next mobile version (build 13). TV installation and live testing are deliberately deferred until the TV is available. The accepted baseline is build 11 on `main`.
 
 | Area | Implemented on iPhone | TV requirements / remaining validation |
 | --- | --- | --- |
-| Remote | D-pad or swipe pad, keyboard, editable streaming count/order, press feedback | Live-test gestures and text fields; some TV apps reject remote text |
+| Remote | D-pad with integrated directional swipes, keyboard, editable streaming count/order, press feedback | Live-test gestures and text fields; some TV apps reject remote text |
 | TV Home | Offline drafts, 1–7 dock icons, reorder/hide, presets or photo wallpaper, profiles | Applying needs a future launcher editing adapter; it is not installed or included in this branch |
 | Backup | Export/import versioned JSON with wallpaper, restore into a draft | Restore does not change the TV until Apply succeeds |
 | Inputs | Named favorites and assignment UI; original TV input menu remains available | Sync real input IDs from the future adapter before assigning favorites |
@@ -21,7 +21,7 @@ The iPhone connects directly to Android TV Remote Service v2 on the local networ
 | Uninstall | Distinct destructive action with confirmation flow | Requires synced installed-app data and Android confirmation; system apps excluded |
 | Settings | Haptics, automatic reconnect, paired connection diagnostic | Diagnostic performs a handshake without sending a control command |
 
-Photo/video casting and an AirPlay receiver remain exploratory; the app does not advertise a working receiver. Automatic ad skipping is excluded. Title collection and its TV companion remain removed. The app indicator identifies the open streaming app, so the playback icon remains a neutral toggle rather than guessing playback state.
+Photo/video casting and an AirPlay receiver remain exploratory; their menu is hidden until ready. Common streaming logos are bundled locally, with registry entries for additional installed apps; preparing a logo does not install an app or add an unverified shortcut. Automatic ad skipping is excluded. Title collection and its TV companion remain removed. The app indicator identifies the open streaming app, so the playback icon remains a neutral toggle rather than guessing playback state.
 
 Home editing saves drafts atomically on the phone. Selecting a profile or wallpaper does not silently alter the TV. Photos are downsampled to at most 1920 pixels and compressed to at most 1 MB; the photo picker grants access only to selected images. Up to 20 recent backups are loaded into memory. Exported backups can contain the selected wallpaper but never pairing keys or viewing history.
 
@@ -71,7 +71,7 @@ cd ios
 swift test
 ```
 
-Seventeen tests cover saved layouts, backup validation, command bounds, keyboard UTF-16 offsets, editor frame limits, fragmented/coalesced frames, malformed input, protobuf fields, certificate generation, pairing proofs, wake expiry/cancellation/single-use behavior, foreground app names, and explicit empty-app updates. The baseline controls and standby wake were tested on the physical TV and iPhone. New branch features still need device testing. The app and widget pass iOS SDK type checks. In the current restricted shell, the normal build reaches an actool/CoreSimulator runtime error; a separate local link verification reuses the unchanged baseline asset compilation. This is not a substitute for a normal signed device build.
+Eighteen tests cover swipe directions and jitter rejection, saved layouts, backup validation, command bounds, keyboard UTF-16 offsets, editor frame limits, fragmented/coalesced frames, malformed input, protobuf fields, certificate generation, pairing proofs, wake expiry/cancellation/single-use behavior, foreground app names, and explicit empty-app updates. The baseline controls and standby wake were tested on the physical TV and iPhone. New branch features still need device testing. The app and widget pass iOS SDK type checks. Build 13 aligns the native cards, profile menu, dock tiles, action cards, timer choices and switches with the approved navy preview. Photos & Video is hidden while receiver support is unfinished. The restricted command-line build cannot access CoreSimulator/actool, but the normal signed build succeeds in the Xcode app, including asset compilation and the widget extension. Native appearance and gestures still require the iPhone check; TV command behavior is deferred until the television is available.
 
 ## Privacy and security
 
@@ -85,7 +85,7 @@ Do not commit private keys, pairing state, device logs, build products, or provi
 
 - [Android TV Remote v2 protocol reference](https://github.com/tronikos/androidtvremote2)
 - [Google pairing schema](https://android.googlesource.com/platform/external/google-tv-pairing-protocol/+/refs/heads/master/proto/polo.proto)
-- Netflix, YouTube, Prime Video, and Crunchyroll logos: [Simple Icons v11.15.0](https://github.com/simple-icons/simple-icons/tree/11.15.0/icons).
+- Netflix, YouTube, Prime Video, Crunchyroll, Spotify, Apple TV, Paramount+, Plex, Twitch, DAZN, and Tubi logos: [Simple Icons v11.15.0](https://github.com/simple-icons/simple-icons/tree/11.15.0/icons).
 - Disney+ logo: [Disney-authored artwork on Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Disney_Plus_logo.svg).
 - HBO Max logo: [official brand portal](https://brand.hbomax.com/logos).
 
