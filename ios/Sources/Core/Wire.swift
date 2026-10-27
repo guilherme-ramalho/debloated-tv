@@ -70,9 +70,10 @@ public enum Wire {
 /// Handles split length prefixes, fragmented messages, and several messages in one TCP read.
 public struct FrameDecoder {
     private var buffer = Data()
-    public init() {}
+    private let maximum: Int
+    public init(maxFrameSize: Int = 65536) { maximum = min(4_194_304, max(1, maxFrameSize)) }
     public mutating func append(_ incoming: Data) throws -> [Data] {
-        guard buffer.count + incoming.count <= 131072 else { throw RemoteFailure.message("Protocol buffer limit exceeded") }
+        guard buffer.count + incoming.count <= maximum * 2 + 10 else { throw RemoteFailure.message("Protocol buffer limit exceeded") }
         buffer.append(incoming)
         var result = [Data]()
         while !buffer.isEmpty {
@@ -83,7 +84,7 @@ public struct FrameDecoder {
             }
             var offset = 0
             let size = try Wire.readVarint(bytes, &offset)
-            guard size > 0 && size <= 65536 else { throw RemoteFailure.message("Invalid frame size") }
+            guard size > 0 && size <= maximum else { throw RemoteFailure.message("Invalid frame size") }
             let prefix = last + 1
             guard buffer.count >= prefix + Int(size) else { break }
             result.append(Data(buffer.dropFirst(prefix).prefix(Int(size))))
@@ -95,7 +96,7 @@ public struct FrameDecoder {
 
 public enum TVKey: UInt64 {
     case home = 3, back = 4, up = 19, down = 20, left = 21, right = 22, select = 23
-    case volumeUp = 24, volumeDown = 25, power = 26, playPause = 85, mute = 164, settings = 176, inputs = 178
+    case volumeUp = 24, volumeDown = 25, power = 26, playPause = 85, play = 126, pause = 127, mute = 164, settings = 176, inputs = 178
 }
 
 /// Only an explicit wake action may survive reconnection, once and for at most 30 seconds.

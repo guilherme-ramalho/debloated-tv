@@ -2,21 +2,44 @@ import SwiftUI
 
 @main struct TVRemoteApp: App {
     @StateObject private var model = RemoteModel()
+    @StateObject private var settings = AppSettings()
+    @StateObject private var editor = HomeEditor()
+    @StateObject private var actions = ActionController()
     @Environment(\.scenePhase) private var phase
+    @State private var selection = 0
     var body: some Scene {
         WindowGroup {
-            RemoteView(model: model)
-                .preferredColorScheme(.dark)
-                .task { model.activate() }
-                .onChange(of: phase) { _, value in
-                    if value == .active { model.activate() }
-                    else if value == .background { model.deactivate() }
-                }
+            TabView(selection: $selection) {
+                RemoteView(model: model).tabItem { Label("Remote", systemImage: "appletvremote.gen4") }.tag(0)
+                TVHomeView(model: model).tabItem { Label("TV Home", systemImage: "square.grid.2x2") }.tag(1)
+                ActionsView(model: model).tabItem { Label("Actions", systemImage: "bolt") }.tag(2)
+                SettingsView(model: model).tabItem { Label("Settings", systemImage: "slider.horizontal.3") }.tag(3)
+            }
+            .environmentObject(settings).environmentObject(editor).environmentObject(actions)
+            .preferredColorScheme(.dark).tint(.white)
+            .task { model.setAutoReconnect(settings.value.autoReconnect); if phase == .active { model.activate() } }
+            .onChange(of: settings.value.autoReconnect) { _, value in model.setAutoReconnect(value) }
+            .onChange(of: selection) { _, _ in editor.close() }
+            .onChange(of: model.host) { _, _ in editor.close() }
+            .onChange(of: editor.snapshot?.revision) { _, _ in if let snapshot = editor.snapshot { settings.merge(snapshot, host: model.host) } }
+            .onChange(of: phase) { _, value in
+                if value == .active { model.activate() }
+                else if value == .background { model.deactivate(); editor.close(); actions.cancel() }
+            }
+            .sheet(isPresented: $model.showingPIN) { TVPairingView(model: model) }
+            .sheet(isPresented: $editor.showingPIN) { EditorPairingView().environmentObject(editor) }
+            .alert("TV Remote", isPresented: Binding(get: { !settings.notice.isEmpty }, set: { if !$0 { settings.notice = "" } })) {
+                Button("OK") { settings.notice = "" }
+            } message: { Text(settings.notice) }
         }
     }
 }
 
 struct RemoteView: View {
+    @EnvironmentObject private var preferences: AppSettings
+    @State private var touchpad = false
+    @State private var keyboard = false
+    @State private var inputs = false
     @ObservedObject var model: RemoteModel
     @State private var settings = false
     @State private var address = ""
@@ -37,13 +60,14 @@ struct RemoteView: View {
                         }.disabled(model.preparing)
                     }
 
-                    HStack(spacing: 14) {
+                    HStack(spacing: 8) {
                         topCommand("power", "Power", .power, Color(red: 1, green: 0.34, blue: 0.36))
-                        Spacer()
-                        topCommand("rectangle.on.rectangle", "Input", .inputs, Color(red: 0.36, green: 0.72, blue: 1))
+                        Picker("Navigation mode", selection: $touchpad) { Text("Pad").tag(false); Text("Swipe").tag(true) }.pickerStyle(.segmented).labelsHidden()
+                        Button { keyboard = true } label: { Image(systemName: "keyboard").frame(width: 36, height: 44) }.accessibilityLabel("Type on TV").buttonStyle(RemotePressStyle(radius: 12))
+                        Button { inputs = true } label: { Image(systemName: "rectangle.on.rectangle").font(.system(size: 24, weight: .medium)).frame(width: 52, height: 52).background(Color.blue.opacity(0.11), in: Circle()) }.accessibilityLabel("Favorite inputs").buttonStyle(RemotePressStyle(radius: 26))
                     }
 
-                    ZStack {
+                    if touchpad { TouchpadView(model: model) } else { ZStack {
                         Circle().fill(ink).overlay(Circle().stroke(.white.opacity(0.08), lineWidth: 1))
                         HoldKey(symbol: "chevron.up", key: .up, model: model)
                             .frame(width: 100, height: 66).offset(y: -103)
@@ -57,7 +81,7 @@ struct RemoteView: View {
                             .frame(width: 116, height: 116)
                             .background(.white.opacity(0.09), in: Circle())
                             .overlay(Circle().stroke(.white.opacity(0.12), lineWidth: 1))
-                    }.frame(width: 284, height: 284).opacity(model.ready ? 1 : 0.45)
+                    }.frame(width: 284, height: 284).opacity(model.ready ? 1 : 0.45) }
 
                     HStack(spacing: 25) {
                         command("arrow.uturn.backward", "Back", .back)
@@ -74,12 +98,9 @@ struct RemoteView: View {
                     }.background(ink, in: Capsule())
                     VStack(alignment: .leading, spacing: 12) {
                         LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 8) {
-                            app("Netflix", "https://www.netflix.com/title", "NetflixLogo", Color(red: 0.898, green: 0.035, blue: 0.078))
-                            app("YouTube", "https://www.youtube.com", "YouTubeLogo", Color(red: 1, green: 0, blue: 0))
-                            app("Prime Video", "https://app.primevideo.com", "PrimeVideoLogo", Color(red: 0, green: 0.51, blue: 0.73))
-                            app("Disney+", "https://www.disneyplus.com", "DisneyPlusLogo", Color(red: 0, green: 0.36, blue: 0.39))
-                            app("HBO Max", "https://play.max.com", "HBOMaxLogo", Color(red: 0.075, green: 0.075, blue: 0.09))
-                            app("Crunchyroll", "crunchyroll://", "CrunchyrollLogo", Color(red: 1, green: 0.39, blue: 0.04))
+                            ForEach(preferences.remoteApps) { item in
+                                app(item.name, item.launchURL, item.logo ?? "", brandColor(item.id))
+                            }
                         }
                     }
                 }.padding(.horizontal, 30).padding(.top, 4).padding(.bottom, 12)
@@ -103,21 +124,9 @@ struct RemoteView: View {
                     }.navigationTitle("Connection").toolbar { Button("Done") { settings = false } }
                 }.presentationDetents([.medium, .large])
             }
-            .sheet(isPresented: $model.showingPIN) {
-                NavigationStack {
-                    VStack(spacing: 22) {
-                        Image(systemName: "tv").font(.system(size: 44)).foregroundStyle(.secondary)
-                        Text("Pair your TV").font(.title2.bold())
-                        Text("Enter the six-character code shown on the TV.").foregroundStyle(.secondary).multilineTextAlignment(.center)
-                        TextField("A1B2C3", text: $code).font(.system(size: 30, weight: .medium, design: .monospaced))
-                            .multilineTextAlignment(.center).textInputAutocapitalization(.characters).autocorrectionDisabled()
-                            .onChange(of: code) { _, value in code = String(value.uppercased().filter { "0123456789ABCDEF".contains($0) }.prefix(6)) }
-                        if !model.error.isEmpty { Text(model.error).font(.footnote).foregroundStyle(.orange) }
-                        Button("Pair") { model.submit(code) }.buttonStyle(.borderedProminent).disabled(code.count != 6)
-                        Button("Start pairing again") { code = ""; model.beginPairing() }.font(.footnote)
-                    }.padding(30).toolbar { Button("Cancel") { model.cancelPairing() } }
-                }.presentationDetents([.medium, .large]).interactiveDismissDisabled()
-            }
+            .sheet(isPresented: $keyboard) { KeyboardView(model: model) }
+            .sheet(isPresented: $inputs) { NavigationStack { InputSettingsView(model: model).toolbar { Button("Done") { inputs = false } } } }
+
         }
     }
     private var statusHeader: some View {
@@ -155,9 +164,19 @@ struct RemoteView: View {
             .opacity(available ? 1 : 0.45)
             .accessibilityLabel(key == .power && (!model.ready || model.powerOn == false) ? "Wake TV" : label)
     }
+    private func brandColor(_ id: String) -> Color {
+        switch id {
+        case "com.netflix.ninja": return Color(red: 0.898, green: 0.035, blue: 0.078)
+        case "com.google.android.youtube.tv": return .red
+        case "com.amazon.amazonvideo.livingroom": return Color(red: 0, green: 0.51, blue: 0.73)
+        case "com.disney.disneyplus": return Color(red: 0, green: 0.36, blue: 0.39)
+        case "com.crunchyroll.crunchyroid": return .orange
+        default: return Color(red: 0.075, green: 0.075, blue: 0.09)
+        }
+    }
     private func app(_ name: String, _ link: String, _ logo: String, _ color: Color) -> some View {
         Button { model.launch(link) } label: {
-            Image(logo).resizable().renderingMode(.template).scaledToFit()
+            Group { if !logo.isEmpty { Image(logo).resizable().renderingMode(.template).scaledToFit() } else { Text(name).font(.headline) } }
                 .frame(maxWidth: 108).frame(height: name == "Disney+" ? 42 : name == "HBO Max" ? 36 : 33).foregroundStyle(.white)
             .frame(maxWidth: .infinity).frame(height: 64)
             .background(color, in: RoundedRectangle(cornerRadius: 21))
@@ -170,6 +189,7 @@ struct RemoteView: View {
 }
 
 struct HoldKey: View {
+    @EnvironmentObject private var preferences: AppSettings
     let symbol: String
     let key: TVKey
     @ObservedObject var model: RemoteModel
@@ -183,7 +203,7 @@ struct HoldKey: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.white.opacity(pressed ? 0.18 : 0), in: RoundedRectangle(cornerRadius: 24))
         .overlay(RoundedRectangle(cornerRadius: 24).stroke(.white.opacity(pressed ? 0.55 : 0), lineWidth: 1))
-        .sensoryFeedback(.impact(weight: .light), trigger: pressed) { _, value in value }
+        .sensoryFeedback(.impact(weight: .light), trigger: pressed) { _, value in value && preferences.value.haptics }
         .contentShape(Rectangle())
         .gesture(DragGesture(minimumDistance: 0).onChanged { _ in
             if !pressed && model.ready { pressed = true; model.press(key) }
@@ -195,6 +215,7 @@ struct HoldKey: View {
 }
 
 struct RemotePressStyle: ButtonStyle {
+    @EnvironmentObject private var preferences: AppSettings
     var radius: CGFloat = 20
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -202,6 +223,6 @@ struct RemotePressStyle: ButtonStyle {
             .overlay(RoundedRectangle(cornerRadius: radius).stroke(.white.opacity(configuration.isPressed ? 0.55 : 0), lineWidth: 1).allowsHitTesting(false))
             .scaleEffect(configuration.isPressed ? 0.97 : 1)
             .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
-            .sensoryFeedback(.impact(weight: .light), trigger: configuration.isPressed) { _, value in value }
+            .sensoryFeedback(.impact(weight: .light), trigger: configuration.isPressed) { _, value in value && preferences.value.haptics }
     }
 }

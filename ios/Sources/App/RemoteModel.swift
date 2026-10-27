@@ -24,6 +24,12 @@ import Security
     private var wakeTimeout: DispatchWorkItem?
     private var wakeSend: DispatchWorkItem?
     private static let pinService = "PersonalTVRemote.TVPin.v1"
+    private var autoReconnect = true
+    func setAutoReconnect(_ value: Bool) { autoReconnect = value; if !value { retry?.cancel(); retry = nil } }
+    func sendText(_ text: String) async throws {
+        guard ready, let session else { throw RemoteFailure.message("Connect the TV before sending text") }
+        try await session.writeText(text)
+    }
 
     func activate() {
         guard !active else { return }
@@ -131,7 +137,7 @@ import Security
         newSession()?.connect(pin: pin)
     }
     private func scheduleReconnect() {
-        guard active && !pairing else { return }
+        guard active && !pairing && autoReconnect else { return }
         retry?.cancel()
         let delay = min(15.0, pow(2.0, Double(min(attempt, 4))))
         attempt += 1

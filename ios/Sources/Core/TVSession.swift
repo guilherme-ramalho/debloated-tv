@@ -29,6 +29,8 @@ public final class TVSession {
     private var waitingCode = false
     private var secretSent = false
     private var negotiated: UInt64 = 615 // ping, keys, IME app identity, power, volume, app links
+    private var imeCounter: UInt64 = 0
+    private var fieldCounter: UInt64 = 0
     private var currentGeneration = 0
 
     public init(host: String, identity: ClientIdentity) { self.host = host; self.identity = identity }
@@ -89,6 +91,25 @@ public final class TVSession {
         guard commandReady && !pairMode, !url.isEmpty else { return }
         channel?.send(Wire.bytes(90, Wire.string(1, url)))
     }
+    public func writeKey(_ key: TVKey) async throws {
+        guard commandReady, !pairMode, let channel else { throw RemoteFailure.message("TV is not ready") }
+        try await channel.write(Wire.bytes(10, Wire.int(1, key.rawValue) + Wire.int(2, 3)))
+    }
+    public func writeLaunch(_ url: String) async throws {
+        guard commandReady, !pairMode, let channel, !url.isEmpty, url.utf8.count <= 2048 else { throw RemoteFailure.message("Invalid app or input link") }
+        try await channel.write(Wire.bytes(90, Wire.string(1, url)))
+    }
+    static func textMessage(_ text: String, imeCounter: UInt64, fieldCounter: UInt64) throws -> Data {
+        guard !text.isEmpty, text.utf16.count <= 4096 else { throw RemoteFailure.message("Enter between 1 and 4096 characters") }
+        let end = UInt64(text.utf16.count - 1)
+        let object = Wire.int(1, end) + Wire.int(2, end) + Wire.string(3, text)
+        let edit = Wire.int(1, 1) + Wire.bytes(2, object)
+        return Wire.bytes(21, Wire.int(1, imeCounter) + Wire.int(2, fieldCounter) + Wire.bytes(3, edit))
+    }
+    public func writeText(_ text: String) async throws {
+        guard commandReady, !pairMode, negotiated & 4 != 0, let channel else { throw RemoteFailure.message("The TV does not accept keyboard input") }
+        try await channel.write(Self.textMessage(text, imeCounter: imeCounter, fieldCounter: fieldCounter))
+    }
     private func sendPair(_ field: Int, _ body: Data) {
         channel?.send(Wire.int(1, 2) + Wire.int(2, 200) + Wire.bytes(field, body))
     }
@@ -130,6 +151,9 @@ public final class TVSession {
                 event?(.power(try Wire.number(1, in: body) != 0))
             case 20:
                 if let value = try Self.foregroundPackage(in: body) { event?(.foreground(value)) }
+            case 21:
+                imeCounter = try Wire.number(1, in: body)
+                fieldCounter = try Wire.number(2, in: body)
             case 50:
                 event?(.volume(Int(try Wire.number(7, in: body)), Int(try Wire.number(6, in: body)), try Wire.number(8, in: body) != 0))
             case 3: throw RemoteFailure.message("The TV rejected a remote command")

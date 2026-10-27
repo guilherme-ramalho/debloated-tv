@@ -4,7 +4,30 @@ A personal native SwiftUI remote for Android TV, developed against a TCL Smart T
 
 The iPhone connects directly to Android TV Remote Service v2 on the local network. Normal use requires no Mac server, ADB, Google account, cloud relay, or additional TV companion app.
 
-## Features
+## Development branch: mobile expansion
+
+`feature/personalization-and-actions` contains the next mobile version (build 12). TV installation and live testing are deliberately deferred until the TV is available. The accepted baseline is build 11 on `main`.
+
+| Area | Implemented on iPhone | TV requirements / remaining validation |
+| --- | --- | --- |
+| Remote | D-pad or swipe pad, keyboard, editable streaming count/order, press feedback | Live-test gestures and text fields; some TV apps reject remote text |
+| TV Home | Offline drafts, 1–7 dock icons, reorder/hide, presets or photo wallpaper, profiles | Applying needs a future launcher editing adapter; it is not installed or included in this branch |
+| Backup | Export/import versioned JSON with wallpaper, restore into a draft | Restore does not change the TV until Apply succeeds |
+| Inputs | Named favorites and assignment UI; original TV input menu remains available | Sync real input IDs from the future adapter before assigning favorites |
+| Actions | Editable command sequences and cancellation | Validate sequences against physical TV; commands are not transactional |
+| Siri | Control TV and Run TV Quick Action intents; five suggested App Shortcuts | Requires pairing, local network, possibly unlock; physical Siri testing pending |
+| Widgets | Configurable four-button Home Screen widget and iOS 18+ Control Center action | Uses the containing app’s background process and existing pairing; device validation pending |
+| Sleep timer | Schedule/cancel UI and typed request | Requires a confirmed TV-owned timer in the future adapter; no phone background timer |
+| Uninstall | Distinct destructive action with confirmation flow | Requires synced installed-app data and Android confirmation; system apps excluded |
+| Settings | Haptics, automatic reconnect, paired connection diagnostic | Diagnostic performs a handshake without sending a control command |
+
+Photo/video casting and an AirPlay receiver remain exploratory; the app does not advertise a working receiver. Automatic ad skipping is excluded. Title collection and its TV companion remain removed. The app indicator identifies the open streaming app, so the playback icon remains a neutral toggle rather than guessing playback state.
+
+Home editing saves drafts atomically on the phone. Selecting a profile or wallpaper does not silently alter the TV. Photos are downsampled to at most 1920 pixels and compressed to at most 1 MB; the photo picker grants access only to selected images. Up to 20 recent backups are loaded into memory. Exported backups can contain the selected wallpaper but never pairing keys or viewing history.
+
+The launcher editing contract is documented in [docs/launcher-editor-contract.md](docs/launcher-editor-contract.md). These mobile screens are ready for the next integration phase; their presence does not mean that TV-side features are operational yet.
+
+## Existing controls
 
 - D-pad with a 116-point OK target; Home, Back, playback toggle, inputs, power, volume, and mute.
 - White SF Symbols, visible press feedback, and light haptics. D-pad and volume support holding and release on backgrounding.
@@ -25,7 +48,7 @@ This identifies the open app, not whether a video is playing. The icon stays sta
 Requires Xcode with an iOS SDK and an iPhone running iOS 17 or newer.
 
 1. Open `ios/TVRemote.xcodeproj` and select the TVRemote target.
-2. Choose your signing Team and an available bundle identifier. The repository contains no signing credentials or provisioning profiles.
+2. Choose your signing Team for both TVRemote and TVRemoteWidgets, and matching available bundle identifiers (the extension must use the app identifier as its prefix). The repository contains no signing credentials or provisioning profiles.
 3. Choose your iPhone and build/run. Wireless installation requires the phone to have been paired with Xcode first.
 4. Open TV Remote, allow Local Network access, enter the TV’s IPv4 address in Connection settings, and tap Pair TV. Enter the six-character code displayed by the TV.
 
@@ -48,7 +71,7 @@ cd ios
 swift test
 ```
 
-Ten tests cover fragmented/coalesced frames, malformed input, protobuf fields, certificate generation, pairing proofs, wake expiry/cancellation/single-use behavior, foreground app names, and explicit empty-app updates. The iPhone UI is also built with Xcode. Existing controls and standby wake have been tested on the physical TV and iPhone.
+Seventeen tests cover saved layouts, backup validation, command bounds, keyboard UTF-16 offsets, editor frame limits, fragmented/coalesced frames, malformed input, protobuf fields, certificate generation, pairing proofs, wake expiry/cancellation/single-use behavior, foreground app names, and explicit empty-app updates. The baseline controls and standby wake were tested on the physical TV and iPhone. New branch features still need device testing. The app and widget pass iOS SDK type checks. In the current restricted shell, the normal build reaches an actool/CoreSimulator runtime error; a separate local link verification reuses the unchanged baseline asset compilation. This is not a substitute for a normal signed device build.
 
 ## Privacy and security
 
@@ -66,4 +89,4 @@ Do not commit private keys, pairing state, device logs, build products, or provi
 - Disney+ logo: [Disney-authored artwork on Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Disney_Plus_logo.svg).
 - HBO Max logo: [official brand portal](https://brand.hbomax.com/logos).
 
-Streaming marks belong to their respective owners. This personal project is not affiliated with those services, Apple, Google, or TCL. AirPlay, photo sharing, voice input, discovery, and text keyboard input are not implemented.
+Streaming marks belong to their respective owners. This personal project is not affiliated with those services, Apple, Google, or TCL. AirPlay, photo sharing, voice dictation, and automatic device discovery are not implemented. Keyboard input is implemented on this development branch, with TV compatibility testing pending.
