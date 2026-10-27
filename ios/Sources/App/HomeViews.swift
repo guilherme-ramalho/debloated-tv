@@ -14,7 +14,7 @@ struct TVHomeView: View {
     var body: some View {
         NavigationStack {
             QuietPage {
-                QuietHeading(title: "TV Home") { EmptyView() }
+                QuietHeading(title: "TV") { EmptyView() }
                 HStack {
                     Menu {
                         ForEach(settings.value.profiles) { profile in

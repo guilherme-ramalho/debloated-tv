@@ -6,7 +6,7 @@ The iPhone connects directly to Android TV Remote Service v2 on the local networ
 
 ## Development branch: mobile expansion
 
-`feature/personalization-and-actions` contains the next mobile version (build 13). TV installation and live testing are deliberately deferred until the TV is available. The accepted baseline is build 11 on `main`.
+`feature/personalization-and-actions` contains the next mobile version (build 14). TV installation and live testing are deliberately deferred until the TV is available. The accepted baseline is build 11 on `main`.
 
 | Area | Implemented on iPhone | TV requirements / remaining validation |
 | --- | --- | --- |
@@ -32,8 +32,8 @@ The launcher editing contract is documented in [docs/launcher-editor-contract.md
 - D-pad with a 116-point OK target; Home, Back, playback toggle, inputs, power, volume, and mute.
 - White SF Symbols, visible press feedback, and light haptics. D-pad and volume support holding and release on backgrounding.
 - Two-column, logo-only streaming shortcuts: Netflix, YouTube, Prime Video, Disney+, HBO Max, and Crunchyroll.
-- Current streaming app on the left of the header; connection dot, status text, and Settings on the right.
-- Power and Input sit above the D-pad with separate touch areas and no overlap.
+- One header row with Power, the current streaming app, a tappable connection dot/text, Keyboard, and Input. No duplicate Settings icon or disconnected Connect/Pair button row.
+- Power and Input share the header above the original SwiftUI D-pad, with separate touch areas and no overlap. Taps, holds, and directional swipes share the same pad.
 - Saved secure pairing and automatic reconnect.
 - Standby wake on supported TCL firmware with the required TV standby settings.
 
@@ -71,7 +71,7 @@ cd ios
 swift test
 ```
 
-Eighteen tests cover swipe directions and jitter rejection, saved layouts, backup validation, command bounds, keyboard UTF-16 offsets, editor frame limits, fragmented/coalesced frames, malformed input, protobuf fields, certificate generation, pairing proofs, wake expiry/cancellation/single-use behavior, foreground app names, and explicit empty-app updates. The baseline controls and standby wake were tested on the physical TV and iPhone. New branch features still need device testing. The app and widget pass iOS SDK type checks. Build 13 aligns the native cards, profile menu, dock tiles, action cards, timer choices and switches with the approved navy preview. Photos & Video is hidden while receiver support is unfinished. The restricted command-line build cannot access CoreSimulator/actool, but the normal signed build succeeds in the Xcode app, including asset compilation and the widget extension. Native appearance and gestures still require the iPhone check; TV command behavior is deferred until the television is available.
+Twenty-four tests cover tap/hold/swipe arbitration and cancellation, swipe directions and jitter rejection, saved layouts, backup validation, command bounds, keyboard UTF-16 offsets, editor frame limits, fragmented/coalesced frames, malformed input, protobuf fields, certificate generation, pairing proofs, wake expiry/cancellation/single-use behavior, foreground app names, and explicit empty-app updates. The baseline controls and standby wake were tested on the physical TV and iPhone. New branch features still need device testing. The app and widget pass iOS SDK type checks. Build 14 uses a single remote header row and restores the original SwiftUI D-pad with integrated swipe handling. Saved pairing and active connection are treated separately: an offline paired TV offers reconnection, while Pair TV appears only without saved pairing; re-pairing remains in Connection settings. The TV tab uses a TV icon. The native layout aligns the native cards, profile menu, dock tiles, action cards, timer choices and switches with the approved navy preview. Photos & Video is hidden while receiver support is unfinished. The restricted command-line build cannot access CoreSimulator/actool, but the normal signed build succeeds in the Xcode app, including asset compilation and the widget extension. Native appearance and gestures still require the iPhone check; TV command behavior is deferred until the television is available.
 
 ## Privacy and security
 

@@ -272,9 +272,11 @@ struct SettingsView: View {
 
 struct ConnectionView: View {
     @ObservedObject var model: RemoteModel
+    @Environment(\.dismiss) private var dismiss
     @State private var address = ""
     @State private var result = ""
     @State private var testing = false
+    @State private var repairPairing = false
     @State private var check: Task<Void, Never>?
     var body: some View {
         Form {
@@ -282,7 +284,22 @@ struct ConnectionView: View {
             Section("TV address") {
                 TextField("192.168.1.100", text: $address).keyboardType(.decimalPad).textInputAutocapitalization(.never)
                 Button("Save and connect") { _ = model.saveHost(address) }
-                Button("Pair this TV") { if model.saveHost(address) { model.beginPairing() } }
+                    .disabled(model.preparing || address.trimmingCharacters(in: .whitespacesAndNewlines) == model.host)
+            }
+            Section {
+                if model.hasSavedPairing {
+                    Label("Pairing saved", systemImage: "checkmark.shield")
+                    Button("Reconnect", systemImage: "arrow.clockwise") { model.connect() }.disabled(model.preparing || model.showingPIN)
+                } else {
+                    Button("Pair TV", systemImage: "tv") { if model.saveHost(address) { dismiss(); model.beginPairing() } }.disabled(model.preparing)
+                }
+            } header: { Text("Connection") } footer: {
+                Text(model.hasSavedPairing ? "Reconnecting uses the saved authorization. A code is not needed." : "Pair once while the TV is on, using the code displayed on it.")
+            }
+            if model.hasSavedPairing {
+                Section {
+                    Button("Pair again") { repairPairing = true }.disabled(model.preparing || model.showingPIN)
+                } footer: { Text("Only needed if the TV has forgotten this phone or its pairing was reset. An offline TV does not normally need re-pairing.") }
             }
             Section {
                 Label(model.status, systemImage: model.ready ? "checkmark.circle" : "wifi.slash")
@@ -302,5 +319,8 @@ struct ConnectionView: View {
 
                 }.listRowBackground(QuietTheme.panel)
 }.remoteForm().navigationTitle("Connection").onAppear { address = model.host }.onDisappear { check?.cancel() }
+            .confirmationDialog("Pair this phone again?", isPresented: $repairPairing, titleVisibility: .visible) {
+                Button("Show code on TV") { if model.saveHost(address) { dismiss(); model.beginPairing() } }
+            } message: { Text("Keep the TV on. Your saved pairing is replaced only after a new code is accepted.") }
     }
 }

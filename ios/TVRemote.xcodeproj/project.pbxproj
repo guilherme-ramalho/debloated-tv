@@ -111,7 +111,7 @@
 				"SDKROOT" = "iphoneos";
 				"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
 				"PRODUCT_BUNDLE_IDENTIFIER" = "com.guilhermeramalho.TVRemote";
-				"CURRENT_PROJECT_VERSION" = "13";
+				"CURRENT_PROJECT_VERSION" = "14";
 			};
 			"name" = "Release";
 		};
@@ -286,7 +286,7 @@
 				"SDKROOT" = "iphoneos";
 				"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
 				"PRODUCT_BUNDLE_IDENTIFIER" = "com.guilhermeramalho.TVRemote";
-				"CURRENT_PROJECT_VERSION" = "13";
+				"CURRENT_PROJECT_VERSION" = "14";
 			};
 			"name" = "Debug";
 		};
@@ -448,7 +448,7 @@
 			"buildSettings" = {
 				"APPLICATION_EXTENSION_API_ONLY" = "YES";
 				"CODE_SIGN_STYLE" = "Automatic";
-				"CURRENT_PROJECT_VERSION" = "13";
+				"CURRENT_PROJECT_VERSION" = "14";
 				"DEVELOPMENT_TEAM" = "";
 				"GENERATE_INFOPLIST_FILE" = "NO";
 				"INFOPLIST_FILE" = "Widgets/Info.plist";
@@ -474,7 +474,7 @@
 			"buildSettings" = {
 				"APPLICATION_EXTENSION_API_ONLY" = "YES";
 				"CODE_SIGN_STYLE" = "Automatic";
-				"CURRENT_PROJECT_VERSION" = "13";
+				"CURRENT_PROJECT_VERSION" = "14";
 				"DEVELOPMENT_TEAM" = "";
 				"GENERATE_INFOPLIST_FILE" = "NO";
 				"INFOPLIST_FILE" = "Widgets/Info.plist";

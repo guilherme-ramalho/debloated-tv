@@ -11,7 +11,7 @@ import SwiftUI
         WindowGroup {
             TabView(selection: $selection) {
                 RemoteView(model: model).tabItem { Label("Remote", systemImage: "appletvremote.gen4") }.tag(0)
-                TVHomeView(model: model).tabItem { Label("TV Home", systemImage: "square.grid.2x2") }.tag(1)
+                TVHomeView(model: model).tabItem { Label("TV", systemImage: "tv") }.tag(1)
                 ActionsView(model: model).tabItem { Label("Actions", systemImage: "bolt") }.tag(2)
                 SettingsView(model: model).tabItem { Label("Settings", systemImage: "slider.horizontal.3") }.tag(3)
             }
@@ -41,34 +41,38 @@ struct RemoteView: View {
     @State private var inputs = false
     @ObservedObject var model: RemoteModel
     @State private var settings = false
-    @State private var address = ""
-    @State private var code = ""
+    @StateObject private var pad = DPadGestureController()
+    @GestureState private var padTouching = false
+    @Environment(\.scenePhase) private var phase
     private let ink = Color(red: 0.075, green: 0.085, blue: 0.11)
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 12) {
-                    statusHeader
-                    if !model.error.isEmpty && !model.showingPIN {
-                        Text(model.error).font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.center)
-                    }
-                    if !model.ready {
-                        HStack {
-                            Button("Connect") { model.connect() }.buttonStyle(.bordered)
-                            Button("Pair TV") { model.beginPairing() }.buttonStyle(QuietPrimaryStyle())
-                        }.disabled(model.preparing)
-                    }
-
-                    HStack(spacing: 8) {
-                        topCommand("power", "Power", .power, Color(red: 1, green: 0.34, blue: 0.36))
-                        Spacer()
-                        Button { keyboard = true } label: { Image(systemName: "keyboard").frame(width: 36, height: 44) }.accessibilityLabel("Type on TV").buttonStyle(RemotePressStyle(radius: 12))
-                        Spacer()
-                        Button { inputs = true } label: { Image(systemName: "rectangle.on.rectangle").font(.system(size: 24, weight: .medium)).frame(width: 52, height: 52).background(Color.blue.opacity(0.11), in: Circle()) }.accessibilityLabel("Favorite inputs").buttonStyle(RemotePressStyle(radius: 26))
-                    }
-
-                    UnifiedDPad(model: model, haptics: preferences.value.haptics).frame(width: 284, height: 284)
-                        .accessibilityElement(children: .contain).accessibilityLabel("Directional pad. Swipe to navigate, tap an arrow or OK, or hold to repeat.")
+                    controlsHeader
+                    ZStack {
+                        Circle().fill(ink).overlay(Circle().stroke(.white.opacity(0.08), lineWidth: 1))
+                        HoldKey(symbol: "chevron.up", key: .up, model: model, externallyPressed: pad.highlighted == .up)
+                            .frame(width: 100, height: 66).offset(y: -103)
+                        HoldKey(symbol: "chevron.down", key: .down, model: model, externallyPressed: pad.highlighted == .down)
+                            .frame(width: 100, height: 66).offset(y: 103)
+                        HoldKey(symbol: "chevron.left", key: .left, model: model, externallyPressed: pad.highlighted == .left)
+                            .frame(width: 66, height: 100).offset(x: -103)
+                        HoldKey(symbol: "chevron.right", key: .right, model: model, externallyPressed: pad.highlighted == .right)
+                            .frame(width: 66, height: 100).offset(x: 103)
+                        HoldKey(symbol: "", key: .select, model: model, externallyPressed: pad.highlighted == .select)
+                            .frame(width: 116, height: 116)
+                            .background(.white.opacity(0.09), in: Circle())
+                            .overlay(Circle().stroke(.white.opacity(0.12), lineWidth: 1))
+                    }.frame(width: 284, height: 284).opacity(model.ready ? 1 : 0.45)
+                        .coordinateSpace(name: "dpad").contentShape(Circle())
+                        .highPriorityGesture(DragGesture(minimumDistance: 0, coordinateSpace: .named("dpad"))
+                            .updating($padTouching) { _, active, _ in active = true }
+                            .onChanged { pad.changed($0, model: model) }.onEnded { pad.ended($0) })
+                        .onChange(of: padTouching) { _, touching in if !touching { pad.gestureReset() } }
+                        .onChange(of: model.ready) { _, ready in if !ready { pad.cancel() } }
+                        .onChange(of: phase) { _, value in if value != .active { pad.cancel() } }
+                        .onDisappear { pad.cancel() }
 
                     HStack(spacing: 25) {
                         command("arrow.uturn.backward", "Back", .back)
@@ -96,46 +100,51 @@ struct RemoteView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .navigationBar)
             .sheet(isPresented: $settings) {
-                NavigationStack {
-                    Form {
-                Group {
-                        Section("TV address") {
-                            if !model.error.isEmpty { Text(model.error).font(.footnote).foregroundStyle(.orange) }
-                            TextField("192.168.1.100", text: $address).keyboardType(.decimalPad).textInputAutocapitalization(.never)
-                            Button("Save and connect") { if model.saveHost(address) { settings = false } }
-                        }
-                        Section {
-                            Button("Pair this TV") { if model.saveHost(address) { settings = false; model.beginPairing() } }
-                            Text("Use the same local network as the TV. Pair once using the code on screen; the app remembers your TV and reconnects when opened.")
-                                .font(.footnote).foregroundStyle(.secondary)
-                        }
-
-                }.listRowBackground(QuietTheme.panel)
-}.navigationTitle("Connection").toolbar { Button("Done") { settings = false } }
-                }.presentationDetents([.medium, .large])
+                NavigationStack { ConnectionView(model: model).toolbar { Button("Done") { settings = false } } }
+                    .presentationDetents([.medium, .large])
             }
             .sheet(isPresented: $keyboard) { KeyboardView(model: model) }
             .sheet(isPresented: $inputs) { NavigationStack { InputSettingsView(model: model).toolbar { Button("Done") { inputs = false } } } }
 
         }
     }
-    private var statusHeader: some View {
-        HStack(spacing: 12) {
-            if let name = model.currentAppName {
-                Label { Text(name).font(.subheadline.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.8) }
-                    icon: { Image(systemName: "tv").font(.system(size: 19, weight: .medium)) }
-                    .labelStyle(.titleAndIcon).foregroundStyle(.white)
-                    .accessibilityElement(children: .ignore).accessibilityLabel("On TV: " + name)
-            }
-            Spacer(minLength: 8)
-            HStack(spacing: 6) {
-                Circle().fill(model.ready ? Color.green : Color.orange).frame(width: 6, height: 6)
-                Text(model.status).font(.caption).foregroundStyle(.secondary).lineLimit(1)
-            }.fixedSize(horizontal: true, vertical: false).accessibilityElement(children: .combine)
-            Button { address = model.host; settings = true } label: {
-                Image(systemName: "slider.horizontal.3").frame(width: 44, height: 44)
-            }.accessibilityLabel("Connection settings").tint(.white).buttonStyle(RemotePressStyle(radius: 12))
-        }.frame(minHeight: 44)
+    private var connectionLabel: String {
+        if model.preparing { return "Preparing…" }
+        if !model.hasSavedPairing { return "Pair TV" }
+        if model.waking { return "Waking…" }
+        if model.ready { return model.powerOn == false ? "Standby" : "Connected" }
+        return model.status == "Connecting…" ? "Connecting…" : "Offline"
+    }
+    private var controlsHeader: some View {
+        HStack(spacing: 6) {
+            topCommand("power", "Power", .power, Color(red: 1, green: 0.34, blue: 0.36))
+            Group {
+                if let name = model.currentAppName {
+                    Label { Text(name).font(.system(size: 13, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.85) }
+                        icon: { Image(systemName: "tv").font(.system(size: 15, weight: .medium)) }
+                        .foregroundStyle(.white).accessibilityElement(children: .ignore).accessibilityLabel("On TV: " + name)
+                } else { Color.clear.frame(height: 1).accessibilityHidden(true) }
+            }.frame(maxWidth: .infinity, alignment: .leading)
+            Button {
+                if !model.hasSavedPairing { model.beginPairing() }
+                else { if !model.ready { model.connect() }; settings = true }
+            } label: {
+                HStack(spacing: 5) {
+                    Circle().fill(model.ready ? Color.green : Color.orange).frame(width: 6, height: 6)
+                    Text(connectionLabel).font(.system(size: 11)).foregroundStyle(model.hasSavedPairing ? QuietTheme.muted : .white).lineLimit(1).minimumScaleFactor(0.85)
+                }.frame(width: 83, height: 44)
+            }.disabled(model.preparing || model.showingPIN)
+                .accessibilityLabel(model.hasSavedPairing ? "TV connection" : "Pair TV")
+                .accessibilityValue(model.status).accessibilityHint("Open connection details. Re-pairing and the TV address are also in Settings, Connection.")
+                .buttonStyle(RemotePressStyle(radius: 12))
+                .contextMenu { Button("Connection settings", systemImage: "wifi") { settings = true } }
+            Button { keyboard = true } label: { Image(systemName: "keyboard").frame(width: 44, height: 44) }
+                .accessibilityLabel("Type on TV").buttonStyle(RemotePressStyle(radius: 12))
+            Button { inputs = true } label: {
+                Image(systemName: "rectangle.on.rectangle").font(.system(size: 24, weight: .medium)).frame(width: 52, height: 52)
+                    .background(Color.blue.opacity(0.11), in: Circle())
+            }.accessibilityLabel("Favorite inputs").buttonStyle(RemotePressStyle(radius: 26))
+        }.frame(minHeight: 52)
     }
     private func command(_ symbol: String, _ label: String, _ key: TVKey) -> some View {
         Button { model.tap(key) } label: {
@@ -174,6 +183,8 @@ struct HoldKey: View {
     let key: TVKey
     @ObservedObject var model: RemoteModel
     @State private var pressed = false
+    var externallyPressed: Bool? = nil
+    private var highlighted: Bool { externallyPressed ?? pressed }
     var body: some View {
         Group {
             if symbol.isEmpty { Text("OK").font(.system(size: 26, weight: .semibold)) }
@@ -181,13 +192,14 @@ struct HoldKey: View {
         }
         .foregroundStyle(.white.opacity(model.ready ? 1 : 0.35))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.white.opacity(pressed ? 0.18 : 0), in: RoundedRectangle(cornerRadius: 24))
-        .overlay(RoundedRectangle(cornerRadius: 24).stroke(.white.opacity(pressed ? 0.55 : 0), lineWidth: 1))
-        .sensoryFeedback(.impact(weight: .light), trigger: pressed) { _, value in value && preferences.value.haptics }
+        .background(.white.opacity(highlighted ? 0.18 : 0), in: RoundedRectangle(cornerRadius: 24))
+        .overlay(RoundedRectangle(cornerRadius: 24).stroke(.white.opacity(highlighted ? 0.55 : 0), lineWidth: 1))
+        .sensoryFeedback(.impact(weight: .light), trigger: highlighted) { _, value in value && preferences.value.haptics }
         .contentShape(Rectangle())
         .gesture(DragGesture(minimumDistance: 0).onChanged { _ in
             if !pressed && model.ready { pressed = true; model.press(key) }
-        }.onEnded { _ in pressed = false; model.release(key) })
+        }.onEnded { _ in pressed = false; model.release(key) }, including: externallyPressed == nil ? .all : .none)
+        .allowsHitTesting(externallyPressed == nil)
         .onDisappear { if pressed { model.release(key); pressed = false } }
         .accessibilityElement().accessibilityLabel(symbol.isEmpty ? "Select" : String(describing: key))
         .accessibilityAddTraits(.isButton).accessibilityAction { model.tap(key) }

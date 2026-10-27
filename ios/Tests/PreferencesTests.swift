@@ -13,6 +13,54 @@ final class PreferencesTests: XCTestCase {
         XCTAssertNil(TVKey.swipeDirection(dx: .nan, dy: 20))
         XCTAssertNil(TVKey.swipeDirection(dx: .infinity, dy: 20))
     }
+    func testPadTapSendsOneCommandOnRelease() {
+        var pad = PadInteraction()
+        XCTAssertEqual(pad.begin(key: .select), [])
+        XCTAssertEqual(pad.move(dx: 5, dy: 4), [])
+        XCTAssertEqual(pad.end(dx: 5, dy: 4), [.tap(.select)])
+        XCTAssertEqual(pad.end(dx: 5, dy: 4), [])
+    }
+    func testSwipeDoesNotAlsoTapStartingArrowOrOK() {
+        for startingKey in [TVKey.left, .select, .up] {
+            var pad = PadInteraction()
+            XCTAssertEqual(pad.begin(key: startingKey), [])
+            XCTAssertEqual(pad.move(dx: 80, dy: 8), [])
+            XCTAssertEqual(pad.hold(), [])
+            XCTAssertEqual(pad.end(dx: 100, dy: 8), [.tap(.right)])
+        }
+    }
+    func testPadHoldReleasesOnceWithoutAnExtraTap() {
+        var pad = PadInteraction()
+        XCTAssertEqual(pad.begin(key: .down), [])
+        XCTAssertEqual(pad.hold(), [.press(.down)])
+        XCTAssertEqual(pad.hold(), [])
+        XCTAssertEqual(pad.end(dx: 1, dy: 2), [.release(.down)])
+        XCTAssertEqual(pad.cancel(), [])
+    }
+    func testPadCancellationReleasesHeldKeyAndDiscardsPendingTap() {
+        var pad = PadInteraction()
+        _ = pad.begin(key: .select)
+        XCTAssertEqual(pad.cancel(), [])
+        XCTAssertEqual(pad.hold(), [])
+        XCTAssertEqual(pad.end(dx: 0, dy: 0), [])
+        _ = pad.begin(key: .left); _ = pad.hold()
+        XCTAssertEqual(pad.cancel(), [.release(.left)])
+        XCTAssertEqual(pad.cancel(), [])
+    }
+    func testAbortedSwipeDoesNotBecomeATap() {
+        var pad = PadInteraction()
+        _ = pad.begin(key: .select); _ = pad.move(dx: 70, dy: 0)
+        XCTAssertEqual(pad.end(dx: 0, dy: 0), [])
+        _ = pad.begin(key: nil)
+        XCTAssertEqual(pad.end(dx: 0, dy: 0), [])
+    }
+    func testSwipeAfterHoldReleasesBeforeSendingDirection() {
+        var pad = PadInteraction()
+        _ = pad.begin(key: .select); _ = pad.hold()
+        XCTAssertEqual(pad.move(dx: 0, dy: -90), [.release(.select)])
+        XCTAssertEqual(pad.end(dx: 0, dy: -90), [.tap(.up)])
+        XCTAssertEqual(pad.cancel(), [])
+    }
     func testDefaultPreferencesRoundTripAndIndependentProfiles() throws {
         let initial = RemotePreferences()
         try initial.validate()

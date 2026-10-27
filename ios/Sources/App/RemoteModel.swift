@@ -5,6 +5,7 @@ import Security
     @Published var host = UserDefaults.standard.string(forKey: "tvHost") ?? "192.168.1.100"
     @Published var status = "Preparing secure pairing…"
     @Published var ready = false
+    @Published private(set) var hasSavedPairing = false
     @Published var preparing = true
     @Published var showingPIN = false
     @Published var error = ""
@@ -33,7 +34,7 @@ import Security
 
     func activate() {
         guard !active else { return }
-        active = true
+        active = true; hasSavedPairing = pin() != nil
         if identity == nil && preparing {
             DispatchQueue.global(qos: .userInitiated).async {
                 let result = Result { try ClientIdentity.loadOrCreate() }
@@ -69,7 +70,7 @@ import Security
         }
         deactivate()
         host = value; UserDefaults.standard.set(value, forKey: "tvHost")
-        foregroundPackage = ""; attempt = 0; active = true; connect(); return true
+        foregroundPackage = ""; attempt = 0; active = true; hasSavedPairing = pin() != nil; connect(); return true
     }
 
     private func pin() -> Data? {
@@ -88,6 +89,7 @@ import Security
         var status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
         if status == errSecItemNotFound { status = SecItemAdd(query.merging(attributes) { _, new in new } as CFDictionary, nil) }
         guard status == errSecSuccess else { throw RemoteFailure.message("Could not save TV pairing (\(status))") }
+        hasSavedPairing = true
     }
 
     private func newSession() -> TVSession? {
@@ -132,7 +134,8 @@ import Security
 
     func connect() {
         guard active && !pairing && !preparing else { return }
-        guard let pin = pin() else { status = "Pair your TV to get started"; ready = false; return }
+        guard let pin = pin() else { hasSavedPairing = false; status = "Pair your TV to get started"; ready = false; return }
+        hasSavedPairing = true
         status = waking ? "Waking TV…" : "Connecting…"
         newSession()?.connect(pin: pin)
     }

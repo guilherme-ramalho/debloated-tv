@@ -130,102 +130,77 @@ private struct InputForm: View {
     }
 }
 
-/// Buttons keep tap/hold accessibility. The parent pan cancels button touches before
-/// a swipe can become a tap; exactly one direction is sent when that swipe ends.
-struct UnifiedDPad: UIViewRepresentable {
-    @ObservedObject var model: RemoteModel
-    var haptics: Bool
-    func makeCoordinator() -> Coordinator { Coordinator(model: model, haptics: haptics) }
-    func makeUIView(context: Context) -> PadUIView {
-        let view = PadUIView()
-        for (key, button) in view.buttons {
-            button.tag = Int(key.rawValue)
-            button.addTarget(context.coordinator, action: #selector(Coordinator.tap(_:)), for: .touchUpInside)
-        }
-        let pan = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.swipe(_:)))
-        pan.maximumNumberOfTouches = 1; pan.cancelsTouchesInView = true
-        let hold = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.hold(_:)))
-        hold.minimumPressDuration = 0.35; hold.allowableMovement = 12; hold.cancelsTouchesInView = true
-        view.addGestureRecognizer(pan); view.addGestureRecognizer(hold)
-        context.coordinator.view = view
-        return view
-    }
-    func updateUIView(_ view: PadUIView, context: Context) {
-        context.coordinator.haptics = haptics
-        view.isUserInteractionEnabled = model.ready; view.alpha = model.ready ? 1 : 0.45
-        if !model.ready { context.coordinator.release() }
-    }
-    static func dismantleUIView(_ view: PadUIView, coordinator: Coordinator) { coordinator.release() }
-    @MainActor final class Coordinator: NSObject {
-        let model: RemoteModel
-        var haptics: Bool
-        weak var view: PadUIView?
-        private var held: TVKey?
-        init(model: RemoteModel, haptics: Bool) { self.model = model; self.haptics = haptics }
-        func feedback() { if haptics { UIImpactFeedbackGenerator(style: .light).impactOccurred() } }
-        @objc func tap(_ sender: UIButton) {
-            guard model.ready, let key = TVKey(rawValue: UInt64(sender.tag)) else { return }
-            model.tap(key); feedback()
-        }
-        @objc func swipe(_ gesture: UIPanGestureRecognizer) {
-            if gesture.state == .began { release() }
-            guard gesture.state == .ended, model.ready else { return }
-            let delta = gesture.translation(in: gesture.view)
-            guard let key = TVKey.swipeDirection(dx: Double(delta.x), dy: Double(delta.y)) else { return }
-            model.tap(key); feedback(); view?.flash(key)
-        }
-        @objc func hold(_ gesture: UILongPressGestureRecognizer) {
-            switch gesture.state {
-            case .began:
-                guard model.ready, let view, let key = view.key(at: gesture.location(in: view)) else { return }
-                held = key; view.buttons[key]?.isHighlighted = true; model.press(key); feedback()
-            case .ended, .cancelled, .failed: release()
-            default: break
-            }
-        }
-        func release() {
-            guard let key = held else { return }; held = nil
-            view?.buttons[key]?.isHighlighted = false; model.release(key)
-        }
-    }
-}
+/// Gesture arbitration for the original SwiftUI D-pad; no replacement controls or overlay view.
+@MainActor final class DPadGestureController: ObservableObject {
+    @Published private(set) var highlighted: TVKey?
+    private var interaction = PadInteraction()
+    private var tracking = false
+    private var generation = 0
+    private var holdTask: Task<Void, Never>?
+    private var flashTask: Task<Void, Never>?
+    private weak var model: RemoteModel?
 
-final class PadUIView: UIView {
-    private(set) var buttons: [TVKey: UIButton] = [:]
-    private let disk = UIView()
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        disk.backgroundColor = UIColor(red: 21/255, green: 27/255, blue: 39/255, alpha: 1)
-        disk.layer.borderColor = UIColor.white.withAlphaComponent(0.07).cgColor; disk.layer.borderWidth = 1
-        disk.isUserInteractionEnabled = false; addSubview(disk)
-        for (key, symbol, label) in [(TVKey.up, "chevron.up", "Up"), (.down, "chevron.down", "Down"), (.left, "chevron.left", "Left"), (.right, "chevron.right", "Right"), (.select, "", "Select")] {
-            let button = UIButton(type: .custom)
-            button.tintColor = .white; button.setTitleColor(.white, for: .normal); button.accessibilityLabel = label
-            if symbol.isEmpty { button.setTitle("OK", for: .normal); button.titleLabel?.font = .systemFont(ofSize: 26, weight: .semibold) }
-            else { button.setImage(UIImage(systemName: symbol, withConfiguration: UIImage.SymbolConfiguration(pointSize: 25, weight: .medium)), for: .normal) }
-            button.configurationUpdateHandler = { button in
-                button.backgroundColor = UIColor.white.withAlphaComponent(button.isHighlighted ? 0.2 : (key == .select ? 0.09 : 0))
-                button.layer.borderColor = UIColor.white.withAlphaComponent(button.isHighlighted ? 0.55 : (key == .select ? 0.12 : 0)).cgColor
-                button.layer.borderWidth = 1
+    func changed(_ value: DragGesture.Value, model: RemoteModel) {
+        guard model.ready else { cancel(); return }
+        if !tracking {
+            generation += 1; flashTask?.cancel(); flashTask = nil
+            self.model = model; tracking = true
+            let key = key(at: value.startLocation)
+            send(interaction.begin(key: key)); highlighted = key
+            let token = generation
+            holdTask = Task { [weak self] in
+                do { try await Task.sleep(nanoseconds: 350_000_000) } catch { return }
+                guard let self, self.tracking, self.generation == token, model.ready else { return }
+                self.send(self.interaction.hold())
             }
-            button.backgroundColor = UIColor.white.withAlphaComponent(key == .select ? 0.09 : 0)
-            addSubview(button); buttons[key] = button
+        }
+        send(interaction.move(dx: Double(value.translation.width), dy: Double(value.translation.height)))
+        if interaction.isSwiping {
+            holdTask?.cancel(); holdTask = nil
+            highlighted = TVKey.swipeDirection(dx: Double(value.translation.width), dy: Double(value.translation.height))
         }
     }
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    override func layoutSubviews() {
-        super.layoutSubviews(); disk.frame = bounds; disk.layer.cornerRadius = bounds.width/2
-        let cx = bounds.midX, cy = bounds.midY
-        buttons[.up]?.frame = CGRect(x: cx-50, y: cy-136, width: 100, height: 66)
-        buttons[.down]?.frame = CGRect(x: cx-50, y: cy+70, width: 100, height: 66)
-        buttons[.left]?.frame = CGRect(x: cx-136, y: cy-50, width: 66, height: 100)
-        buttons[.right]?.frame = CGRect(x: cx+70, y: cy-50, width: 66, height: 100)
-        buttons[.select]?.frame = CGRect(x: cx-58, y: cy-58, width: 116, height: 116)
-        for (key, button) in buttons { button.layer.cornerRadius = key == .select ? 58 : 24 }
+    func ended(_ value: DragGesture.Value) {
+        guard tracking else { return }
+        tracking = false; holdTask?.cancel(); holdTask = nil
+        let commands = interaction.end(dx: Double(value.translation.width), dy: Double(value.translation.height))
+        send(commands)
+        if case .tap(let key) = commands.last {
+            highlighted = key; let token = generation
+            flashTask = Task { [weak self] in
+                do { try await Task.sleep(nanoseconds: 120_000_000) } catch { return }
+                guard let self, self.generation == token else { return }; self.highlighted = nil
+            }
+        } else { highlighted = nil }
     }
-    func key(at point: CGPoint) -> TVKey? { buttons.first(where: { $0.value.frame.contains(point) })?.key }
-    func flash(_ key: TVKey) {
-        guard let button = buttons[key] else { return }; button.isHighlighted = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) { [weak button] in button?.isHighlighted = false }
+    func gestureReset() {
+        let token = generation
+        DispatchQueue.main.async { [weak self] in
+            guard let self, self.generation == token, self.tracking else { return }; self.cancel()
+        }
+    }
+    func cancel() {
+        generation += 1; tracking = false
+        holdTask?.cancel(); holdTask = nil; flashTask?.cancel(); flashTask = nil
+        send(interaction.cancel()); highlighted = nil
+    }
+    private func send(_ commands: [PadInteraction.Command]) {
+        for command in commands {
+            switch command {
+            case .tap(let key): model?.tap(key)
+            case .press(let key): model?.press(key)
+            case .release(let key): model?.release(key)
+            }
+        }
+    }
+    private func key(at point: CGPoint) -> TVKey? {
+        let regions: [(TVKey, CGRect)] = [
+            (.up, CGRect(x: 92, y: 6, width: 100, height: 66)),
+            (.down, CGRect(x: 92, y: 212, width: 100, height: 66)),
+            (.left, CGRect(x: 6, y: 92, width: 66, height: 100)),
+            (.right, CGRect(x: 212, y: 92, width: 66, height: 100)),
+            (.select, CGRect(x: 84, y: 84, width: 116, height: 116))
+        ]
+        return regions.first { $0.1.contains(point) }?.0
     }
 }
