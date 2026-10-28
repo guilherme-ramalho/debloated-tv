@@ -140,7 +140,7 @@ struct SiriSettingsView: View {
         List {
                 Group {
             Section {
-                Text("“Hey Siri, open Netflix with TV Remote.”").font(.title2.weight(.semibold)).padding(.vertical, 10)
+                Text("“Hey Siri, open Netflix with Debloated TV.”").font(.title2.weight(.semibold)).padding(.vertical, 10)
                 SiriTipView(intent: TVCommandIntent(command: .wake))
             }
             Section {
@@ -162,14 +162,14 @@ struct WidgetHelpView: View {
         List {
                 Group {
             Section("Home Screen") {
-                Label("TV Remote controls", systemImage: "rectangle.grid.2x2")
-                Text("Add the TV Remote widget using your iPhone’s widget gallery. Edit the widget to choose its four actions.")
+                Label("Debloated TV controls", systemImage: "rectangle.grid.2x2")
+                Text("Add the Debloated TV widget using your iPhone’s widget gallery. Edit the widget to choose its four actions.")
             }
             Section("Control Center · iOS 18+") {
                 Label("TV quick action", systemImage: "switch.2")
-                Text("In Control Center’s controls gallery, add TV Remote and choose the action it should run.")
+                Text("In Control Center’s controls gallery, add Debloated TV and choose the action it should run.")
             }
-            Section { Text("Pair in TV Remote first. Controls use the existing pairing in the app’s background process; they do not install another TV service. Unlock may be required.").font(.footnote).foregroundStyle(.secondary) }
+            Section { Text("Pair in Debloated TV first. Controls use the existing pairing in the app’s background process; they do not install another TV service. Unlock may be required.").font(.footnote).foregroundStyle(.secondary) }
 
                 }.listRowBackground(QuietTheme.panel)
 }.remoteForm().navigationTitle("Quick access")
@@ -232,6 +232,7 @@ struct SleepTimerView: View {
 }
 
 struct SettingsView: View {
+    @State private var credits = false
     @ObservedObject var model: RemoteModel
     @EnvironmentObject private var settings: AppSettings
     var body: some View {
@@ -259,12 +260,26 @@ struct SettingsView: View {
                     Toggle(isOn: settings.binding(\.autoReconnect)) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Reconnect automatically").font(.system(size: 14, weight: .medium))
-                            Text("When returning to TV Remote").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+                            Text("When returning to Debloated TV").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
                         }
                     }.toggleStyle(QuietToggleStyle()).padding(.horizontal, 13).padding(.vertical, 10)
                 }
                 QuietSectionTitle(title: "Performance")
                 QuietCard { QuietRow(title: "No background TV companion", detail: "Home customization connects only while you edit.", symbol: "leaf", chevron: false) }
+                Button("Artwork credits") { credits = true }.font(.footnote).foregroundStyle(QuietTheme.muted).frame(minHeight: 44)
+                    .sheet(isPresented: $credits) {
+                        NavigationStack {
+                            QuietPage {
+                                Text("Debloated TV").font(.title2.weight(.semibold))
+                                Text("Android TV Remote & Control").foregroundStyle(QuietTheme.muted)
+                                QuietSectionTitle(title: "Android robot")
+                                Text("The Android robot is reproduced or modified from work created and shared by Google and used according to terms described in the Creative Commons 3.0 Attribution License.").font(.footnote)
+                                Link("Creative Commons Attribution 3.0", destination: URL(string: "https://creativecommons.org/licenses/by/3.0/")!)
+                                QuietCaption(text: "Android is a trademark of Google LLC. Debloated TV is an independent app.")
+                                Link("Streaming logo sources", destination: URL(string: "https://github.com/guilherme-ramalho/custom-tv-remote#references-and-assets")!)
+                            }.quietNavigation("Artwork credits").toolbar { Button("Done") { credits = false } }
+                        }.presentationDetents([.medium, .large])
+                    }
             }.toolbar(.hidden, for: .navigationBar)
         }
     }

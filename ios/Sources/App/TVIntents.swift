@@ -33,14 +33,14 @@ enum IntentSettings {
     static func read() throws -> RemotePreferences {
         let url = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("TVRemote/preferences.json")
-        guard FileManager.default.fileExists(atPath: url.path) else { throw RemoteFailure.message("Open TV Remote once to finish setup") }
+        guard FileManager.default.fileExists(atPath: url.path) else { throw RemoteFailure.message("Open Debloated TV once to finish setup") }
         let data = try Data(contentsOf: url)
-        guard data.count <= 2_000_000 else { throw RemoteFailure.message("Open TV Remote to check its saved settings") }
+        guard data.count <= 2_000_000 else { throw RemoteFailure.message("Open Debloated TV to check its saved settings") }
         let settings = try JSONDecoder().decode(RemotePreferences.self, from: data); try settings.validate(); return settings
     }
     @MainActor static func run(_ steps: [ActionStep]) async throws {
         let host = UserDefaults.standard.string(forKey: "tvHost") ?? ""
-        guard !host.isEmpty else { throw RemoteFailure.message("Open TV Remote and pair your TV first") }
+        guard !host.isEmpty else { throw RemoteFailure.message("Open Debloated TV and pair your TV first") }
         let settings = try read()
         let runner = CommandRunner()
         try await runner.run(steps, host: host, apps: settings.apps, inputs: settings.editorHost == host ? settings.tvInputs : [])
@@ -59,7 +59,7 @@ struct TVCommandIntent: AppIntent {
     init(command: TVQuickCommand) { self.command = command }
     func perform() async throws -> some IntentResult & ProvidesDialog {
         #if WIDGET_EXTENSION
-        throw RemoteFailure.message("Open TV Remote once to finish setup")
+        throw RemoteFailure.message("Open Debloated TV once to finish setup")
         #else
         try await IntentSettings.run(command.steps)
         #endif

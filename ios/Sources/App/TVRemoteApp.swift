@@ -28,7 +28,7 @@ import SwiftUI
             }
             .sheet(isPresented: $model.showingPIN) { TVPairingView(model: model) }
             .sheet(isPresented: $editor.showingPIN) { EditorPairingView().environmentObject(editor) }
-            .alert("TV Remote", isPresented: Binding(get: { !settings.notice.isEmpty }, set: { if !$0 { settings.notice = "" } })) {
+            .alert("Debloated TV", isPresented: Binding(get: { !settings.notice.isEmpty }, set: { if !$0 { settings.notice = "" } })) {
                 Button("OK") { settings.notice = "" }
             } message: { Text(settings.notice) }
         }

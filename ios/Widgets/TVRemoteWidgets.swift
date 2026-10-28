@@ -56,7 +56,7 @@ struct RemoteWidgetView: View {
     let entry: RemoteEntry
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("TV Remote").font(.caption.weight(.semibold)).foregroundStyle(.white.opacity(0.7))
+            Text("Debloated TV").font(.caption.weight(.semibold)).foregroundStyle(.white.opacity(0.7))
             Grid(horizontalSpacing: 8, verticalSpacing: 8) {
                 GridRow { control(entry.configuration.first); control(entry.configuration.second) }
                 GridRow { control(entry.configuration.third); control(entry.configuration.fourth) }

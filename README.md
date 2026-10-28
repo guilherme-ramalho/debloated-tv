@@ -1,4 +1,4 @@
-# TV Remote — Quiet Signal
+# Debloated TV
 
 A personal native SwiftUI remote for Android TV, developed against a TCL Smart TV Pro running Android 11.
 
@@ -6,7 +6,7 @@ The iPhone connects directly to Android TV Remote Service v2 on the local networ
 
 ## Development branch: mobile expansion
 
-`feature/personalization-and-actions` contains the next mobile version (build 14). TV installation and live testing are deliberately deferred until the TV is available. The accepted baseline is build 11 on `main`.
+`feature/personalization-and-actions` contains the next mobile version (build 15). TV installation and live testing are deliberately deferred until the TV is available. The accepted baseline is build 11 on `main`.
 
 | Area | Implemented on iPhone | TV requirements / remaining validation |
 | --- | --- | --- |
@@ -81,6 +81,12 @@ There is no viewing-history storage, screenshot scanning, notification access, a
 
 Do not commit private keys, pairing state, device logs, build products, or provisioning profiles. The included `.gitignore` excludes these common artifacts.
 
+## Beta identity
+
+App Store name: **Debloated TV**. Subtitle: **Android TV Remote & Control**. Home Screen name: **Debloated**. Bundle identifiers and existing pairing storage remain unchanged. Build 15 includes the approved flat Android robot peeking above the TV’s left corner, and a static launch screen containing the mark, name and subtitle. There is no onboarding button or artificial launch delay.
+
+Manual App Store Connect setup and upload steps are in [docs/testflight.md](docs/testflight.md). No App Store record or TestFlight upload has been created by this work.
+
 ## References and assets
 
 - [Android TV Remote v2 protocol reference](https://github.com/tronikos/androidtvremote2)
@@ -90,3 +96,5 @@ Do not commit private keys, pairing state, device logs, build products, or provi
 - HBO Max logo: [official brand portal](https://brand.hbomax.com/logos).
 
 Streaming marks belong to their respective owners. This personal project is not affiliated with those services, Apple, Google, or TCL. AirPlay, photo sharing, voice dictation, and automatic device discovery are not implemented. Keyboard input is implemented on this development branch, with TV compatibility testing pending.
+
+The Android robot is reproduced or modified from work created and shared by Google and used according to terms described in the [Creative Commons 3.0 Attribution License](https://creativecommons.org/licenses/by/3.0/). The same attribution is available under Settings → Artwork credits in the app.
