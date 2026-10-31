@@ -272,7 +272,7 @@ struct SettingsView: View {
                 }
                 QuietSectionTitle(title: "Performance")
                 QuietCard { QuietRow(title: "No background TV companion", detail: "Home customization connects only while you edit.", symbol: "leaf", chevron: false) }
-                Button("Artwork credits") { credits = true }.font(.footnote).foregroundStyle(QuietTheme.muted).frame(minHeight: 44)
+                Button("Credits & licenses") { credits = true }.font(.footnote).foregroundStyle(QuietTheme.muted).frame(minHeight: 44)
                     .sheet(isPresented: $credits) {
                         NavigationStack {
                             QuietPage {
@@ -282,8 +282,15 @@ struct SettingsView: View {
                                 Text("The Android robot is reproduced or modified from work created and shared by Google and used according to terms described in the Creative Commons 3.0 Attribution License.").font(.footnote)
                                 Link("Creative Commons Attribution 3.0", destination: URL(string: "https://creativecommons.org/licenses/by/3.0/")!)
                                 QuietCaption(text: "Android is a trademark of Google LLC. Debloated TV is an independent app.")
-                                Link("Streaming logo sources", destination: URL(string: "https://github.com/guilherme-ramalho/custom-tv-remote#references-and-assets")!)
-                            }.quietNavigation("Artwork credits").toolbar { Button("Done") { credits = false } }
+                                Link("Streaming logo sources", destination: URL(string: "https://github.com/guilherme-ramalho/debloated-tv#references-and-assets")!)
+                                QuietSectionTitle(title: "cleanyourtv")
+                                Text("The TV Home screen this app installs and the tested per-TV app lists come from cleanyourtv by Gathin, used under the MIT License.").font(.footnote)
+                                Link("github.com/Gathin23/cleanyourtv", destination: URL(string: "https://github.com/Gathin23/cleanyourtv")!)
+                                if let url = Bundle.main.url(forResource: "LICENSE-cleanyourtv", withExtension: "txt", subdirectory: "Launcher"),
+                                   let license = try? String(contentsOf: url, encoding: .utf8) {
+                                    Text(license).font(.system(size: 11, design: .monospaced)).foregroundStyle(QuietTheme.muted).textSelection(.enabled)
+                                }
+                            }.quietNavigation("Credits & licenses").toolbar { Button("Done") { credits = false } }
                         }.presentationDetents([.medium, .large])
                     }
             }.toolbar(.hidden, for: .navigationBar)
