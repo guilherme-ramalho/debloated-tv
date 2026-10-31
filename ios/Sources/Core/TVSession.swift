@@ -22,6 +22,9 @@ public final class TVSession {
         case error(String)
     }
     public var event: ((Event) -> Void)?
+    /// When the TV last sent anything (it pings every few seconds). Lets the app spot a socket that died while the
+    /// phone slept but has not reported it yet.
+    public private(set) var lastInbound = Date.distantPast
     private let host: String
     private let identity: ClientIdentity
     private var channel: TVConnection?
@@ -57,6 +60,7 @@ public final class TVSession {
         } }
         connection.frame = { [weak self] frame in DispatchQueue.main.async {
             guard let self, token == self.currentGeneration else { return }
+            self.lastInbound = Date()
             do { try self.receive(frame) } catch { self.event?(.error(error.localizedDescription)); self.disconnect() }
         } }
         connection.failed = { [weak self] reason in DispatchQueue.main.async {

@@ -47,7 +47,7 @@ import ImageIO
         update { settings in
             settings.tvInputs = snapshot.inputs; settings.editorHost = host
             settings.apps = snapshot.apps.map { item in
-                var item = item; item.logo = RemoteApp.known.first(where: { $0.id == item.id })?.logo; return item
+                var item = item; let known = RemoteApp.known.first(where: { $0.id == item.id }); item.logo = known?.logo; item.launchURL = known?.launchURL ?? item.launchURL; return item
             }
         }
     }
@@ -82,6 +82,43 @@ import ImageIO
         guard let encoded else { throw RemoteFailure.message("Could not fit this wallpaper within 1 MB") }
         let id = "photo-" + UUID().uuidString
         try encoded.write(to: photoURL(id)!, options: .atomic)
+        return id
+    }
+    /// The uncropped photo a wallpaper was made from, kept on this iPhone only so the framing can be changed later.
+    func sourceURL(_ id: String) -> URL? { HomeLayout.validPhoto(id) ? directory.appendingPathComponent(id + "-source.jpg") : nil }
+    /// The photo to frame for this wallpaper: its saved original, or the wallpaper itself for older ones.
+    func framingSource(_ id: String) -> UIImage? {
+        if let url = sourceURL(id), let image = UIImage(contentsOfFile: url.path) { return image }
+        return photoURL(id).flatMap { UIImage(contentsOfFile: $0.path) }
+    }
+    /// Loads a picked photo for framing: upright and at most 2560 px, enough detail to zoom in.
+    static func framingImage(_ data: Data) throws -> UIImage {
+        guard data.count <= 40_000_000, let source = CGImageSourceCreateWithData(data as CFData, nil),
+              let image = CGImageSourceCreateThumbnailAtIndex(source, 0, [kCGImageSourceCreateThumbnailFromImageAlways: true,
+                    kCGImageSourceThumbnailMaxPixelSize: 2560, kCGImageSourceCreateThumbnailWithTransform: true] as CFDictionary) else {
+            throw RemoteFailure.message("Choose a supported image under 40 MB")
+        }
+        return UIImage(cgImage: image)
+    }
+    /// Saves the framed part of `source` (a rect in its pixels) as a new 16:9 wallpaper, keeping the original for
+    /// later changes. Returns the new wallpaper ID.
+    func saveFramedPhoto(_ source: UIImage, crop: CGRect) throws -> String {
+        guard let cg = source.cgImage, let part = cg.cropping(to: crop.integral.intersection(CGRect(x: 0, y: 0, width: cg.width, height: cg.height))) else {
+            throw RemoteFailure.message("Could not frame this photo")
+        }
+        let size = CGSize(width: 1920, height: 1080)
+        let format = UIGraphicsImageRendererFormat(); format.scale = 1; format.opaque = true
+        let framed = UIGraphicsImageRenderer(size: size, format: format).image { _ in
+            UIImage(cgImage: part).draw(in: CGRect(origin: .zero, size: size))
+        }
+        var encoded: Data?
+        for quality in [0.85, 0.7, 0.55, 0.4] {
+            if let data = framed.jpegData(compressionQuality: quality), data.count <= 1_000_000 { encoded = data; break }
+        }
+        guard let encoded, let original = source.jpegData(compressionQuality: 0.85) else { throw RemoteFailure.message("Could not fit this wallpaper within 1 MB") }
+        let id = "photo-" + UUID().uuidString
+        try encoded.write(to: photoURL(id)!, options: .atomic)
+        try original.write(to: sourceURL(id)!, options: .atomic)
         return id
     }
     @discardableResult func backup(name: String? = nil) throws -> HomeBackup {

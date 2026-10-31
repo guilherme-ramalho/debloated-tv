@@ -1,20 +1,27 @@
 # Launcher editor: mobile contract, TV implementation pending
 
-This branch implements only the iPhone client. No TV adapter, Android permission changes, or background service is installed. Normal navigation and foreground-app identity continue to use Android TV Remote Service v2 directly.
+Version 2. The iPhone side lives in `ios/Sources/Core/LauncherClient.swift` and `ios/Sources/App/HomeEditor.swift`; the TV side lives in the launcher (`Editor*.java` in com.gathin.tvhome). Normal navigation and foreground-app identity keep using Android TV Remote Service v2 directly.
 
-## Intended lifecycle
+## No second pairing
 
-An explicit Connect editor / Pair TV Home action opens the launcher with `tvhome://phone-edit` / `tvhome://phone-setup`. A future launcher update must implement those links and expose its editing endpoint only for the editing session. iPhone closes the connection when its tab changes, its TV changes, or the app backgrounds. The TV must independently expire its listener and code; a disconnected phone must not leave an indefinite editing server. These are backend acceptance requirements, not capabilities implemented by the mobile client.
+The editor reuses the trust the remote already has. Opening a session briefly starts an invisible activity on the TV, which some streaming apps treat as an interruption, so the phone opens one by itself only when the remote reports Home (`com.gathin.tvhome`) in front. With any other app or input in front it asks first (the remote reports the app, not whether it is playing). In standby it waits. To open a session, the phone:
 
-Use TLS on TCP 9764 with mutual certificate authentication. Pairing temporarily accepts an unpinned certificate only during explicit setup. Display a short-lived single-use code on the TV, verify the RSA code proof bound to both devices’ keys, then persist the authorized iPhone certificate. The phone stores the TV SHA-256 certificate fingerprint under a separate Keychain service, `PersonalTVRemote.HomeEditorPin.v1`. Existing navigation pairing is separate. Implement attempt limits, code expiry, and explicit revocation on the TV. Never expose this endpoint to the internet.
+1. Creates a fresh random 32-byte key.
+2. Sends `tvhome://phone-edit?k=<base64url key, no padding>` as an app link through the paired remote connection. Only a phone paired with the TV's remote service can deliver it. The launcher's `EditorLinkActivity` (Theme.NoDisplay, finishes at once) starts `EditorServer` with that key.
+3. Connects over plain TCP to port 9764, retrying for up to 10 seconds while the listener starts. Before sending the link it checks the remote connection has heard from the TV in the last 12 seconds (the TV pings every few seconds) and reconnects the remote first if not, since a socket can die silently while the phone sleeps. Up to three tries, each with a fresh key; a session that drops while the TV tab is open reconnects by itself (at most three times a minute).
 
-## Framing and envelopes
+The TV listens only until one phone proves the key. It serves that phone and closes when the phone disconnects, after 45 seconds without a frame, or after 20 minutes. It also closes after 30 seconds if no phone connects, or after 3 failed attempts. A key is never accepted twice; leaving and reopening the tab sends a new link. Nothing runs on the TV outside a session.
 
-Each TLS application message is unsigned-varint length + UTF-8 JSON. The editor frame limit is 4 MiB; the remote-control decoder retains its existing 64 KiB limit. Wallpaper JPEGs are limited to 1,000,000 bytes before base64 encoding. The phone sends a keepalive ping every 15 seconds only during an editing session.
+## Framing and encryption
 
-Pairing messages: phone `{"type":"pair"}`, TV `{"type":"code"}`, phone `{"type":"proof","proof":"BASE64"}`, TV `{"type":"paired"}` only after proof verification and client authorization. Proof uses the existing Android TV RSA pairing construction, not the literal code.
+Each message is unsigned-varint length + bytes; the editor frame limit is 4 MiB.
 
-Requests use a fresh UUID and have a 20-second timeout:
+- Phone → TV: `"TVH2"` + 16-byte phone nonce + 8-byte key ID (HKDF-SHA256(key, no salt, `tvhome-editor v2 key-id`, 8 bytes)). A listener started for a different key closes the connection at once without counting a failed attempt; the phone retries for up to 10 seconds, so a listener left over from an earlier link cannot turn a newer key away. TV → phone: `"TVH2"` + 16-byte TV nonce.
+- Keys: HKDF-SHA256(key, salt = phone nonce + TV nonce, info = `tvhome-editor v2 phone-to-tv` or `tvhome-editor v2 tv-to-phone`, 32 bytes).
+- Every later frame is AES-256-GCM `nonce(12) + ciphertext + tag(16)`. The nonce is 4 zero bytes + a big-endian counter starting at 0 in each direction. Frames must arrive in order; anything that fails to open ends the session. The first frame that opens proves the key.
+- `EditorTest` (launcher) and `EditorCipherTests` (iPhone) check the same known-answer vector.
+
+Plaintext is UTF-8 JSON. Requests use a fresh UUID and have a 20-second timeout:
 
 ```json
 {"type":"request","id":"UUID","operation":"snapshot","payload":{}}
@@ -24,22 +31,22 @@ Requests use a fresh UUID and have a 20-second timeout:
 {"type":"response","id":"UUID","ok":true,"result":{}}
 ```
 
-Failures: `{"type":"response","id":"UUID","ok":false,"error":"Readable reason"}`. Keepalive: `{"type":"ping"}` / `{"type":"pong"}`. Unknown/malformed responses terminate the editing session. The client never automatically retries mutations. If a response is lost, refresh before deciding whether to repeat a change.
+Failures: `{"type":"response","id":"UUID","ok":false,"error":"Readable reason"}`. Keepalive: `{"type":"ping"}` / `{"type":"pong"}` every 15 seconds during a session. The client never automatically retries mutations. If a response is lost, refresh before deciding whether to repeat a change.
 
 ## Snapshot and operations
 
 `LauncherSnapshot` in `ios/Sources/Core/Preferences.swift` is the Codable wire schema. A snapshot contains `revision`, `layout`, `apps`, `inputs`, optional `sleepDeadline` (Unix seconds), and optional base64 `wallpaperJPEG`.
 
-- `layout`: `dockCount` (1–7), package-ID `order`, `hidden`, and `wallpaper` (`quiet-night`, `aurora`, `dusk`, or `photo-UUID`). Hidden apps do not consume dock slots.
+- `layout`: `dockCount` (1–7), package-ID `order`, `hidden`, and `wallpaper` (`quiet-night`, `aurora`, `dusk`, or `photo-UUID`). Hidden apps do not consume dock slots. On the TV the three presets are drawn as a gradient behind Home (EditorBackground) with no picture in memory. A photo is centre-cropped to 1280×720 on the phone before sending, so Home holds about 1.8 MB for it in RGB_565, and Home releases it under memory pressure while it is in the background (WallpaperPlayer.trim).
 - `apps`: up to 200 objects with `id`, `name`, `launchURL`, optional `logo`, optional `installed`, and `system`. Derive installed/system flags from Android package data. Return launch intents that target that app; validate all incoming package IDs independently.
 - `inputs`: up to 40 objects with stable `id`, readable `name`, and real `launchURL`. Never infer HDMI ports from PS5/Switch labels.
 - `snapshot`: no mutation; return the current snapshot and wallpaper bytes when a photo layout is active.
 - `applyLayout`: payload `expectedRevision`, `layout`, optional `wallpaperJPEG`. Reject stale revisions, invalid images, invalid package IDs, invalid bounds and unsupported presets. Write atomically, then return the actual new snapshot. Photo UUIDs refer to the supplied image; persist the new asset before changing layout.
 - `uninstall`: payload `package`. Reject system/protected packages and the launcher/helpers. Open Android’s uninstall confirmation. Return `{"status":"confirmationRequired"}`; this is not an uninstall-success response. Refresh package data after the TV activity returns.
-- `sleepTimer`: payload `minutes` (1–240, or 0 to cancel). Persist and schedule an actual TV-owned timer, then return a snapshot containing the confirmed deadline. Define reboot behavior on the TV. If supported permissions cannot execute it reliably, reject the operation; never claim success for a phone-only timer.
+- `sleepTimer`: payload `minutes` (1–240, or 0 to cancel). Persist and schedule an actual TV-owned timer, then return a snapshot containing the confirmed deadline. Define reboot behavior on the TV. If supported permissions cannot execute it reliably, reject the operation; never claim success for a phone-only timer. The current launcher rejects it: an ordinary app cannot switch the TV off.
 
 Android must enforce these checks even if a modified client skips them. The adapter belongs inside the existing launcher, on demand; it must not reintroduce the removed playback-title companion or continuously poll media state.
 
 ## Deferred acceptance checks
 
-With the TV available: implement the adapter; verify setup/code expiry/certificate pinning; apply and restore a draft including photos; reject stale revision without losing layout; confirm hide versus actual uninstall; sync and launch real inputs; verify a timer after iPhone disconnects; verify listener shutdown and baseline volume/shortcuts/weather/wake. Test keyboard, Siri, saved actions, widgets and Control Center on the physical iPhone. No TV-backed feature should be marked complete until its actual result is observed.
+With the TV available: implement the adapter; verify the link starts a session, a wrong key is refused and the listener closes after the session; apply and restore a draft including photos; reject stale revision without losing layout; confirm hide versus actual uninstall; sync and launch real inputs; verify a timer after iPhone disconnects; verify listener shutdown and baseline volume/shortcuts/weather/wake. Test keyboard, Siri, saved actions, widgets and Control Center on the physical iPhone. No TV-backed feature should be marked complete until its actual result is observed.

@@ -208,6 +208,27 @@ import Security
     }
     private func releaseAll() { for key in Array(pressed) { release(key) } }
     func launch(_ url: String) { if ready { session?.launch(url) } }
+    /// True when the remote is connected and the TV has spoken recently. After the phone sleeps, a dead socket can
+    /// still look connected for a while; the TV pings every few seconds, so silence means it no longer hears us.
+    var remoteLooksAlive: Bool {
+        guard ready, let session else { return false }
+        return Date().timeIntervalSince(session.lastInbound) < 12
+    }
+    /// Reconnects the remote first if it went quiet (up to 10 s). False if it still isn't answering.
+    func freshen() async -> Bool {
+        if remoteLooksAlive { return true }
+        attempt = 0; connect()
+        for _ in 0..<40 {
+            try? await Task.sleep(nanoseconds: 250_000_000)
+            if remoteLooksAlive { return true }
+        }
+        return false
+    }
+    /// Sends an app link through the paired remote connection and waits until it is written (TV Home editor key).
+    func sendLink(_ url: String) async throws {
+        guard ready, let session else { throw RemoteFailure.message("Connect the TV first") }
+        try await session.writeLaunch(url)
+    }
 
     var currentAppName: String? {
         guard ready, powerOn != false else { return nil }

@@ -27,7 +27,6 @@ import SwiftUI
                 else if value == .background { model.deactivate(); editor.close(); actions.cancel() }
             }
             .sheet(isPresented: $model.showingPIN) { TVPairingView(model: model) }
-            .sheet(isPresented: $editor.showingPIN) { EditorPairingView().environmentObject(editor) }
             .alert("Debloated TV", isPresented: Binding(get: { !settings.notice.isEmpty }, set: { if !$0 { settings.notice = "" } })) {
                 Button("OK") { settings.notice = "" }
             } message: { Text(settings.notice) }

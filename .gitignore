@@ -19,3 +19,8 @@ DerivedData/
 .env
 .env.*
 !*.example
+
+# TV launcher tools: local Python environment and the ADB private key never leave this Mac
+tv-launcher/tools/venv/
+tv-launcher/tools/adbkey/
+__pycache__/
