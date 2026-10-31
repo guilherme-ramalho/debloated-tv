@@ -248,6 +248,12 @@ struct SettingsView: View {
                     Divider().overlay(QuietTheme.edge)
                     NavigationLink { BackupsView() } label: { QuietRow(title: "Backup & restore", detail: "Launcher layouts and wallpaper", symbol: "archivebox") }
                 }.buttonStyle(.plain)
+                QuietSectionTitle(title: "TV setup")
+                QuietCard {
+                    NavigationLink { DebloatSetupView(host: model.host) } label: { QuietRow(title: "Debloat & new Home", detail: "Guided setup over network debugging, no computer", symbol: "wand.and.stars") }
+                    Divider().overlay(QuietTheme.edge)
+                    NavigationLink { UndoSetupView(defaultHost: model.host) } label: { QuietRow(title: "Undo TV setup", detail: "Restore from a saved recovery record", symbol: "arrow.uturn.backward") }
+                }.buttonStyle(.plain)
                 QuietSectionTitle(title: "Remote preferences")
                 QuietCard {
                     Toggle(isOn: settings.binding(\.haptics)) {
@@ -306,7 +312,7 @@ struct ConnectionView: View {
                     Label("Pairing saved", systemImage: "checkmark.shield")
                     Button("Reconnect", systemImage: "arrow.clockwise") { model.connect() }.disabled(model.preparing || model.showingPIN)
                 } else {
-                    Button("Pair TV", systemImage: "tv") { if model.saveHost(address) { dismiss(); model.beginPairing() } }.disabled(model.preparing)
+                    Button("Pair TV", systemImage: "tv") { if model.saveHost(address) { model.beginPairing() } }.disabled(model.preparing)
                 }
             } header: { Text("Connection") } footer: {
                 Text(model.hasSavedPairing ? "Reconnecting uses the saved authorization. A code is not needed." : "Pair once while the TV is on, using the code displayed on it.")
@@ -335,7 +341,7 @@ struct ConnectionView: View {
                 }.listRowBackground(QuietTheme.panel)
 }.remoteForm().navigationTitle("Connection").onAppear { address = model.host }.onDisappear { check?.cancel() }
             .confirmationDialog("Pair this phone again?", isPresented: $repairPairing, titleVisibility: .visible) {
-                Button("Show code on TV") { if model.saveHost(address) { dismiss(); model.beginPairing() } }
+                Button("Show code on TV") { if model.saveHost(address) { model.beginPairing() } }
             } message: { Text("Keep the TV on. Your saved pairing is replaced only after a new code is accepted.") }
     }
 }

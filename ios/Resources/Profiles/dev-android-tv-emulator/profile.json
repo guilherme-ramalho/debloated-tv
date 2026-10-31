@@ -1,0 +1,11 @@
+{
+  "id": "dev-android-tv-emulator",
+  "name": "Android TV emulator (development only)",
+  "source": "A handful of harmless preloads, to exercise the flow on the emulator. Shown in debug builds only.",
+  "developmentOnly": true,
+  "match": { "ro.product.model": ["sdk_google_atv64_arm64", "sdk_google_atv_arm64", "sdk_google_atv_x86"] },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": { "homeKeyService": false, "inputKeyService": false, "restoreKeyServices": false },
+  "dockCandidates": ["com.google.android.youtube.tv", "com.google.android.youtube.tvmusic"],
+  "theme": { "columns": 5 }
+}

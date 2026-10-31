@@ -1,0 +1,11 @@
+# Android TV emulator: development only. Harmless preloads that let the flow disable and restore something real.
+# Never disable: com.google.android.tv.remote.service com.google.android.gms com.android.vending
+
+# 1. Feedback and partner setup
+com.google.android.feedback
+com.google.android.partnersetup
+
+# 2. Recommendations and extras
+com.google.android.tvrecommendations
+com.google.android.marvin.talkback
+com.google.android.play.games

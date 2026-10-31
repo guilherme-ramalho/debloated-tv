@@ -26,7 +26,7 @@ import SwiftUI
                 if value == .active { model.activate(); if selection == 1 { editor.autoConnect(model: model) } }
                 else if value == .background { model.deactivate(); editor.close(); actions.cancel() }
             }
-            .sheet(isPresented: $model.showingPIN) { TVPairingView(model: model) }
+            .sheet(isPresented: Binding(get: { model.pairing }, set: { if !$0 { model.cancelPairing() } })) { TVPairingView(model: model) }
             .alert("Debloated TV", isPresented: Binding(get: { !settings.notice.isEmpty }, set: { if !$0 { settings.notice = "" } })) {
                 Button("OK") { settings.notice = "" }
             } message: { Text(settings.notice) }

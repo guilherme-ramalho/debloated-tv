@@ -24,3 +24,21 @@ DerivedData/
 tv-launcher/tools/venv/
 tv-launcher/tools/adbkey/
 __pycache__/
+
+# Built by scripts/bundle-launcher.sh
+ios/Resources/Launcher/*.apk
+
+# Local scratch and tool output
+*.xcresult
+*.hprof
+captures/
+.cxx/
+.idea/
+.vscode/
+*.orig
+*.rej
+*.tmp
+tmp/
+_old-*/
+# Exported recovery records hold a TV's address and state: keep them out of git
+recovery-*.json

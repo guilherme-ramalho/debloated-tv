@@ -16,7 +16,8 @@ import Security
     private var identity: ClientIdentity?
     private var session: TVSession?
     private var active = false
-    private var pairing = false
+    /// True from "Pair TV" until the code is accepted or pairing is cancelled; drives the pairing sheet.
+    @Published private(set) var pairing = false
     private var attempt = 0
     private var retry: DispatchWorkItem?
     private var token = 0
@@ -64,6 +65,10 @@ import Security
 
     @discardableResult func saveHost(_ value: String) -> Bool {
         let value = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        if value.contains(":") {
+            error = "Enter only the IP here, without a port. The remote always uses the TV’s own ports; a port like :15555 is only for Settings › Debloat & new Home."
+            return false
+        }
         let parts = value.split(separator: ".", omittingEmptySubsequences: false)
         guard parts.count == 4, parts.allSatisfy({ Int($0).map { (0...255).contains($0) } ?? false }) else {
             error = "Enter the TV’s IPv4 address, for example 192.168.1.100"; return false
