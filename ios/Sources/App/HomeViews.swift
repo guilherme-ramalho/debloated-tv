@@ -99,6 +99,7 @@ struct EditorConnectionView: View {
             }
             if !model.ready { Text("TV unavailable. Local drafts remain editable.").font(.caption).foregroundStyle(.secondary) }
         }
+        .onAppear { editor.autoConnect(model: model) }
         .task(id: tvState) { editor.autoConnect(model: model) }
     }
 }

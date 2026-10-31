@@ -19,11 +19,11 @@ import SwiftUI
             .preferredColorScheme(.dark).tint(.white)
             .task { model.setAutoReconnect(settings.value.autoReconnect); if phase == .active { model.activate() } }
             .onChange(of: settings.value.autoReconnect) { _, value in model.setAutoReconnect(value) }
-            .onChange(of: selection) { _, _ in editor.close() }
+            .onChange(of: selection) { _, tab in if tab == 1 { editor.autoConnect(model: model) } }
             .onChange(of: model.host) { _, _ in editor.close() }
             .onChange(of: editor.snapshot?.revision) { _, _ in if let snapshot = editor.snapshot { settings.merge(snapshot, host: model.host) } }
             .onChange(of: phase) { _, value in
-                if value == .active { model.activate() }
+                if value == .active { model.activate(); if selection == 1 { editor.autoConnect(model: model) } }
                 else if value == .background { model.deactivate(); editor.close(); actions.cancel() }
             }
             .sheet(isPresented: $model.showingPIN) { TVPairingView(model: model) }

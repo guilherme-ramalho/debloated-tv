@@ -24,6 +24,7 @@ import UniformTypeIdentifiers
     func close() {
         generation += 1; wanted = false; snapshot = nil; operation?.cancel(); operation = nil; client.close()
         ready = false; busy = false; waitingFor = nil
+        message = "TV Home connects when you open the TV tab with the TV on."
     }
 
     /// Called whenever the TV's state changes while the TV tab is visible.
