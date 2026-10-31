@@ -11,7 +11,7 @@ public final class TVConnection {
     public private(set) var peerCertificate: SecCertificate?
     private let queue = DispatchQueue(label: "tvremote.transport", qos: .userInitiated)
     private var connection: NWConnection?
-    private var decoder = FrameDecoder()
+    private var decoder: FrameDecoder
     private var closed = false
     private var tlsReady = false
     private var validationFailure: String?
@@ -21,9 +21,10 @@ public final class TVConnection {
     private let pin: Data?
     private let allowUnpaired: Bool
 
-    public init(host: String, port: UInt16, identity: ClientIdentity, pin: Data?, allowUnpaired: Bool = false) {
+    public init(host: String, port: UInt16, identity: ClientIdentity, pin: Data?, allowUnpaired: Bool = false, maxFrameSize: Int = 65536) {
         self.host = host; self.port = port; self.identity = identity
         self.pin = pin; self.allowUnpaired = allowUnpaired
+        decoder = FrameDecoder(maxFrameSize: maxFrameSize)
     }
 
     public func start() {
@@ -90,6 +91,19 @@ public final class TVConnection {
             self.connection?.send(content: data, completion: .contentProcessed { [weak self] error in
                 if error != nil { self?.fail("TV connection was interrupted") }
             })
+        }
+    }
+
+    public func write(_ payload: Data) async throws {
+        try await withCheckedThrowingContinuation { (result: CheckedContinuation<Void, Error>) in
+            queue.async { [weak self] in
+                guard let self, !self.closed, self.tlsReady, let connection = self.connection else {
+                    result.resume(throwing: RemoteFailure.message("TV connection is not ready")); return
+                }
+                connection.send(content: Wire.varint(UInt64(payload.count)) + payload, completion: .contentProcessed { error in
+                    if let error { result.resume(throwing: error) } else { result.resume() }
+                })
+            }
         }
     }
 

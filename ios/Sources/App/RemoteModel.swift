@@ -5,6 +5,7 @@ import Security
     @Published var host = UserDefaults.standard.string(forKey: "tvHost") ?? "192.168.1.100"
     @Published var status = "Preparing secure pairing…"
     @Published var ready = false
+    @Published private(set) var hasSavedPairing = false
     @Published var preparing = true
     @Published var showingPIN = false
     @Published var error = ""
@@ -15,7 +16,8 @@ import Security
     private var identity: ClientIdentity?
     private var session: TVSession?
     private var active = false
-    private var pairing = false
+    /// True from "Pair TV" until the code is accepted or pairing is cancelled; drives the pairing sheet.
+    @Published private(set) var pairing = false
     private var attempt = 0
     private var retry: DispatchWorkItem?
     private var token = 0
@@ -24,10 +26,16 @@ import Security
     private var wakeTimeout: DispatchWorkItem?
     private var wakeSend: DispatchWorkItem?
     private static let pinService = "PersonalTVRemote.TVPin.v1"
+    private var autoReconnect = true
+    func setAutoReconnect(_ value: Bool) { autoReconnect = value; if !value { retry?.cancel(); retry = nil } }
+    func sendText(_ text: String) async throws {
+        guard ready, let session else { throw RemoteFailure.message("Connect the TV before sending text") }
+        try await session.writeText(text)
+    }
 
     func activate() {
         guard !active else { return }
-        active = true
+        active = true; hasSavedPairing = pin() != nil
         if identity == nil && preparing {
             DispatchQueue.global(qos: .userInitiated).async {
                 let result = Result { try ClientIdentity.loadOrCreate() }
@@ -57,13 +65,17 @@ import Security
 
     @discardableResult func saveHost(_ value: String) -> Bool {
         let value = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        if value.contains(":") {
+            error = "Enter only the IP here, without a port. The remote always uses the TV’s own ports; a port like :15555 is only for Settings › Debloat & new Home."
+            return false
+        }
         let parts = value.split(separator: ".", omittingEmptySubsequences: false)
         guard parts.count == 4, parts.allSatisfy({ Int($0).map { (0...255).contains($0) } ?? false }) else {
             error = "Enter the TV’s IPv4 address, for example 192.168.1.100"; return false
         }
         deactivate()
         host = value; UserDefaults.standard.set(value, forKey: "tvHost")
-        foregroundPackage = ""; attempt = 0; active = true; connect(); return true
+        foregroundPackage = ""; attempt = 0; active = true; hasSavedPairing = pin() != nil; connect(); return true
     }
 
     private func pin() -> Data? {
@@ -82,6 +94,7 @@ import Security
         var status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
         if status == errSecItemNotFound { status = SecItemAdd(query.merging(attributes) { _, new in new } as CFDictionary, nil) }
         guard status == errSecSuccess else { throw RemoteFailure.message("Could not save TV pairing (\(status))") }
+        hasSavedPairing = true
     }
 
     private func newSession() -> TVSession? {
@@ -126,12 +139,13 @@ import Security
 
     func connect() {
         guard active && !pairing && !preparing else { return }
-        guard let pin = pin() else { status = "Pair your TV to get started"; ready = false; return }
+        guard let pin = pin() else { hasSavedPairing = false; status = "Pair your TV to get started"; ready = false; return }
+        hasSavedPairing = true
         status = waking ? "Waking TV…" : "Connecting…"
         newSession()?.connect(pin: pin)
     }
     private func scheduleReconnect() {
-        guard active && !pairing else { return }
+        guard active && !pairing && autoReconnect else { return }
         retry?.cancel()
         let delay = min(15.0, pow(2.0, Double(min(attempt, 4))))
         attempt += 1
@@ -199,6 +213,27 @@ import Security
     }
     private func releaseAll() { for key in Array(pressed) { release(key) } }
     func launch(_ url: String) { if ready { session?.launch(url) } }
+    /// True when the remote is connected and the TV has spoken recently. After the phone sleeps, a dead socket can
+    /// still look connected for a while; the TV pings every few seconds, so silence means it no longer hears us.
+    var remoteLooksAlive: Bool {
+        guard ready, let session else { return false }
+        return Date().timeIntervalSince(session.lastInbound) < 12
+    }
+    /// Reconnects the remote first if it went quiet (up to 10 s). False if it still isn't answering.
+    func freshen() async -> Bool {
+        if remoteLooksAlive { return true }
+        attempt = 0; connect()
+        for _ in 0..<40 {
+            try? await Task.sleep(nanoseconds: 250_000_000)
+            if remoteLooksAlive { return true }
+        }
+        return false
+    }
+    /// Sends an app link through the paired remote connection and waits until it is written (TV Home editor key).
+    func sendLink(_ url: String) async throws {
+        guard ready, let session else { throw RemoteFailure.message("Connect the TV first") }
+        try await session.writeLaunch(url)
+    }
 
     var currentAppName: String? {
         guard ready, powerOn != false else { return nil }

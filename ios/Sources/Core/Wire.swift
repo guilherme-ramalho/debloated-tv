@@ -70,9 +70,10 @@ public enum Wire {
 /// Handles split length prefixes, fragmented messages, and several messages in one TCP read.
 public struct FrameDecoder {
     private var buffer = Data()
-    public init() {}
+    private let maximum: Int
+    public init(maxFrameSize: Int = 65536) { maximum = min(4_194_304, max(1, maxFrameSize)) }
     public mutating func append(_ incoming: Data) throws -> [Data] {
-        guard buffer.count + incoming.count <= 131072 else { throw RemoteFailure.message("Protocol buffer limit exceeded") }
+        guard buffer.count + incoming.count <= maximum * 2 + 10 else { throw RemoteFailure.message("Protocol buffer limit exceeded") }
         buffer.append(incoming)
         var result = [Data]()
         while !buffer.isEmpty {
@@ -83,7 +84,7 @@ public struct FrameDecoder {
             }
             var offset = 0
             let size = try Wire.readVarint(bytes, &offset)
-            guard size > 0 && size <= 65536 else { throw RemoteFailure.message("Invalid frame size") }
+            guard size > 0 && size <= maximum else { throw RemoteFailure.message("Invalid frame size") }
             let prefix = last + 1
             guard buffer.count >= prefix + Int(size) else { break }
             result.append(Data(buffer.dropFirst(prefix).prefix(Int(size))))
@@ -95,7 +96,7 @@ public struct FrameDecoder {
 
 public enum TVKey: UInt64 {
     case home = 3, back = 4, up = 19, down = 20, left = 21, right = 22, select = 23
-    case volumeUp = 24, volumeDown = 25, power = 26, playPause = 85, mute = 164, settings = 176, inputs = 178
+    case volumeUp = 24, volumeDown = 25, power = 26, playPause = 85, play = 126, pause = 127, mute = 164, settings = 176, inputs = 178
 }
 
 /// Only an explicit wake action may survive reconnection, once and for at most 30 seconds.
@@ -108,5 +109,56 @@ public struct WakeRequest {
         defer { deadline = nil }
         guard !powerIsOn, deadline.map({ now < $0 }) ?? false else { return nil }
         return .power
+    }
+}
+
+extension TVKey {
+    /// Screen coordinates: right/down are positive. A short drag is not a swipe.
+    public static func swipeDirection(dx: Double, dy: Double) -> TVKey? {
+        guard dx.isFinite, dy.isFinite, max(abs(dx), abs(dy)) >= 28 else { return nil }
+        if abs(dx) > abs(dy) { return dx > 0 ? .right : .left }
+        return dy > 0 ? .down : .up
+    }
+}
+
+/// Delays the first navigation command until a touch becomes a tap, hold or swipe.
+/// Crossing the swipe threshold cancels the pending button so a swipe cannot also tap it.
+public struct PadInteraction {
+    public enum Command: Equatable { case tap(TVKey), press(TVKey), release(TVKey) }
+    private enum Phase { case idle, pending(TVKey?), holding(TVKey), swiping }
+    private var phase: Phase = .idle
+    public init() {}
+    public var isSwiping: Bool { if case .swiping = phase { return true }; return false }
+    public mutating func begin(key: TVKey?) -> [Command] {
+        let commands = cancel(); phase = .pending(key); return commands
+    }
+    public mutating func move(dx: Double, dy: Double) -> [Command] {
+        guard TVKey.swipeDirection(dx: dx, dy: dy) != nil else { return [] }
+        switch phase {
+        case .holding(let key): phase = .swiping; return [.release(key)]
+        case .pending: phase = .swiping
+        default: break
+        }
+        return []
+    }
+    public mutating func hold() -> [Command] {
+        guard case .pending(let key?) = phase else { return [] }
+        phase = .holding(key); return [.press(key)]
+    }
+    public mutating func end(dx: Double, dy: Double) -> [Command] {
+        defer { phase = .idle }
+        switch phase {
+        case .pending(let key):
+            if let direction = TVKey.swipeDirection(dx: dx, dy: dy) { return [.tap(direction)] }
+            return key.map { [.tap($0)] } ?? []
+        case .holding(let key): return [.release(key)]
+        case .swiping: return TVKey.swipeDirection(dx: dx, dy: dy).map { [.tap($0)] } ?? []
+        case .idle: return []
+        }
+    }
+    public mutating func cancel() -> [Command] {
+        defer { phase = .idle }
+        if case .holding(let key) = phase { return [.release(key)] }
+        return []
     }
 }
