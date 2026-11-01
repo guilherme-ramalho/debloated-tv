@@ -20,11 +20,18 @@ enum Pattern {
         return re.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)) != nil
     }
     static let package = "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z0-9_]+)+$"
-    static func isPackage(_ s: String) -> Bool { matches(package, s) }
+    private static let packageExpression = try! NSRegularExpression(pattern: package)
+    static func isPackage(_ s: String) -> Bool {
+        packageExpression.firstMatch(in: s, range: NSRange(s.startIndex..., in: s)) != nil
+    }
+    /// Package names from `pm list packages`. Only names made of letters, digits, `_` and `.` are kept (that includes
+    /// the framework, "android"), because they go back into shell commands (pm disable-user …): anything else never
+    /// reaches the TV's shell.
     static func packageNames(_ answer: String) -> Set<String> {
         Set(answer.split(separator: "\n").compactMap { line in
             line.hasPrefix("package:") ? String(line.dropFirst(8)).trimmingCharacters(in: .whitespaces).split(separator: " ").first.map(String.init) : nil
-        })
+        }.filter { name in name.utf8.allSatisfy { c in
+            (c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c == 95 || c == 46 } })
     }
 }
 

@@ -81,6 +81,8 @@ There is no viewing-history storage, screenshot scanning, notification access, a
 
 Do not commit private keys, pairing state, device logs, build products, or provisioning profiles. The included `.gitignore` excludes these common artifacts.
 
+To report a vulnerability, see [SECURITY.md](SECURITY.md).
+
 ## Beta identity
 
 App Store name: **Debloated TV**. Subtitle: **Android TV Remote & Control**. Home Screen name: **Debloated**. Bundle identifiers and existing pairing storage remain unchanged. Build 15 includes the approved flat Android robot peeking above the TV’s left corner, and a static launch screen containing the mark, name and subtitle. There is no onboarding button or artificial launch delay.

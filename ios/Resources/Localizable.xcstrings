@@ -19436,6 +19436,142 @@
           }
         }
       }
+    },
+    "Turn off network debugging now" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Netzwerk-Debugging jetzt ausschalten"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivar ahora la depuración por red"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactiver le débogage réseau maintenant"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disattiva ora il debug di rete"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativar a depuração de rede agora"
+          }
+        }
+      }
+    },
+    "Switches debugging off on the TV and checks it's closed. Removing this iPhone's approval still needs the TV's menu (step 1)." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schaltet das Debugging auf dem Fernseher aus und prüft, ob es geschlossen ist. Die Freigabe dieses iPhones entfernst du weiterhin im Menü des Fernsehers (Schritt 1)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactiva la depuración en la TV y comprueba que queda cerrada. Para quitar la autorización de este iPhone sigue haciendo falta el menú de la TV (paso 1)."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactive le débogage sur la TV et vérifie qu'il est fermé. Retirer l'autorisation de cet iPhone se fait toujours dans le menu de la TV (étape 1)."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disattiva il debug sulla TV e verifica che sia chiuso. Per togliere l'autorizzazione di questo iPhone serve ancora il menu della TV (passo 1)."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativa a depuração na TV e confirma que ela está fechada. Remover a autorização deste iPhone ainda exige o menu da TV (passo 1)."
+          }
+        }
+      }
+    },
+    "The TV is no longer connected. Turn debugging off in the TV's menus." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher ist nicht mehr verbunden. Schalte das Debugging im Menü des Fernsehers aus."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV ya no está conectada. Desactiva la depuración en los menús de la TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'est plus connectée. Désactivez le débogage dans les menus de la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non è più collegata. Disattiva il debug dai menu della TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não está mais conectada. Desative a depuração nos menus da TV."
+          }
+        }
+      }
+    },
+    "Pairing identity unavailable. Restart the app; if it persists, reinstall it." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopplungsidentität nicht verfügbar. Starte die App neu; wenn es so bleibt, installiere sie neu."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identidad de emparejamiento no disponible. Reinicia la app; si sigue igual, vuelve a instalarla."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identité d'appairage indisponible. Redémarrez l'app ; si le problème persiste, réinstallez-la."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identità di abbinamento non disponibile. Riavvia l'app; se il problema persiste, reinstallala."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identidade de pareamento indisponível. Reinicie o app; se continuar, reinstale-o."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

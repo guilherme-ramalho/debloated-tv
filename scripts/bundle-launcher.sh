@@ -14,3 +14,10 @@ cd "$ROOT/tv-launcher/launcher"
 ./gradlew -q --console=plain assembleRelease
 cp app/build/outputs/apk/release/app-release.apk "$ROOT/ios/Resources/Launcher/tvhome.apk"
 echo "Bundled $(du -h "$ROOT/ios/Resources/Launcher/tvhome.apk" | cut -f1) launcher into ios/Resources/Launcher/tvhome.apk"
+# Which key signed it: a TV only accepts an update signed with the same key as the launcher it already has.
+signer="$(ls -d "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -n 1 || true)"
+if [ -n "$signer" ]; then
+  dn="$("$signer" verify --print-certs "$ROOT/ios/Resources/Launcher/tvhome.apk" 2>/dev/null | sed -n 's/^Signer #1 certificate DN: //p' || true)"
+  echo "Signed by: $dn"
+  case "$dn" in *"Android Debug"*) echo "Note: debug key (no tvhomeStoreFile in ~/.gradle/gradle.properties). Fine for development; see docs/launcher-signing.md for releases." ;; esac
+fi

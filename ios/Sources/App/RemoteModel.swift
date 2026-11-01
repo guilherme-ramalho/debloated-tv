@@ -47,7 +47,9 @@ import Security
                     case .success(let identity):
                         self.identity = identity
                         if self.active { self.connect() }
-                    case .failure(let error): self.status = String(localized: "Pairing identity unavailable"); self.error = error.localizedDescription
+                    case .failure(let error):
+                        self.status = String(localized: "Pairing identity unavailable"); self.error = error.localizedDescription
+                        print("TVRemote: pairing identity unavailable: \(error)")
                     }
                 }
             }
@@ -172,6 +174,12 @@ import Security
     func beginPairing() {
         guard active && !preparing else { return }
         cancelWake()
+        // Without an identity (the Keychain refused to create or return it) there is nothing to pair with: say so
+        // instead of waiting for a code that can't come.
+        guard identity != nil else {
+            if error.isEmpty { error = String(localized: "Pairing identity unavailable. Restart the app; if it persists, reinstall it.") }
+            status = String(localized: "Pairing identity unavailable"); return
+        }
         pairing = true; showingPIN = false; error = ""; status = String(localized: "Showing a code on your TV…")
         newSession()?.pair()
     }

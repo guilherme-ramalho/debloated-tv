@@ -15,14 +15,29 @@ android {
         versionName '3.2'
     }
 
+    // Release key: read from Gradle properties kept outside the repository (~/.gradle/gradle.properties), never committed.
+    // Without them (contributors, CI) release builds fall back to the debug key, which can't update a launcher that was
+    // installed from a release-signed build. docs/launcher-signing.md has the setup.
+    def releaseStore = providers.gradleProperty('tvhomeStoreFile').getOrNull()
+    signingConfigs {
+        if (releaseStore != null) {
+            release {
+                storeFile file(releaseStore)
+                storePassword providers.gradleProperty('tvhomeStorePassword').get()
+                keyAlias providers.gradleProperty('tvhomeKeyAlias').get()
+                keyPassword providers.gradleProperty('tvhomeKeyPassword').get()
+            }
+        }
+    }
+
     buildTypes {
         release {
             // R8 strips and optimises the code (AndroidX included): smaller APK, faster start on a slow TV CPU.
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // Sideloaded over ADB, never published: sign with the debug key so it installs over a debug build.
-            signingConfig signingConfigs.debug
+            // Sideloaded over ADB by the iPhone app, never published to a store.
+            signingConfig releaseStore != null ? signingConfigs.release : signingConfigs.debug
         }
     }
 

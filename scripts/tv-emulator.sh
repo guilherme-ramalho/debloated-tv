@@ -4,7 +4,7 @@
 #   scripts/tv-emulator.sh start    boot it (first boot: finish setup, then run "save")
 #   scripts/tv-emulator.sh save     save the current state as the clean snapshot
 #   scripts/tv-emulator.sh reset    go back to the clean snapshot (undo a test debloat)
-#   scripts/tv-emulator.sh test     run the iPhone app's ADB tests against it (accept the debugging prompt on screen)
+#   scripts/tv-emulator.sh test     run the iPhone app's ADB tests against it (accepts the debugging prompt itself)
 #   scripts/tv-emulator.sh share    let the iPhone's remote reach it at <this Mac's IP>
 #   scripts/tv-emulator.sh share setup   let the app's TV setup reach it at <this Mac's IP>:15555
 set -euo pipefail
@@ -24,6 +24,17 @@ fi
 [ -n "${JAVA_HOME:-}" ] && export PATH="$JAVA_HOME/bin:$PATH"
 
 need() { [ -x "$1" ] || { echo "Missing $1. In Android Studio: Settings > Languages & Frameworks > Android SDK > SDK Tools, install '$2'." >&2; exit 1; }; }
+booted() { [ "$("$ADB" -s emulator-5554 shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = 1 ]; }
+# A loaded snapshot keeps the clock it was saved with; the TV then refuses the phone's certificate as not yet valid
+# (pairing works, the control port hangs up). A guest reboot takes the time from the host again (docs/emulator.md).
+fix_clock() {
+  local skew; skew=$(( $(date +%s) - $("$ADB" -s emulator-5554 shell date +%s 2>/dev/null | tr -d '\r' || echo 0) ))
+  [ "${skew#-}" -gt 300 ] || return 0
+  echo "The emulator's clock is ${skew}s behind the Mac's: rebooting it to pick up the host's time…"
+  "$ADB" -s emulator-5554 reboot; sleep 8
+  "$ADB" -s emulator-5554 wait-for-device
+  until booted; do sleep 2; done
+}
 
 case "${1:-}" in
   create)
@@ -47,16 +58,23 @@ case "${1:-}" in
     need "$EMULATOR" "Android Emulator"
     "$EMULATOR" -avd "$AVD" -port 5554 -no-boot-anim >/tmp/debloated-tv-emulator.log 2>&1 &
     "$ADB" wait-for-device
-    until [ "$("$ADB" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = 1 ]; do sleep 2; done
+    until booted; do sleep 2; done
+    fix_clock
     echo "Booted. Its debugging port is 127.0.0.1:5555."
     ;;
   save)  "$ADB" emu avd snapshot save clean && echo "Saved snapshot 'clean'." ;;
-  reset) "$ADB" emu avd snapshot load clean && echo "Back to the clean snapshot." ;;
+  reset) "$ADB" emu avd snapshot load clean && echo "Back to the clean snapshot." && "$ADB" wait-for-device && fix_clock ;;
   test)
-    # The emulator's debugging port takes one client: stop the Mac's adb server so the app's client can connect.
-    "$ADB" kill-server || true
+    # A second entrance to the emulator's adbd (its own port takes one client): adbd in TCP mode, reached through a
+    # forward on 15555, so adb on this Mac keeps working and can accept the debugging prompt for the test key itself.
+    python3 "$ROOT/scripts/e2e-helper.py" forward >/dev/null || { echo "Couldn't set up the forward to the emulator's adbd." >&2; exit 1; }
+    python3 "$ROOT/scripts/e2e-helper.py" approve --timeout 90 >/dev/null 2>&1 &
+    APPROVER=$!
     cd "$ROOT/ios"
-    ADB_TEST_HOST=127.0.0.1 ADB_TEST_PORT=5555 swift test --filter AdbTests
+    ADB_TEST_HOST=127.0.0.1 ADB_TEST_PORT=15555 swift test --filter AdbTests; STATUS=$?
+    kill $APPROVER 2>/dev/null || true
+    "$ADB" -s emulator-5554 forward --remove tcp:15555 >/dev/null 2>&1 || true
+    exit $STATUS
     ;;
   share)
     # Lets the iPhone reach the emulator over Wi-Fi, one way at a time:

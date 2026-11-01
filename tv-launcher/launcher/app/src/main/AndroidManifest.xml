@@ -110,7 +110,8 @@
         </activity>
 
         <!-- Phone editor: the paired iPhone opens tvhome://phone-edit?k=... through the Android TV Remote Service.
-             Shows nothing, starts EditorServer for that one session and finishes; see EditorLinkActivity. -->
+             Shows nothing, starts EditorServer for that one session and finishes; see EditorLinkActivity.
+             Not BROWSABLE: a web page in a TV browser must not be able to start (or cut off) an editing session. -->
         <activity
             android:name=".EditorLinkActivity"
             android:exported="true"
@@ -121,7 +122,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="tvhome" android:host="phone-edit" />
             </intent-filter>
         </activity>

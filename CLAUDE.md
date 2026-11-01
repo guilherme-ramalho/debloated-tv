@@ -46,8 +46,8 @@ installs (`tv-launcher/`, a fork of cleanyourtv by Gathin, MIT). Design decision
   `BUNDLE_ID_SUFFIX` and `APP_NAME_SUFFIX`. Development-only features (like the emulator profile) use `#if DEBUG`.
 - Launcher signing: whoever installs a launcher build on a TV ties that TV to the signing key; a build signed with
   another key can't update it (uninstall first). Contributors sign with their own Android debug key for their own
-  TVs; the APK bundled in published app releases is signed by the maintainer's private key, which is never in the
-  repo.
+  TVs; the APK bundled in published app releases is signed by the maintainer's release key, which is never in the
+  repo (Gradle reads it from `~/.gradle/gradle.properties`; see `docs/launcher-signing.md`).
 
 ## Adding a TV model
 

@@ -47,6 +47,11 @@ final class DebloatTests: XCTestCase {
         XCTAssertThrowsError(try DebloatList.parse("com.ok.app\nrm -rf /\n"))
     }
 
+    func testOnlyWellFormedPackageNamesComeBackFromTheTV() {
+        let answer = "package:com.netflix.ninja\npackage:com.tcl.x;reboot\npackage:com.example.$(id)\npackage:android\npackage:com.ok_app.tv2 installer=x\nnoise"
+        XCTAssertEqual(Pattern.packageNames(answer), ["com.netflix.ninja", "android", "com.ok_app.tv2"])
+    }
+
     func testCorePackagesAreNeverDisabled() {
         XCTAssertTrue(DebloatRules.isCore("com.android.systemui"))
         XCTAssertTrue(DebloatRules.isCore("com.android.providers.settings"))
