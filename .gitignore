@@ -42,3 +42,7 @@ tmp/
 _old-*/
 # Exported recovery records hold a TV's address and state: keep them out of git
 recovery-*.json
+
+# Claude Code personal settings
+.claude/settings.local.json
+CLAUDE.local.md

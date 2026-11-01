@@ -82,13 +82,8 @@ case "${1:-}" in
       # Drop the emulator-level mappings an earlier version of this script made; they hold the same Mac ports.
       "$ADB" -s emulator-5554 emu redir del tcp:16466 >/dev/null 2>&1 || true
       "$ADB" -s emulator-5554 emu redir del tcp:16467 >/dev/null 2>&1 || true
-      # The control port (6466) hangs up on connections from inside the emulator's loopback, which is where adb forward
-      # delivers them (pairing on 6467 doesn't mind). A relay inside the emulator re-sends them to its own network address.
-      GUEST_IP="$("$ADB" -s emulator-5554 shell ip -4 -o addr show | awk '$2 != "lo" { split($4, a, "/"); print a[1]; exit }' | tr -d '\r')"
-      [ -n "$GUEST_IP" ] || { echo "Couldn't find the emulator's network address." >&2; exit 1; }
-      "$ADB" -s emulator-5554 shell "pkill -f 'nc -L -p 26466' 2>/dev/null; setsid nohup nc -L -p 26466 nc $GUEST_IP 6466 >/dev/null 2>&1 </dev/null &" || true
-      sleep 1
-      "$ADB" -s emulator-5554 forward tcp:16466 tcp:26466 >/dev/null
+      # Pairing (6467) works this way; the emulator's remote service hangs up on control (6466), see docs/emulator.md.
+      "$ADB" -s emulator-5554 forward tcp:16466 tcp:6466 >/dev/null
       "$ADB" -s emulator-5554 forward tcp:16467 tcp:6467 >/dev/null
       # Check that both ports answer a TLS hello before telling the user to pair.
       python3 - <<'CHECK'
