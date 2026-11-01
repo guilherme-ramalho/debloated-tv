@@ -2,7 +2,10 @@ import Foundation
 import Security
 
 public enum TVPairingStore {
-    public static func pin(host: String, service: String = "PersonalTVRemote.TVPin.v1") -> Data? {
+    /// v2 pairs with the v2 client identity (ClientIdentity); pairings saved for the old shared-subject identity are
+    /// ignored, so the app asks to pair once instead of failing to connect.
+    public static let service = "PersonalTVRemote.TVPin.v2"
+    public static func pin(host: String, service: String = TVPairingStore.service) -> Data? {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service,
             kSecAttrAccount as String: host, kSecReturnData as String: true, kSecMatchLimit as String: kSecMatchLimitOne]
         var result: CFTypeRef?

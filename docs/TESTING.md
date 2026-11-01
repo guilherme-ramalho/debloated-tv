@@ -83,7 +83,7 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | CON-11 | Pair again from Settings › Connection | New code accepted; old pairing replaced only after success | Manual |
 | CON-12 | Test connection in Diagnostics | "The paired TV responded. No command was sent." | Manual |
 | CON-13 | Deny Local Network permission, try to connect | Clear error; works after allowing it in iOS Settings | Manual |
-| CON-15 | Pair a second phone with the same TV, then use both | Both keep working; neither is signed out (each pairs under its own name) | Manual + Auto `testEachInstallPairsUnderItsOwnStableName` |
+| CON-15 | Pair a second phone, or a second app on the same phone (Dev and TestFlight), with the same TV, then use both | Both keep working; neither is signed out (each install has its own pairing name and certificate subject). A pairing the TV dropped says "no longer accepts this phone’s pairing" instead of retrying forever | Manual + Auto `testEachInstallPairsUnderItsOwnStableName`, `testEachInstallsCertificateHasItsOwnSubject` |
 | CON-14 | Pairing secret, certificates, protocol framing | Correct bytes, split/coalesced frames, size limits | Auto: `ProtocolTests` |
 | CON-16 | The Keychain refuses the pairing identity (seen on an unsigned simulator build: OSStatus -34018), then Pair | "Pairing identity unavailable" with the reason; no endless "Asking … to show a code" | Manual (the E2E suite builds signed so pairing works) |
 

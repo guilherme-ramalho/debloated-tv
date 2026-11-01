@@ -15376,40 +15376,6 @@
         }
       }
     },
-    "The TV no longer accepts this phone’s pairing, usually because another phone paired after it with an older version of this app. Pair this TV again in Settings › Connection." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Der Fernseher akzeptiert die Kopplung dieses Telefons nicht mehr, meist weil sich danach ein anderes Telefon mit einer älteren Version dieser App gekoppelt hat. Kopple den Fernseher erneut unter Einstellungen › Verbindung."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La TV ya no acepta el emparejamiento de este teléfono, normalmente porque otro teléfono se emparejó después con una versión antigua de esta app. Vuelve a emparejar esta TV en Ajustes › Conexión."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La TV n'accepte plus l'appairage de ce téléphone, généralement parce qu'un autre téléphone s'est appairé ensuite avec une ancienne version de cette app. Réappairez cette TV dans Réglages › Connexion."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La TV non accetta più l'abbinamento di questo telefono, di solito perché un altro telefono si è abbinato dopo con una versione precedente di questa app. Abbina di nuovo questa TV in Impostazioni › Connessione."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A TV não aceita mais o pareamento deste celular, geralmente porque outro celular pareou depois com uma versão antiga deste app. Pareie esta TV de novo em Ajustes › Conexão."
-          }
-        }
-      }
-    },
     "The TV opens its inputs and channels with it; disabled, the input tiles do nothing." : {
       "localizations" : {
         "de" : {
@@ -19569,6 +19535,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Identidade de pareamento indisponível. Reinicie o app; se continuar, reinstale-o."
+          }
+        }
+      }
+    },
+    "The TV’s identity changed, for example after a reset. Pair this TV again in Settings › Connection." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Identität des Fernsehers hat sich geändert, zum Beispiel nach einem Zurücksetzen. Kopple den Fernseher erneut unter Einstellungen › Verbindung."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La identidad de la TV ha cambiado, por ejemplo tras un restablecimiento. Vuelve a emparejar la TV en Ajustes › Conexión."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'identité de la TV a changé, par exemple après une réinitialisation. Appairez à nouveau la TV dans Réglages › Connexion."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'identità della TV è cambiata, ad esempio dopo un ripristino. Abbina di nuovo la TV in Impostazioni › Connessione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A identidade da TV mudou, por exemplo após uma redefinição. Pareie a TV novamente em Ajustes › Conexão."
+          }
+        }
+      }
+    },
+    "The TV no longer accepts this phone’s pairing, for example after another app replaced it or the TV was reset. Pair this TV again in Settings › Connection." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher akzeptiert die Kopplung dieses Telefons nicht mehr, zum Beispiel weil eine andere App sie ersetzt hat oder der Fernseher zurückgesetzt wurde. Kopple den Fernseher erneut unter Einstellungen › Verbindung."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV ya no acepta el emparejamiento de este teléfono, por ejemplo porque otra app lo reemplazó o la TV se restableció. Vuelve a emparejar la TV en Ajustes › Conexión."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'accepte plus l'appairage de ce téléphone, par exemple parce qu'une autre app l'a remplacé ou que la TV a été réinitialisée. Appairez à nouveau la TV dans Réglages › Connexion."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non accetta più l'abbinamento di questo telefono, ad esempio perché un'altra app l'ha sostituito o la TV è stata ripristinata. Abbina di nuovo la TV in Impostazioni › Connessione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não aceita mais o pareamento deste telefone, por exemplo porque outro app o substituiu ou a TV foi redefinida. Pareie a TV novamente em Ajustes › Conexão."
           }
         }
       }

@@ -27,7 +27,7 @@ import Security
     private var wakeRequest = WakeRequest()
     private var wakeTimeout: DispatchWorkItem?
     private var wakeSend: DispatchWorkItem?
-    private static let pinService = "PersonalTVRemote.TVPin.v1"
+    private static let pinService = TVPairingStore.service
     private var autoReconnect = true
     func setAutoReconnect(_ value: Bool) { autoReconnect = value; if !value { retry?.cancel(); retry = nil } }
     func sendText(_ text: String) async throws {

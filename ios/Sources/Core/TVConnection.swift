@@ -50,7 +50,7 @@ public final class TVConnection {
                 complete(accepted)
                 if !accepted {
                     print("TVRemote: paired TV certificate mismatch")
-                    let reason = String(localized: "The TV no longer accepts this phone’s pairing, usually because another phone paired after it with an older version of this app. Pair this TV again in Settings › Connection.")
+                    let reason = String(localized: "The TV’s identity changed, for example after a reset. Pair this TV again in Settings › Connection.")
                     self.validationFailure = reason
                     self.queue.async { self.fail(reason) }
                 }
@@ -70,8 +70,12 @@ public final class TVConnection {
                 switch state {
                 case .ready:
                     self.tlsReady = true; self.ready?(); self.receive()
-                case .waiting: break // Allow the Local Network permission dialog or a changing Wi-Fi path to settle.
-                case .failed: self.fail(self.validationFailure ?? String(localized: "Could not connect to the paired TV. Check Wi-Fi, TV power, and Local Network access."))
+                case .waiting(let error):
+                    // Allow the Local Network permission dialog or a changing Wi-Fi path to settle, but not a refusal.
+                    if Self.tvRejectedPairing(error) { self.fail(Self.rejectedPairing) }
+                case .failed(let error):
+                    self.fail(self.validationFailure ?? (Self.tvRejectedPairing(error) ? Self.rejectedPairing
+                        : String(localized: "Could not connect to the paired TV. Check Wi-Fi, TV power, and Local Network access.")))
                 case .cancelled: self.fail(String(localized: "Connection closed"))
                 default: break
                 }
@@ -127,6 +131,15 @@ public final class TVConnection {
         connection?.cancel(); connection = nil
         ready = nil; frame = nil; failed = nil
     }
+    static let rejectedPairing = String(localized: "The TV no longer accepts this phone’s pairing, for example after another app replaced it or the TV was reset. Pair this TV again in Settings › Connection.")
+
+    /// The TV turned this phone's certificate away in the handshake: it no longer holds this pairing.
+    static func tvRejectedPairing(_ error: NWError) -> Bool {
+        guard case .tls(let status) = error else { return false }
+        return [errSSLPeerCertUnknown, errSSLPeerBadCert, errSSLPeerUnknownCA, errSSLPeerAccessDenied,
+                errSSLPeerCertRevoked, errSSLPeerUnsupportedCert].contains(status)
+    }
+
     private func fail(_ reason: String) {
         guard !closed else { return }
         let callback = failed
