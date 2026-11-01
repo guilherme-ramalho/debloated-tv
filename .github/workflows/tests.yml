@@ -1,0 +1,61 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Read-only: the tests need no write access, and pull requests from forks get none.
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  swift:
+    name: iPhone app core (swift test)
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Unit tests
+        working-directory: ios
+        run: swift test
+
+  launcher:
+    name: TV launcher (gradle)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Unit tests
+        working-directory: tv-launcher/launcher
+        run: ./gradlew --no-daemon testReleaseUnitTest
+
+  ui:
+    name: iPhone app UI smoke tests (simulator)
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: UI tests
+        working-directory: ios
+        run: |
+          # Skipped until the TVRemoteUITests target is added to the Xcode project (docs/TESTING.md, "Automated tests").
+          grep -q TVRemoteUITests TVRemote.xcodeproj/project.pbxproj || { echo "No UI test target yet: skipping."; exit 0; }
+          device=$(xcrun simctl list devices available | grep -m1 -oE 'iPhone [^(]+' | sed 's/ *$//')
+          xcodebuild test -project TVRemote.xcodeproj -scheme "Debloated TV Dev" \
+            -destination "platform=iOS Simulator,name=$device" \
+            -only-testing:TVRemoteUITests CODE_SIGNING_ALLOWED=NO

@@ -31,18 +31,6 @@ enum RecoveryStore {
     }
 }
 
-/// "192.168.0.13" or "192.168.0.13:15555" (an emulator forwarded from a Mac).
-struct TVAddress: Equatable {
-    var host: String
-    var port: UInt16
-    init?(_ text: String) {
-        let parts = text.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: ":")
-        guard let first = parts.first, !first.isEmpty, parts.count <= 2 else { return nil }
-        host = String(first)
-        if parts.count == 2 { guard let p = UInt16(parts[1]), p > 0 else { return nil }; port = p } else { port = 5555 }
-    }
-}
-
 /// The guided setup: connect over network debugging, recognise the TV, choose, review, apply, install the new Home
 /// screen, test, and close debugging again. Every TV change goes through Debloater / LauncherInstaller, which carry
 /// upstream's safety checks; this class only sequences them and keeps the recovery record saved before any change.

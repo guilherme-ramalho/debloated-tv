@@ -18,7 +18,12 @@ import SwiftUI
             }
             .environmentObject(settings).environmentObject(editor).environmentObject(actions).environmentObject(setup)
             .preferredColorScheme(.dark).tint(.white)
-            .task { model.setAutoReconnect(settings.value.autoReconnect); if phase == .active { model.activate() } }
+            .task {
+                #if DEBUG
+                UITestHooks.apply(setup: setup, host: model.host)
+                #endif
+                model.setAutoReconnect(settings.value.autoReconnect); if phase == .active { model.activate() }
+            }
             .onChange(of: settings.value.autoReconnect) { _, value in model.setAutoReconnect(value) }
             .onChange(of: selection) { _, tab in if tab == 1 { editor.autoConnect(model: model) } }
             .onChange(of: model.host) { _, _ in editor.close() }
@@ -225,3 +230,23 @@ struct RemotePressStyle: ButtonStyle {
             .sensoryFeedback(.impact(weight: .light), trigger: configuration.isPressed) { _, value in value && preferences.value.haptics }
     }
 }
+
+#if DEBUG
+/// Launch arguments the UI tests use to put the TV tab in a known state without a TV
+/// (TVRemoteUITests/TVRemoteUITests.swift): `-uiTestTVState fresh|supported|installed|unsupported` and `-uiTestOffer YES`.
+enum UITestHooks {
+    @MainActor static func apply(setup: TVSetupStatus, host: String) {
+        let defaults = UserDefaults.standard
+        guard let state = defaults.string(forKey: "uiTestTVState"), !host.isEmpty else { return }
+        let info: TVSetupInfo
+        switch state {
+        case "supported": info = TVSetupInfo(supported: true, model: "Test TV", detail: "testtv · Android 11", profile: "Test profile", offered: true)
+        case "installed": info = TVSetupInfo(homeInstalled: true, supported: true, model: "Test TV", profile: "Test profile", disabledCount: 12, offered: true)
+        case "unsupported": info = TVSetupInfo(supported: false, model: "Test TV", detail: "testtv · Android 11", offered: true)
+        default: info = TVSetupInfo(offered: true)
+        }
+        setup.update(host) { $0 = info }
+        if defaults.bool(forKey: "uiTestOffer") { setup.offerFor = host }
+    }
+}
+#endif

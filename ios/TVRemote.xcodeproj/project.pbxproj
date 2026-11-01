@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,20 +19,11 @@
 		300000000000000000000003 /* Sources/App/AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000002 /* Sources/App/AppSettings.swift */; };
 		300000000000000000000005 /* Sources/App/HomeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000004 /* Sources/App/HomeEditor.swift */; };
 		300000000000000000000007 /* Sources/App/HomeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000006 /* Sources/App/HomeViews.swift */; };
-		700000000000000000000010 /* Sources/App/DebloatViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000F /* Sources/App/DebloatViews.swift */; };
-		700000000000000000000012 /* Sources/App/TVSetupStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000011 /* Sources/App/TVSetupStatus.swift */; };
-		70000000000000000000000E /* Sources/App/DebloatFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000D /* Sources/App/DebloatFlow.swift */; };
 		300000000000000000000009 /* Sources/App/PairingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000008 /* Sources/App/PairingViews.swift */; };
 		30000000000000000000000B /* Sources/App/RemoteExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30000000000000000000000A /* Sources/App/RemoteExtras.swift */; };
 		30000000000000000000000D /* Sources/App/TVIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30000000000000000000000C /* Sources/App/TVIntents.swift */; };
 		30000000000000000000000F /* Sources/Core/CommandRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30000000000000000000000E /* Sources/Core/CommandRunner.swift */; };
 		300000000000000000000011 /* Sources/Core/LauncherClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000010 /* Sources/Core/LauncherClient.swift */; };
-		700000000000000000000002 /* Sources/Core/Adb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000001 /* Sources/Core/Adb.swift */; };
-		700000000000000000000008 /* Sources/Core/Profiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000007 /* Sources/Core/Profiles.swift */; };
-		70000000000000000000000A /* Resources/Profiles in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000009 /* Resources/Profiles */; };
-		70000000000000000000000C /* Resources/Launcher in Resources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000B /* Resources/Launcher */; };
-		700000000000000000000006 /* Sources/Core/LauncherInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000005 /* Sources/Core/LauncherInstall.swift */; };
-		700000000000000000000004 /* Sources/Core/Debloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000003 /* Sources/Core/Debloat.swift */; };
 		300000000000000000000013 /* Sources/Core/Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000012 /* Sources/Core/Preferences.swift */; };
 		40000000000000000000000A /* Widgets/TVRemoteWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400000000000000000000001 /* Widgets/TVRemoteWidgets.swift */; };
 		40000000000000000000000B /* Sources/App/TVIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30000000000000000000000C /* Sources/App/TVIntents.swift */; };
@@ -41,6 +32,16 @@
 		40000000000000000000002B /* TVRemoteWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 400000000000000000000002 /* TVRemoteWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		500000000000000000000002 /* Sources/App/QuietStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500000000000000000000001 /* Sources/App/QuietStyle.swift */; };
 		600000000000000000000002 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 600000000000000000000001 /* LaunchScreen.storyboard */; };
+		700000000000000000000002 /* Sources/Core/Adb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000001 /* Sources/Core/Adb.swift */; };
+		700000000000000000000004 /* Sources/Core/Debloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000003 /* Sources/Core/Debloat.swift */; };
+		700000000000000000000006 /* Sources/Core/LauncherInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000005 /* Sources/Core/LauncherInstall.swift */; };
+		700000000000000000000008 /* Sources/Core/Profiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000007 /* Sources/Core/Profiles.swift */; };
+		70000000000000000000000A /* Profiles in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000009 /* Profiles */; };
+		70000000000000000000000C /* Launcher in Resources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000B /* Launcher */; };
+		70000000000000000000000E /* Sources/App/DebloatFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000D /* Sources/App/DebloatFlow.swift */; };
+		700000000000000000000010 /* Sources/App/DebloatViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000F /* Sources/App/DebloatViews.swift */; };
+		700000000000000000000012 /* Sources/App/TVSetupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000011 /* Sources/App/TVSetupViews.swift */; };
+		700000000000000000000014 /* Sources/Core/TVSetupState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000013 /* Sources/Core/TVSetupState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 400000000000000000000028;
 			remoteInfo = TVRemoteWidgets;
+		};
+		FAC202353097509C00ECC767 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00000000000000000000001C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 00000000000000000000001B;
+			remoteInfo = TVRemote;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -81,26 +89,32 @@
 		300000000000000000000002 /* Sources/App/AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/AppSettings.swift; sourceTree = SOURCE_ROOT; };
 		300000000000000000000004 /* Sources/App/HomeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/HomeEditor.swift; sourceTree = SOURCE_ROOT; };
 		300000000000000000000006 /* Sources/App/HomeViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/HomeViews.swift; sourceTree = SOURCE_ROOT; };
-		70000000000000000000000F /* Sources/App/DebloatViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/DebloatViews.swift; sourceTree = SOURCE_ROOT; };
-		700000000000000000000011 /* Sources/App/TVSetupStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/TVSetupStatus.swift; sourceTree = SOURCE_ROOT; };
-		70000000000000000000000D /* Sources/App/DebloatFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/DebloatFlow.swift; sourceTree = SOURCE_ROOT; };
 		300000000000000000000008 /* Sources/App/PairingViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/PairingViews.swift; sourceTree = SOURCE_ROOT; };
 		30000000000000000000000A /* Sources/App/RemoteExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/RemoteExtras.swift; sourceTree = SOURCE_ROOT; };
 		30000000000000000000000C /* Sources/App/TVIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/TVIntents.swift; sourceTree = SOURCE_ROOT; };
 		30000000000000000000000E /* Sources/Core/CommandRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/CommandRunner.swift; sourceTree = SOURCE_ROOT; };
 		300000000000000000000010 /* Sources/Core/LauncherClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/LauncherClient.swift; sourceTree = SOURCE_ROOT; };
-		700000000000000000000001 /* Sources/Core/Adb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Adb.swift; sourceTree = SOURCE_ROOT; };
-		700000000000000000000007 /* Sources/Core/Profiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Profiles.swift; sourceTree = SOURCE_ROOT; };
-		700000000000000000000009 /* Resources/Profiles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Profiles; path = Resources/Profiles; sourceTree = SOURCE_ROOT; };
-		70000000000000000000000B /* Resources/Launcher */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Launcher; path = Resources/Launcher; sourceTree = SOURCE_ROOT; };
-		700000000000000000000005 /* Sources/Core/LauncherInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/LauncherInstall.swift; sourceTree = SOURCE_ROOT; };
-		700000000000000000000003 /* Sources/Core/Debloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Debloat.swift; sourceTree = SOURCE_ROOT; };
 		300000000000000000000012 /* Sources/Core/Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Preferences.swift; sourceTree = SOURCE_ROOT; };
 		400000000000000000000001 /* Widgets/TVRemoteWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widgets/TVRemoteWidgets.swift; sourceTree = SOURCE_ROOT; };
 		400000000000000000000002 /* TVRemoteWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TVRemoteWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		500000000000000000000001 /* Sources/App/QuietStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/QuietStyle.swift; sourceTree = SOURCE_ROOT; };
 		600000000000000000000001 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
+		700000000000000000000001 /* Sources/Core/Adb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Adb.swift; sourceTree = SOURCE_ROOT; };
+		700000000000000000000003 /* Sources/Core/Debloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Debloat.swift; sourceTree = SOURCE_ROOT; };
+		700000000000000000000005 /* Sources/Core/LauncherInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/LauncherInstall.swift; sourceTree = SOURCE_ROOT; };
+		700000000000000000000007 /* Sources/Core/Profiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Profiles.swift; sourceTree = SOURCE_ROOT; };
+		700000000000000000000009 /* Profiles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Profiles; path = Resources/Profiles; sourceTree = SOURCE_ROOT; };
+		70000000000000000000000B /* Launcher */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Launcher; path = Resources/Launcher; sourceTree = SOURCE_ROOT; };
+		70000000000000000000000D /* Sources/App/DebloatFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/DebloatFlow.swift; sourceTree = SOURCE_ROOT; };
+		70000000000000000000000F /* Sources/App/DebloatViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/DebloatViews.swift; sourceTree = SOURCE_ROOT; };
+		700000000000000000000011 /* Sources/App/TVSetupViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/TVSetupViews.swift; sourceTree = SOURCE_ROOT; };
+		700000000000000000000013 /* Sources/Core/TVSetupState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/TVSetupState.swift; sourceTree = SOURCE_ROOT; };
+		FAC2022F3097509C00ECC767 /* TVRemoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TVRemoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		FAC202303097509C00ECC767 /* TVRemoteUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TVRemoteUITests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		000000000000000000000013 /* Frameworks */ = {
@@ -117,6 +131,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAC2022C3097509C00ECC767 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -125,6 +146,7 @@
 			children = (
 				00000000000000000000000F /* TV Remote.app */,
 				400000000000000000000002 /* TVRemoteWidgets.appex */,
+				FAC2022F3097509C00ECC767 /* TVRemoteUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -139,7 +161,8 @@
 				300000000000000000000004 /* Sources/App/HomeEditor.swift */,
 				300000000000000000000006 /* Sources/App/HomeViews.swift */,
 				70000000000000000000000F /* Sources/App/DebloatViews.swift */,
-				700000000000000000000011 /* Sources/App/TVSetupStatus.swift */,
+				700000000000000000000011 /* Sources/App/TVSetupViews.swift */,
+				700000000000000000000013 /* Sources/Core/TVSetupState.swift */,
 				70000000000000000000000D /* Sources/App/DebloatFlow.swift */,
 				300000000000000000000008 /* Sources/App/PairingViews.swift */,
 				30000000000000000000000A /* Sources/App/RemoteExtras.swift */,
@@ -148,8 +171,8 @@
 				300000000000000000000010 /* Sources/Core/LauncherClient.swift */,
 				700000000000000000000001 /* Sources/Core/Adb.swift */,
 				700000000000000000000007 /* Sources/Core/Profiles.swift */,
-				700000000000000000000009 /* Resources/Profiles */,
-				70000000000000000000000B /* Resources/Launcher */,
+				700000000000000000000009 /* Profiles */,
+				70000000000000000000000B /* Launcher */,
 				700000000000000000000005 /* Sources/Core/LauncherInstall.swift */,
 				700000000000000000000003 /* Sources/Core/Debloat.swift */,
 				300000000000000000000012 /* Sources/Core/Preferences.swift */,
@@ -161,6 +184,7 @@
 				00000000000000000000000B /* Sources/Core/Wire.swift */,
 				00000000000000000000000D /* PrivacyInfo.xcprivacy */,
 				100000000000000000000001 /* Assets.xcassets */,
+				FAC202303097509C00ECC767 /* TVRemoteUITests */,
 				000000000000000000000010 /* Products */,
 				400000000000000000000001 /* Widgets/TVRemoteWidgets.swift */,
 			);
@@ -205,13 +229,43 @@
 			productReference = 400000000000000000000002 /* TVRemoteWidgets.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		FAC2022E3097509C00ECC767 /* TVRemoteUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAC202393097509C00ECC767 /* Build configuration list for PBXNativeTarget "TVRemoteUITests" */;
+			buildPhases = (
+				FAC2022B3097509C00ECC767 /* Sources */,
+				FAC2022C3097509C00ECC767 /* Frameworks */,
+				FAC2022D3097509C00ECC767 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FAC202363097509C00ECC767 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				FAC202303097509C00ECC767 /* TVRemoteUITests */,
+			);
+			name = TVRemoteUITests;
+			packageProductDependencies = (
+			);
+			productName = TVRemoteUITests;
+			productReference = FAC2022F3097509C00ECC767 /* TVRemoteUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		00000000000000000000001C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 2630;
 				LastUpgradeCheck = 2630;
+				TargetAttributes = {
+					FAC2022E3097509C00ECC767 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 00000000000000000000001B;
+					};
+				};
 			};
 			buildConfigurationList = 000000000000000000000019 /* Build configuration list for PBXProject "TVRemote" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -228,6 +282,7 @@
 			targets = (
 				00000000000000000000001B /* TVRemote */,
 				400000000000000000000028 /* TVRemoteWidgets */,
+				FAC2022E3097509C00ECC767 /* TVRemoteUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -240,12 +295,19 @@
 				00000000000000000000000E /* PrivacyInfo.xcprivacy in Resources */,
 				100000000000000000000002 /* Assets.xcassets in Resources */,
 				600000000000000000000002 /* LaunchScreen.storyboard in Resources */,
-				70000000000000000000000A /* Resources/Profiles in Resources */,
-				70000000000000000000000C /* Resources/Launcher in Resources */,
+				70000000000000000000000A /* Profiles in Resources */,
+				70000000000000000000000C /* Launcher in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		400000000000000000000016 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAC2022D3097509C00ECC767 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -265,7 +327,8 @@
 				300000000000000000000005 /* Sources/App/HomeEditor.swift in Sources */,
 				300000000000000000000007 /* Sources/App/HomeViews.swift in Sources */,
 				700000000000000000000010 /* Sources/App/DebloatViews.swift in Sources */,
-				700000000000000000000012 /* Sources/App/TVSetupStatus.swift in Sources */,
+				700000000000000000000012 /* Sources/App/TVSetupViews.swift in Sources */,
+				700000000000000000000014 /* Sources/Core/TVSetupState.swift in Sources */,
 				70000000000000000000000E /* Sources/App/DebloatFlow.swift in Sources */,
 				300000000000000000000009 /* Sources/App/PairingViews.swift in Sources */,
 				30000000000000000000000B /* Sources/App/RemoteExtras.swift in Sources */,
@@ -297,6 +360,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAC2022B3097509C00ECC767 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -305,17 +375,22 @@
 			target = 400000000000000000000028 /* TVRemoteWidgets */;
 			targetProxy = 400000000000000000000029 /* PBXContainerItemProxy */;
 		};
+		FAC202363097509C00ECC767 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 00000000000000000000001B /* TVRemote */;
+			targetProxy = FAC202353097509C00ECC767 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		000000000000000000000015 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_NAME_SUFFIX = " Dev";
+				BUNDLE_ID_SUFFIX = .dev;
 				CLANG_ENABLE_MODULES = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				SDKROOT = iphoneos;
-				APP_NAME_SUFFIX = " Dev";
-				BUNDLE_ID_SUFFIX = .dev;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -428,6 +503,148 @@
 			};
 			name = Release;
 		};
+		FAC202373097509C00ECC767 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 66Z5632AM7;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guilhermeramalho.TVRemoteUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TVRemote;
+			};
+			name = Debug;
+		};
+		FAC202383097509C00ECC767 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 66Z5632AM7;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guilhermeramalho.TVRemoteUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TVRemote;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -454,6 +671,15 @@
 			buildConfigurations = (
 				40000000000000000000001E /* Debug */,
 				40000000000000000000001F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAC202393097509C00ECC767 /* Build configuration list for PBXNativeTarget "TVRemoteUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAC202373097509C00ECC767 /* Debug */,
+				FAC202383097509C00ECC767 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

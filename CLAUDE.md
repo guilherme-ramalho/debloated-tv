@@ -15,6 +15,8 @@ installs (`tv-launcher/`, a fork of cleanyourtv by Gathin, MIT). Design decision
   real TV without the owner's explicit go-ahead.
 - **Never commit secrets or build output:** `tv-launcher/tools/adbkey/` (ADB private key), `tv-launcher/tools/venv/`,
   `ios/Resources/Launcher/*.apk`, keystores, recovery records. They are gitignored; keep it that way.
+- **Tests travel with features.** Every new feature or fix updates `docs/TESTING.md` (cases with IDs) and adds
+  automated tests where possible; CI (`.github/workflows/tests.yml`) must stay green.
 - Keep upstream files unchanged where the design says so (profiles' `debloat.txt` / `tv.json`), and record merges in
   `tv-launcher/UPSTREAM.md`.
 

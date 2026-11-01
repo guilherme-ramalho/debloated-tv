@@ -353,8 +353,12 @@ public struct Debloater: Sendable {
     }
 
     /// recovery.py restore_commands: put recorded states back, Home, and animation scales.
+    /// Records can come from files (an import, upstream's recovery.py), so everything that reaches the TV's shell is
+    /// validated: package names must look like package names, Home like a component, settings like numbers.
     public static func restoreCommands(_ record: RecoveryRecord, stock: String = "com.google.android.tvlauncher") -> [String] {
-        var commands = record.packages.filter { $0.value == "enabled" }.keys.sorted().map { "pm enable \($0)" }
+        var record = record
+        if let home = record.home, !Pattern.matches("^[A-Za-z_][A-Za-z0-9_.]*/[A-Za-z0-9_.]+$", home) { record.home = nil }
+        var commands = record.packages.filter { $0.value == "enabled" && Pattern.isPackage($0.key) }.keys.sorted().map { "pm enable \($0)" }
         let fallbackState = record.packages[stock]
         let resolve = "cmd package set-home-activity --user 0 $(\(DebloatRules.homeQuery) \(stock) | tail -n 1)"
         if let home = record.home, String(home.split(separator: "/").first ?? "") != DebloatRules.customLauncher {
