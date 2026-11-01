@@ -21,6 +21,7 @@ final class ScriptedTV: TVDevice, @unchecked Sendable {
         }
         if let answer = exact[command] { return .init(output: answer, status: 0) }
         for (prefix, answer) in prefixes where command.hasPrefix(prefix) { return .init(output: answer, status: 0) }
+        if command.contains("WRITE_SECURE_SETTINGS") { return .init(output: command.hasPrefix("pm grant") ? "restore-granted" : "secure-settings-revoked", status: 0) }
         return .init(output: "", status: 0)
     }
 }

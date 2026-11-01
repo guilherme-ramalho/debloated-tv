@@ -167,6 +167,8 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | LCH-10 | Volume tap on TCL | One step per tap (volume fix) | Manual |
 | LCH-11 | Theme applied (dock from setup) | Dock shows the chosen apps | Manual + Auto `testThemeGetsTheChosenDock`, `testThemeMustBeAJSONObject…`; E2E reads the TV's config |
 | LCH-12 | TV inputs and Live TV from the new Home | Inputs open, picture shows | Manual |
+| LCH-13 | Install over a launcher that holds WRITE_SECURE_SETTINGS, with a profile that doesn't ask for it | The permission is taken back (`dumpsys package com.gathin.tvhome` shows granted=false); if the TV doesn't confirm, setup says so | Auto: `testSecureSettingsFollowTheProfile`; Manual on TV |
+| LCH-14 | Launcher 3.3 on the TV: hold OK on a tile; move the focus across dock apps of different colours | App info opens (tile menu off, the phone arranges Home); on TCL the glow changes colour at once, without a fade | Manual + Auto `testThemeGetsTheChosenDock` |
 
 ## 6. Undo (UND) ⚠
 

@@ -37,6 +37,9 @@ public struct DebloatProfile: Identifiable, Equatable {
     public func themeConfig(dock: [String]) throws -> Data {
         var config = theme
         config["dock_apps"] = dock.filter(Pattern.isPackage)
+        // The phone is where Home is arranged: the launcher's tile menu (on by default since 3.3: hold OK for Move,
+        // Remove from Home) would change the layout behind the phone's editor. A profile can still turn it on.
+        if config["tile_menu"] == nil { config["tile_menu"] = false }
         return try JSONSerialization.data(withJSONObject: config, options: [.prettyPrinted, .sortedKeys])
     }
 

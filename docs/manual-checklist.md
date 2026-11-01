@@ -25,7 +25,7 @@ Before setup on the TCL: the launcher on it is debug-signed, so restore to stock
 - [ ] DBL-02 / DBL-03 / DBL-06 — debugging off; "Allow debugging?" left unanswered 2 min; an unsupported model
 - [ ] DBL-12 — network unplugged mid-apply: stops at the group, nothing after it changed, restore works
 - [ ] DBL-16 / DBL-16b / DBL-17 — debugging off by hand and by the button (also after 10 min idle); export the record
-- [ ] LCH-09 / LCH-10 / LCH-12 — remote app buttons and Settings key; one volume step per tap; HDMI inputs and Live TV
+- [ ] LCH-09 / LCH-10 / LCH-12 / LCH-14 — remote app buttons and Settings key; one volume step per tap; HDMI inputs and Live TV; hold OK opens App info, the glow changes colour at once
 - [ ] UND-06 — "Something's wrong: restore" during the test step
 - [ ] EDT-04 / EDT-06 / EDT-07 / EDT-12 — phone asleep minutes then edit; wallpaper presets and a 48 MP photo; weather in another language
 - [ ] EDT-10 — uninstall a non-system app: the TV asks to confirm

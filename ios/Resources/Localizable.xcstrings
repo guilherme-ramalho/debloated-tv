@@ -19165,6 +19165,74 @@
           }
         }
       }
+    },
+    "The new Home screen is installed, but the TV didn't give it permission to restore the remote's helpers after a force stop. Run setup again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der neue Startbildschirm ist installiert, aber der Fernseher hat ihm nicht erlaubt, die Helfer der Fernbedienung nach einem erzwungenen Beenden wiederherzustellen. Führe die Einrichtung erneut aus."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La nueva pantalla de inicio está instalada, pero la TV no le dio permiso para recuperar los ayudantes del mando tras un cierre forzado. Vuelve a ejecutar la configuración."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nouvel écran d'accueil est installé, mais la TV ne lui a pas donné la permission de rétablir les assistants de la télécommande après un arrêt forcé. Relancez la configuration."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La nuova schermata Home è installata, ma la TV non le ha dato il permesso di ripristinare gli aiuti del telecomando dopo un arresto forzato. Esegui di nuovo la configurazione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A nova tela inicial está instalada, mas a TV não deu permissão para ela restaurar os auxiliares do controle após uma parada forçada. Execute a configuração novamente."
+          }
+        }
+      }
+    },
+    "The new Home screen is installed, but it may still hold permission to change system settings from an earlier install. Run setup again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der neue Startbildschirm ist installiert, hat aber möglicherweise noch die Berechtigung einer früheren Installation, Systemeinstellungen zu ändern. Führe die Einrichtung erneut aus."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La nueva pantalla de inicio está instalada, pero puede que aún conserve el permiso para cambiar ajustes del sistema de una instalación anterior. Vuelve a ejecutar la configuración."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nouvel écran d'accueil est installé, mais il a peut-être encore l'autorisation de modifier les réglages système d'une installation précédente. Relancez la configuration."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La nuova schermata Home è installata, ma potrebbe avere ancora il permesso di modificare le impostazioni di sistema da un'installazione precedente. Esegui di nuovo la configurazione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A nova tela inicial está instalada, mas ainda pode ter a permissão para alterar configurações do sistema de uma instalação anterior. Execute a configuração novamente."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

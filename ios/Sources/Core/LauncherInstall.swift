@@ -118,11 +118,16 @@ public struct LauncherInstaller: Sendable {
         step?(.helpers, 0)
         if options.inputKeyService { _ = try await tv.run(Self.enableService("InputKeyService")) }
         if options.homeKeyService { _ = try await tv.run(Self.enableService("HomeKeyService")) }
-        if options.restoreKeyServices { _ = try await tv.run("pm grant \(Self.package) android.permission.WRITE_SECURE_SETTINGS && echo restore-granted") }
+        let secureSettings = try await tv.run(Self.secureSettingsStep(grant: options.restoreKeyServices))
 
         if let theme {
             step?(.theme, 0)
             try await applyTheme(theme)
+        }
+        guard Self.secureSettingsDone(secureSettings, grant: options.restoreKeyServices) else {
+            throw RemoteFailure.message(options.restoreKeyServices
+                ? String(localized: "The new Home screen is installed, but the TV didn't give it permission to restore the remote's helpers after a force stop. Run setup again.")
+                : String(localized: "The new Home screen is installed, but it may still hold permission to change system settings from an earlier install. Run setup again."))
         }
         step?(.done, 1)
         return home
@@ -136,6 +141,22 @@ public struct LauncherInstaller: Sendable {
 
     /// Force-stops the launcher and re-binds the key helpers it had, keeping the user's other accessibility services.
     static let restartWithHelpers = "s=$(settings get secure enabled_accessibility_services); a=$(settings get secure accessibility_enabled); am force-stop \(package); case \"$s\" in *\(package)*) settings put secure enabled_accessibility_services \"\"; settings put secure enabled_accessibility_services \"$s\"; settings put secure accessibility_enabled \"$a\" ;; esac"
+
+    /// WRITE_SECURE_SETTINGS follows the profile on every install, as upstream's build-and-install.sh does (#2458):
+    /// `pm install -r` keeps an earlier grant, so an install that doesn't ask for it takes it back. It opens every
+    /// secure and global setting, not only the accessibility list. The TV prints the marker only once dumpsys shows
+    /// the state asked for; a dumpsys that timed out or doesn't list the permission prints nothing.
+    static func secureSettingsStep(grant: Bool) -> String {
+        let secure = "android.permission.WRITE_SECURE_SETTINGS"
+        let read = "s=$(dumpsys package \(Self.package)) && case \"$s\" in *\"DUMP TIMEOUT\"*) ;; *\"\(secure): granted=true\"*)"
+        return grant ? "pm grant \(Self.package) \(secure) && \(read) echo restore-granted ;; esac"
+                     : "pm revoke \(Self.package) \(secure); \(read) ;; *\"\(secure)\"*) echo secure-settings-revoked ;; esac"
+    }
+    /// Only a line that is the marker and nothing else counts.
+    static func secureSettingsDone(_ output: String, grant: Bool) -> Bool {
+        let marker = grant ? "restore-granted" : "secure-settings-revoked"
+        return output.split(whereSeparator: \.isNewline).contains { $0.trimmingCharacters(in: .whitespaces) == marker }
+    }
 
     func rollback(_ stock: String) async throws {
         _ = try? await tv.run("pm enable --user 0 \(stock)")
