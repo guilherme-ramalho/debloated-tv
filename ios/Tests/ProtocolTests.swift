@@ -90,6 +90,15 @@ final class ProtocolTests: XCTestCase {
         XCTAssertEqual(try ClientIdentity.components(certificateKey), try ClientIdentity.components(SecKeyCopyPublicKey(privateKey)!))
         XCTAssertEqual(SecCertificateCopySubjectSummary(certificate) as String?, "Personal TV Remote")
     }
+    func testEachInstallsCertificateHasItsOwnSubject() throws {
+        // The TV keeps one pairing per certificate subject: two installs sharing one signed each other out.
+        let first = ClientIdentity.uniqueCommonName(), second = ClientIdentity.uniqueCommonName()
+        XCTAssertNotEqual(first, second)
+        XCTAssertTrue(first.hasPrefix(RemoteClientName.current()))
+        let data = try ClientIdentity.certificate(privateKey: try key(), commonName: first)
+        let certificate = try XCTUnwrap(SecCertificateCreateWithData(nil, data as CFData))
+        XCTAssertEqual(SecCertificateCopySubjectSummary(certificate) as String?, first)
+    }
     func testPairingSecretBindsCodeToBothKeys() throws {
         let client = SecKeyCopyPublicKey(try key())!
         let server = SecKeyCopyPublicKey(try key())!

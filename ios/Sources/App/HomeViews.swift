@@ -7,7 +7,6 @@ struct TVHomeView: View {
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var editor: HomeEditor
     @EnvironmentObject private var status: TVSetupStatus
-    @State private var applying = false
     @State private var checkMessage = ""
     @State private var importLayout = false
     @State private var addingProfile = false
@@ -46,7 +45,7 @@ struct TVHomeView: View {
                                 guard let data = snapshot.wallpaperJPEG else { throw RemoteFailure.message("The TV did not include its wallpaper. Refresh before loading this layout.") }
                                 layout.wallpaper = try settings.importPhoto(data)
                             }
-                            settings.editLayout { $0 = layout }
+                            settings.editLayout(.matchesTV) { $0 = layout }
                         } catch { settings.notice = error.localizedDescription }
                     }
                 }
@@ -81,7 +80,7 @@ struct TVHomeView: View {
                 HStack {
                     Menu {
                         ForEach(settings.value.profiles) { profile in
-                            Button { settings.update { $0.profileID = profile.id } } label: {
+                            Button { settings.selectProfile(profile.id) } label: {
                                 if settings.profile.id == profile.id { Label(profile.name, systemImage: "checkmark") } else { Text(profile.name) }
                             }
                         }
@@ -108,11 +107,7 @@ struct TVHomeView: View {
                     Divider().overlay(QuietTheme.edge)
                     NavigationLink { ProfilesView() } label: { QuietRow(title: "Profiles", detail: "Save a layout for each person", symbol: "person.2") }
                 }.buttonStyle(.plain)
-                Button(applying ? "Applying…" : "Apply to TV", systemImage: "checkmark") {
-                    applying = true
-                    Task { _ = await editor.applyDraft(settings); applying = false }
-                }.buttonStyle(QuietPrimaryStyle()).disabled(!editor.ready || applying || !model.ready)
-                QuietCaption(text: "Edits are saved on this phone until you apply them to the TV.")
+                LayoutApplyStatus()
                 QuietCard(spacing: 12) {
                     EditorConnectionView(model: model).padding(14)
                     if editor.ready {
@@ -143,6 +138,27 @@ struct EditorConnectionView: View {
         }
         .onAppear { editor.autoConnect(model: model) }
         .task(id: tvState) { editor.autoConnect(model: model) }
+    }
+}
+
+/// Where the Home draft stands against the TV. Edits apply by themselves (HomeEditor.layoutChanged); Apply appears
+/// only for a profile switch, a restored backup, or an apply that failed.
+struct LayoutApplyStatus: View {
+    @EnvironmentObject private var settings: AppSettings
+    @EnvironmentObject private var editor: HomeEditor
+    var body: some View {
+        if editor.applying {
+            Label("Applying to TV…", systemImage: "arrow.triangle.2.circlepath").font(.system(size: 13)).foregroundStyle(QuietTheme.muted)
+        } else if editor.unapplied {
+            if editor.ready {
+                Button("Apply to TV", systemImage: "checkmark") { Task { await editor.applyDraft(settings) } }.buttonStyle(QuietPrimaryStyle())
+                QuietCaption(text: "This draft isn't on the TV yet.")
+            } else {
+                QuietCaption(text: "Not on the TV yet. Open this tab with the TV on.")
+            }
+        } else {
+            QuietCaption(text: "Changes apply to the TV automatically.")
+        }
     }
 }
 
@@ -197,7 +213,6 @@ struct WallpaperView: View {
     @EnvironmentObject private var editor: HomeEditor
     @State private var photo: PhotosPickerItem?
     @State private var loading = false
-    @State private var applying = false
     @State private var framing: FramingPhoto?
     var body: some View {
         ScrollView {
@@ -220,11 +235,7 @@ struct WallpaperView: View {
                         if let image = settings.framingSource(settings.layout.wallpaper) { framing = FramingPhoto(image: image) }
                     }.buttonStyle(QuietSecondaryStyle())
                 }
-                Button(applying ? "Applying…" : "Apply to TV", systemImage: "checkmark") {
-                    applying = true
-                    Task { _ = await editor.applyDraft(settings); applying = false }
-                }.buttonStyle(QuietPrimaryStyle()).disabled(!editor.ready || applying)
-                QuietCaption(text: editor.ready ? Text("Applies this profile's whole Home draft, wallpaper included.") : Text(verbatim: editor.message))
+                LayoutApplyStatus()
                 Text("Presets are drawn by the TV and use no picture memory. Photos are sent at 1280×720.").font(.footnote).foregroundStyle(.secondary)
             }.padding(20)
         }.background(Color("LaunchBackground")).navigationTitle("Wallpaper")
@@ -239,12 +250,11 @@ struct WallpaperView: View {
                 }
             }
             .fullScreenCover(item: $framing) { item in
-                WallpaperFramingView(image: item.image, canApply: editor.ready) { crop, apply in
+                WallpaperFramingView(image: item.image) { crop in
                     do {
                         let id = try settings.saveFramedPhoto(item.image, crop: crop)
                         settings.editLayout { $0.wallpaper = id }
                         framing = nil
-                        if apply { applying = true; Task { _ = await editor.applyDraft(settings); applying = false } }
                     } catch { settings.notice = error.localizedDescription }
                 } cancel: { framing = nil }
             }
@@ -260,8 +270,7 @@ struct FramingPhoto: Identifiable {
 /// the tiles will cover. Hands back the visible part as a rect in the image's pixels.
 struct WallpaperFramingView: View {
     let image: UIImage
-    let canApply: Bool
-    let done: (CGRect, Bool) -> Void
+    let done: (CGRect) -> Void
     let cancel: () -> Void
     @State private var zoom: CGFloat = 1
     @State private var settledZoom: CGFloat = 1
@@ -321,13 +330,7 @@ struct WallpaperFramingView: View {
                     withAnimation(.easeOut(duration: 0.2)) { zoom = 1; settledZoom = 1; offset = .zero; settledOffset = .zero }
                 }.font(.footnote).foregroundStyle(QuietTheme.cyan)
                 Spacer()
-                if canApply {
-                    Button("Apply to TV", systemImage: "checkmark") { done(crop, true) }.buttonStyle(QuietPrimaryStyle())
-                    Button("Save to draft") { done(crop, false) }.buttonStyle(QuietSecondaryStyle())
-                } else {
-                    Button("Save to draft", systemImage: "checkmark") { done(crop, false) }.buttonStyle(QuietPrimaryStyle())
-                    QuietCaption(text: "Connect to TV Home from the TV tab to apply it.")
-                }
+                Button("Use photo", systemImage: "checkmark") { done(crop) }.buttonStyle(QuietPrimaryStyle())
             }
             .padding(20).background(Color("LaunchBackground")).navigationTitle("Frame wallpaper").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel", action: cancel) } }
@@ -433,10 +436,10 @@ struct ProfilesView: View {
         List {
                 Group {
             ForEach(settings.value.profiles) { profile in
-                Button { settings.update { $0.profileID = profile.id } } label: { HStack { Label(profile.name, systemImage: "person"); Spacer(); if settings.profile.id == profile.id { Image(systemName: "checkmark") } } }
+                Button { settings.selectProfile(profile.id) } label: { HStack { Label(profile.name, systemImage: "person"); Spacer(); if settings.profile.id == profile.id { Image(systemName: "checkmark") } } }
             }.onDelete { offsets in
                 guard settings.value.profiles.count - offsets.count > 0 else { settings.notice = String(localized: "Keep at least one profile."); return }
-                settings.update { value in value.profiles.remove(atOffsets: offsets); if !value.profiles.contains(where: { $0.id == value.profileID }) { value.profileID = value.profiles.first?.id } }
+                settings.deleteProfiles(at: offsets)
             }
             Button("New profile", systemImage: "plus") { name = ""; adding = true }.disabled(settings.value.profiles.count >= 20)
             Text("Each profile’s draft is saved automatically on this phone. Switching profiles does not apply anything to the TV.").font(.footnote).foregroundStyle(.secondary)

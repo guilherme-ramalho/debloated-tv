@@ -16,7 +16,7 @@ Before setup on the TCL: the launcher on it is debug-signed, so restore to stock
 
 - [ ] CON-01 / CON-01b / CON-01f — the TV is found by name on the network; pairing sheet; connection chip states
 - [ ] CON-01c / CON-01d / CON-13 — TV off or other network: "No TV found yet"; Local Network denied: checklist, Open Settings
-- [ ] CON-04 / CON-07 / CON-11 / CON-12 / CON-15 — TV off while pairing; cancel; pair again; Test connection; a second phone
+- [ ] CON-04 / CON-07 / CON-11 / CON-12 / CON-15 — TV off while pairing; cancel; pair again; Test connection; a second phone, and Dev + TestFlight on one phone
 - [ ] CON-09 / CON-10 — phone asleep a minute: reconnects; Reconnect automatically off stays off
 - [ ] REM-02 / REM-03 / REM-05 — swipes, held arrows (also backgrounded mid-hold), held Volume
 - [ ] REM-06 / REM-07 — Power to standby; wake from standby with network standby on

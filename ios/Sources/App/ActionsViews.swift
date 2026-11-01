@@ -67,10 +67,9 @@ struct ActionsView: View {
                 QuietCard {
                     NavigationLink { SiriSettingsView() } label: { QuietRow(title: "Siri & Shortcuts", detail: "Control the TV without opening the app", symbol: "mic") }
                     Divider().overlay(QuietTheme.edge)
-                    NavigationLink { WidgetHelpView() } label: { QuietRow(title: "Widgets & Control Center", detail: "Your favorite actions, one tap away", symbol: "rectangle.grid.2x2") }
-                    Divider().overlay(QuietTheme.edge)
                     NavigationLink { SleepTimerView(model: model) } label: { QuietRow(title: "Sleep timer", detail: "Switch off after a delay", symbol: "moon", value: "") }
                 }
+                QuietCaption(text: "For one-tap control, add Debloated TV from your iPhone’s widget gallery or from Control Center (iOS 18 and later).")
             }.buttonStyle(.plain).toolbar(.hidden, for: .navigationBar)
                 .sheet(item: $editing) { QuickActionForm(action: $0).environmentObject(settings) }
         }
@@ -155,25 +154,6 @@ struct SiriSettingsView: View {
 
                 }.listRowBackground(QuietTheme.panel)
 }.remoteForm().navigationTitle("Siri & Shortcuts")
-    }
-}
-
-struct WidgetHelpView: View {
-    var body: some View {
-        List {
-                Group {
-            Section("Home Screen") {
-                Label("Debloated TV controls", systemImage: "rectangle.grid.2x2")
-                Text("Add the Debloated TV widget using your iPhone’s widget gallery. Edit the widget to choose its four actions.")
-            }
-            Section("Control Center · iOS 18+") {
-                Label("TV quick action", systemImage: "switch.2")
-                Text("In Control Center’s controls gallery, add Debloated TV and choose the action it should run.")
-            }
-            Section { Text("Pair in Debloated TV first. Controls use the existing pairing in the app’s background process; they do not install another TV service. Unlock may be required.").font(.footnote).foregroundStyle(.secondary) }
-
-                }.listRowBackground(QuietTheme.panel)
-}.remoteForm().navigationTitle("Quick access")
     }
 }
 
@@ -277,8 +257,6 @@ struct SettingsView: View {
                         }
                     }.toggleStyle(QuietToggleStyle()).padding(.horizontal, 13).padding(.vertical, 10)
                 }
-                QuietSectionTitle(title: "Performance")
-                QuietCard { QuietRow(title: "No background TV companion", detail: "Home customization connects only while you edit.", symbol: "leaf", chevron: false) }
                 Button("Credits & licenses") { credits = true }.font(.footnote).foregroundStyle(QuietTheme.muted).frame(minHeight: 44)
                     .sheet(isPresented: $credits) {
                         NavigationStack {

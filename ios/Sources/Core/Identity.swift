@@ -41,8 +41,10 @@ enum DER {
 public struct ClientIdentity {
     public let identity: SecIdentity
     public let publicKey: SecKey
-    private static let label = "PersonalTVRemote.Client.v1"
-    private static let tag = Data("com.guilhermeramalho.TVRemote.client.v1".utf8)
+    // v2: certificates with a subject of their own (v1 all said "Personal TV Remote"). The TV keeps one pairing per
+    // certificate subject, so with a shared subject, pairing a second app or phone signed the first one out.
+    private static let label = "PersonalTVRemote.Client.v2"
+    private static let tag = Data("com.guilhermeramalho.TVRemote.client.v2".utf8)
 
     public static func loadOrCreate() throws -> ClientIdentity {
         var existing: CFTypeRef?
@@ -69,7 +71,7 @@ public struct ClientIdentity {
             }
             key = generated
         }
-        let encoded = try certificate(privateKey: key)
+        let encoded = try certificate(privateKey: key, commonName: uniqueCommonName())
         guard let certificate = SecCertificateCreateWithData(nil, encoded as CFData) else {
             throw RemoteFailure.message(String(localized: "Could not create client certificate"))
         }
@@ -93,14 +95,19 @@ public struct ClientIdentity {
         return ClientIdentity(identity: identity, publicKey: publicKey)
     }
 
-    public static func certificate(privateKey key: SecKey) throws -> Data {
+    /// This install's certificate subject: its pairing name plus a random part, so no two installs share one.
+    static func uniqueCommonName() -> String {
+        RemoteClientName.current() + " " + String(UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(8))
+    }
+
+    public static func certificate(privateKey key: SecKey, commonName: String = "Personal TV Remote") throws -> Data {
         var error: Unmanaged<CFError>?
         guard let publicKey = SecKeyCopyPublicKey(key),
               let publicData = SecKeyCopyExternalRepresentation(publicKey, &error) as Data? else {
             throw RemoteFailure.message(String(localized: "Could not export public key"))
         }
         let name = DER.sequence(DER.item(0x31, DER.sequence(Data([0x06,0x03,0x55,0x04,0x03])
-            + DER.item(0x0c, Data("Personal TV Remote".utf8)))))
+            + DER.item(0x0c, Data(commonName.utf8)))))
         let formatter = DateFormatter(); formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = TimeZone(secondsFromGMT: 0); formatter.dateFormat = "yyyyMMddHHmmss'Z'"
         let now = Date()

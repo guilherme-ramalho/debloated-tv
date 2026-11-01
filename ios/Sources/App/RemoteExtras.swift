@@ -1,36 +1,60 @@
 import SwiftUI
 import UIKit
 
+/// Typing here fills the focused field on the TV as you go. The field's whole text is sent once typing pauses
+/// (debounced), so the TV gets one update per pause instead of one per keystroke; Return sends at once.
 struct KeyboardView: View {
     @ObservedObject var model: RemoteModel
     @Environment(\.dismiss) private var dismiss
     @State private var text = ""
     @State private var secure = false
-    @State private var busy = false
     @State private var message = ""
+    /// What the TV's field holds, as far as this sheet knows.
+    @State private var sent = ""
+    @State private var stamp = 0
+    @State private var sending = false
+    static let delay: Duration = .milliseconds(400)
     var body: some View {
         NavigationStack {
             Form {
                 Group {
                 Section {
-                    if secure { SecureField("Search or enter text", text: $text) }
-                    else { TextField("Search or enter text", text: $text) }
+                    if secure { SecureField("Search or enter text", text: $text).onSubmit(flush) }
+                    else { TextField("Search or enter text", text: $text).onSubmit(flush) }
                     Toggle("Hide text while typing", isOn: $secure)
-                } footer: { Text("First focus a search or password field on the TV. Text is sent over the paired encrypted connection and is never saved.") }
-                Button(busy ? "Sending…" : "Send to TV") {
-                    busy = true; message = ""
-                    Task {
-                        defer { busy = false }
-                        do { try await model.sendText(text); text = ""; message = String(localized: "Text sent") }
-                        catch { message = error.localizedDescription }
-                    }
-                }.disabled(!model.ready || text.isEmpty || text.utf16.count > 4096 || busy)
+                } footer: { Text("First focus a search or password field on the TV. What you type appears there as you go. Text is sent over the paired encrypted connection and is never saved.") }
                 if !message.isEmpty { Text(message).font(.footnote).foregroundStyle(.secondary) }
 
                 }.listRowBackground(QuietTheme.panel)
 }.textInputAutocapitalization(.never).autocorrectionDisabled()
-                .navigationTitle("Type on TV").toolbar { Button("Done") { text = ""; dismiss() } }
-        }.onDisappear { text = "" }.presentationDetents([.medium, .large])
+                .navigationTitle("Type on TV").toolbar { Button("Done") { stamp += 1; Task { await push(); dismiss() } } }
+                .onChange(of: text) { _, _ in schedule() }
+        }.onDisappear { stamp += 1 }.presentationDetents([.medium, .large])
+    }
+    private func schedule() {
+        stamp += 1
+        let mine = stamp
+        Task {
+            try? await Task.sleep(for: Self.delay)
+            guard mine == stamp else { return }
+            await push()
+        }
+    }
+    private func flush() { stamp += 1; Task { await push() } }
+    /// Brings the TV's field up to date with the text here. One send at a time; a newer text follows after.
+    private func push() async {
+        guard !sending, text != sent else { return }
+        guard model.ready else { message = String(localized: "Connect the TV before sending text"); return }
+        guard text.utf16.count <= 4096 else { message = String(localized: "Enter between 1 and 4096 characters"); return }
+        sending = true
+        let value = text
+        do {
+            // The TV can't be sent an empty field, so clearing it deletes what was sent, one character at a time.
+            if value.isEmpty { for _ in 0..<min(sent.count, 256) { model.tap(.delete) } } else { try await model.sendText(value) }
+            sent = value; message = ""
+        } catch { message = error.localizedDescription }
+        sending = false
+        if text != sent && message.isEmpty { await push() }
     }
 }
 

@@ -28,7 +28,8 @@ import SwiftUI
             .onChange(of: selection) { _, tab in if tab == 1 { editor.autoConnect(model: model) } }
             .onChange(of: model.host) { _, _ in editor.close() }
             .onChange(of: model.foregroundPackage) { _, package in setup.sawForeground(model.host, package) }
-            .onChange(of: editor.ready) { _, ready in if ready { setup.sawHome(model.host) } }
+            .onChange(of: editor.ready) { _, ready in if ready { setup.sawHome(model.host); editor.connectedApplyPending(settings) } }
+            .onChange(of: settings.layoutChange) { _, change in editor.layoutChanged(change, settings: settings) }
             .onChange(of: model.pairings) { _, _ in setup.offerAfterPairing(model.host, showing: model.foregroundPackage) }
             .onChange(of: setup.openSetup) { _, open in if open { selection = 1 } }
             .sheet(isPresented: Binding(get: { setup.offerFor != nil }, set: { if !$0 { setup.offerFor = nil } })) {
