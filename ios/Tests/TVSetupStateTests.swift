@@ -50,28 +50,52 @@ import XCTest
         XCTAssertEqual(status.info("c").detail, "")
     }
 
-    func testOfferAppearsOnceAfterPairing() async throws {
+    func testOfferAppearsOnceWhenTheTVShowsAStockHome() async throws {
         let status = TVSetupStatus(defaults: defaults(), offerDelay: .zero)
-        status.offerAfterPairing("tv")
+        status.offerAfterPairing("tv", showing: "com.google.android.apps.tv.launcherx")
         try await Task.sleep(for: .milliseconds(100))
         XCTAssertEqual(status.offerFor, "tv")
         status.offerFor = nil
-        status.offerAfterPairing("tv")
+        status.offerAfterPairing("tv", showing: "com.google.android.apps.tv.launcherx")
+        status.sawForeground("tv", "com.google.android.tvlauncher")
         try await Task.sleep(for: .milliseconds(100))
         XCTAssertNil(status.offerFor, "only once per TV")
     }
 
-    func testNoOfferWhenTheTVAlreadyShowsTheNewHome() async throws {
-        let status = TVSetupStatus(defaults: defaults(), offerDelay: .milliseconds(50))
-        status.offerAfterPairing("tv")
-        status.sawHome("tv")   // the TV reported our Home screen while the sheet waited
-        try await Task.sleep(for: .milliseconds(200))
-        XCTAssertNil(status.offerFor)
-        let installed = TVSetupStatus(defaults: defaults(), offerDelay: .zero)
-        installed.sawHome("tv2")
-        installed.offerAfterPairing("tv2")
+    func testOfferWaitsWhileAnAppIsOnScreen() async throws {
+        let status = TVSetupStatus(defaults: defaults(), offerDelay: .zero)
+        status.offerAfterPairing("tv", showing: "com.netflix.ninja")
         try await Task.sleep(for: .milliseconds(100))
-        XCTAssertNil(installed.offerFor)
+        XCTAssertNil(status.offerFor, "nothing is known while Netflix plays")
+        status.sawForeground("tv", "com.google.android.youtube.tv")
+        try await Task.sleep(for: .milliseconds(100))
+        XCTAssertNil(status.offerFor)
+        status.sawForeground("tv", "com.google.android.tvlauncher")   // the user pressed Home
+        try await Task.sleep(for: .milliseconds(100))
+        XCTAssertEqual(status.offerFor, "tv")
+    }
+
+    func testNoOfferWhenTheTVShowsTheNewHome() async throws {
+        let status = TVSetupStatus(defaults: defaults(), offerDelay: .zero)
+        status.offerAfterPairing("tv", showing: "com.netflix.ninja")
+        status.sawForeground("tv", TVSetupStatus.homePackage)
+        status.sawForeground("tv", "com.google.android.tvlauncher")   // e.g. after an undo, later
+        try await Task.sleep(for: .milliseconds(100))
+        XCTAssertNil(status.offerFor)
+        XCTAssertTrue(status.info("tv").homeInstalled)
+        let already = TVSetupStatus(defaults: defaults(), offerDelay: .zero)
+        already.sawHome("tv2")
+        already.offerAfterPairing("tv2", showing: "com.google.android.tvlauncher")
+        try await Task.sleep(for: .milliseconds(100))
+        XCTAssertNil(already.offerFor)
+    }
+
+    func testLauncherNames() {
+        XCTAssertTrue(TVSetupStatus.isLauncher("com.google.android.apps.tv.launcherx"))
+        XCTAssertTrue(TVSetupStatus.isLauncher("com.mitv.tvhome"))
+        XCTAssertTrue(TVSetupStatus.isLauncher("com.sony.dtv.home"))
+        XCTAssertFalse(TVSetupStatus.isLauncher("com.netflix.ninja"))
+        XCTAssertFalse(TVSetupStatus.isLauncher("com.tcl.tv"))
     }
 
     func testTVAddressParsing() {

@@ -6,7 +6,9 @@ import SwiftUI
 struct TVSetupHeroCard: View {
     let info: TVSetupInfo
     let start: () -> Void
-    let alreadyInstalled: () -> Void
+    /// Already set up (for example before reinstalling this app): press Home on the TV to see which Home it has.
+    let check: (() -> Void)?
+    var checkMessage = ""
     var body: some View {
         QuietCard { VStack(alignment: .leading, spacing: 14) {
             Image(systemName: "bolt.horizontal.circle").font(.system(size: 26)).foregroundStyle(QuietTheme.cyan)
@@ -24,8 +26,14 @@ struct TVSetupHeroCard: View {
             }
             modelRow
             Button("Start setup", action: start).buttonStyle(QuietPrimaryStyle())
-            Button("Already have the new Home screen? Connect", action: alreadyInstalled)
-                .font(.system(size: 12)).foregroundStyle(QuietTheme.cyan).frame(maxWidth: .infinity, minHeight: 44)
+            if let check {
+                VStack(spacing: 4) {
+                    Button("Already set up? Check my TV", action: check)
+                        .font(.system(size: 13, weight: .medium)).foregroundStyle(QuietTheme.cyan).frame(maxWidth: .infinity, minHeight: 44)
+                    Text(checkMessage.isEmpty ? String(localized: "Goes to the TV's Home screen to see which one it has.") : checkMessage)
+                        .font(.system(size: 11)).foregroundStyle(QuietTheme.muted).multilineTextAlignment(.center).frame(maxWidth: .infinity)
+                }
+            }
         }.padding(20) }
     }
     private func benefit(_ text: String) -> some View {

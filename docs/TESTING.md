@@ -46,7 +46,7 @@ which Xcode picks up), then enable it in the Debloated TV Dev scheme's Test acti
 | CON-01d | Deny Local Network, open the app | Checklist shows at once; Open Settings goes to the app's page | Manual |
 | CON-01e | "My TV isn't listed", type `192,168,0,13` | Becomes `192.168.0.13`, "Looks right", Connect enabled; invalid input explains the format | Auto: `testFirstLaunchGuides…`, `testTypedAddressesAcceptRegionalKeyboards` |
 | CON-01f | Connection chip: connected / connecting / standby / offline | TV name with green dot / spinner / "Standby · Wake" wakes / "Offline · Retry" retries, second tap opens details | Manual |
-| CON-02 | Type the code shown on the TV | Pairs as soon as the sixth character is in; remote works | Manual |
+| CON-02 | Type the code shown on the TV with the on-screen keypad | Sheet opens full height; numbers 0–9 and letters A–F on one keypad, no system keyboard; delete removes the last character; pairs as soon as the sixth character is in; remote works | Manual |
 | CON-03 | Type a wrong code | Error in the sheet; Start pairing again works | Manual |
 | CON-04 | Pair with the TV off or a wrong IP | Within ~35 s the sheet says the TV didn't answer, with Try again | Manual |
 | CON-05 | Settings › Connection address field on a phone set to Spain or Brazil | Dot key available; commas become dots | Manual |
@@ -58,6 +58,7 @@ which Xcode picks up), then enable it in the Debloated TV Dev scheme's Test acti
 | CON-11 | Pair again from Settings › Connection | New code accepted; old pairing replaced only after success | Manual |
 | CON-12 | Test connection in Diagnostics | "The paired TV responded. No command was sent." | Manual |
 | CON-13 | Deny Local Network permission, try to connect | Clear error; works after allowing it in iOS Settings | Manual |
+| CON-15 | Pair a second phone with the same TV, then use both | Both keep working; neither is signed out (each pairs under its own name) | Manual + Auto `testEachInstallPairsUnderItsOwnStableName` |
 | CON-14 | Pairing secret, certificates, protocol framing | Correct bytes, split/coalesced frames, size limits | Auto: `ProtocolTests` |
 
 ## 2. Remote (REM)
@@ -88,8 +89,10 @@ which Xcode picks up), then enable it in the Debloated TV Dev scheme's Test acti
 | SET-04 | After a setup found no tested list | "This TV isn't supported for setup yet", model details, share/request button, no Start setup | Auto: `testUnsupportedTVExplainsAndOffersARequest` |
 | SET-05 | Share this model's details | Share sheet with model and Android version only, no IP or personal data | Manual + Auto `testModelRequestCarriesOnlyModelDetails…` |
 | SET-06 | TV with the new Home screen; press Home on the TV | TV tab switches to the editor with the green "Debloated" strip | Manual (state: Auto `TVSetupStateTests`) |
-| SET-07 | "Already have the new Home screen? Connect" on a TV that has it | Editor connects, tab switches to the editor | Manual |
-| SET-08 | Same button on a TV without it | Fails with a clear message; card stays | Manual |
+| SET-07 | TV already has the new Home (e.g. app reinstalled), TV playing something: "Already set up? Check my TV" | TV goes to Home; tab switches to the editor | Manual |
+| SET-08 | Same button on a TV with its original Home | "This TV still has its original Home screen…"; setup card stays | Manual |
+| SET-08b | Delete and reinstall the app | TVs that had the new Home still show the editor (state kept in this iPhone's Keychain) | Manual |
+| SET-08c | TV marked set up by a build older than the Keychain copy: open the new build once, then delete and reinstall | Editor still shows after the reinstall (the old state is copied to the Keychain at launch) | Manual |
 | SET-09 | Strip › Manage | Run setup again, Undo TV setup | Auto: `testInstalledTVShowsTheEditorAndManage` |
 | SET-10 | New pairing with a TV not showing our Home | One-time sheet "Your TV can be a lot faster"; Set up my TV opens setup | Auto: `testOfferSheetOpensSetupOnce`, `testOfferAppearsOnceAfterPairing` |
 | SET-11 | New pairing while the TV shows our Home | No sheet | Auto: `testNoOfferWhenTheTVAlreadyShowsTheNewHome` |

@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import Security
 
 /// "192.168.0.13", "192.168.0.13:15555" or "mac.local:15555" (an emulator shared from a Mac). Port 5555 by default.
 public struct TVAddress: Equatable {
@@ -26,6 +27,8 @@ public struct TVSetupInfo: Codable, Equatable {
     public var disabledCount: Int?
     /// The one-time "set up your TV" sheet after pairing was shown.
     public var offered = false
+    /// Paired, offer not decided yet: waiting to see which Home the TV has (it was showing an app).
+    public var offerPending: Bool?
     public init(homeInstalled: Bool = false, supported: Bool? = nil, model: String = "", detail: String = "",
                 profile: String = "", disabledCount: Int? = nil, offered: Bool = false) {
         self.homeInstalled = homeInstalled; self.supported = supported; self.model = model; self.detail = detail
@@ -42,12 +45,21 @@ public struct TVSetupInfo: Codable, Equatable {
     @Published public var openSetup = false
     private let defaults: UserDefaults
     private let offerDelay: Duration
+    private let keychain: Bool
     static let key = "tvSetupStatus.v1"
 
-    public init(defaults: UserDefaults = .standard, offerDelay: Duration = .milliseconds(1500)) {
+    /// `keychain`: also keep the state in this device's Keychain, which survives deleting and reinstalling the app, so a
+    /// reinstall still knows which TVs already have the new Home screen. Never synced; stays on this iPhone.
+    public init(defaults: UserDefaults = .standard, offerDelay: Duration = .milliseconds(1500), keychain: Bool = false) {
         self.defaults = defaults
         self.offerDelay = offerDelay
-        all = defaults.data(forKey: Self.key).flatMap { try? JSONDecoder().decode([String: TVSetupInfo].self, from: $0) } ?? [:]
+        self.keychain = keychain
+        let local = defaults.data(forKey: Self.key)
+        let saved = local ?? (keychain ? Self.keychainData() : nil)
+        all = saved.flatMap { try? JSONDecoder().decode([String: TVSetupInfo].self, from: $0) } ?? [:]
+        // State saved before the Keychain copy existed only reaches the Keychain on its next change, which may never
+        // come (nothing changes on a TV that is already set up), so copy it over now.
+        if keychain, let local, Self.keychainData() != local { Self.saveKeychain(local) }
     }
 
     public func info(_ host: String) -> TVSetupInfo { all[host] ?? TVSetupInfo() }
@@ -58,7 +70,26 @@ public struct TVSetupInfo: Codable, Equatable {
         change(&value)
         guard value != all[host] else { return }
         all[host] = value
-        if let data = try? JSONEncoder().encode(all) { defaults.set(data, forKey: Self.key) }
+        if let data = try? JSONEncoder().encode(all) {
+            defaults.set(data, forKey: Self.key)
+            if keychain { Self.saveKeychain(data) }
+        }
+    }
+
+    private static let keychainQuery: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+        kSecAttrService as String: "debloated-tv.setup-status", kSecAttrAccount as String: "v1"]
+    private static func keychainData() -> Data? {
+        var query = keychainQuery
+        query[kSecReturnData as String] = true; query[kSecMatchLimit as String] = kSecMatchLimitOne
+        var result: CFTypeRef?
+        return SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess ? result as? Data : nil
+    }
+    private static func saveKeychain(_ data: Data) {
+        let attributes: [String: Any] = [kSecValueData as String: data,
+                                         kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly]
+        if SecItemUpdate(keychainQuery as CFDictionary, attributes as CFDictionary) == errSecItemNotFound {
+            SecItemAdd(keychainQuery.merging(attributes) { _, new in new } as CFDictionary, nil)
+        }
     }
 
     /// The TV showed our Home screen, or its editor answered.
@@ -67,18 +98,36 @@ public struct TVSetupInfo: Codable, Equatable {
     /// Undo put the stock launcher back.
     public func restored(_ host: String) { update(host) { $0.homeInstalled = false; $0.disabledCount = nil } }
 
-    /// Right after a new pairing: offer setup once, unless this TV already has the new Home screen. Waits for the
-    /// pairing sheet to close and for the TV to report what's on screen; if that's our Home screen, nothing is offered.
-    public func offerAfterPairing(_ host: String) {
+    /// Right after a new pairing: offer setup once, but only on a TV seen showing a stock Home screen. A TV showing
+    /// our Home is set up already (no offer); a TV showing an app keeps the offer pending until it shows a Home.
+    /// Nothing is pressed on the TV to find out, so what's playing is never interrupted.
+    public func offerAfterPairing(_ host: String, showing package: String) {
         let current = info(host)
         guard !host.isEmpty, !current.offered, !current.homeInstalled else { return }
-        update(host) { $0.offered = true }
+        update(host) { $0.offerPending = true }
+        sawForeground(host, package)
+    }
+
+    /// What the TV reports in front. Ours means set up; a stock launcher settles a pending offer.
+    public func sawForeground(_ host: String, _ package: String) {
+        if package == Self.homePackage {
+            update(host) { $0.homeInstalled = true; $0.offerPending = nil }
+            return
+        }
+        guard info(host).offerPending == true, !info(host).homeInstalled, Self.isLauncher(package) else { return }
+        update(host) { $0.offerPending = nil; $0.offered = true }
         let delay = offerDelay
         Task { @MainActor in
-            try? await Task.sleep(for: delay)
+            try? await Task.sleep(for: delay)   // let the pairing sheet close first
             guard !self.info(host).homeInstalled else { return }
             self.offerFor = host
         }
+    }
+
+    /// A Home screen app: the known stock launchers, or a package named like one.
+    static func isLauncher(_ package: String) -> Bool {
+        DebloatRules.stockLaunchers.contains(package)
+            || Pattern.matches("(launcher|tvhome|homescreen|\\.home$)", package, caseInsensitive: true)
     }
 
     /// Records what a setup connection learned about the TV.

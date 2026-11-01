@@ -4,6 +4,40 @@
     "" : {
 
     },
+    "Delete" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effacer"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancella"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar"
+          }
+        }
+      }
+    },
     "“Hey Siri, open Netflix with Debloated TV.”" : {
       "localizations" : {
         "de" : {
@@ -923,6 +957,7 @@
       }
     },
     "Already have the new Home screen? Connect" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -952,6 +987,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Já tem a nova tela inicial? Conectar"
+          }
+        }
+      }
+    },
+    "Already set up? Check my TV" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schon eingerichtet? Fernseher prüfen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Ya está configurada? Comprobar mi TV"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déjà configurée ? Vérifier ma TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Già configurata? Controlla la mia TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Já configurou? Verificar minha TV"
           }
         }
       }
@@ -6131,6 +6200,40 @@
     "github.com/Gathin23/cleanyourtv" : {
 
     },
+    "Goes to the TV's Home screen to see which one it has." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wechselt zum Startbildschirm des Fernsehers, um zu sehen, welcher es ist."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Va a la pantalla de inicio de la TV para ver cuál tiene."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affiche l'écran d'accueil de la TV pour voir lequel elle utilise."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Va alla schermata Home della TV per vedere quale usa."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vai para a tela inicial da TV para ver qual ela usa."
+          }
+        }
+      }
+    },
     "Guided setup over network debugging, no computer" : {
       "localizations" : {
         "de" : {
@@ -8076,41 +8179,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Menos bagunça.\nMais controle."
-          }
-        }
-      }
-    },
-    "Letters A–F and numbers 0–9. It pairs as soon as all six are in." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Buchstaben A–F und Ziffern 0–9. Die Kopplung startet, sobald alle sechs eingegeben sind."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Letras A–F y números 0–9. Se empareja en cuanto estén los seis."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lettres A–F et chiffres 0–9. L'appairage se fait dès que les six sont saisis."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lettere A–F e numeri 0–9. L'abbinamento parte appena li inserisci tutti e sei."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Letras A–F e números 0–9. O pareamento acontece assim que os seis estiverem preenchidos."
           }
         }
       }
@@ -15138,6 +15206,40 @@
         }
       }
     },
+    "The TV didn't say which Home it shows. Try again with the TV on." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat nicht gemeldet, welcher Startbildschirm angezeigt wird. Versuche es bei eingeschaltetem Fernseher erneut."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV no indicó qué pantalla de inicio muestra. Inténtalo de nuevo con la TV encendida."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'a pas indiqué quel écran d'accueil elle affiche. Réessayez avec la TV allumée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non ha indicato quale Home mostra. Riprova con la TV accesa."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não informou qual tela inicial está mostrando. Tente de novo com a TV ligada."
+          }
+        }
+      }
+    },
     "The TV does not accept keyboard input" : {
       "localizations" : {
         "de" : {
@@ -15270,6 +15372,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A TV não listou nenhum app, então nada foi alterado. Verifique a conexão e tente de novo."
+          }
+        }
+      }
+    },
+    "The TV no longer accepts this phone’s pairing, usually because another phone paired after it with an older version of this app. Pair this TV again in Settings › Connection." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher akzeptiert die Kopplung dieses Telefons nicht mehr, meist weil sich danach ein anderes Telefon mit einer älteren Version dieser App gekoppelt hat. Kopple den Fernseher erneut unter Einstellungen › Verbindung."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV ya no acepta el emparejamiento de este teléfono, normalmente porque otro teléfono se emparejó después con una versión antigua de esta app. Vuelve a emparejar esta TV en Ajustes › Conexión."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'accepte plus l'appairage de ce téléphone, généralement parce qu'un autre téléphone s'est appairé ensuite avec une ancienne version de cette app. Réappairez cette TV dans Réglages › Connexion."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non accetta più l'abbinamento di questo telefono, di solito perché un altro telefono si è abbinato dopo con una versione precedente di questa app. Abbina di nuovo questa TV in Impostazioni › Connessione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não aceita mais o pareamento deste celular, geralmente porque outro celular pareou depois com uma versão antiga deste app. Pareie esta TV de novo em Ajustes › Conexão."
           }
         }
       }
@@ -15957,6 +16093,7 @@
       }
     },
     "The TV’s saved pairing identity no longer matches. Open Connection settings and pair this TV again." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -16463,6 +16600,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta TV usa o Android SDK %lld; a nova tela inicial precisa do Android 8.0 (SDK 26) ou mais novo. Nada foi alterado."
+          }
+        }
+      }
+    },
+    "This TV still has its original Home screen, so it isn't set up yet." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieser Fernseher hat noch seinen ursprünglichen Startbildschirm, ist also noch nicht eingerichtet."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta TV aún tiene su pantalla de inicio original, así que todavía no está configurada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette TV a encore son écran d'accueil d'origine, elle n'est donc pas encore configurée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa TV ha ancora la schermata Home originale, quindi non è ancora configurata."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta TV ainda tem a tela inicial original, então ainda não foi configurada."
           }
         }
       }

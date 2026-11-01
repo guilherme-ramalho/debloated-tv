@@ -50,7 +50,7 @@ public final class TVConnection {
                 complete(accepted)
                 if !accepted {
                     print("TVRemote: paired TV certificate mismatch")
-                    let reason = String(localized: "The TV’s saved pairing identity no longer matches. Open Connection settings and pair this TV again.")
+                    let reason = String(localized: "The TV no longer accepts this phone’s pairing, usually because another phone paired after it with an older version of this app. Pair this TV again in Settings › Connection.")
                     self.validationFailure = reason
                     self.queue.async { self.fail(reason) }
                 }

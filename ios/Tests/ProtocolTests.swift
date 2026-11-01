@@ -100,4 +100,12 @@ final class ProtocolTests: XCTestCase {
         XCTAssertThrowsError(try ClientIdentity.secret(code: wrong, client: client, server: server))
         XCTAssertThrowsError(try ClientIdentity.secret(code: "ZZ0000", client: client, server: server))
     }
+
+    func testEachInstallPairsUnderItsOwnStableName() {
+        let a = UserDefaults(suiteName: "name-a-\(UUID().uuidString)")!, b = UserDefaults(suiteName: "name-b-\(UUID().uuidString)")!
+        let first = RemoteClientName.current(a)
+        XCTAssertEqual(RemoteClientName.current(a), first, "stable across launches")
+        XCTAssertNotEqual(RemoteClientName.current(b), first, "two phones never pair under the same name")
+        XCTAssertTrue(first.hasPrefix("Debloated TV"))
+    }
 }

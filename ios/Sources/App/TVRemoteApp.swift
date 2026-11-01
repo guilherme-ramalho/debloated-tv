@@ -5,7 +5,7 @@ import SwiftUI
     @StateObject private var settings = AppSettings()
     @StateObject private var editor = HomeEditor()
     @StateObject private var actions = ActionController()
-    @StateObject private var setup = TVSetupStatus()
+    @StateObject private var setup = TVSetupStatus(keychain: true)
     @Environment(\.scenePhase) private var phase
     @State private var selection = 0
     var body: some Scene {
@@ -27,9 +27,9 @@ import SwiftUI
             .onChange(of: settings.value.autoReconnect) { _, value in model.setAutoReconnect(value) }
             .onChange(of: selection) { _, tab in if tab == 1 { editor.autoConnect(model: model) } }
             .onChange(of: model.host) { _, _ in editor.close() }
-            .onChange(of: model.foregroundPackage) { _, package in if package == TVSetupStatus.homePackage { setup.sawHome(model.host) } }
+            .onChange(of: model.foregroundPackage) { _, package in setup.sawForeground(model.host, package) }
             .onChange(of: editor.ready) { _, ready in if ready { setup.sawHome(model.host) } }
-            .onChange(of: model.pairings) { _, _ in setup.offerAfterPairing(model.host) }
+            .onChange(of: model.pairings) { _, _ in setup.offerAfterPairing(model.host, showing: model.foregroundPackage) }
             .onChange(of: setup.openSetup) { _, open in if open { selection = 1 } }
             .sheet(isPresented: Binding(get: { setup.offerFor != nil }, set: { if !$0 { setup.offerFor = nil } })) {
                 TVSetupOfferSheet(start: { setup.offerFor = nil; selection = 1; setup.openSetup = true }, later: { setup.offerFor = nil })
@@ -39,7 +39,7 @@ import SwiftUI
                 if value == .active { model.activate(); if selection == 1 { editor.autoConnect(model: model) } }
                 else if value == .background { model.deactivate(); editor.close(); actions.cancel() }
             }
-            .sheet(isPresented: Binding(get: { model.pairing }, set: { if !$0 { model.cancelPairing() } })) { TVPairingView(model: model) }
+            .sheet(isPresented: Binding(get: { model.pairing }, set: { if !$0 { model.cancelPairing() } })) { TVPairingView(model: model).environmentObject(settings) }
             .alert("Debloated TV", isPresented: Binding(get: { !settings.notice.isEmpty }, set: { if !$0 { settings.notice = "" } })) {
                 Button("OK") { settings.notice = "" }
             } message: { Text(settings.notice) }

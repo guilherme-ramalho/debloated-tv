@@ -8,6 +8,7 @@ struct TVHomeView: View {
     @EnvironmentObject private var editor: HomeEditor
     @EnvironmentObject private var status: TVSetupStatus
     @State private var applying = false
+    @State private var checkMessage = ""
     @State private var importLayout = false
     @State private var addingProfile = false
     @State private var profileName = ""
@@ -22,7 +23,7 @@ struct TVHomeView: View {
                 } else if info.supported == false {
                     TVSetupUnsupportedCard(info: info) { status.openSetup = true }
                 } else {
-                    TVSetupHeroCard(info: info, start: { status.openSetup = true }, alreadyInstalled: { editor.connect(model: model, force: true) })
+                    TVSetupHeroCard(info: info, start: { status.openSetup = true }, check: model.ready ? checkTV : nil, checkMessage: checkMessage)
                     QuietSectionTitle(title: "After setup, edit your TV's Home here")
                     HomePreview(layout: settings.layout).opacity(0.5).allowsHitTesting(false)
                     QuietCaption(text: "Dock, apps, wallpaper and profiles unlock once the new Home screen is on the TV.")
@@ -53,6 +54,27 @@ struct TVHomeView: View {
     }
 
     private var info: TVSetupInfo { status.info(model.host) }
+
+    /// Presses Home on the TV and reads which Home answers. Ours flips the tab to the editor (TVRemoteApp watches the
+    /// app in front); a stock launcher means this TV isn't set up yet.
+    private func checkTV() {
+        checkMessage = String(localized: "Checking…")
+        model.tap(.home)
+        Task {
+            try? await Task.sleep(for: .seconds(3))
+            if status.info(model.host).homeInstalled { checkMessage = ""; return }
+            let shown = model.foregroundPackage
+            if !shown.isEmpty && shown != TVSetupStatus.homePackage {
+                checkMessage = String(localized: "This TV still has its original Home screen, so it isn't set up yet.")
+                return
+            }
+            // The TV didn't report a change (it may already have been on Home): ask our Home screen directly.
+            editor.connect(model: model, force: true)
+            try? await Task.sleep(for: .seconds(8))
+            checkMessage = status.info(model.host).homeInstalled ? ""
+                : String(localized: "The TV didn't say which Home it shows. Try again with the TV on.")
+        }
+    }
 
     /// The Home editor, shown once the new Home screen is on the TV.
     @ViewBuilder private var editorContent: some View {
