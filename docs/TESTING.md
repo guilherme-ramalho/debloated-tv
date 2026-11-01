@@ -40,11 +40,16 @@ which Xcode picks up), then enable it in the Debloated TV Dev scheme's Test acti
 
 | ID | What to do | Expected | How |
 |---|---|---|---|
-| CON-01 | Fresh install, enter the TV's IP in Settings › Connection, tap Pair TV | The pairing sheet opens at once with "Asking the TV … to show a code"; a code appears on the TV | Manual |
-| CON-02 | Type the code shown on the TV, tap Pair | Sheet closes, status "Connected", remote works | Manual |
+| CON-01 | Fresh install, open the app with the TV on | Remote tab shows "Connect your TV" and lists the TV by name within a few seconds | Manual + Auto `testFirstLaunchGuidesToConnect…` |
+| CON-01b | Tap the TV in the list | Pairing sheet: "Enter the code on your TV", the TV's name, six boxes; a code appears on the TV | Manual |
+| CON-01c | TV off, or on another network, for 8 s | "No TV found yet" with the four checks, Open Settings, Search again | Manual |
+| CON-01d | Deny Local Network, open the app | Checklist shows at once; Open Settings goes to the app's page | Manual |
+| CON-01e | "My TV isn't listed", type `192,168,0,13` | Becomes `192.168.0.13`, "Looks right", Connect enabled; invalid input explains the format | Auto: `testFirstLaunchGuides…`, `testTypedAddressesAcceptRegionalKeyboards` |
+| CON-01f | Connection chip: connected / connecting / standby / offline | TV name with green dot / spinner / "Standby · Wake" wakes / "Offline · Retry" retries, second tap opens details | Manual |
+| CON-02 | Type the code shown on the TV | Pairs as soon as the sixth character is in; remote works | Manual |
 | CON-03 | Type a wrong code | Error in the sheet; Start pairing again works | Manual |
 | CON-04 | Pair with the TV off or a wrong IP | Within ~35 s the sheet says the TV didn't answer, with Try again | Manual |
-| CON-05 | Paste `192.168.0.13:15555` into the remote's address | "Enter only the IP here, without a port…"; nothing saved | Manual |
+| CON-05 | Settings › Connection address field on a phone set to Spain or Brazil | Dot key available; commas become dots | Manual |
 | CON-06 | Enter `999.1.1.1` or text | "Enter the TV's IPv4 address…" | Manual |
 | CON-07 | Cancel the pairing sheet | Closes; app returns to "Pair your TV to get started" | Manual |
 | CON-08 | Close and reopen the app | Reconnects without a code (saved pairing) | Manual |

@@ -42,8 +42,8 @@ public enum Adb {
             while buffer.count >= 24 {
                 let header = Data(buffer.prefix(24))
                 let command = readLE(header, 0), length = readLE(header, 12), magic = readLE(header, 20)
-                guard magic == command ^ 0xffff_ffff else { throw RemoteFailure.message("The TV sent an invalid debugging message") }
-                guard length <= Adb.maxData * 4 else { throw RemoteFailure.message("The TV sent an oversized debugging message") }
+                guard magic == command ^ 0xffff_ffff else { throw RemoteFailure.message(String(localized: "The TV sent an invalid debugging message")) }
+                guard length <= Adb.maxData * 4 else { throw RemoteFailure.message(String(localized: "The TV sent an oversized debugging message")) }
                 guard buffer.count >= 24 + Int(length) else { break }
                 out.append(Message(command, readLE(header, 4), readLE(header, 8), Data(buffer.dropFirst(24).prefix(Int(length)))))
                 buffer = Data(buffer.dropFirst(24 + Int(length)))
@@ -83,27 +83,27 @@ public struct AdbKey {
             kSecPrivateKeyAttrs as String: [kSecAttrIsPermanent as String: true, kSecAttrApplicationTag as String: tag,
                                             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly]]
         guard let key = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
-            throw error?.takeRetainedValue() as Error? ?? RemoteFailure.message("Could not create the TV debugging key")
+            throw error?.takeRetainedValue() as Error? ?? RemoteFailure.message(String(localized: "Could not create the TV debugging key"))
         }
         return AdbKey(privateKey: key)
     }
 
     /// adb signs the 20-byte token as if it were a SHA-1 digest (PKCS#1 v1.5 with the SHA-1 DigestInfo).
     public func sign(token: Data) throws -> Data {
-        guard token.count == 20 else { throw RemoteFailure.message("The TV sent an unexpected authorization token") }
+        guard token.count == 20 else { throw RemoteFailure.message(String(localized: "The TV sent an unexpected authorization token")) }
         var error: Unmanaged<CFError>?
         guard let signature = SecKeyCreateSignature(privateKey, .rsaSignatureDigestPKCS1v15SHA1, token as CFData, &error) as Data? else {
-            throw error?.takeRetainedValue() as Error? ?? RemoteFailure.message("Could not sign the TV's authorization request")
+            throw error?.takeRetainedValue() as Error? ?? RemoteFailure.message(String(localized: "Could not sign the TV's authorization request"))
         }
         return signature
     }
 
     /// The public key as the TV stores it in /data/misc/adb/adb_keys: base64 of Android's RSAPublicKey struct, a name.
     public func publicKeyLine(name: String) throws -> Data {
-        guard let publicKey = SecKeyCopyPublicKey(privateKey) else { throw RemoteFailure.message("Invalid TV debugging key") }
+        guard let publicKey = SecKeyCopyPublicKey(privateKey) else { throw RemoteFailure.message(String(localized: "Invalid TV debugging key")) }
         var error: Unmanaged<CFError>?
         guard let pkcs1 = SecKeyCopyExternalRepresentation(publicKey, &error) as Data? else {
-            throw error?.takeRetainedValue() as Error? ?? RemoteFailure.message("Could not export the TV debugging key")
+            throw error?.takeRetainedValue() as Error? ?? RemoteFailure.message(String(localized: "Could not export the TV debugging key"))
         }
         var offset = 0
         let sequence = try DER.read(Array(pkcs1), &offset)
@@ -118,7 +118,7 @@ public struct AdbKey {
     public static func androidEncoding(modulus: Data, exponent: UInt32) throws -> Data {
         var be = Array(modulus)
         while be.count > 256 && be.first == 0 { be.removeFirst() }
-        guard be.count == 256 else { throw RemoteFailure.message("The TV debugging key must be RSA-2048") }
+        guard be.count == 256 else { throw RemoteFailure.message(String(localized: "The TV debugging key must be RSA-2048")) }
         // Little-endian 32-bit words.
         var n = [UInt32](repeating: 0, count: 64)
         for i in 0..<64 {
@@ -215,7 +215,7 @@ public actor AdbClient {
     private func timedOut(_ token: Int) {
         guard token == waiterToken, let waiting = waiter else { return }
         waiter = nil
-        waiting.resume(throwing: RemoteFailure.message("The TV stopped answering"))
+        waiting.resume(throwing: RemoteFailure.message(String(localized: "The TV stopped answering")))
     }
     private func send(_ m: Adb.Message) {
         connection?.send(content: Adb.encode(m), completion: .contentProcessed { [weak self] error in
@@ -228,7 +228,7 @@ public actor AdbClient {
                 guard let self else { return }
                 if let data, !data.isEmpty { await self.received(data) }
                 if let error { await self.fail(error); return }
-                if complete { await self.fail(RemoteFailure.message("The TV closed the debugging connection")); return }
+                if complete { await self.fail(RemoteFailure.message(String(localized: "The TV closed the debugging connection"))); return }
                 await self.receiveLoop()
             }
         }
@@ -256,8 +256,8 @@ public actor AdbClient {
                 switch state {
                 case .ready: finish(nil)
                 case .failed(let e), .waiting(let e):
-                    finish(RemoteFailure.message("Couldn't reach the TV's debugging port \(self.port). Check that network debugging is on. (\(e.localizedDescription))"))
-                case .cancelled: finish(RemoteFailure.message("Connection cancelled"))
+                    finish(RemoteFailure.message(String(localized: "Couldn't reach the TV's debugging port \(Int(self.port)). Check that network debugging is on. (\(e.localizedDescription))")))
+                case .cancelled: finish(RemoteFailure.message(String(localized: "Connection cancelled")))
                 default: break
                 }
             }
@@ -290,7 +290,7 @@ public actor AdbClient {
                     log?("signature not known to the TV; sent the public key, waiting for approval on the TV")
                     approval()
                 } else {
-                    throw RemoteFailure.message("The TV refused this iPhone. Accept \"Allow USB debugging?\" on the TV and try again.")
+                    throw RemoteFailure.message(String(localized: "The TV refused this iPhone. Accept \"Allow USB debugging?\" on the TV and try again."))
                 }
             default: continue
             }
@@ -306,8 +306,8 @@ public actor AdbClient {
     // MARK: streams
 
     private func begin() throws {
-        guard state == .connected else { throw RemoteFailure.message("Not connected to the TV") }
-        guard !busy else { throw RemoteFailure.message("Another TV command is still running") }
+        guard state == .connected else { throw RemoteFailure.message(String(localized: "Not connected to the TV")) }
+        guard !busy else { throw RemoteFailure.message(String(localized: "Another TV command is still running")) }
         busy = true
     }
 
@@ -317,7 +317,7 @@ public actor AdbClient {
         while true {
             let m = try await next(timeout: 15)
             if m.command == Adb.okay && m.arg1 == local { return (local, m.arg0) }
-            if m.command == Adb.clse && m.arg1 == local { throw RemoteFailure.message("The TV refused \(service.split(separator: ":").first ?? "the request")") }
+            if m.command == Adb.clse && m.arg1 == local { throw RemoteFailure.message(String(localized: "The TV refused \(String(service.split(separator: ":").first ?? "the request"))")) }
         }
     }
 
@@ -360,10 +360,10 @@ public actor AdbClient {
                 let m = try await next(timeout: 30)
                 guard m.arg1 == stream.local else { continue }
                 if m.command == Adb.okay { return }
-                if m.command == Adb.clse { throw RemoteFailure.message("The TV closed the file transfer") }
+                if m.command == Adb.clse { throw RemoteFailure.message(String(localized: "The TV closed the file transfer")) }
                 if m.command == Adb.wrte {   // an early FAIL
                     send(Adb.Message(Adb.okay, stream.local, stream.remote))
-                    throw RemoteFailure.message("The TV refused the file: " + Self.syncFailure(m.payload))
+                    throw RemoteFailure.message(String(localized: "The TV refused the file: ") + Self.syncFailure(m.payload))
                 }
             }
         }
@@ -388,7 +388,7 @@ public actor AdbClient {
         }
         send(Adb.Message(Adb.clse, stream.local, stream.remote))
         guard reply.count >= 8, String(decoding: reply.prefix(4), as: UTF8.self) == "OKAY" else {
-            throw RemoteFailure.message("The TV refused the file: " + Self.syncFailure(reply))
+            throw RemoteFailure.message(String(localized: "The TV refused the file: ") + Self.syncFailure(reply))
         }
     }
 

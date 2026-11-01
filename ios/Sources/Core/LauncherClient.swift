@@ -9,7 +9,7 @@ import CryptoKit
 public enum EditorLink {
     public static func random(_ count: Int) throws -> Data {
         var bytes = [UInt8](repeating: 0, count: count)
-        guard SecRandomCopyBytes(kSecRandomDefault, count, &bytes) == errSecSuccess else { throw RemoteFailure.message("Could not create a TV editor key") }
+        guard SecRandomCopyBytes(kSecRandomDefault, count, &bytes) == errSecSuccess else { throw RemoteFailure.message(String(localized: "Could not create a TV editor key")) }
         return Data(bytes)
     }
     public static func newKey() throws -> Data { try random(32) }
@@ -33,19 +33,19 @@ public struct EditorCipher {
     let key: SymmetricKey
     private var counter: UInt64 = 0
     public init(sessionKey: Data, phoneNonce: Data, tvNonce: Data, info: String) throws {
-        guard sessionKey.count == 32, phoneNonce.count == 16, tvNonce.count == 16 else { throw RemoteFailure.message("Invalid TV editor key") }
+        guard sessionKey.count == 32, phoneNonce.count == 16, tvNonce.count == 16 else { throw RemoteFailure.message(String(localized: "Invalid TV editor key")) }
         key = HKDF<SHA256>.deriveKey(inputKeyMaterial: SymmetricKey(data: sessionKey), salt: phoneNonce + tvNonce,
                                      info: Data(info.utf8), outputByteCount: 32)
     }
     static func nonce(_ counter: UInt64) -> Data { Data(repeating: 0, count: 4) + withUnsafeBytes(of: counter.bigEndian) { Data($0) } }
     public mutating func seal(_ plain: Data) throws -> Data {
         let box = try AES.GCM.seal(plain, using: key, nonce: AES.GCM.Nonce(data: Self.nonce(counter)))
-        guard let combined = box.combined else { throw RemoteFailure.message("Could not encrypt the TV editor message") }
+        guard let combined = box.combined else { throw RemoteFailure.message(String(localized: "Could not encrypt the TV editor message")) }
         counter += 1
         return combined
     }
     public mutating func open(_ frame: Data) throws -> Data {
-        guard frame.count >= 28, Data(frame.prefix(12)) == Self.nonce(counter) else { throw RemoteFailure.message("TV editor message out of order") }
+        guard frame.count >= 28, Data(frame.prefix(12)) == Self.nonce(counter) else { throw RemoteFailure.message(String(localized: "TV editor message out of order")) }
         let plain = try AES.GCM.open(AES.GCM.SealedBox(combined: frame), using: key)
         counter += 1
         return plain
@@ -82,7 +82,7 @@ final class EditorSocket: @unchecked Sendable {
             socket.close()
             try await Task.sleep(nanoseconds: 400_000_000)
         } while Date() < deadline
-        throw RemoteFailure.message("TV Home did not answer. Check that the TV launcher is up to date.")
+        throw RemoteFailure.message(String(localized: "TV Home did not answer. Check that the TV launcher is up to date."))
     }
 
     private func start(timeout: Double) async -> Bool {
@@ -105,7 +105,7 @@ final class EditorSocket: @unchecked Sendable {
         queue.async { [self] in
             connection.stateUpdateHandler = { [weak self] state in
                 switch state {
-                case .failed, .cancelled, .waiting: self?.fail("TV Home closed the editor")
+                case .failed, .cancelled, .waiting: self?.fail(String(localized: "TV Home closed the editor"))
                 default: break
                 }
             }
@@ -122,9 +122,9 @@ final class EditorSocket: @unchecked Sendable {
                         let callback = self.frame
                         DispatchQueue.main.async { callback?(message) }
                     }
-                } catch { self.fail("TV Home sent an invalid message"); return }
+                } catch { self.fail(String(localized: "TV Home sent an invalid message")); return }
             }
-            if error != nil || complete { self.fail("TV Home closed the editor"); return }
+            if error != nil || complete { self.fail(String(localized: "TV Home closed the editor")); return }
             self.receive()
         }
     }
@@ -133,7 +133,7 @@ final class EditorSocket: @unchecked Sendable {
         queue.async { [self] in
             guard !closed else { return }
             connection.send(content: Wire.varint(UInt64(payload.count)) + payload, completion: .contentProcessed { [weak self] error in
-                if error != nil { self?.queue.async { self?.fail("TV editor connection was interrupted") } }
+                if error != nil { self?.queue.async { self?.fail(String(localized: "TV editor connection was interrupted")) } }
             })
         }
     }
@@ -187,7 +187,7 @@ final class EditorSocket: @unchecked Sendable {
         close()
         let token = generation
         let deadline = Date().addingTimeInterval(seconds)
-        var lastError: Error = RemoteFailure.message("TV Home did not answer. Check that the TV launcher is up to date.")
+        var lastError: Error = RemoteFailure.message(String(localized: "TV Home did not answer. Check that the TV launcher is up to date."))
         repeat {
             try Task.checkCancellation()
             guard generation == token else { throw CancellationError() }
@@ -229,12 +229,12 @@ final class EditorSocket: @unchecked Sendable {
                 try? await Task.sleep(nanoseconds: 3_000_000_000)
                 guard let self, self.generation == token, self.socketID == id, let waiting = self.hello else { return }
                 self.hello = nil
-                waiting.resume(throwing: RemoteFailure.message("TV Home did not answer the editor"))
+                waiting.resume(throwing: RemoteFailure.message(String(localized: "TV Home did not answer the editor")))
             }
         }
         guard generation == token, socketID == id else { throw CancellationError() }
         guard reply.count == 20, Data(reply.prefix(4)) == Self.magic else {
-            throw RemoteFailure.message("TV Home answered with an older editor. Update the TV launcher.")
+            throw RemoteFailure.message(String(localized: "TV Home answered with an older editor. Update the TV launcher."))
         }
         let tvNonce = Data(reply.dropFirst(4))
         outgoing = try EditorCipher(sessionKey: key, phoneNonce: phoneNonce, tvNonce: tvNonce, info: EditorCipher.phoneToTV)
@@ -267,7 +267,7 @@ final class EditorSocket: @unchecked Sendable {
         guard var cipher = incoming else { return }
         do {
             let plain = try cipher.open(data); incoming = cipher
-            guard let object = try JSONSerialization.jsonObject(with: plain) as? [String: Any] else { throw RemoteFailure.message("Invalid TV editor response") }
+            guard let object = try JSONSerialization.jsonObject(with: plain) as? [String: Any] else { throw RemoteFailure.message(String(localized: "Invalid TV editor response")) }
             switch object["type"] as? String {
             case "response":
                 guard let id = object["id"] as? String, let continuation = pending.removeValue(forKey: id) else { return }
@@ -275,16 +275,16 @@ final class EditorSocket: @unchecked Sendable {
                 if object["ok"] as? Bool == true {
                     do { continuation.resume(returning: try JSONSerialization.data(withJSONObject: object["result"] ?? [:], options: [.fragmentsAllowed])) }
                     catch { continuation.resume(throwing: error); throw error }
-                } else { continuation.resume(throwing: RemoteFailure.message(object["error"] as? String ?? "The TV rejected this change")) }
+                } else { continuation.resume(throwing: RemoteFailure.message(object["error"] as? String ?? String(localized: "The TV rejected this change"))) }
             case "error": close(); event?(.disconnected(object["message"] as? String ?? "TV editor error"))
             case "pong": break
-            default: throw RemoteFailure.message("Unsupported TV editor response")
+            default: throw RemoteFailure.message(String(localized: "Unsupported TV editor response"))
             }
         } catch { close(); event?(.disconnected(error.localizedDescription)) }
     }
 
     public func request<T: Decodable>(_ operation: String, payload: [String: Any] = [:], as: T.Type) async throws -> T {
-        guard socket != nil, outgoing != nil else { throw RemoteFailure.message("TV Home is not connected") }
+        guard socket != nil, outgoing != nil else { throw RemoteFailure.message(String(localized: "TV Home is not connected")) }
         let id = UUID().uuidString
         let response: Data = try await withTaskCancellationHandler(operation: {
             try await withCheckedThrowingContinuation { result in

@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import AppIntents
 
 @MainActor final class ActionController: ObservableObject {
@@ -20,8 +21,8 @@ import AppIntents
             do {
                 try await result.run(action.steps, host: model.host, apps: settings.value.apps,
                                      inputs: settings.value.editorHost == model.host ? settings.value.tvInputs : []) { [weak self] in if self?.generation == token { self?.progress = $0 } }
-                guard generation == token else { return }; message = "Commands sent to TV"
-            } catch is CancellationError { guard generation == token else { return }; message = "Action cancelled" }
+                guard generation == token else { return }; message = String(localized: "Commands sent to TV")
+            } catch is CancellationError { guard generation == token else { return }; message = String(localized: "Action cancelled") }
             catch { guard generation == token else { return }; message = error.localizedDescription }
         }
     }
@@ -78,16 +79,16 @@ struct ActionsView: View {
 
 @MainActor func stepName(_ step: ActionStep, settings: AppSettings) -> String {
     switch step.kind {
-    case .wake: return "Wake TV"
-    case .sleep: return "Turn off TV"
-    case .home: return "TV Home"
-    case .mute: return "Mute TV"
-    case .pause: return "Pause"
-    case .playPause: return "Play / Pause"
-    case .volumeUp: return "Volume up"
-    case .volumeDown: return "Volume down"
-    case .openApp: return "Open " + (settings.app(step.argument)?.name ?? "app")
-    case .input: return "Select " + (settings.value.tvInputs.first(where: { $0.id == step.argument })?.name ?? "input")
+    case .wake: return String(localized: "Wake TV")
+    case .sleep: return String(localized: "Turn off TV")
+    case .home: return String(localized: "TV Home")
+    case .mute: return String(localized: "Mute TV")
+    case .pause: return String(localized: "Pause")
+    case .playPause: return String(localized: "Play / Pause")
+    case .volumeUp: return String(localized: "Volume up")
+    case .volumeDown: return String(localized: "Volume down")
+    case .openApp: return String(localized: "Open \(settings.app(step.argument)?.name ?? String(localized: "app"))")
+    case .input: return String(localized: "Select \(settings.value.tvInputs.first(where: { $0.id == step.argument })?.name ?? String(localized: "input"))")
     }
 }
 
@@ -240,7 +241,7 @@ struct SettingsView: View {
             QuietPage {
                 QuietHeading(title: "Settings") { EmptyView() }
                 QuietCard {
-                    NavigationLink { ConnectionView(model: model) } label: { QuietRow(title: "Connection", detail: "Paired TV · local network", symbol: "wifi", value: model.status) }
+                    NavigationLink { ConnectionView(model: model) } label: { QuietRow(title: Text("Connection"), detail: Text("Paired TV · local network"), symbol: "wifi", value: Text(verbatim: model.status)) }
                     Divider().overlay(QuietTheme.edge)
                     NavigationLink { ShortcutSettingsView() } label: { QuietRow(title: "Remote shortcuts", detail: "Visibility and order", symbol: "square.grid.2x2") }
                     Divider().overlay(QuietTheme.edge)
@@ -254,6 +255,12 @@ struct SettingsView: View {
                     Divider().overlay(QuietTheme.edge)
                     NavigationLink { UndoSetupView(defaultHost: model.host) } label: { QuietRow(title: "Undo TV setup", detail: "Restore from a saved recovery record", symbol: "arrow.uturn.backward") }
                 }.buttonStyle(.plain)
+                QuietCard {
+                    Button { if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) } } label: {
+                        QuietRow(title: Text("Language"), detail: Text("Follows your iPhone. Choose another language for this app in iOS Settings."),
+                                 symbol: "globe", value: Text(verbatim: AppLanguage.current))
+                    }.buttonStyle(.plain)
+                }
                 QuietSectionTitle(title: "Remote preferences")
                 QuietCard {
                     Toggle(isOn: settings.binding(\.haptics)) {
@@ -310,9 +317,9 @@ struct ConnectionView: View {
         Form {
                 Group {
             Section("TV address") {
-                TextField("192.168.1.100", text: $address).keyboardType(.decimalPad).textInputAutocapitalization(.never)
+                TVAddressField(address: $address)
                 Button("Save and connect") { _ = model.saveHost(address) }
-                    .disabled(model.preparing || address.trimmingCharacters(in: .whitespacesAndNewlines) == model.host)
+                    .disabled(model.preparing || !TVAddress.isIPv4(address) || address == model.host)
             }
             Section {
                 if model.hasSavedPairing {
@@ -337,7 +344,7 @@ struct ConnectionView: View {
                     check = Task {
                         defer { testing = false }
                         let runner = CommandRunner()
-                        do { try await runner.diagnose(host: model.host); result = "The paired TV responded. No command was sent." }
+                        do { try await runner.diagnose(host: model.host); result = String(localized: "The paired TV responded. No command was sent.") }
                         catch { result = error.localizedDescription }
                     }
                 }.disabled(testing)
@@ -350,5 +357,14 @@ struct ConnectionView: View {
             .confirmationDialog("Pair this phone again?", isPresented: $repairPairing, titleVisibility: .visible) {
                 Button("Show code on TV") { if model.saveHost(address) { model.beginPairing() } }
             } message: { Text("Keep the TV on. Your saved pairing is replaced only after a new code is accepted.") }
+    }
+}
+
+/// The language the app is showing, by its own name ("Português (Brasil)").
+enum AppLanguage {
+    static var current: String {
+        let code = Bundle.main.preferredLocalizations.first ?? "en"
+        let locale = Locale(identifier: code)
+        return locale.localizedString(forIdentifier: code)?.localizedCapitalized ?? code
     }
 }

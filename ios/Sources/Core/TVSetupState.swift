@@ -88,8 +88,8 @@ public struct TVSetupInfo: Codable, Equatable {
             $0.profile = profile?.manifest.name ?? ""
             let brand = (properties["ro.product.manufacturer"] ?? "").trimmingCharacters(in: .whitespaces)
             let model = (properties["ro.product.model"] ?? "").trimmingCharacters(in: .whitespaces)
-            $0.model = model.isEmpty ? "Unknown model" : (brand.isEmpty || model.localizedCaseInsensitiveContains(brand) ? model : "\(brand) \(model)")
-            $0.detail = [properties["ro.product.device"], properties["ro.build.version.release"].map { "Android \($0)" }]
+            $0.model = model.isEmpty ? String(localized: "Unknown model") : (brand.isEmpty || model.localizedCaseInsensitiveContains(brand) ? model : "\(brand) \(model)")
+            $0.detail = [properties["ro.product.device"], properties["ro.build.version.release"].map { String(localized: "Android \($0)") }]
                 .compactMap { $0?.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }.joined(separator: " · ")
         }
     }
@@ -102,7 +102,7 @@ public enum ModelRequest {
     public static let addTVGuide = URL(string: "https://github.com/guilherme-ramalho/debloated-tv/tree/main/ios/Resources/Profiles")!
 
     public static func text(_ info: TVSetupInfo) -> String {
-        "Debloated TV: please add support for this TV.\nModel: \(info.model)\nDetails: \(info.detail)"
+        String(localized: "Debloated TV: please add support for this TV.\nModel: \(info.model)\nDetails: \(info.detail)")
     }
     public static func url(_ info: TVSetupInfo, form: String? = formURL) -> URL? {
         guard let base = form, var parts = URLComponents(string: base), parts.scheme == "https" else { return nil }

@@ -11,7 +11,7 @@ struct TVHomeView: View {
     @State private var importLayout = false
     @State private var addingProfile = false
     @State private var profileName = ""
-    private var wallpaperName: String { switch settings.layout.wallpaper { case "quiet-night": return "Quiet night"; case "aurora": return "Aurora"; case "dusk": return "Dusk"; default: return "Photo" } }
+    private var wallpaperName: LocalizedStringKey { switch settings.layout.wallpaper { case "quiet-night": return "Quiet night"; case "aurora": return "Aurora"; case "dusk": return "Dusk"; default: return "Photo" } }
     var body: some View {
         NavigationStack {
             QuietPage {
@@ -202,7 +202,7 @@ struct WallpaperView: View {
                     applying = true
                     Task { _ = await editor.applyDraft(settings); applying = false }
                 }.buttonStyle(QuietPrimaryStyle()).disabled(!editor.ready || applying)
-                QuietCaption(text: editor.ready ? "Applies this profile's whole Home draft, wallpaper included." : editor.message)
+                QuietCaption(text: editor.ready ? Text("Applies this profile's whole Home draft, wallpaper included.") : Text(verbatim: editor.message))
                 Text("Presets are drawn by the TV and use no picture memory. Photos are sent at 1280×720.").font(.footnote).foregroundStyle(.secondary)
             }.padding(20)
         }.background(Color("LaunchBackground")).navigationTitle("Wallpaper")
@@ -413,7 +413,7 @@ struct ProfilesView: View {
             ForEach(settings.value.profiles) { profile in
                 Button { settings.update { $0.profileID = profile.id } } label: { HStack { Label(profile.name, systemImage: "person"); Spacer(); if settings.profile.id == profile.id { Image(systemName: "checkmark") } } }
             }.onDelete { offsets in
-                guard settings.value.profiles.count - offsets.count > 0 else { settings.notice = "Keep at least one profile."; return }
+                guard settings.value.profiles.count - offsets.count > 0 else { settings.notice = String(localized: "Keep at least one profile."); return }
                 settings.update { value in value.profiles.remove(atOffsets: offsets); if !value.profiles.contains(where: { $0.id == value.profileID }) { value.profileID = value.profiles.first?.id } }
             }
             Button("New profile", systemImage: "plus") { name = ""; adding = true }.disabled(settings.value.profiles.count >= 20)

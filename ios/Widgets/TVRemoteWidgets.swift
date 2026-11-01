@@ -36,13 +36,13 @@ extension TVQuickCommand {
     }
     var label: String {
         switch self {
-        case .wake: return "Wake"
-        case .sleep: return "Off"
-        case .home: return "Home"
-        case .pause: return "Pause"
-        case .mute: return "Mute"
-        case .volumeUp: return "Volume up"
-        case .volumeDown: return "Volume down"
+        case .wake: return String(localized: "Wake")
+        case .sleep: return String(localized: "Off")
+        case .home: return String(localized: "Home")
+        case .pause: return String(localized: "Pause")
+        case .mute: return String(localized: "Mute")
+        case .volumeUp: return String(localized: "Volume up")
+        case .volumeDown: return String(localized: "Volume down")
         case .netflix: return "Netflix"
         case .youtube: return "YouTube"
         case .prime: return "Prime Video"

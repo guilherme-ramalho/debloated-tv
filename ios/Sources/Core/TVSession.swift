@@ -4,7 +4,7 @@ import CryptoKit
 
 public final class TVSession {
     public static func appName(for package: String) -> String? {
-        ["com.google.android.youtube.tv":"YouTube", "com.netflix.ninja":"Netflix", "com.amazon.amazonvideo.livingroom":"Prime Video", "com.disney.disneyplus":"Disney+", "com.wbd.stream":"HBO Max", "com.hbo.hbonow":"HBO Max", "com.crunchyroll.crunchyroid":"Crunchyroll", "com.spotify.tv.android":"Spotify"][package]
+        ["com.google.android.youtube.tv":"YouTube", "com.netflix.ninja":"Netflix", "com.amazon.amazonvideo.livingroom":"Prime Video", "com.disney.disneyplus":"Disney+", "com.wbd.stream":String(localized: "HBO Max"), "com.hbo.hbonow":String(localized: "HBO Max"), "com.crunchyroll.crunchyroid":"Crunchyroll", "com.spotify.tv.android":"Spotify"][package]
     }
     static func foregroundPackage(in body: Data) throws -> String? {
         guard let info = try Wire.fields(body).first(where: { $0.number == 1 })?.bytes,
@@ -71,14 +71,14 @@ public final class TVSession {
         DispatchQueue.main.asyncAfter(deadline: .now() + (pairing ? 90 : 15)) { [weak self] in
             guard let self, token == self.currentGeneration else { return }
             if self.pairMode || !self.commandReady {
-                self.disconnect(); self.event?(.error(pairing ? "Pairing expired. Start pairing again." : "The TV did not complete the remote handshake."))
+                self.disconnect(); self.event?(.error(pairing ? String(localized: "Pairing expired. Start pairing again.") : String(localized: "The TV did not complete the remote handshake.")))
             }
         }
     }
 
     public func submit(code: String) {
         guard pairMode && waitingCode, let certificate = channel?.peerCertificate,
-              let server = SecCertificateCopyKey(certificate) else { event?(.error("Start pairing before entering the TV code")); return }
+              let server = SecCertificateCopyKey(certificate) else { event?(.error(String(localized: "Start pairing before entering the TV code"))); return }
         do {
             let secret = try ClientIdentity.secret(code: code, client: identity.publicKey, server: server)
             secretSent = true
@@ -96,22 +96,22 @@ public final class TVSession {
         channel?.send(Wire.bytes(90, Wire.string(1, url)))
     }
     public func writeKey(_ key: TVKey) async throws {
-        guard commandReady, !pairMode, let channel else { throw RemoteFailure.message("TV is not ready") }
+        guard commandReady, !pairMode, let channel else { throw RemoteFailure.message(String(localized: "TV is not ready")) }
         try await channel.write(Wire.bytes(10, Wire.int(1, key.rawValue) + Wire.int(2, 3)))
     }
     public func writeLaunch(_ url: String) async throws {
-        guard commandReady, !pairMode, let channel, !url.isEmpty, url.utf8.count <= 2048 else { throw RemoteFailure.message("Invalid app or input link") }
+        guard commandReady, !pairMode, let channel, !url.isEmpty, url.utf8.count <= 2048 else { throw RemoteFailure.message(String(localized: "Invalid app or input link")) }
         try await channel.write(Wire.bytes(90, Wire.string(1, url)))
     }
     static func textMessage(_ text: String, imeCounter: UInt64, fieldCounter: UInt64) throws -> Data {
-        guard !text.isEmpty, text.utf16.count <= 4096 else { throw RemoteFailure.message("Enter between 1 and 4096 characters") }
+        guard !text.isEmpty, text.utf16.count <= 4096 else { throw RemoteFailure.message(String(localized: "Enter between 1 and 4096 characters")) }
         let end = UInt64(text.utf16.count - 1)
         let object = Wire.int(1, end) + Wire.int(2, end) + Wire.string(3, text)
         let edit = Wire.int(1, 1) + Wire.bytes(2, object)
         return Wire.bytes(21, Wire.int(1, imeCounter) + Wire.int(2, fieldCounter) + Wire.bytes(3, edit))
     }
     public func writeText(_ text: String) async throws {
-        guard commandReady, !pairMode, negotiated & 4 != 0, let channel else { throw RemoteFailure.message("The TV does not accept keyboard input") }
+        guard commandReady, !pairMode, negotiated & 4 != 0, let channel else { throw RemoteFailure.message(String(localized: "The TV does not accept keyboard input")) }
         try await channel.write(Self.textMessage(text, imeCounter: imeCounter, fieldCounter: fieldCounter))
     }
     private func sendPair(_ field: Int, _ body: Data) {
@@ -121,7 +121,7 @@ public final class TVSession {
         let fields = try Wire.fields(payload)
         if pairMode {
             guard fields.first(where: { $0.number == 2 })?.integer == 200 else {
-                throw RemoteFailure.message("The TV rejected pairing. Start again and enter the current TV code.")
+                throw RemoteFailure.message(String(localized: "The TV rejected pairing. Start again and enter the current TV code."))
             }
             if fields.contains(where: { $0.number == 11 }) {
                 sendPair(20, Wire.bytes(1, Wire.int(1, 3) + Wire.int(2, 6)) + Wire.int(3, 1))
@@ -130,7 +130,7 @@ public final class TVSession {
             } else if fields.contains(where: { $0.number == 31 }) {
                 waitingCode = true; event?(.pairingCodeNeeded)
             } else if fields.contains(where: { $0.number == 41 }) && secretSent {
-                guard let certificate = channel?.peerCertificate else { throw RemoteFailure.message("Missing TV certificate") }
+                guard let certificate = channel?.peerCertificate else { throw RemoteFailure.message(String(localized: "Missing TV certificate")) }
                 let pin = Data(SHA256.hash(data: SecCertificateCopyData(certificate) as Data))
                 disconnect(); event?(.paired(pin))
             }
@@ -141,7 +141,7 @@ public final class TVSession {
             switch field.number {
             case 1:
                 negotiated = try Wire.number(1, in: body) & 615
-                guard negotiated & 2 != 0 else { throw RemoteFailure.message("This TV does not support remote key commands") }
+                guard negotiated & 2 != 0 else { throw RemoteFailure.message(String(localized: "This TV does not support remote key commands")) }
                 let info = Wire.string(1, "iPhone") + Wire.string(2, "Personal") + Wire.int(3, 1)
                     + Wire.string(4, "1") + Wire.string(5, "com.guilhermeramalho.TVRemote") + Wire.string(6, "1.0")
                 channel?.send(Wire.bytes(1, Wire.int(1, negotiated) + Wire.bytes(2, info)))
@@ -160,7 +160,7 @@ public final class TVSession {
                 fieldCounter = try Wire.number(2, in: body)
             case 50:
                 event?(.volume(Int(try Wire.number(7, in: body)), Int(try Wire.number(6, in: body)), try Wire.number(8, in: body) != 0))
-            case 3: throw RemoteFailure.message("The TV rejected a remote command")
+            case 3: throw RemoteFailure.message(String(localized: "The TV rejected a remote command"))
             default: break
             }
         }

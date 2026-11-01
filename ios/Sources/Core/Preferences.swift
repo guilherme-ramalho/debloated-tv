@@ -38,7 +38,7 @@ public struct HomeLayout: Codable, Equatable {
               Set(order).count == order.count, Set(hidden).count == hidden.count,
               (order + hidden).allSatisfy(RemoteApp.validPackage),
               ["quiet-night", "aurora", "dusk"].contains(wallpaper) || Self.validPhoto(wallpaper) else {
-            throw RemoteFailure.message("Invalid TV Home layout")
+            throw RemoteFailure.message(String(localized: "Invalid TV Home layout"))
         }
     }
     public static func validPhoto(_ value: String) -> Bool {
@@ -78,7 +78,7 @@ public struct QuickAction: Codable, Identifiable, Equatable {
         guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, name.count <= 60, (1...12).contains(steps.count),
               steps.allSatisfy({ $0.argument.utf8.count <= 1024 && ($0.kind != .openApp || RemoteApp.validPackage($0.argument)) && ($0.kind != .input || !$0.argument.isEmpty) }),
               !steps.dropLast().contains(where: { $0.kind == .sleep }) else {
-            throw RemoteFailure.message("An action needs a name and between 1 and 12 valid steps.")
+            throw RemoteFailure.message(String(localized: "An action needs a name and between 1 and 12 valid steps."))
         }
     }
 }
@@ -93,12 +93,12 @@ public struct HomeBackup: Codable, Identifiable, Equatable {
         version = 1; id = UUID(); self.name = name; date = Date(); self.layout = layout; self.wallpaperJPEG = wallpaperJPEG
     }
     public static func decode(_ data: Data) throws -> HomeBackup {
-        guard data.count <= 2_000_000 else { throw RemoteFailure.message("Backup exceeds 2 MB") }
+        guard data.count <= 2_000_000 else { throw RemoteFailure.message(String(localized: "Backup exceeds 2 MB")) }
         let backup = try JSONDecoder().decode(Self.self, from: data)
         try backup.layout.validate()
         guard backup.version == 1, backup.name.count <= 80, (backup.wallpaperJPEG?.count ?? 0) <= 1_000_000,
               !HomeLayout.validPhoto(backup.layout.wallpaper) || backup.wallpaperJPEG != nil else {
-            throw RemoteFailure.message("Unsupported or incomplete backup")
+            throw RemoteFailure.message(String(localized: "Unsupported or incomplete backup"))
         }
         return backup
     }
@@ -112,7 +112,7 @@ public struct RemotePreferences: Codable, Equatable {
     public var profiles = [HomeProfile(name: "Personal"), HomeProfile(name: "Family")]
     public var profileID: UUID?
     public var inputs = [FavoriteInput(name: "PlayStation 5"), FavoriteInput(name: "Nintendo Switch")]
-    public var actions = [QuickAction(name: "Movie time", steps: [.init(.wake), .init(.openApp, argument: "com.netflix.ninja")])]
+    public var actions = [QuickAction(name: String(localized: "Movie time"), steps: [.init(.wake), .init(.openApp, argument: "com.netflix.ninja")])]
     public var apps = RemoteApp.known
     public var tvInputs: [TVInput] = []
     public var editorHost: String?
@@ -124,7 +124,7 @@ public struct RemotePreferences: Codable, Equatable {
               inputs.allSatisfy({ !$0.name.isEmpty && $0.name.count <= 60 }),
               profiles.allSatisfy({ !$0.name.isEmpty && $0.name.count <= 60 }),
               tvInputs.count <= 40, tvInputs.allSatisfy({ $0.id.utf8.count <= 512 && $0.name.count <= 120 && $0.launchURL.utf8.count <= 2048 }),
-              Set(profiles.map(\.id)).count == profiles.count else { throw RemoteFailure.message("Invalid remote preferences") }
+              Set(profiles.map(\.id)).count == profiles.count else { throw RemoteFailure.message(String(localized: "Invalid remote preferences")) }
         for profile in profiles { try profile.layout.validate() }
         for action in actions { try action.validate() }
     }
@@ -141,6 +141,6 @@ public struct LauncherSnapshot: Codable {
         try layout.validate()
         guard revision.count <= 120, apps.count <= 200, inputs.count <= 40, (wallpaperJPEG?.count ?? 0) <= 1_000_000,
               apps.allSatisfy({ RemoteApp.validPackage($0.id) && $0.name.count <= 120 && $0.launchURL.utf8.count <= 2048 }),
-              inputs.allSatisfy({ $0.id.utf8.count <= 512 && $0.name.count <= 120 && $0.launchURL.utf8.count <= 2048 }) else { throw RemoteFailure.message("Invalid TV editor response") }
+              inputs.allSatisfy({ $0.id.utf8.count <= 512 && $0.name.count <= 120 && $0.launchURL.utf8.count <= 2048 }) else { throw RemoteFailure.message(String(localized: "Invalid TV editor response")) }
     }
 }

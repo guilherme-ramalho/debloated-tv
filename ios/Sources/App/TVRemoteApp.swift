@@ -60,6 +60,9 @@ struct RemoteView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
+                if !model.hasSavedPairing && !model.preparing {
+                    ConnectTVView(model: model)
+                } else {
                 VStack(spacing: 12) {
                     controlsHeader
                     ZStack {
@@ -107,6 +110,7 @@ struct RemoteView: View {
                         }
                     }
                 }.padding(.horizontal, 30).padding(.top, 4).padding(.bottom, 12)
+                }
             }
             .background(QuietTheme.background).tint(.white)
             .navigationBarTitleDisplayMode(.inline)
@@ -120,13 +124,6 @@ struct RemoteView: View {
 
         }
     }
-    private var connectionLabel: String {
-        if model.preparing { return "Preparing…" }
-        if !model.hasSavedPairing { return "Pair TV" }
-        if model.waking { return "Waking…" }
-        if model.ready { return model.powerOn == false ? "Standby" : "Connected" }
-        return model.status == "Connecting…" ? "Connecting…" : "Offline"
-    }
     private var controlsHeader: some View {
         HStack(spacing: 6) {
             topCommand("power", "Power", .power, Color(red: 1, green: 0.34, blue: 0.36))
@@ -137,18 +134,7 @@ struct RemoteView: View {
                         .foregroundStyle(.white).accessibilityElement(children: .ignore).accessibilityLabel("On TV: " + name)
                 } else { Color.clear.frame(height: 1).accessibilityHidden(true) }
             }.frame(maxWidth: .infinity, alignment: .leading)
-            Button {
-                if !model.hasSavedPairing { model.beginPairing() }
-                else { if !model.ready { model.connect() }; settings = true }
-            } label: {
-                HStack(spacing: 5) {
-                    Circle().fill(model.ready ? Color.green : Color.orange).frame(width: 6, height: 6)
-                    Text(connectionLabel).font(.system(size: 11)).foregroundStyle(model.hasSavedPairing ? QuietTheme.muted : .white).lineLimit(1).minimumScaleFactor(0.85)
-                }.frame(width: 83, height: 44)
-            }.disabled(model.preparing || model.showingPIN)
-                .accessibilityLabel(model.hasSavedPairing ? "TV connection" : "Pair TV")
-                .accessibilityValue(model.status).accessibilityHint("Open connection details. Re-pairing and the TV address are also in Settings, Connection.")
-                .buttonStyle(RemotePressStyle(radius: 12))
+            TVConnectionChip(model: model) { settings = true }
                 .contextMenu { Button("Connection settings", systemImage: "wifi") { settings = true } }
             Button { keyboard = true } label: { Image(systemName: "keyboard").frame(width: 44, height: 44) }
                 .accessibilityLabel("Type on TV").buttonStyle(RemotePressStyle(radius: 12))

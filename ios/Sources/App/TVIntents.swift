@@ -33,14 +33,14 @@ enum IntentSettings {
     static func read() throws -> RemotePreferences {
         let url = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("TVRemote/preferences.json")
-        guard FileManager.default.fileExists(atPath: url.path) else { throw RemoteFailure.message("Open Debloated TV once to finish setup") }
+        guard FileManager.default.fileExists(atPath: url.path) else { throw RemoteFailure.message(String(localized: "Open Debloated TV once to finish setup")) }
         let data = try Data(contentsOf: url)
-        guard data.count <= 2_000_000 else { throw RemoteFailure.message("Open Debloated TV to check its saved settings") }
+        guard data.count <= 2_000_000 else { throw RemoteFailure.message(String(localized: "Open Debloated TV to check its saved settings")) }
         let settings = try JSONDecoder().decode(RemotePreferences.self, from: data); try settings.validate(); return settings
     }
     @MainActor static func run(_ steps: [ActionStep]) async throws {
         let host = UserDefaults.standard.string(forKey: "tvHost") ?? ""
-        guard !host.isEmpty else { throw RemoteFailure.message("Open Debloated TV and pair your TV first") }
+        guard !host.isEmpty else { throw RemoteFailure.message(String(localized: "Open Debloated TV and pair your TV first")) }
         let settings = try read()
         let runner = CommandRunner()
         try await runner.run(steps, host: host, apps: settings.apps, inputs: settings.editorHost == host ? settings.tvInputs : [])
@@ -59,7 +59,7 @@ struct TVCommandIntent: AppIntent {
     init(command: TVQuickCommand) { self.command = command }
     func perform() async throws -> some IntentResult & ProvidesDialog {
         #if WIDGET_EXTENSION
-        throw RemoteFailure.message("Open Debloated TV once to finish setup")
+        throw RemoteFailure.message(String(localized: "Open Debloated TV once to finish setup"))
         #else
         try await IntentSettings.run(command.steps)
         #endif
@@ -94,7 +94,7 @@ struct RunTVQuickActionIntent: AppIntent {
     static var authenticationPolicy: IntentAuthenticationPolicy = .requiresAuthentication
     @Parameter(title: "Quick action") var action: SavedTVAction
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        guard let saved = try IntentSettings.read().actions.first(where: { $0.id.uuidString == action.id }) else { throw RemoteFailure.message("This quick action no longer exists") }
+        guard let saved = try IntentSettings.read().actions.first(where: { $0.id.uuidString == action.id }) else { throw RemoteFailure.message(String(localized: "This quick action no longer exists")) }
         try saved.validate(); try await IntentSettings.run(saved.steps)
         return .result(dialog: "Sent \(saved.name) to your TV.")
     }

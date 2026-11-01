@@ -84,6 +84,15 @@ import XCTest
         }
     }
 
+    func testTypedAddressesAcceptRegionalKeyboards() {
+        XCTAssertEqual(TVAddress.typed("192,168,0,13"), "192.168.0.13", "comma keyboards (Spain, Brazil…)")
+        XCTAssertEqual(TVAddress.typed(" 192.168.0.13 "), "192.168.0.13")
+        XCTAssertTrue(TVAddress.isIPv4("192.168.0.13"))
+        for bad in ["192.168.0", "192.168.0.256", "a.b.c.d", "192.168..13", "1.2.3.4.5", "١٢.١.١.١", ""] {
+            XCTAssertFalse(TVAddress.isIPv4(bad), bad)
+        }
+    }
+
     func testModelRequestCarriesOnlyModelDetailsAndNeedsHTTPS() throws {
         let info = TVSetupInfo(supported: false, model: "Acme TV", detail: "acme1 · Android 12")
         XCTAssertNil(ModelRequest.url(info, form: nil))

@@ -31,14 +31,14 @@ public final class TVConnection {
         queue.async { [self] in
             guard connection == nil && !closed else { return }
             let tls = NWProtocolTLS.Options()
-            guard let local = sec_identity_create(identity.identity) else { fail("Could not use pairing identity"); return }
+            guard let local = sec_identity_create(identity.identity) else { fail(String(localized: "Could not use pairing identity")); return }
             sec_protocol_options_set_local_identity(tls.securityProtocolOptions, local)
             sec_protocol_options_set_min_tls_protocol_version(tls.securityProtocolOptions, .TLSv12)
             sec_protocol_options_set_verify_block(tls.securityProtocolOptions, { [weak self] _, trust, complete in
                 guard let self else { complete(false); return }
                 let trust = sec_trust_copy_ref(trust).takeRetainedValue()
                 guard let chain = SecTrustCopyCertificateChain(trust) as? [SecCertificate], let certificate = chain.first else {
-                    let reason = "Could not read the TV’s secure identity. Try connecting again."
+                    let reason = String(localized: "Could not read the TV’s secure identity. Try connecting again.")
                     self.validationFailure = reason
                     complete(false)
                     self.queue.async { self.fail(reason) }
@@ -50,7 +50,7 @@ public final class TVConnection {
                 complete(accepted)
                 if !accepted {
                     print("TVRemote: paired TV certificate mismatch")
-                    let reason = "The TV’s saved pairing identity no longer matches. Open Connection settings and pair this TV again."
+                    let reason = String(localized: "The TV’s saved pairing identity no longer matches. Open Connection settings and pair this TV again.")
                     self.validationFailure = reason
                     self.queue.async { self.fail(reason) }
                 }
@@ -71,15 +71,15 @@ public final class TVConnection {
                 case .ready:
                     self.tlsReady = true; self.ready?(); self.receive()
                 case .waiting: break // Allow the Local Network permission dialog or a changing Wi-Fi path to settle.
-                case .failed: self.fail(self.validationFailure ?? "Could not connect to the paired TV. Check Wi-Fi, TV power, and Local Network access.")
-                case .cancelled: self.fail("Connection closed")
+                case .failed: self.fail(self.validationFailure ?? String(localized: "Could not connect to the paired TV. Check Wi-Fi, TV power, and Local Network access."))
+                case .cancelled: self.fail(String(localized: "Connection closed"))
                 default: break
                 }
             }
             c.start(queue: queue)
             queue.asyncAfter(deadline: .now() + (allowUnpaired ? 35 : 10)) { [weak self] in
                 guard let self, !self.closed, !self.tlsReady else { return }
-                self.fail(self.validationFailure ?? "TV connection timed out")
+                self.fail(self.validationFailure ?? String(localized: "TV connection timed out"))
             }
         }
     }
@@ -89,7 +89,7 @@ public final class TVConnection {
             guard let self, !self.closed, self.tlsReady else { return }
             let data = Wire.varint(UInt64(payload.count)) + payload
             self.connection?.send(content: data, completion: .contentProcessed { [weak self] error in
-                if error != nil { self?.fail("TV connection was interrupted") }
+                if error != nil { self?.fail(String(localized: "TV connection was interrupted")) }
             })
         }
     }
@@ -98,7 +98,7 @@ public final class TVConnection {
         try await withCheckedThrowingContinuation { (result: CheckedContinuation<Void, Error>) in
             queue.async { [weak self] in
                 guard let self, !self.closed, self.tlsReady, let connection = self.connection else {
-                    result.resume(throwing: RemoteFailure.message("TV connection is not ready")); return
+                    result.resume(throwing: RemoteFailure.message(String(localized: "TV connection is not ready"))); return
                 }
                 connection.send(content: Wire.varint(UInt64(payload.count)) + payload, completion: .contentProcessed { error in
                     if let error { result.resume(throwing: error) } else { result.resume() }
@@ -114,9 +114,9 @@ public final class TVConnection {
             guard let self, !self.closed else { return }
             if let data, !data.isEmpty {
                 do { for message in try self.decoder.append(data) { self.frame?(message) } }
-                catch { self.fail("The TV sent an invalid remote-protocol message"); return }
+                catch { self.fail(String(localized: "The TV sent an invalid remote-protocol message")); return }
             }
-            if error != nil || complete { self.fail("TV connection closed"); return }
+            if error != nil || complete { self.fail(String(localized: "TV connection closed")); return }
             self.receive()
         }
     }

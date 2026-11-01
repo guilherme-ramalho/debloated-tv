@@ -105,16 +105,16 @@ enum RecoveryStore {
     // MARK: connect and inspect
 
     func connect() {
-        guard let target = TVAddress(address) else { error = "Enter the TV's IP address, for example 192.168.0.13"; return }
+        guard let target = TVAddress(address) else { error = String(localized: "Enter the TV's IP address, for example 192.168.0.13"); return }
         run {
-            self.message = "Connecting to \(target.host)…"
+            self.message = String(localized: "Connecting to \(target.host)…")
             let client = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
             self.adb = client
             let props = try await client.connect(name: "Debloated TV@iPhone", approvalTimeout: 120) {
-                Task { @MainActor in self.waitingForApproval = true; self.message = "On the TV, choose “Always allow” and Allow." }
+                Task { @MainActor in self.waitingForApproval = true; self.message = String(localized: "On the TV, choose “Always allow” and Allow.") }
             }
             self.waitingForApproval = false
-            self.note("Connected to \(props["ro.product.model"] ?? "the TV")")
+            self.note(String(localized: "Connected to \(props["ro.product.model"] ?? "the TV")"))
             self.step = .inspect
             try await self.inspectNow()
         }
@@ -123,14 +123,14 @@ enum RecoveryStore {
     func inspect() { run { try await self.inspectNow() } }
 
     private func inspectNow() async throws {
-        guard let adb else { throw RemoteFailure.message("Connect to the TV first") }
-        message = "Reading the TV's apps and settings…"
+        guard let adb else { throw RemoteFailure.message(String(localized: "Connect to the TV first")) }
+        message = String(localized: "Reading the TV's apps and settings…")
         let debloater = Debloater(tv: adb)
         let inv = try await debloater.inspect(properties: await adb.properties)
         inventory = inv
         guard let match = DebloatProfile.match(inv.properties, in: profiles) else {
             profile = nil
-            message = "No tested profile for this TV yet."
+            message = String(localized: "No tested profile for this TV yet.")
             return
         }
         profile = match
@@ -142,7 +142,7 @@ enum RecoveryStore {
         recordURL = url
         keep = []
         dock = match.manifest.dockCandidates.filter { inv.installed.contains($0) }.prefix(5).map { $0 }
-        note("Recognised \(match.manifest.name). Recovery record saved.")
+        note(String(localized: "Recognised \(match.manifest.name). Recovery record saved."))
         step = .choose
     }
 
@@ -160,7 +160,7 @@ enum RecoveryStore {
     func review() {
         guard let adb, let profile, let inventory else { return }
         run {
-            self.message = "Running the safety checks…"
+            self.message = String(localized: "Running the safety checks…")
             var overrides = DebloatOverrides(); overrides.setupwraithOnEthernet = self.setupwraithOnEthernet
             let chosen = self.choices.map(\.package).filter { !self.keep.contains($0) }
             self.plan = try await Debloater(tv: adb).plan(chosen, list: profile.list, inventory: inventory, overrides: overrides)
@@ -172,7 +172,7 @@ enum RecoveryStore {
     func apply() {
         guard let adb, let profile, let plan else { return }
         let apk = installLauncher ? launcherAPK : nil
-        if installLauncher && apk == nil { error = "This build doesn't include the Home screen. Run scripts/bundle-launcher.sh and rebuild."; return }
+        if installLauncher && apk == nil { error = String(localized: "This build doesn't include the Home screen. Run scripts/bundle-launcher.sh and rebuild."); return }
         step = .apply; log = []; progress = 0; result = nil
         run {
             let debloater = Debloater(tv: adb)
@@ -182,26 +182,26 @@ enum RecoveryStore {
             let total = Double(max(1, plan.disable.count)) + (apk == nil ? 0 : 6)
             for (i, group) in groups.enumerated() {
                 try Task.checkCancellation()
-                self.note("Disabling group \(i + 1) of \(groups.count): \(group.count) apps")
+                self.note(String(localized: "Disabling group \(i + 1) of \(groups.count): \(group.count) apps"))
                 let r = try await debloater.apply(DebloatPlan(disable: group, skipped: [], notes: []))
                 disabled += r.disabled; still += r.stillEnabled
                 self.progress = Double(disabled.count + still.count) / total
                 _ = try await adb.shell("echo ok", timeout: 15)   // the TV still answers after this group
-                if r.stoppedEarly { throw RemoteFailure.message("The TV stopped answering during group \(i + 1). Reconnect and review again; nothing after it was changed.") }
+                if r.stoppedEarly { throw RemoteFailure.message(String(localized: "The TV stopped answering during group \(i + 1). Reconnect and review again; nothing after it was changed.")) }
             }
             self.result = ApplyResult(disabled: disabled, stillEnabled: still, stoppedEarly: false)
-            self.note("Disabled \(disabled.count) apps" + (still.isEmpty ? "." : "; \(still.count) stayed enabled."))
+            self.note(still.isEmpty ? String(localized: "Disabled \(disabled.count) apps.") : String(localized: "Disabled \(disabled.count) apps; \(still.count) stayed enabled."))
             if let apk {
                 let theme = try profile.themeConfig(dock: self.dock)
                 let base = self.progress
                 self.homeComponent = try await LauncherInstaller(tv: adb).install(apk: apk, options: profile.manifest.launcher, theme: theme) { step, fraction in
                     Task { @MainActor in
-                        self.message = step.rawValue
+                        self.message = step.title
                         let index = Double(LauncherStep.allCases.firstIndex(of: step) ?? 0)
                         self.progress = min(1, base + (index + fraction) / Double(LauncherStep.allCases.count) * (1 - base))
                     }
                 }
-                self.note("New Home screen installed and set as Home.")
+                self.note(String(localized: "New Home screen installed and set as Home."))
             }
             self.progress = 1
             self.step = .test
@@ -212,9 +212,9 @@ enum RecoveryStore {
     func restore(_ record: RecoveryRecord, stock: String?) {
         guard let adb else { return }
         run {
-            self.note("Restoring the TV…")
+            self.note(String(localized: "Restoring the TV…"))
             let still = try await Debloater(tv: adb).restore(record, stock: stock ?? "com.google.android.tvlauncher")
-            self.note("Restored. \(still.count) apps remain disabled because they were off before setup.")
+            self.note(String(localized: "Restored. \(still.count) apps remain disabled because they were off before setup."))
             self.restores += 1
         }
     }

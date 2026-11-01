@@ -9,7 +9,8 @@ final class TVRemoteUITests: XCTestCase {
     private func launch(tvState: String = "fresh", offer: Bool = false) -> XCUIApplication {
         let app = XCUIApplication()
         // 192.0.2.x is reserved for documentation: nothing answers there.
-        app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestTVState", tvState, "-uiTestOffer", offer ? "YES" : "NO"]
+        app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestTVState", tvState, "-uiTestOffer", offer ? "YES" : "NO",
+                               "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]   // the assertions read English text
         app.launch()
         return app
     }
@@ -71,5 +72,20 @@ final class TVRemoteUITests: XCTestCase {
         app.swipeUp()
         app.buttons["Credits & licenses"].tap()
         XCTAssertTrue(app.staticTexts["cleanyourtv"].waitForExistence(timeout: 5))
+    }
+
+    func testFirstLaunchGuidesToConnectAndTheAddressFieldTakesDots() {
+        let app = launch()
+        app.tabBars.buttons["Remote"].tap()
+        XCTAssertTrue(app.staticTexts["Connect your TV"].waitForExistence(timeout: 5) || app.staticTexts["No TV found yet"].exists)
+        let manual = app.buttons["My TV isn't listed: enter its address"].exists ? app.buttons["My TV isn't listed: enter its address"] : app.buttons["Enter the TV's address instead"]
+        manual.tap()
+        let field = app.textFields["The TV's IP address"]
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap()
+        field.typeText("192,168,0,13")
+        XCTAssertEqual(field.value as? String, "192.168.0.13", "commas become dots")
+        XCTAssertTrue(app.staticTexts["Looks right"].exists)
+        XCTAssertTrue(app.buttons["Connect"].isEnabled)
     }
 }

@@ -8,7 +8,7 @@ import UniformTypeIdentifiers
 @MainActor final class HomeEditor: ObservableObject {
     @Published var ready = false
     @Published var busy = false
-    @Published var message = "Turn on the TV to load its Home screen. Drafts are saved on this iPhone."
+    @Published var message = String(localized: "Turn on the TV to load its Home screen. Drafts are saved on this iPhone.")
     @Published private(set) var snapshot: LauncherSnapshot?
     /// Set when an app or input is in front: the name to show in the "Connect now?" prompt.
     @Published private(set) var waitingFor: String?
@@ -24,20 +24,20 @@ import UniformTypeIdentifiers
     func close() {
         generation += 1; wanted = false; snapshot = nil; operation?.cancel(); operation = nil; client.close()
         ready = false; busy = false; waitingFor = nil
-        message = "TV Home connects when you open the TV tab with the TV on."
+        message = String(localized: "TV Home connects when you open the TV tab with the TV on.")
     }
 
     /// Called whenever the TV's state changes while the TV tab is visible.
     func autoConnect(model: RemoteModel) {
         self.model = model
         guard !ready, !busy else { return }
-        guard model.ready else { waitingFor = nil; message = "Waiting for the TV. Drafts are saved on this iPhone."; return }
-        if model.powerOn == false { waitingFor = nil; message = "The TV is in standby. Turn it on to load its Home screen."; return }
+        guard model.ready else { waitingFor = nil; message = String(localized: "Waiting for the TV. Drafts are saved on this iPhone."); return }
+        if model.powerOn == false { waitingFor = nil; message = String(localized: "The TV is in standby. Turn it on to load its Home screen."); return }
         if model.foregroundPackage == Self.homePackage { connect(model: model); return }
         // The remote reports the app in front, not whether it is playing, so any app or input asks first.
-        let name = TVSession.appName(for: model.foregroundPackage) ?? (model.foregroundPackage.isEmpty ? "The TV" : "An app or input")
+        let name = TVSession.appName(for: model.foregroundPackage) ?? (model.foregroundPackage.isEmpty ? String(localized: "The TV") : String(localized: "An app or input"))
         waitingFor = name
-        message = "\(name) is on screen. Connecting opens TV Home's editor in the background, which can pause what's playing."
+        message = String(localized: "\(name) is on screen. Connecting opens TV Home's editor in the background, which can pause what's playing.")
     }
 
     /// Opens a session unless one is open or opening. `force` starts over (Try again, Connect now).
@@ -47,8 +47,8 @@ import UniformTypeIdentifiers
         self.model = model
         let token = generation
         wanted = true
-        guard model.ready else { message = "Waiting for the TV. Drafts are saved on this iPhone."; return }
-        waitingFor = nil; busy = true; message = "Connecting to TV Home…"
+        guard model.ready else { message = String(localized: "Waiting for the TV. Drafts are saved on this iPhone."); return }
+        waitingFor = nil; busy = true; message = String(localized: "Connecting to TV Home…")
         client.event = { [weak self] event in
             guard let self, self.generation == token else { return }
             switch event {
@@ -60,11 +60,11 @@ import UniformTypeIdentifiers
         let host = model.host
         operation = Task { [weak self, weak model] in
             guard let self, let model else { return }
-            var lastError: Error = RemoteFailure.message("TV Home did not answer")
+            var lastError: Error = RemoteFailure.message(String(localized: "TV Home did not answer"))
             // Up to three tries, each with a fresh key: the remote may need a moment after the phone wakes.
             for attempt in 1...3 {
                 do {
-                    guard await model.freshen() else { throw RemoteFailure.message("The TV remote connection isn't responding yet.") }
+                    guard await model.freshen() else { throw RemoteFailure.message(String(localized: "The TV remote connection isn't responding yet.")) }
                     let key = try EditorLink.newKey()
                     try await model.sendLink(EditorLink.url(key: key))
                     try await self.client.open(host: host, key: key)
@@ -82,7 +82,7 @@ import UniformTypeIdentifiers
             }
             guard self.generation == token else { return }
             self.client.close(); self.ready = false; self.busy = false
-            self.message = "Couldn’t reach TV Home. \(lastError.localizedDescription)"
+            self.message = String(localized: "Couldn’t reach TV Home. \(lastError.localizedDescription)")
         }
     }
 
@@ -104,38 +104,38 @@ import UniformTypeIdentifiers
         let token = generation
         let result = try await client.request("snapshot", as: LauncherSnapshot.self)
         guard generation == token else { throw CancellationError() }
-        try result.validate(); snapshot = result; ready = true; message = "Connected to TV Home"
+        try result.validate(); snapshot = result; ready = true; message = String(localized: "Connected to TV Home")
     }
     func apply(_ layout: HomeLayout, wallpaper: Data?) async throws {
         try layout.validate()
-        guard ready, let snapshot else { throw RemoteFailure.message("Wait for TV Home to connect before applying") }
-        guard (wallpaper?.count ?? 0) <= 1_000_000 else { throw RemoteFailure.message("Wallpaper exceeds 1 MB") }
+        guard ready, let snapshot else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect before applying")) }
+        guard (wallpaper?.count ?? 0) <= 1_000_000 else { throw RemoteFailure.message(String(localized: "Wallpaper exceeds 1 MB")) }
         var payload: [String: Any] = ["expectedRevision":snapshot.revision, "layout":try JSONSerialization.jsonObject(with: JSONEncoder().encode(layout))]
         if let wallpaper, HomeLayout.validPhoto(layout.wallpaper) { payload["wallpaperJPEG"] = try Self.tvWallpaper(wallpaper).base64EncodedString() }
         let token = generation
         let result = try await client.request("applyLayout", payload: payload, as: LauncherSnapshot.self)
         guard generation == token else { throw CancellationError() }
-        try result.validate(); self.snapshot = result; message = "TV Home updated"
+        try result.validate(); self.snapshot = result; message = String(localized: "TV Home updated")
     }
     /// Backs up the current draft, then applies it. Shared by the TV tab and the wallpaper screens.
     func applyDraft(_ settings: AppSettings) async -> Bool {
         do {
-            _ = try settings.backup(name: "Before applying · " + settings.profile.name)
+            _ = try settings.backup(name: String(localized: "Before applying · \(settings.profile.name)"))
             try await apply(settings.layout, wallpaper: settings.wallpaperData(settings.layout))
             return true
         } catch { settings.notice = error.localizedDescription; return false }
     }
     struct Confirmation: Decodable { let status: String }
     func uninstall(_ app: RemoteApp) async throws {
-        guard ready, app.installed == true, !app.system, RemoteApp.validPackage(app.id) else { throw RemoteFailure.message("Sync installed apps before uninstalling") }
+        guard ready, app.installed == true, !app.system, RemoteApp.validPackage(app.id) else { throw RemoteFailure.message(String(localized: "Sync installed apps before uninstalling")) }
         let token = generation
         let result = try await client.request("uninstall", payload: ["package":app.id], as: Confirmation.self)
         guard generation == token else { throw CancellationError() }
-        guard result.status == "confirmationRequired" else { throw RemoteFailure.message("Unexpected uninstall response. Refresh the app list.") }
-        message = "Confirm uninstall on your TV. Refresh afterward to check the result."
+        guard result.status == "confirmationRequired" else { throw RemoteFailure.message(String(localized: "Unexpected uninstall response. Refresh the app list.")) }
+        message = String(localized: "Confirm uninstall on your TV. Refresh afterward to check the result.")
     }
     func sleepTimer(minutes: Int) async throws {
-        guard ready, (0...240).contains(minutes) else { throw RemoteFailure.message("Wait for TV Home to connect to schedule a sleep timer") }
+        guard ready, (0...240).contains(minutes) else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect to schedule a sleep timer")) }
         let token = generation
         let result = try await client.request("sleepTimer", payload: ["minutes":minutes], as: LauncherSnapshot.self)
         guard generation == token else { throw CancellationError() }
@@ -151,7 +151,7 @@ import UniformTypeIdentifiers
                     kCGImageSourceThumbnailMaxPixelSize: 4096, kCGImageSourceCreateThumbnailWithTransform: true] as CFDictionary),
               let context = CGContext(data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: 0,
                                       space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else {
-            throw RemoteFailure.message("This photo can't be used as a TV wallpaper")
+            throw RemoteFailure.message(String(localized: "This photo can't be used as a TV wallpaper"))
         }
         let scale = max(Double(width) / Double(full.width), Double(height) / Double(full.height))
         let drawn = CGSize(width: Double(full.width) * scale, height: Double(full.height) * scale)
@@ -160,10 +160,10 @@ import UniformTypeIdentifiers
         let encoded = NSMutableData()
         guard let image = context.makeImage(),
               let destination = CGImageDestinationCreateWithData(encoded, UTType.jpeg.identifier as CFString, 1, nil) else {
-            throw RemoteFailure.message("This photo can't be used as a TV wallpaper")
+            throw RemoteFailure.message(String(localized: "This photo can't be used as a TV wallpaper"))
         }
         CGImageDestinationAddImage(destination, image, [kCGImageDestinationLossyCompressionQuality: 0.85] as CFDictionary)
-        guard CGImageDestinationFinalize(destination), encoded.length <= 1_000_000 else { throw RemoteFailure.message("This photo can't be used as a TV wallpaper") }
+        guard CGImageDestinationFinalize(destination), encoded.length <= 1_000_000 else { throw RemoteFailure.message(String(localized: "This photo can't be used as a TV wallpaper")) }
         return encoded as Data
     }
 }

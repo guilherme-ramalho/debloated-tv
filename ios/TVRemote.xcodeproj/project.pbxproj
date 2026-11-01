@@ -37,9 +37,14 @@
 		700000000000000000000006 /* Sources/Core/LauncherInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000005 /* Sources/Core/LauncherInstall.swift */; };
 		700000000000000000000008 /* Sources/Core/Profiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000007 /* Sources/Core/Profiles.swift */; };
 		70000000000000000000000A /* Profiles in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000009 /* Profiles */; };
+		700000000000000000000016 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000015 /* Localizable.xcstrings */; };
+		700000000000000000000017 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000015 /* Localizable.xcstrings */; };
+		700000000000000000000019 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000018 /* InfoPlist.xcstrings */; };
 		70000000000000000000000C /* Launcher in Resources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000B /* Launcher */; };
 		70000000000000000000000E /* Sources/App/DebloatFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000D /* Sources/App/DebloatFlow.swift */; };
 		700000000000000000000010 /* Sources/App/DebloatViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000F /* Sources/App/DebloatViews.swift */; };
+		70000000000000000000001B /* Sources/App/ConnectViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000001A /* Sources/App/ConnectViews.swift */; };
+		70000000000000000000001D /* Sources/Core/TVDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000001C /* Sources/Core/TVDiscovery.swift */; };
 		700000000000000000000012 /* Sources/App/TVSetupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000011 /* Sources/App/TVSetupViews.swift */; };
 		700000000000000000000014 /* Sources/Core/TVSetupState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000013 /* Sources/Core/TVSetupState.swift */; };
 /* End PBXBuildFile section */
@@ -104,9 +109,13 @@
 		700000000000000000000005 /* Sources/Core/LauncherInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/LauncherInstall.swift; sourceTree = SOURCE_ROOT; };
 		700000000000000000000007 /* Sources/Core/Profiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Profiles.swift; sourceTree = SOURCE_ROOT; };
 		700000000000000000000009 /* Profiles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Profiles; path = Resources/Profiles; sourceTree = SOURCE_ROOT; };
+		700000000000000000000015 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = Resources/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
+		700000000000000000000018 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = InfoPlist.xcstrings; path = Resources/InfoPlist.xcstrings; sourceTree = SOURCE_ROOT; };
 		70000000000000000000000B /* Launcher */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Launcher; path = Resources/Launcher; sourceTree = SOURCE_ROOT; };
 		70000000000000000000000D /* Sources/App/DebloatFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/DebloatFlow.swift; sourceTree = SOURCE_ROOT; };
 		70000000000000000000000F /* Sources/App/DebloatViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/DebloatViews.swift; sourceTree = SOURCE_ROOT; };
+		70000000000000000000001A /* Sources/App/ConnectViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/ConnectViews.swift; sourceTree = SOURCE_ROOT; };
+		70000000000000000000001C /* Sources/Core/TVDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/TVDiscovery.swift; sourceTree = SOURCE_ROOT; };
 		700000000000000000000011 /* Sources/App/TVSetupViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/TVSetupViews.swift; sourceTree = SOURCE_ROOT; };
 		700000000000000000000013 /* Sources/Core/TVSetupState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/TVSetupState.swift; sourceTree = SOURCE_ROOT; };
 		FAC2022F3097509C00ECC767 /* TVRemoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TVRemoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,6 +171,8 @@
 				300000000000000000000006 /* Sources/App/HomeViews.swift */,
 				70000000000000000000000F /* Sources/App/DebloatViews.swift */,
 				700000000000000000000011 /* Sources/App/TVSetupViews.swift */,
+				70000000000000000000001A /* Sources/App/ConnectViews.swift */,
+				70000000000000000000001C /* Sources/Core/TVDiscovery.swift */,
 				700000000000000000000013 /* Sources/Core/TVSetupState.swift */,
 				70000000000000000000000D /* Sources/App/DebloatFlow.swift */,
 				300000000000000000000008 /* Sources/App/PairingViews.swift */,
@@ -173,6 +184,8 @@
 				700000000000000000000007 /* Sources/Core/Profiles.swift */,
 				700000000000000000000009 /* Profiles */,
 				70000000000000000000000B /* Launcher */,
+				700000000000000000000015 /* Localizable.xcstrings */,
+				700000000000000000000018 /* InfoPlist.xcstrings */,
 				700000000000000000000005 /* Sources/Core/LauncherInstall.swift */,
 				700000000000000000000003 /* Sources/Core/Debloat.swift */,
 				300000000000000000000012 /* Sources/Core/Preferences.swift */,
@@ -274,6 +287,11 @@
 			knownRegions = (
 				en,
 				Base,
+				"pt-BR",
+				es,
+				de,
+				fr,
+				it,
 			);
 			mainGroup = 000000000000000000000011;
 			productRefGroup = 000000000000000000000010 /* Products */;
@@ -297,6 +315,8 @@
 				600000000000000000000002 /* LaunchScreen.storyboard in Resources */,
 				70000000000000000000000A /* Profiles in Resources */,
 				70000000000000000000000C /* Launcher in Resources */,
+				700000000000000000000016 /* Localizable.xcstrings in Resources */,
+				700000000000000000000019 /* InfoPlist.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +324,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				700000000000000000000017 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,6 +349,8 @@
 				300000000000000000000007 /* Sources/App/HomeViews.swift in Sources */,
 				700000000000000000000010 /* Sources/App/DebloatViews.swift in Sources */,
 				700000000000000000000012 /* Sources/App/TVSetupViews.swift in Sources */,
+				70000000000000000000001B /* Sources/App/ConnectViews.swift in Sources */,
+				70000000000000000000001D /* Sources/Core/TVDiscovery.swift in Sources */,
 				700000000000000000000014 /* Sources/Core/TVSetupState.swift in Sources */,
 				70000000000000000000000E /* Sources/App/DebloatFlow.swift in Sources */,
 				300000000000000000000009 /* Sources/App/PairingViews.swift in Sources */,
@@ -389,6 +412,8 @@
 				APP_NAME_SUFFIX = " Dev";
 				BUNDLE_ID_SUFFIX = .dev;
 				CLANG_ENABLE_MODULES = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -424,6 +449,8 @@
 				APP_NAME_SUFFIX = "";
 				BUNDLE_ID_SUFFIX = "";
 				CLANG_ENABLE_MODULES = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;

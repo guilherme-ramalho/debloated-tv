@@ -15,7 +15,7 @@ import ImageIO
             try FileManager.default.createDirectory(at: self.directory, withIntermediateDirectories: true)
             if FileManager.default.fileExists(atPath: settingsURL.path) {
                 let data = try Data(contentsOf: settingsURL)
-                guard data.count <= 2_000_000 else { throw RemoteFailure.message("Saved settings are too large") }
+                guard data.count <= 2_000_000 else { throw RemoteFailure.message(String(localized: "Saved settings are too large")) }
                 let restored = try JSONDecoder().decode(RemotePreferences.self, from: data)
                 try restored.validate(); value = restored
             } else {
@@ -28,7 +28,7 @@ import ImageIO
                     guard let size = try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize, size <= 2_000_000,
                           let data = try? Data(contentsOf: url) else { return nil }; return try? HomeBackup.decode(data)
                 }.sorted { $0.date > $1.date }
-        } catch { notice = "Saved preferences could not be loaded. Your existing file was preserved. \(error.localizedDescription)" }
+        } catch { notice = String(localized: "Saved preferences could not be loaded. Your existing file was preserved. \(error.localizedDescription)") }
     }
     func update(_ change: (inout RemotePreferences) -> Void) {
         var next = value; change(&next)
@@ -60,7 +60,7 @@ import ImageIO
     func addProfile(_ name: String) {
         let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !name.isEmpty, name.count <= 60, !value.profiles.contains(where: { $0.name.caseInsensitiveCompare(name) == .orderedSame }) else {
-            notice = "Choose a unique profile name, up to 60 characters."; return
+            notice = String(localized: "Choose a unique profile name, up to 60 characters."); return
         }
         let new = HomeProfile(name: name, layout: layout)
         update { $0.profiles.append(new); $0.profileID = new.id }
@@ -70,7 +70,7 @@ import ImageIO
     func importPhoto(_ data: Data) throws -> String {
         guard data.count <= 40_000_000, let source = CGImageSourceCreateWithData(data as CFData, nil),
               let image = CGImageSourceCreateThumbnailAtIndex(source, 0, [kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceThumbnailMaxPixelSize: 1920, kCGImageSourceCreateThumbnailWithTransform: true] as CFDictionary) else {
-            throw RemoteFailure.message("Choose a supported image under 40 MB")
+            throw RemoteFailure.message(String(localized: "Choose a supported image under 40 MB"))
         }
         var encoded: Data?
         for quality in [0.85, 0.7, 0.55, 0.4] {
@@ -79,7 +79,7 @@ import ImageIO
             CGImageDestinationAddImage(destination, image, [kCGImageDestinationLossyCompressionQuality: quality] as CFDictionary)
             if CGImageDestinationFinalize(destination), result.length <= 1_000_000 { encoded = result as Data; break }
         }
-        guard let encoded else { throw RemoteFailure.message("Could not fit this wallpaper within 1 MB") }
+        guard let encoded else { throw RemoteFailure.message(String(localized: "Could not fit this wallpaper within 1 MB")) }
         let id = "photo-" + UUID().uuidString
         try encoded.write(to: photoURL(id)!, options: .atomic)
         return id
@@ -96,7 +96,7 @@ import ImageIO
         guard data.count <= 40_000_000, let source = CGImageSourceCreateWithData(data as CFData, nil),
               let image = CGImageSourceCreateThumbnailAtIndex(source, 0, [kCGImageSourceCreateThumbnailFromImageAlways: true,
                     kCGImageSourceThumbnailMaxPixelSize: 2560, kCGImageSourceCreateThumbnailWithTransform: true] as CFDictionary) else {
-            throw RemoteFailure.message("Choose a supported image under 40 MB")
+            throw RemoteFailure.message(String(localized: "Choose a supported image under 40 MB"))
         }
         return UIImage(cgImage: image)
     }
@@ -104,7 +104,7 @@ import ImageIO
     /// later changes. Returns the new wallpaper ID.
     func saveFramedPhoto(_ source: UIImage, crop: CGRect) throws -> String {
         guard let cg = source.cgImage, let part = cg.cropping(to: crop.integral.intersection(CGRect(x: 0, y: 0, width: cg.width, height: cg.height))) else {
-            throw RemoteFailure.message("Could not frame this photo")
+            throw RemoteFailure.message(String(localized: "Could not frame this photo"))
         }
         let size = CGSize(width: 1920, height: 1080)
         let format = UIGraphicsImageRendererFormat(); format.scale = 1; format.opaque = true
@@ -115,7 +115,7 @@ import ImageIO
         for quality in [0.85, 0.7, 0.55, 0.4] {
             if let data = framed.jpegData(compressionQuality: quality), data.count <= 1_000_000 { encoded = data; break }
         }
-        guard let encoded, let original = source.jpegData(compressionQuality: 0.85) else { throw RemoteFailure.message("Could not fit this wallpaper within 1 MB") }
+        guard let encoded, let original = source.jpegData(compressionQuality: 0.85) else { throw RemoteFailure.message(String(localized: "Could not fit this wallpaper within 1 MB")) }
         let id = "photo-" + UUID().uuidString
         try encoded.write(to: photoURL(id)!, options: .atomic)
         try original.write(to: sourceURL(id)!, options: .atomic)
@@ -141,7 +141,7 @@ struct BackupDocument: FileDocument {
     var data: Data
     init(_ backup: HomeBackup) throws { data = try JSONEncoder().encode(backup) }
     init(configuration: ReadConfiguration) throws {
-        guard let data = configuration.file.regularFileContents else { throw RemoteFailure.message("This backup is empty") }
+        guard let data = configuration.file.regularFileContents else { throw RemoteFailure.message(String(localized: "This backup is empty")) }
         _ = try HomeBackup.decode(data); self.data = data
     }
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper { FileWrapper(regularFileWithContents: data) }

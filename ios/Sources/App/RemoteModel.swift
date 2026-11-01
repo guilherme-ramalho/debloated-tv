@@ -3,7 +3,7 @@ import Security
 
 @MainActor final class RemoteModel: ObservableObject {
     @Published var host = UserDefaults.standard.string(forKey: "tvHost") ?? "192.168.1.100"
-    @Published var status = "Preparing secure pairing…"
+    @Published var status = String(localized: "Preparing secure pairing…")
     @Published var ready = false
     @Published private(set) var hasSavedPairing = false
     /// Counts new pairings, so the app can offer TV setup once right after one.
@@ -31,7 +31,7 @@ import Security
     private var autoReconnect = true
     func setAutoReconnect(_ value: Bool) { autoReconnect = value; if !value { retry?.cancel(); retry = nil } }
     func sendText(_ text: String) async throws {
-        guard ready, let session else { throw RemoteFailure.message("Connect the TV before sending text") }
+        guard ready, let session else { throw RemoteFailure.message(String(localized: "Connect the TV before sending text")) }
         try await session.writeText(text)
     }
 
@@ -47,7 +47,7 @@ import Security
                     case .success(let identity):
                         self.identity = identity
                         if self.active { self.connect() }
-                    case .failure(let error): self.status = "Pairing identity unavailable"; self.error = error.localizedDescription
+                    case .failure(let error): self.status = String(localized: "Pairing identity unavailable"); self.error = error.localizedDescription
                     }
                 }
             }
@@ -65,15 +65,28 @@ import Security
         if pairing { pairing = false; showingPIN = false }
     }
 
+    /// The TV's own name, as found on the network, for the host; the address when there's none.
+    var tvName: String { (UserDefaults.standard.dictionary(forKey: "tvNames") as? [String: String])?[host] ?? host }
+
+    /// Picks a TV (found on the network or typed) and starts pairing with it.
+    func pair(with host: String, name: String?) {
+        if let name, !name.isEmpty {
+            var names = (UserDefaults.standard.dictionary(forKey: "tvNames") as? [String: String]) ?? [:]
+            names[host] = String(name.prefix(80))
+            UserDefaults.standard.set(names, forKey: "tvNames")
+        }
+        if saveHost(host) { beginPairing() }
+    }
+
     @discardableResult func saveHost(_ value: String) -> Bool {
-        let value = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        let value = TVAddress.typed(value)
         if value.contains(":") {
-            error = "Enter only the IP here, without a port. The remote always uses the TV’s own ports; a port like :15555 is only for Settings › Debloat & new Home."
+            error = String(localized: "Enter only the IP here, without a port. The remote always uses the TV’s own ports; a port like :15555 is only for Settings › Debloat & new Home.")
             return false
         }
         let parts = value.split(separator: ".", omittingEmptySubsequences: false)
         guard parts.count == 4, parts.allSatisfy({ Int($0).map { (0...255).contains($0) } ?? false }) else {
-            error = "Enter the TV’s IPv4 address, for example 192.168.1.100"; return false
+            error = String(localized: "Enter the TV’s IPv4 address, for example 192.168.1.100"); return false
         }
         deactivate()
         host = value; UserDefaults.standard.set(value, forKey: "tvHost")
@@ -95,7 +108,7 @@ import Security
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly]
         var status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
         if status == errSecItemNotFound { status = SecItemAdd(query.merging(attributes) { _, new in new } as CFDictionary, nil) }
-        guard status == errSecSuccess else { throw RemoteFailure.message("Could not save TV pairing (\(status))") }
+        guard status == errSecSuccess else { throw RemoteFailure.message(String(localized: "Could not save TV pairing (\(status))")) }
         hasSavedPairing = true
     }
 
@@ -113,7 +126,7 @@ import Security
             guard let self, generation == self.token else { return }
             switch event {
             case .pairingCodeNeeded:
-                self.showingPIN = true; self.status = "Enter the code on your TV"
+                self.showingPIN = true; self.status = String(localized: "Enter the code on your TV")
             case .paired(let pin):
                 do { try self.savePin(pin) }
                 catch { self.error = error.localizedDescription; return }
@@ -121,20 +134,20 @@ import Security
                 self.pairings += 1
                 self.connect()
             case .connected:
-                self.ready = true; self.status = "Connected"; self.attempt = 0; self.error = ""
+                self.ready = true; self.status = String(localized: "Connected"); self.attempt = 0; self.error = ""
             case .power(let on):
                 self.powerOn = on
                 if on { self.cancelWake() }
                 else if self.waking { self.scheduleWake() }
-                self.status = on ? "Connected" : (self.waking ? "Waking TV…" : "Standby")
+                self.status = on ? String(localized: "Connected") : (self.waking ? String(localized: "Waking TV…") : String(localized: "Standby"))
             case .foreground(let package):
                 self.foregroundPackage = package
             case .volume(let current, let max, let muted):
-                self.volume = muted ? "Muted" : (max == 100 ? "Volume \(current)" : "Volume \(current)/\(max)")
+                self.volume = muted ? String(localized: "Muted") : (max == 100 ? String(localized: "Volume \(current)") : String(localized: "Volume \(current)/\(max)"))
             case .error(let message):
                 self.ready = false; self.pressed.removeAll(); self.error = message
-                if self.pairing { self.status = "Pairing needs attention" }
-                else { self.status = self.waking ? "Waking TV…" : "Reconnecting…"; self.scheduleReconnect() }
+                if self.pairing { self.status = String(localized: "Pairing needs attention") }
+                else { self.status = self.waking ? String(localized: "Waking TV…") : String(localized: "Reconnecting…"); self.scheduleReconnect() }
             }
         }
         return result
@@ -142,9 +155,9 @@ import Security
 
     func connect() {
         guard active && !pairing && !preparing else { return }
-        guard let pin = pin() else { hasSavedPairing = false; status = "Pair your TV to get started"; ready = false; return }
+        guard let pin = pin() else { hasSavedPairing = false; status = String(localized: "Pair your TV to get started"); ready = false; return }
         hasSavedPairing = true
-        status = waking ? "Waking TV…" : "Connecting…"
+        status = waking ? String(localized: "Waking TV…") : String(localized: "Connecting…")
         newSession()?.connect(pin: pin)
     }
     private func scheduleReconnect() {
@@ -159,7 +172,7 @@ import Security
     func beginPairing() {
         guard active && !preparing else { return }
         cancelWake()
-        pairing = true; showingPIN = false; error = ""; status = "Showing a code on your TV…"
+        pairing = true; showingPIN = false; error = ""; status = String(localized: "Showing a code on your TV…")
         newSession()?.pair()
     }
     func submit(_ code: String) { error = ""; session?.submit(code: code) }
@@ -173,15 +186,15 @@ import Security
     func power() {
         guard active && !preparing && !pairing && !waking else { return }
         if ready && powerOn != false { session?.key(.power); return }
-        guard pin() != nil else { error = "Pair the TV while it is on before using wake."; return }
-        waking = true; error = ""; status = "Waking TV…"
+        guard pin() != nil else { error = String(localized: "Pair the TV while it is on before using wake."); return }
+        waking = true; error = ""; status = String(localized: "Waking TV…")
         wakeRequest.begin()
         let timeout = DispatchWorkItem { [weak self] in
             guard let self, self.waking else { return }
             let underlyingError = self.error
             self.cancelWake()
-            self.status = self.ready ? "Standby" : "TV unavailable"
-            self.error = underlyingError.isEmpty ? "Could not wake the TV. Check Ethernet and enable Network Standby / Quick Start on the TV." : underlyingError
+            self.status = self.ready ? String(localized: "Standby") : String(localized: "TV unavailable")
+            self.error = underlyingError.isEmpty ? String(localized: "Could not wake the TV. Check Ethernet and enable Network Standby / Quick Start on the TV.") : underlyingError
         }
         wakeTimeout = timeout
         DispatchQueue.main.asyncAfter(deadline: .now() + 30, execute: timeout)
@@ -234,7 +247,7 @@ import Security
     }
     /// Sends an app link through the paired remote connection and waits until it is written (TV Home editor key).
     func sendLink(_ url: String) async throws {
-        guard ready, let session else { throw RemoteFailure.message("Connect the TV first") }
+        guard ready, let session else { throw RemoteFailure.message(String(localized: "Connect the TV first")) }
         try await session.writeLaunch(url)
     }
 

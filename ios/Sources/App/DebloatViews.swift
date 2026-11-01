@@ -146,7 +146,7 @@ struct DebloatSetupView: View {
             Text("This TV isn’t supported yet").font(.system(size: 24, weight: .bold))
             let p = flow.inventory?.properties ?? [:]
             QuietCard {
-                QuietRow(title: p["ro.product.model"] ?? "Unknown model", detail: "\(p["ro.product.manufacturer"] ?? "") · \(p["ro.product.device"] ?? "") · Android \(p["ro.build.version.release"] ?? "?")", symbol: "tv", chevron: false)
+                QuietRow(title: p["ro.product.model"].map { Text(verbatim: $0) } ?? Text("Unknown model"), detail: Text(verbatim: "\(p["ro.product.manufacturer"] ?? "") · \(p["ro.product.device"] ?? "") · Android \(p["ro.build.version.release"] ?? "?")"), symbol: "tv", chevron: false)
             }
             QuietCaption(text: "There’s no list tested on this model, so nothing was changed. Guessing which apps are safe to disable can leave inputs black or the TV unable to start.")
             if DebloatFlow.isDevelopmentBuild {
@@ -160,7 +160,7 @@ struct DebloatSetupView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Choose what stays").font(.system(size: 24, weight: .bold))
             if let profile = flow.profile {
-                QuietCard { QuietRow(title: profile.manifest.name, detail: "Tested list from cleanyourtv. Switch on anything you want to keep; the rest is disabled.", symbol: "checkmark.seal", chevron: false) }
+                QuietCard { QuietRow(title: Text(verbatim: profile.manifest.name), detail: Text("Tested list from cleanyourtv. Switch on anything you want to keep; the rest is disabled."), symbol: "checkmark.seal", chevron: false) }
                 ForEach(profile.list.groups, id: \.self) { group in
                     let entries = flow.choices.filter { $0.group == group }
                     if !entries.isEmpty {
@@ -340,7 +340,7 @@ struct UndoSetupView: View {
                     ForEach(records) { item in
                         Button { selected = item.url; address = item.record.host } label: {
                             HStack {
-                                QuietRow(title: item.record.list, detail: "\(item.record.host) · \(item.record.created.prefix(10)) · \(item.record.packages.values.filter { $0 == "enabled" }.count) apps to turn back on", symbol: "tv", chevron: false)
+                                QuietRow(title: Text(verbatim: item.record.list), detail: Text("\(item.record.host) · \(String(item.record.created.prefix(10))) · \(item.record.packages.values.filter { $0 == "enabled" }.count) apps to turn back on"), symbol: "tv", chevron: false)
                                 if selected == item.url { Image(systemName: "checkmark.circle.fill").foregroundStyle(QuietTheme.cyan).padding(.trailing, 13) }
                             }
                         }.buttonStyle(.plain)
@@ -373,7 +373,7 @@ struct UndoSetupView: View {
                 await client.close()
                 done = true
                 status.restored(target.host)
-                message = "Restored. \(still.count) apps stay disabled because they were already off before setup."
+                message = String(localized: "Restored. \(still.count) apps stay disabled because they were already off before setup.")
             } catch { message = error.localizedDescription }
         }
     }

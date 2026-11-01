@@ -25,6 +25,20 @@ public struct LauncherOptions: Equatable, Codable {
 public enum LauncherStep: String, CaseIterable {
     case checking = "Checking the TV", pushing = "Sending the Home screen", installing = "Installing", starting = "Starting it"
     case handover = "Making it Home", helpers = "Turning on the remote helpers", theme = "Applying your layout", done = "Done"
+
+    /// What the setup screen shows for this step, in the user's language.
+    public var title: String {
+        switch self {
+        case .checking: String(localized: "Checking the TV")
+        case .pushing: String(localized: "Sending the Home screen")
+        case .installing: String(localized: "Installing")
+        case .starting: String(localized: "Starting it")
+        case .handover: String(localized: "Making it Home")
+        case .helpers: String(localized: "Turning on the remote helpers")
+        case .theme: String(localized: "Applying your layout")
+        case .done: String(localized: "Done")
+        }
+    }
 }
 
 public struct LauncherInstaller: Sendable {
@@ -47,19 +61,19 @@ public struct LauncherInstaller: Sendable {
             let claimants = Set(DebloatRules.components(try await tv.run(DebloatRules.claimQuery)).map { String($0.split(separator: "/").first ?? "") })
             let known = DebloatRules.stockLaunchers.filter(claimants.contains)
             if known.count == 1 { return known[0] }
-            throw RemoteFailure.message("Home has no default and \(known.count) stock launchers claim it. Pick a default Home on the TV first.")
+            throw RemoteFailure.message(String(localized: "Home has no default and \(known.count) stock launchers claim it. Pick a default Home on the TV first."))
         }
         if package == "com.google.android.tungsten.setupwraith" {
-            throw RemoteFailure.message("Home belongs to Google TV's setup wizard. Finish the TV's setup, or include the setup wizard in the debloat, then try again.")
+            throw RemoteFailure.message(String(localized: "Home belongs to Google TV's setup wizard. Finish the TV's setup, or include the setup wizard in the debloat, then try again."))
         }
-        throw RemoteFailure.message("Home currently belongs to \(package.isEmpty ? "nothing" : package), which isn't a stock launcher this app knows. Nothing was changed.")
+        throw RemoteFailure.message(String(localized: "Home currently belongs to \(package.isEmpty ? "nothing" : package), which isn't a stock launcher this app knows. Nothing was changed."))
     }
 
     public func install(apk: Data, options: LauncherOptions, theme: Data? = nil,
                         step: (@Sendable (LauncherStep, Double) -> Void)? = nil) async throws -> String {
         step?(.checking, 0)
         let sdk = Int(try await tv.run("getprop ro.build.version.sdk").trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0
-        guard sdk >= Self.minSDK else { throw RemoteFailure.message("This TV runs Android SDK \(sdk); the new Home screen needs Android 8.0 (SDK 26) or newer. Nothing was changed.") }
+        guard sdk >= Self.minSDK else { throw RemoteFailure.message(String(localized: "This TV runs Android SDK \(sdk); the new Home screen needs Android 8.0 (SDK 26) or newer. Nothing was changed.")) }
         let stock = try await stockLauncher()
 
         step?(.pushing, 0)
@@ -68,14 +82,14 @@ public struct LauncherInstaller: Sendable {
         let remote = try await tv.run("md5sum \(Self.tmpAPK) 2>/dev/null || toybox md5sum \(Self.tmpAPK)")
         if let sum = remote.split(separator: " ").first, sum.count == 32, String(sum) != md5 {
             _ = try? await tv.run("rm -f \(Self.tmpAPK)")
-            throw RemoteFailure.message("The Home screen arrived damaged on the TV (checksum mismatch). Nothing was installed; try again.")
+            throw RemoteFailure.message(String(localized: "The Home screen arrived damaged on the TV (checksum mismatch). Nothing was installed; try again."))
         }
 
         step?(.installing, 0)
         let out = try await tv.run("pm install -r \(Self.tmpAPK); rm -f \(Self.tmpAPK)", timeout: 300)
         if out.contains("INSTALL_FAILED_OLDER_SDK") { throw RemoteFailure.message("The TV refused the Home screen as too new for its Android version. Nothing else was changed.") }
         if out.contains("INSTALL_FAILED_UPDATE_INCOMPATIBLE") {
-            throw RemoteFailure.message("A different build of this Home screen is already on the TV, signed with another key. Uninstall it on the TV first, then try again.")
+            throw RemoteFailure.message(String(localized: "A different build of this Home screen is already on the TV, signed with another key. Uninstall it on the TV first, then try again."))
         }
         guard out.contains("Success") else { throw RemoteFailure.message("The TV refused to install the Home screen: \(out.trimmingCharacters(in: .whitespacesAndNewlines))") }
 
@@ -85,7 +99,7 @@ public struct LauncherInstaller: Sendable {
         let start = try await tv.run(stock == nil ? "am start -W -n \(Self.activity)"
                                                   : "am start -W -a android.intent.action.MAIN -c android.intent.category.HOME -n \(Self.activity)")
         guard start.contains("Status: ok"), !start.split(separator: "\n").contains(where: { $0.lowercased().hasPrefix("error") }) else {
-            throw RemoteFailure.message("The new Home screen didn't start, so the stock one was left as it was.")
+            throw RemoteFailure.message(String(localized: "The new Home screen didn't start, so the stock one was left as it was."))
         }
 
         step?(.handover, 0)
@@ -97,8 +111,8 @@ public struct LauncherInstaller: Sendable {
         guard home.hasPrefix(Self.package + "/") else {
             if let stock { try await rollback(stock) }
             throw RemoteFailure.message(home.isEmpty
-                ? "The TV stopped answering while Home was being switched. The stock Home screen was put back."
-                : "Home went to \(home) instead of the new Home screen, so the stock one was put back. On Google TV this usually means the setup wizard also claims Home: include it in the debloat, then try again.")
+                ? String(localized: "The TV stopped answering while Home was being switched. The stock Home screen was put back.")
+                : String(localized: "Home went to \(home) instead of the new Home screen, so the stock one was put back. On Google TV this usually means the setup wizard also claims Home: include it in the debloat, then try again."))
         }
 
         step?(.helpers, 0)
@@ -130,7 +144,7 @@ public struct LauncherInstaller: Sendable {
 
     /// Writes the launcher's config.json through its ThemeProvider (the shell may not reach Android/data on TCL) and restarts Home.
     public func applyTheme(_ config: Data) async throws {
-        guard (try? JSONSerialization.jsonObject(with: config)) is [String: Any] else { throw RemoteFailure.message("Invalid Home layout") }
+        guard (try? JSONSerialization.jsonObject(with: config)) is [String: Any] else { throw RemoteFailure.message(String(localized: "Invalid Home layout")) }
         let tmp = "/data/local/tmp/tvhome-config.json"
         try await tv.push(config, to: tmp, mode: 0o644, progress: nil)
         // Through the provider first (TCL locks the shell out of Android/data), else a plain copy, as theme.sh does.

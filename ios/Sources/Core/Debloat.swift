@@ -67,7 +67,7 @@ public struct DebloatList: Equatable {
             guard Pattern.isPackage(package) else { bad.append(package); continue }
             if !entries.contains(where: { $0.package == package }) { entries.append(Entry(package: package, group: group, note: note)) }
         }
-        guard bad.isEmpty else { throw RemoteFailure.message("This list has lines that are not package names: \(bad.joined(separator: ", "))") }
+        guard bad.isEmpty else { throw RemoteFailure.message(String(localized: "This list has lines that are not package names: \(bad.joined(separator: ", "))")) }
         return DebloatList(header: header, entries: entries, neverDisable: neverDisable(header))
     }
 
@@ -204,7 +204,7 @@ public struct Debloater: Sendable {
         var scoped = true
         var installed = Pattern.packageNames(try await tv.run("pm list packages --user 0"))
         if installed.isEmpty { scoped = false; installed = Pattern.packageNames(try await tv.run("pm list packages")) }
-        guard !installed.isEmpty else { throw RemoteFailure.message("The TV listed no apps, so nothing was changed. Check the connection and try again.") }
+        guard !installed.isEmpty else { throw RemoteFailure.message(String(localized: "The TV listed no apps, so nothing was changed. Check the connection and try again.")) }
         let disabled = Pattern.packageNames(try await tv.run("pm list packages -d" + (scoped ? " --user 0" : "")))
         let answer = try await tv.run(DebloatRules.homeQuery)
         let candidate = answer.split(separator: "\n").last.map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
@@ -223,20 +223,20 @@ public struct Debloater: Sendable {
             guard let i = pkgs.firstIndex(of: p) else { return }
             pkgs.remove(at: i); skipped.append(DebloatSkip(package: p, reason: reason))
         }
-        for p in pkgs where !Pattern.isPackage(p) { drop(p, "Not a package name.") }
+        for p in pkgs where !Pattern.isPackage(p) { drop(p, String(localized: "Not a package name.")) }
         for p in pkgs where DebloatRules.isCore(p) {
-            drop(p, "Core Android or TV middleware: with it disabled the TV may not boot again. This can't be overridden.")
+            drop(p, String(localized: "Core Android or TV middleware: with it disabled the TV may not boot again. This can't be overridden."))
         }
-        for p in pkgs where list.neverDisable.contains(p) { drop(p, "This TV's tested list says never to disable it.") }
+        for p in pkgs where list.neverDisable.contains(p) { drop(p, String(localized: "This TV's tested list says never to disable it.")) }
 
         // Wi-Fi saved during setup belongs to setupwraith; disabling it deletes the network (and this connection).
         if pkgs.contains(DebloatRules.setupwraith) && !overrides.setupwraithOnEthernet {
             let wifi = (try? await tv.run("dumpsys wifi")) ?? ""
             let owners = wifi.components(separatedBy: .whitespacesAndNewlines).filter { $0.hasPrefix("cname=") }
             if owners.isEmpty {
-                drop(DebloatRules.setupwraith, "Couldn't check which app owns the saved Wi-Fi networks. If the TV uses Ethernet, you can allow it.")
+                drop(DebloatRules.setupwraith, String(localized: "Couldn't check which app owns the saved Wi-Fi networks. If the TV uses Ethernet, you can allow it."))
             } else if owners.contains(where: { $0.contains("setupwraith") }) {
-                drop(DebloatRules.setupwraith, "The TV's Wi-Fi network belongs to the setup wizard, and disabling it would delete that network and take the TV offline. On the TV, forget the network and join it again in Settings › Network & Internet, then run this again.")
+                drop(DebloatRules.setupwraith, String(localized: "The TV's Wi-Fi network belongs to the setup wizard, and disabling it would delete that network and take the TV offline. On the TV, forget the network and join it again in Settings › Network & Internet, then run this again."))
             }
         }
 
@@ -260,20 +260,20 @@ public struct Debloater: Sendable {
                     let others = launchers.subtracting([home]).subtracting(pkgs)
                     let setupAnswersHome = claims.contains { $0.hasPrefix(DebloatRules.setupwraith + "/") } && !pkgs.contains(DebloatRules.setupwraith)
                     if others.isEmpty {
-                        drop(home, "It owns Home and nothing else that can answer Home stays enabled. Install the new Home screen first; it's disabled afterwards.")
+                        drop(home, String(localized: "It owns Home and nothing else that can answer Home stays enabled. Install the new Home screen first; it's disabled afterwards."))
                     } else if setupAnswersHome {
-                        drop(home, "It owns Home, and the setup wizard stays enabled and would take Home instead, a black screen the TV can crash-loop on. Install the new Home screen first.")
+                        drop(home, String(localized: "It owns Home, and the setup wizard stays enabled and would take Home instead, a black screen the TV can crash-loop on. Install the new Home screen first."))
                     }
                 }
             } else if !claims.isEmpty {
                 let listed = launchers.intersection(pkgs)
                 if !listed.isEmpty && launchers.subtracting(pkgs).isEmpty {
-                    for p in listed { drop(p, "Home has no default, and no other app could answer Home. Install the new Home screen first.") }
+                    for p in listed { drop(p, String(localized: "Home has no default, and no other app could answer Home. Install the new Home screen first.")) }
                 }
-                notes.append("Home has no default on this TV, so the Home check went by the apps that answer Home.")
+                notes.append(String(localized: "Home has no default on this TV, so the Home check went by the apps that answer Home."))
             } else {
                 for p in DebloatRules.stockLaunchers where pkgs.contains(p) {
-                    drop(p, "Couldn't ask the TV which apps answer Home, and this is a stock launcher.")
+                    drop(p, String(localized: "Couldn't ask the TV which apps answer Home, and this is a stock launcher."))
                 }
             }
         }
@@ -286,10 +286,10 @@ public struct Debloater: Sendable {
                 for line in answer.split(separator: "\n").map(String.init) {
                     if line.hasPrefix("HUNG ") { drop(String(line.dropFirst(5)), "The TV's system diagnostics are switched off after a hang, so the input-driver check can't read it. Restart the TV and try again.") }
                     else if line.hasPrefix("NOCHK ") { drop(String(line.dropFirst(6)), "This firmware doesn't show its permissions, so the input-driver check can't read it. It stays enabled to be safe.") }
-                    else if Pattern.isPackage(line) { drop(line, "It drives the HDMI, AV or tuner inputs. Disabled, they notice the cable but stay black, and only a full restore fixes it.") }
+                    else if Pattern.isPackage(line) { drop(line, String(localized: "It drives the HDMI, AV or tuner inputs. Disabled, they notice the cable but stay black, and only a full restore fixes it.")) }
                 }
             } else {
-                notes.append("Couldn't check which apps drive the HDMI inputs. After applying, open every input before putting the remote down.")
+                notes.append(String(localized: "Couldn't check which apps drive the HDMI inputs. After applying, open every input before putting the remote down."))
             }
         }
 
@@ -305,15 +305,15 @@ public struct Debloater: Sendable {
                     })
                 }
                 let inputApps = names(parts.first ?? ""), settingsApps = names(parts.count > 1 ? parts[1] : "")
-                if settingsApps.isEmpty { notes.append("Couldn't check which apps open the inputs and Settings. After applying, open an HDMI input and Settings from Home.") }
-                for p in inputApps { drop(p, "The TV opens its inputs and channels with it; disabled, the input tiles do nothing.") }
-                for p in settingsApps { drop(p, "The TV opens Settings with it; disabled, Settings (and the way back to Developer options) won't open.") }
+                if settingsApps.isEmpty { notes.append(String(localized: "Couldn't check which apps open the inputs and Settings. After applying, open an HDMI input and Settings from Home.")) }
+                for p in inputApps { drop(p, String(localized: "The TV opens its inputs and channels with it; disabled, the input tiles do nothing.")) }
+                for p in settingsApps { drop(p, String(localized: "The TV opens Settings with it; disabled, Settings (and the way back to Developer options) won't open.")) }
             } else {
-                notes.append("Couldn't check which apps open the inputs and Settings. After applying, open an HDMI input and Settings from Home.")
+                notes.append(String(localized: "Couldn't check which apps open the inputs and Settings. After applying, open an HDMI input and Settings from Home."))
             }
         }
         if inventory.adbSecure == "0" || inventory.adbSecure.isEmpty {
-            notes.append("This TV lets any device on your network use its debugging port without asking. Turn debugging off when you're done.")
+            notes.append(String(localized: "This TV lets any device on your network use its debugging port without asking. Turn debugging off when you're done."))
         }
         return DebloatPlan(disable: pkgs, skipped: skipped, notes: notes)
     }

@@ -14,7 +14,7 @@ public enum TVPairingStore {
         let attributes: [String: Any] = [kSecValueData as String: data, kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly]
         var status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
         if status == errSecItemNotFound { status = SecItemAdd(query.merging(attributes) { _, new in new } as CFDictionary, nil) }
-        guard status == errSecSuccess else { throw RemoteFailure.message("Could not save TV pairing") }
+        guard status == errSecSuccess else { throw RemoteFailure.message(String(localized: "Could not save TV pairing")) }
     }
 }
 
@@ -27,7 +27,7 @@ public enum TVPairingStore {
     private var waitForOn = false
     private var timeout: Task<Void, Never>?
     public init() {}
-    public func cancel() { finishWait(RemoteFailure.message("Action cancelled")); session?.disconnect(); session = nil }
+    public func cancel() { finishWait(RemoteFailure.message(String(localized: "Action cancelled"))); session?.disconnect(); session = nil }
     private func finishWait(_ error: Error? = nil) {
         timeout?.cancel(); timeout = nil
         guard let waiter else { return }; self.waiter = nil
@@ -41,7 +41,7 @@ public enum TVPairingStore {
                 waiter = continuation
                 timeout = Task { [weak self] in
                     do { try await Task.sleep(nanoseconds: seconds * 1_000_000_000) } catch { return }
-                    self?.finishWait(RemoteFailure.message("TV connection timed out"))
+                    self?.finishWait(RemoteFailure.message(String(localized: "TV connection timed out")))
                 }
                 start()
                 if Task.isCancelled { finishWait(CancellationError()) }
@@ -49,7 +49,7 @@ public enum TVPairingStore {
         }, onCancel: { Task { @MainActor [weak self] in self?.cancel() } })
     }
     public func run(_ steps: [ActionStep], host: String, apps: [RemoteApp], inputs: [TVInput] = [], progress: ((Int) -> Void)? = nil) async throws {
-        guard (1...12).contains(steps.count), let pin = TVPairingStore.pin(host: host) else { throw RemoteFailure.message("Open TV Remote and pair the TV first") }
+        guard (1...12).contains(steps.count), let pin = TVPairingStore.pin(host: host) else { throw RemoteFailure.message(String(localized: "Open TV Remote and pair the TV first")) }
         try Task.checkCancellation()
         let identity = try ClientIdentity.loadOrCreate()
         let session = TVSession(host: host, identity: identity); self.session = session
@@ -78,10 +78,10 @@ public enum TVPairingStore {
                 }
             case .sleep: if power == true { try await session.writeKey(.power) }
             case .openApp:
-                guard power == true, let app = apps.first(where: { $0.id == step.argument }) else { throw RemoteFailure.message("Wake the TV and choose an available app") }
+                guard power == true, let app = apps.first(where: { $0.id == step.argument }) else { throw RemoteFailure.message(String(localized: "Wake the TV and choose an available app")) }
                 try await session.writeLaunch(app.launchURL)
             case .input:
-                guard power == true, let input = inputs.first(where: { $0.id == step.argument }) else { throw RemoteFailure.message("Connect the TV editor and assign this input first") }
+                guard power == true, let input = inputs.first(where: { $0.id == step.argument }) else { throw RemoteFailure.message(String(localized: "Connect the TV editor and assign this input first")) }
                 try await session.writeLaunch(input.launchURL)
             case .home: try await session.writeKey(.home)
             case .pause: try await session.writeKey(.pause)
@@ -90,7 +90,7 @@ public enum TVPairingStore {
             case .volumeDown: try await session.writeKey(.volumeDown)
             case .mute:
                 if muted == nil { try await Task.sleep(nanoseconds: 300_000_000) }
-                guard let muted else { throw RemoteFailure.message("Could not read the TV’s mute state") }
+                guard let muted else { throw RemoteFailure.message(String(localized: "Could not read the TV’s mute state")) }
                 if !muted { try await session.writeKey(.mute) }
             }
             progress?(index + 1)
@@ -99,7 +99,7 @@ public enum TVPairingStore {
     }
     public func diagnose(host: String) async throws {
         // An empty quick action is never allowed; this action requests no state-changing command.
-        guard let pin = TVPairingStore.pin(host: host) else { throw RemoteFailure.message("Pair the TV first") }
+        guard let pin = TVPairingStore.pin(host: host) else { throw RemoteFailure.message(String(localized: "Pair the TV first")) }
         let result = TVSession(host: host, identity: try ClientIdentity.loadOrCreate()); session = result
         defer { result.disconnect(); session = nil }
         result.event = { [weak self] event in

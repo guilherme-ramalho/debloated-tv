@@ -124,8 +124,8 @@ struct TVSetupManageView: View {
         let info = status.info(host)
         QuietPage {
             QuietCard {
-                QuietRow(title: info.profile.isEmpty ? "New Home screen installed" : info.profile,
-                         detail: info.disabledCount.map { "\($0) apps switched off. Nothing was deleted." } ?? "Set up on this TV.",
+                QuietRow(title: info.profile.isEmpty ? Text("New Home screen installed") : Text(verbatim: info.profile),
+                         detail: info.disabledCount.map { Text("\($0) apps switched off. Nothing was deleted.") } ?? Text("Set up on this TV."),
                          symbol: "checkmark.shield", chevron: false)
             }
             QuietCard {

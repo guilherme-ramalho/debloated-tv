@@ -16,7 +16,7 @@ struct QuietPage<Content: View>: View {
     }
 }
 struct QuietHeading<Trailing: View>: View {
-    let title: String
+    let title: LocalizedStringKey
     @ViewBuilder var trailing: Trailing
     var body: some View {
         HStack { Text(title).font(.system(size: 25, weight: .semibold)); Spacer(); trailing }.frame(minHeight: 44)
@@ -32,32 +32,50 @@ struct QuietCard<Content: View>: View {
             .overlay(RoundedRectangle(cornerRadius: 19).stroke(QuietTheme.edge, lineWidth: 1))
     }
 }
+/// Titles are localized: pass literals (translated through Localizable.xcstrings), or `Text(verbatim:)` / the String
+/// initializer for names that come from the TV or the user.
 struct QuietRow: View {
-    let title: String
-    var detail: String = ""
+    let title: Text
+    var detail: Text? = nil
     var symbol: String = ""
-    var value: String = ""
+    var value: Text? = nil
     var chevron = true
+    init(title: Text, detail: Text? = nil, symbol: String = "", value: Text? = nil, chevron: Bool = true) {
+        self.title = title; self.detail = detail; self.symbol = symbol; self.value = value; self.chevron = chevron
+    }
+    init(title: LocalizedStringKey, detail: LocalizedStringKey? = nil, symbol: String = "", value: LocalizedStringKey? = nil, chevron: Bool = true) {
+        self.init(title: Text(title), detail: detail.map { Text($0) }, symbol: symbol, value: value.map { Text($0) }, chevron: chevron)
+    }
+    /// Text that is already localized or must not be (TV names, the user's names).
+    @_disfavoredOverload init(title: String, detail: String? = nil, symbol: String = "", value: String? = nil, chevron: Bool = true) {
+        self.init(title: Text(verbatim: title), detail: detail.flatMap { $0.isEmpty ? nil : Text(verbatim: $0) }, symbol: symbol,
+                  value: value.flatMap { $0.isEmpty ? nil : Text(verbatim: $0) }, chevron: chevron)
+    }
     var body: some View {
         HStack(spacing: 11) {
             if !symbol.isEmpty { Image(systemName: symbol).font(.system(size: 20)).frame(width: 25).foregroundStyle(.white) }
             VStack(alignment: .leading, spacing: 4) {
-                Text(title).font(.system(size: 14, weight: .medium)).foregroundStyle(.white)
-                if !detail.isEmpty { Text(detail).font(.system(size: 12)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true) }
+                title.font(.system(size: 14, weight: .medium)).foregroundStyle(.white)
+                if let detail { detail.font(.system(size: 12)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true) }
             }
             Spacer(minLength: 6)
-            if !value.isEmpty { Text(value).font(.system(size: 12)).foregroundStyle(QuietTheme.muted) }
+            if let value { value.font(.system(size: 12)).foregroundStyle(QuietTheme.muted) }
             if chevron { Image(systemName: "chevron.right").font(.system(size: 12)).foregroundStyle(QuietTheme.muted) }
         }.padding(.horizontal, 13).padding(.vertical, 10).frame(minHeight: 61).contentShape(Rectangle())
     }
 }
 struct QuietSectionTitle: View {
-    let title: String
-    var body: some View { Text(title).font(.system(size: 13, weight: .medium)).foregroundStyle(QuietTheme.muted).padding(.top, 4) }
+    let title: Text
+    init(title: LocalizedStringKey) { self.title = Text(title) }
+    @_disfavoredOverload init(title: String) { self.title = Text(verbatim: title) }
+    var body: some View { title.font(.system(size: 13, weight: .medium)).foregroundStyle(QuietTheme.muted).padding(.top, 4) }
 }
 struct QuietCaption: View {
-    let text: String
-    var body: some View { Text(text).font(.system(size: 12)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true).lineSpacing(3) }
+    let text: Text
+    init(text: LocalizedStringKey) { self.text = Text(text) }
+    init(text: Text) { self.text = text }
+    @_disfavoredOverload init(text: String) { self.text = Text(verbatim: text) }
+    var body: some View { text.font(.system(size: 12)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true).lineSpacing(3) }
 }
 struct QuietPrimaryStyle: ButtonStyle {
     @Environment(\.isEnabled) private var enabled
@@ -90,7 +108,7 @@ struct QuietToggleStyle: ToggleStyle {
     }
 }
 extension View {
-    func quietNavigation(_ title: String) -> some View {
+    func quietNavigation(_ title: LocalizedStringKey) -> some View {
         navigationTitle(title).navigationBarTitleDisplayMode(.inline).toolbar(.visible, for: .navigationBar)
             .toolbarBackground(QuietTheme.background, for: .navigationBar).toolbarBackground(.visible, for: .navigationBar)
     }

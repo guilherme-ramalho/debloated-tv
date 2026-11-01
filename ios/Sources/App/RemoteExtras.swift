@@ -21,7 +21,7 @@ struct KeyboardView: View {
                     busy = true; message = ""
                     Task {
                         defer { busy = false }
-                        do { try await model.sendText(text); text = ""; message = "Text sent" }
+                        do { try await model.sendText(text); text = ""; message = String(localized: "Text sent") }
                         catch { message = error.localizedDescription }
                     }
                 }.disabled(!model.ready || text.isEmpty || text.utf16.count > 4096 || busy)
@@ -80,7 +80,7 @@ struct InputSettingsView: View {
                     HStack {
                         Button {
                             guard settings.value.editorHost == model.host, let id = input.inputID, let found = settings.value.tvInputs.first(where: { $0.id == id }) else {
-                                message = "Sync the TV editor and assign an input first."; return
+                                message = String(localized: "Sync the TV editor and assign an input first."); return
                             }
                             model.launch(found.launchURL)
                         } label: {
