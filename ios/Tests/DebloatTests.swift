@@ -52,6 +52,7 @@ final class DebloatTests: XCTestCase {
         XCTAssertTrue(DebloatRules.isCore("com.android.providers.settings"))
         XCTAssertFalse(DebloatRules.isCore("com.android.providers.calendar"))
         XCTAssertTrue(DebloatRules.isCore("com.google.android.overlay.modules.ext.services"))
+        XCTAssertTrue(DebloatRules.isCore("com.android.location.fused"), "boot-looped a TCL 43S5400A (upstream #2803)")
         XCTAssertFalse(DebloatRules.isCore("com.tcl.bi"))
     }
 

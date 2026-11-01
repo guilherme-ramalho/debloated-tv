@@ -20,6 +20,7 @@
 		300000000000000000000005 /* Sources/App/HomeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000004 /* Sources/App/HomeEditor.swift */; };
 		300000000000000000000007 /* Sources/App/HomeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000006 /* Sources/App/HomeViews.swift */; };
 		700000000000000000000010 /* Sources/App/DebloatViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000F /* Sources/App/DebloatViews.swift */; };
+		700000000000000000000012 /* Sources/App/TVSetupStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000011 /* Sources/App/TVSetupStatus.swift */; };
 		70000000000000000000000E /* Sources/App/DebloatFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000D /* Sources/App/DebloatFlow.swift */; };
 		300000000000000000000009 /* Sources/App/PairingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300000000000000000000008 /* Sources/App/PairingViews.swift */; };
 		30000000000000000000000B /* Sources/App/RemoteExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30000000000000000000000A /* Sources/App/RemoteExtras.swift */; };
@@ -81,6 +82,7 @@
 		300000000000000000000004 /* Sources/App/HomeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/HomeEditor.swift; sourceTree = SOURCE_ROOT; };
 		300000000000000000000006 /* Sources/App/HomeViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/HomeViews.swift; sourceTree = SOURCE_ROOT; };
 		70000000000000000000000F /* Sources/App/DebloatViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/DebloatViews.swift; sourceTree = SOURCE_ROOT; };
+		700000000000000000000011 /* Sources/App/TVSetupStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/TVSetupStatus.swift; sourceTree = SOURCE_ROOT; };
 		70000000000000000000000D /* Sources/App/DebloatFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/DebloatFlow.swift; sourceTree = SOURCE_ROOT; };
 		300000000000000000000008 /* Sources/App/PairingViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/PairingViews.swift; sourceTree = SOURCE_ROOT; };
 		30000000000000000000000A /* Sources/App/RemoteExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/RemoteExtras.swift; sourceTree = SOURCE_ROOT; };
@@ -137,6 +139,7 @@
 				300000000000000000000004 /* Sources/App/HomeEditor.swift */,
 				300000000000000000000006 /* Sources/App/HomeViews.swift */,
 				70000000000000000000000F /* Sources/App/DebloatViews.swift */,
+				700000000000000000000011 /* Sources/App/TVSetupStatus.swift */,
 				70000000000000000000000D /* Sources/App/DebloatFlow.swift */,
 				300000000000000000000008 /* Sources/App/PairingViews.swift */,
 				30000000000000000000000A /* Sources/App/RemoteExtras.swift */,
@@ -262,6 +265,7 @@
 				300000000000000000000005 /* Sources/App/HomeEditor.swift in Sources */,
 				300000000000000000000007 /* Sources/App/HomeViews.swift in Sources */,
 				700000000000000000000010 /* Sources/App/DebloatViews.swift in Sources */,
+				700000000000000000000012 /* Sources/App/TVSetupStatus.swift in Sources */,
 				70000000000000000000000E /* Sources/App/DebloatFlow.swift in Sources */,
 				300000000000000000000009 /* Sources/App/PairingViews.swift in Sources */,
 				30000000000000000000000B /* Sources/App/RemoteExtras.swift in Sources */,

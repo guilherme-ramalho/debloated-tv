@@ -6,6 +6,8 @@ import Security
     @Published var status = "Preparing secure pairing…"
     @Published var ready = false
     @Published private(set) var hasSavedPairing = false
+    /// Counts new pairings, so the app can offer TV setup once right after one.
+    @Published private(set) var pairings = 0
     @Published var preparing = true
     @Published var showingPIN = false
     @Published var error = ""
@@ -116,6 +118,7 @@ import Security
                 do { try self.savePin(pin) }
                 catch { self.error = error.localizedDescription; return }
                 self.pairing = false; self.showingPIN = false; self.error = ""; self.attempt = 0
+                self.pairings += 1
                 self.connect()
             case .connected:
                 self.ready = true; self.status = "Connected"; self.attempt = 0; self.error = ""

@@ -3,6 +3,7 @@ import SwiftUI
 /// The guided setup, native version of the Codex preview (debloat-flow-preview.html).
 struct DebloatSetupView: View {
     @StateObject private var flow: DebloatFlow
+    @EnvironmentObject private var status: TVSetupStatus
     @Environment(\.dismiss) private var dismiss
     @State private var confirmRestore = false
 
@@ -29,12 +30,26 @@ struct DebloatSetupView: View {
         }
         .navigationBarBackButtonHidden(flow.step != .overview)
         .onDisappear { flow.cancel() }
+        // What the TV tab shows comes from what this flow saw.
+        .onChange(of: flow.inventory?.properties) { _, properties in
+            if let properties { status.inspected(setupHost, properties: properties, profile: flow.profile) }
+        }
+        .onChange(of: flow.step) { _, step in
+            guard step == .test else { return }
+            status.update(setupHost) {
+                if flow.homeComponent != nil { $0.homeInstalled = true }
+                if let result = flow.result { $0.disabledCount = result.disabled.count }
+            }
+        }
+        .onChange(of: flow.restores) { _, _ in status.restored(setupHost) }
         .confirmationDialog("Undo the setup on this TV?", isPresented: $confirmRestore, titleVisibility: .visible) {
             Button("Restore the TV", role: .destructive) {
                 if let url = flow.recordURL, let record = RecoveryStore.load(url) { flow.restore(record, stock: flow.profile?.manifest.stockLauncher) }
             }
         } message: { Text("Turns every app this setup disabled back on and gives Home back to the stock launcher.") }
     }
+
+    private var setupHost: String { TVAddress(flow.address)?.host ?? flow.address }
 
     @ViewBuilder private var content: some View {
         switch flow.step {
@@ -306,6 +321,7 @@ struct DebloatSetupView: View {
 /// Puts a TV back from a saved recovery record.
 struct UndoSetupView: View {
     let defaultHost: String
+    @EnvironmentObject private var status: TVSetupStatus
     @State private var records = RecoveryStore.all()
     @State private var selected: URL?
     @State private var address = ""
@@ -356,6 +372,7 @@ struct UndoSetupView: View {
                 let still = try await Debloater(tv: client).restore(record, stock: profile?.manifest.stockLauncher ?? "com.google.android.tvlauncher")
                 await client.close()
                 done = true
+                status.restored(target.host)
                 message = "Restored. \(still.count) apps stay disabled because they were already off before setup."
             } catch { message = error.localizedDescription }
         }

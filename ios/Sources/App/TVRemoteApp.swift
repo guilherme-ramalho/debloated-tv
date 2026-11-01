@@ -5,6 +5,7 @@ import SwiftUI
     @StateObject private var settings = AppSettings()
     @StateObject private var editor = HomeEditor()
     @StateObject private var actions = ActionController()
+    @StateObject private var setup = TVSetupStatus()
     @Environment(\.scenePhase) private var phase
     @State private var selection = 0
     var body: some Scene {
@@ -15,12 +16,19 @@ import SwiftUI
                 ActionsView(model: model).tabItem { Label("Actions", systemImage: "bolt") }.tag(2)
                 SettingsView(model: model).tabItem { Label("Settings", systemImage: "slider.horizontal.3") }.tag(3)
             }
-            .environmentObject(settings).environmentObject(editor).environmentObject(actions)
+            .environmentObject(settings).environmentObject(editor).environmentObject(actions).environmentObject(setup)
             .preferredColorScheme(.dark).tint(.white)
             .task { model.setAutoReconnect(settings.value.autoReconnect); if phase == .active { model.activate() } }
             .onChange(of: settings.value.autoReconnect) { _, value in model.setAutoReconnect(value) }
             .onChange(of: selection) { _, tab in if tab == 1 { editor.autoConnect(model: model) } }
             .onChange(of: model.host) { _, _ in editor.close() }
+            .onChange(of: model.foregroundPackage) { _, package in if package == TVSetupStatus.homePackage { setup.sawHome(model.host) } }
+            .onChange(of: editor.ready) { _, ready in if ready { setup.sawHome(model.host) } }
+            .onChange(of: model.pairings) { _, _ in setup.offerAfterPairing(model.host) }
+            .onChange(of: setup.openSetup) { _, open in if open { selection = 1 } }
+            .sheet(isPresented: Binding(get: { setup.offerFor != nil }, set: { if !$0 { setup.offerFor = nil } })) {
+                TVSetupOfferSheet(start: { setup.offerFor = nil; selection = 1; setup.openSetup = true }, later: { setup.offerFor = nil })
+            }
             .onChange(of: editor.snapshot?.revision) { _, _ in if let snapshot = editor.snapshot { settings.merge(snapshot, host: model.host) } }
             .onChange(of: phase) { _, value in
                 if value == .active { model.activate(); if selection == 1 { editor.autoConnect(model: model) } }

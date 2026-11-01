@@ -6,6 +6,7 @@ struct TVHomeView: View {
     @ObservedObject var model: RemoteModel
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var editor: HomeEditor
+    @EnvironmentObject private var status: TVSetupStatus
     @State private var applying = false
     @State private var importLayout = false
     @State private var addingProfile = false
@@ -15,6 +16,46 @@ struct TVHomeView: View {
         NavigationStack {
             QuietPage {
                 QuietHeading(title: "TV") { EmptyView() }
+                if info.homeInstalled {
+                    NavigationLink { TVSetupManageView(host: model.host) } label: { TVSetupStrip(info: info) }.buttonStyle(.plain)
+                    editorContent
+                } else if info.supported == false {
+                    TVSetupUnsupportedCard(info: info) { status.openSetup = true }
+                } else {
+                    TVSetupHeroCard(info: info, start: { status.openSetup = true }, alreadyInstalled: { editor.connect(model: model, force: true) })
+                    QuietSectionTitle(title: "After setup, edit your TV's Home here")
+                    HomePreview(layout: settings.layout).opacity(0.5).allowsHitTesting(false)
+                    QuietCaption(text: "Dock, apps, wallpaper and profiles unlock once the new Home screen is on the TV.")
+                    if editor.busy { QuietCaption(text: editor.message) }
+                }
+            }.toolbar(.hidden, for: .navigationBar)
+                .navigationDestination(isPresented: $status.openSetup) { DebloatSetupView(host: model.host) }
+                .alert("New profile", isPresented: $addingProfile) {
+                    TextField("Profile name", text: $profileName)
+                    Button("Cancel", role: .cancel) { profileName = "" }
+                    Button("Create") { settings.addProfile(profileName); profileName = "" }
+                }
+                .confirmationDialog("Replace this profile’s draft with the TV layout?", isPresented: $importLayout) {
+                    Button("Load TV layout") {
+                        guard let snapshot = editor.snapshot else { return }
+                        do {
+                            _ = try settings.backup(name: "Before loading TV layout")
+                            var layout = snapshot.layout
+                            if HomeLayout.validPhoto(layout.wallpaper) {
+                                guard let data = snapshot.wallpaperJPEG else { throw RemoteFailure.message("The TV did not include its wallpaper. Refresh before loading this layout.") }
+                                layout.wallpaper = try settings.importPhoto(data)
+                            }
+                            settings.editLayout { $0 = layout }
+                        } catch { settings.notice = error.localizedDescription }
+                    }
+                }
+        }
+    }
+
+    private var info: TVSetupInfo { status.info(model.host) }
+
+    /// The Home editor, shown once the new Home screen is on the TV.
+    @ViewBuilder private var editorContent: some View {
                 HStack {
                     Menu {
                         ForEach(settings.value.profiles) { profile in
@@ -57,27 +98,6 @@ struct TVHomeView: View {
                         Button("Load current TV layout", systemImage: "arrow.down.doc") { importLayout = true }.padding([.horizontal, .bottom], 14)
                     }
                 }
-            }.toolbar(.hidden, for: .navigationBar)
-                .alert("New profile", isPresented: $addingProfile) {
-                    TextField("Profile name", text: $profileName)
-                    Button("Cancel", role: .cancel) { profileName = "" }
-                    Button("Create") { settings.addProfile(profileName); profileName = "" }
-                }
-                .confirmationDialog("Replace this profile’s draft with the TV layout?", isPresented: $importLayout) {
-                    Button("Load TV layout") {
-                        guard let snapshot = editor.snapshot else { return }
-                        do {
-                            _ = try settings.backup(name: "Before loading TV layout")
-                            var layout = snapshot.layout
-                            if HomeLayout.validPhoto(layout.wallpaper) {
-                                guard let data = snapshot.wallpaperJPEG else { throw RemoteFailure.message("The TV did not include its wallpaper. Refresh before loading this layout.") }
-                                layout.wallpaper = try settings.importPhoto(data)
-                            }
-                            settings.editLayout { $0 = layout }
-                        } catch { settings.notice = error.localizedDescription }
-                    }
-                }
-        }
     }
 }
 

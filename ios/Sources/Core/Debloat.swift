@@ -99,7 +99,8 @@ public struct DebloatList: Equatable {
 
 public enum DebloatRules {
     /// Core Android and TV middleware: with one of these off the TV may not boot again (#884, #1578). Never overridable.
-    static let core = "^(android|android\\.ext\\.(services|shared)|com\\.android\\.sdksandbox|com\\.android\\.systemui|com\\.android\\.shell|com\\.android\\.phone|com\\.android\\.settings|com\\.android\\.tv\\.settings|com\\.(google\\.)?android\\.(permissioncontroller|packageinstaller|ext\\.services|ext\\.shared|modulemetadata)|com\\.google\\.android\\.overlay\\.modules.*|com\\.android\\.providers\\..*|com\\.cltv\\.mal|com\\.mediatek\\.(tis|tv\\.service|tv\\.agent))$"
+    // Same as upstream CORE_RE (tools/disable.sh, at f5c37c36): location.fused boot-looped a TCL 43S5400A (#2803).
+    static let core = "^(android|android\\.ext\\.(services|shared)|com\\.android\\.sdksandbox|com\\.android\\.location\\.fused|com\\.android\\.systemui|com\\.android\\.shell|com\\.android\\.phone|com\\.android\\.settings|com\\.android\\.tv\\.settings|com\\.(google\\.)?android\\.(permissioncontroller|packageinstaller|ext\\.services|ext\\.shared|modulemetadata)|com\\.google\\.android\\.overlay\\.modules.*|com\\.android\\.providers\\..*|com\\.cltv\\.mal|com\\.mediatek\\.(tis|tv\\.service|tv\\.agent))$"
     static let coreOK = "^com\\.android\\.providers\\.(calendar|contacts|userdictionary|blockednumber)$"
     public static func isCore(_ p: String) -> Bool { Pattern.matches(core, p) && !Pattern.matches(coreOK, p) }
     public static let setupwraith = "com.google.android.tungsten.setupwraith"

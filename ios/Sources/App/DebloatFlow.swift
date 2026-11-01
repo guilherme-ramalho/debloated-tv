@@ -70,6 +70,8 @@ struct TVAddress: Equatable {
     @Published private(set) var recordURL: URL?
     @Published private(set) var homeComponent: String?
     @Published var debuggingClosed: Bool?
+    /// Counts successful restores, so the TV tab can show setup again.
+    @Published private(set) var restores = 0
 
     let profiles: [DebloatProfile]
     private var adb: AdbClient?
@@ -225,6 +227,7 @@ struct TVAddress: Equatable {
             self.note("Restoring the TV…")
             let still = try await Debloater(tv: adb).restore(record, stock: stock ?? "com.google.android.tvlauncher")
             self.note("Restored. \(still.count) apps remain disabled because they were off before setup.")
+            self.restores += 1
         }
     }
 
