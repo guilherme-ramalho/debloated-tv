@@ -98,7 +98,7 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | REM-05 | Hold Volume up | Volume rises continuously, stops on release | Manual; E2E checks a tap changes the volume the TV reports |
 | REM-06 | Power while on | TV goes to standby; status "Standby" | Manual |
 | REM-07 | Power while in standby (network standby on) | "Waking TV…", TV turns on, or a clear error after the timeout | Manual + Auto `testWakeIntentExpiresAndCannotReplay` |
-| REM-08 | Keyboard: type in a TV search field | Text appears on the TV; Hide text while typing hides it on the phone | Manual + Auto `testKeyboardUsesUTF16…` |
+| REM-08 | Keyboard: type in a TV search field, pause, keep typing, delete some, clear it, press Return | Text appears on the TV as you type (once per pause, no Send button), matches the phone exactly (no doubled text), clearing empties the TV field; Hide text while typing hides it on the phone | Manual + Auto `testKeyboardUsesUTF16…` |
 | REM-09 | Input button / Open TV input menu | TV's input switcher opens | Manual |
 | REM-10 | Streaming shortcuts (Netflix, YouTube…) | The app opens on the TV; the header shows the app in front | Manual + Auto `testForegroundNames…`; E2E (YouTube) |
 | REM-11 | Shortcut for an app not installed on the TV | Clear message; nothing else happens | Manual |
@@ -187,11 +187,11 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | EDT-02 | Open TV tab while a video plays | Asks first ("Connect now"); doesn't interrupt until tapped | E2E (YouTube in front) + Manual |
 | EDT-03 | Switch tabs and back, background the app and return | Reconnects without Retry | E2E (background and return) + Manual |
 | EDT-04 | Phone asleep for minutes, then edit | Reconnects (freshens the remote first) | Manual |
-| EDT-05 | Dock icons 1–7, Apps & order (reorder, hide), Apply to TV | TV Home matches the preview | Manual + Auto `PreferencesTests`; E2E hides an app and reads the TV's config |
+| EDT-05 | Dock icons 1–7, Apps & order (reorder, hide), wallpaper preset or photo | Each change reaches the TV by itself within about a second, with no Apply button; fast taps on the dock stepper become one update; reordering doesn't resend the photo | Manual + Auto `PreferencesTests`; E2E hides an app and reads the TV's config |
 | EDT-06 | Wallpaper presets and a photo; Adjust photo framing | TV shows it as framed, without colour tint | Manual |
 | EDT-07 | Very large photo (48 MP) | Downscaled; applies quickly | Manual |
 | EDT-08 | Load current TV layout | Replaces the draft after a backup | E2E + Manual |
-| EDT-09 | Profiles: create, switch, apply | Each keeps its own layout | Manual + Auto `testDefaultPreferencesRoundTrip…`; E2E |
+| EDT-09 | Profiles: create, switch, apply | Each keeps its own layout; switching (or restoring a backup) shows Apply to TV instead of changing the TV by itself | Manual + Auto `testDefaultPreferencesRoundTrip…`; E2E |
 | EDT-10 | Uninstall from TV (non-system app) | TV asks to confirm ("Continue on TV"); system apps can't be uninstalled | Manual |
 | EDT-11 | Editor protocol: wrong key, replayed or altered frames | Rejected | Auto: `EditorCipherTests` |
 | EDT-12 | Weather on the TV in another TV language | Translated, correct city | Manual |

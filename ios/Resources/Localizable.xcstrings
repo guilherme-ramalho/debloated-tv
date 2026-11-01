@@ -4,40 +4,6 @@
     "" : {
 
     },
-    "Delete" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Löschen"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Borrar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Effacer"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancella"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apagar"
-          }
-        }
-      }
-    },
     "“Hey Siri, open Netflix with Debloated TV.”" : {
       "localizations" : {
         "de" : {
@@ -751,40 +717,6 @@
         }
       }
     },
-    "Add the Debloated TV widget using your iPhone’s widget gallery. Edit the widget to choose its four actions." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Füge das Debloated-TV-Widget über die Widget-Galerie deines iPhone hinzu. Bearbeite es, um seine vier Aktionen zu wählen."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añade el widget de Debloated TV desde la galería de widgets del iPhone. Edita el widget para elegir sus cuatro acciones."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajoutez le widget Debloated TV depuis la galerie de widgets de l'iPhone. Modifiez-le pour choisir ses quatre actions."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aggiungi il widget di Debloated TV dalla galleria widget dell'iPhone. Modificalo per scegliere le sue quattro azioni."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adicione o widget do Debloated TV pela galeria de widgets do iPhone. Edite o widget para escolher suas quatro ações."
-          }
-        }
-      }
-    },
     "Adjust photo framing" : {
       "localizations" : {
         "de" : {
@@ -1366,40 +1298,6 @@
         }
       }
     },
-    "Applies this profile's whole Home draft, wallpaper included." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wendet den gesamten Startbildschirm-Entwurf dieses Profils an, inklusive Hintergrund."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aplica todo el borrador de la pantalla de inicio de este perfil, fondo incluido."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Applique tout le brouillon d'écran d'accueil de ce profil, fond d'écran compris."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Applica l'intera bozza della schermata Home di questo profilo, sfondo incluso."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aplica todo o rascunho da tela inicial deste perfil, incluindo o papel de parede."
-          }
-        }
-      }
-    },
     "Apply to TV" : {
       "localizations" : {
         "de" : {
@@ -1468,6 +1366,40 @@
         }
       }
     },
+    "Applying to TV…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird auf den Fernseher übertragen…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplicando en la TV…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Application sur la TV…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Applicazione alla TV…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplicando na TV…"
+          }
+        }
+      }
+    },
     "Applying your layout" : {
       "localizations" : {
         "de" : {
@@ -1503,6 +1435,7 @@
       }
     },
     "Applying…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1912,36 +1845,36 @@
         }
       }
     },
-    "Before applying · %@" : {
+    "Before editing · %@" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vor dem Anwenden · %@"
+            "value" : "Vor dem Bearbeiten · %@"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Antes de aplicar · %@"
+            "value" : "Antes de editar · %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avant application · %@"
+            "value" : "Avant modification · %@"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prima di applicare · %@"
+            "value" : "Prima della modifica · %@"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Antes de aplicar · %@"
+            "value" : "Antes de editar · %@"
           }
         }
       }
@@ -2146,6 +2079,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mude o que fica ou atualize a tela inicial"
+          }
+        }
+      }
+    },
+    "Changes apply to the TV automatically." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen werden automatisch auf den Fernseher übertragen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los cambios se aplican en la TV automáticamente."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les modifications s’appliquent automatiquement à la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le modifiche vengono applicate alla TV automaticamente."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As alterações são aplicadas na TV automaticamente."
           }
         }
       }
@@ -2935,40 +2902,6 @@
         }
       }
     },
-    "Connect to TV Home from the TV tab to apply it." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verbinde dich im Tab „TV“ mit TV Home, um es anzuwenden."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Conéctate a TV Home desde la pestaña TV para aplicarlo."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connectez-vous à TV Home depuis l'onglet TV pour l'appliquer."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Collegati a TV Home dalla scheda TV per applicarlo."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Conecte-se ao TV Home pela aba TV para aplicar."
-          }
-        }
-      }
-    },
     "Connect TV" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3477,40 +3410,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continuar na TV"
-          }
-        }
-      }
-    },
-    "Control Center · iOS 18+" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kontrollzentrum · iOS 18+"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Centro de control · iOS 18+"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Centre de contrôle · iOS 18+"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Centro di Controllo · iOS 18+"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Central de Controle · iOS 18+"
           }
         }
       }
@@ -4915,40 +4814,6 @@
         }
       }
     },
-    "Debloated TV controls" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Debloated-TV-Steuerung"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Controles de Debloated TV"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Commandes Debloated TV"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Comandi di Debloated TV"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Controles do Debloated TV"
-          }
-        }
-      }
-    },
     "Debloated TV model request" : {
       "localizations" : {
         "de" : {
@@ -5053,6 +4918,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A depuração está desligada: a TV recusa conexões."
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effacer"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancella"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar"
           }
         }
       }
@@ -5545,40 +5444,6 @@
         }
       }
     },
-    "Edits are saved on this phone until you apply them to the TV." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Änderungen bleiben auf diesem Telefon, bis du sie auf den Fernseher anwendest."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Los cambios se guardan en este teléfono hasta que los apliques en la TV."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Les modifications restent sur ce téléphone jusqu'à ce que vous les appliquiez à la TV."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le modifiche restano su questo telefono finché non le applichi alla TV."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "As edições ficam salvas neste celular até você aplicá-las na TV."
-          }
-        }
-      }
-    },
     "Enter between 1 and 4096 characters" : {
       "localizations" : {
         "de" : {
@@ -5990,36 +5855,36 @@
         }
       }
     },
-    "First focus a search or password field on the TV. Text is sent over the paired encrypted connection and is never saved." : {
+    "First focus a search or password field on the TV. What you type appears there as you go. Text is sent over the paired encrypted connection and is never saved." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wähle zuerst ein Such- oder Passwortfeld am Fernseher. Der Text geht über die verschlüsselte gekoppelte Verbindung und wird nie gespeichert."
+            "value" : "Wähle zuerst ein Such- oder Passwortfeld auf dem Fernseher aus. Was du tippst, erscheint dort direkt. Der Text wird über die gekoppelte, verschlüsselte Verbindung gesendet und nie gespeichert."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Primero selecciona un campo de búsqueda o contraseña en la TV. El texto se envía por la conexión cifrada emparejada y nunca se guarda."
+            "value" : "Primero selecciona un campo de búsqueda o de contraseña en la TV. Lo que escribas aparecerá allí al momento. El texto se envía por la conexión cifrada emparejada y nunca se guarda."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sélectionnez d'abord un champ de recherche ou de mot de passe sur la TV. Le texte passe par la connexion chiffrée appairée et n'est jamais enregistré."
+            "value" : "Sélectionnez d'abord un champ de recherche ou de mot de passe sur la TV. Ce que vous tapez s'y affiche au fur et à mesure. Le texte passe par la connexion chiffrée appairée et n'est jamais enregistré."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seleziona prima un campo di ricerca o password sulla TV. Il testo passa dalla connessione cifrata abbinata e non viene mai salvato."
+            "value" : "Seleziona prima un campo di ricerca o password sulla TV. Quello che scrivi compare lì man mano. Il testo viaggia sulla connessione cifrata abbinata e non viene mai salvato."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Primeiro selecione um campo de busca ou senha na TV. O texto vai pela conexão criptografada pareada e nunca é salvo."
+            "value" : "Primeiro selecione um campo de busca ou de senha na TV. O que você digitar aparece lá na hora. O texto é enviado pela conexão criptografada pareada e nunca é salvo."
           }
         }
       }
@@ -6055,6 +5920,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Segue o idioma do iPhone. Escolha outro idioma para este app nos Ajustes do iOS."
+          }
+        }
+      }
+    },
+    "For one-tap control, add Debloated TV from your iPhone’s widget gallery or from Control Center (iOS 18 and later)." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für Steuerung mit einem Tippen füge Debloated TV über die Widget-Galerie deines iPhones oder im Kontrollzentrum hinzu (ab iOS 18)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para controlarla con un toque, añade Debloated TV desde la galería de widgets del iPhone o desde el Centro de control (iOS 18 o posterior)."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour un contrôle en un geste, ajoutez Debloated TV depuis la galerie de widgets de l'iPhone ou depuis le Centre de contrôle (iOS 18 et ultérieur)."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per controllarla con un tocco, aggiungi Debloated TV dalla galleria widget dell'iPhone o dal Centro di Controllo (iOS 18 e successivi)."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para controlar com um toque, adicione o Debloated TV pela galeria de widgets do iPhone ou pela Central de Controle (iOS 18 ou posterior)."
           }
         }
       }
@@ -6475,40 +6374,6 @@
         }
       }
     },
-    "Home customization connects only while you edit." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Startbildschirm-Anpassung verbindet sich nur, während du bearbeitest."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La personalización de la pantalla de inicio solo se conecta mientras editas."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La personnalisation de l'accueil ne se connecte que pendant vos modifications."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La personalizzazione della Home si collega solo mentre modifichi."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A personalização da tela inicial só se conecta enquanto você edita."
-          }
-        }
-      }
-    },
     "Home has no default and %lld stock launchers claim it. Pick a default Home on the TV first." : {
       "localizations" : {
         "de" : {
@@ -6607,40 +6472,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não há tela inicial padrão e nenhum outro app poderia responder ao Home. Instale primeiro a nova tela inicial."
-          }
-        }
-      }
-    },
-    "Home Screen" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Home-Bildschirm"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pantalla de inicio"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Écran d'accueil"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schermata Home"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tela de Início"
           }
         }
       }
@@ -6845,40 +6676,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importar backup"
-          }
-        }
-      }
-    },
-    "In Control Center’s controls gallery, add Debloated TV and choose the action it should run." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Füge in der Steuerelement-Galerie des Kontrollzentrums Debloated TV hinzu und wähle die Aktion."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "En la galería de controles del Centro de control, añade Debloated TV y elige la acción que debe ejecutar."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dans la galerie de commandes du Centre de contrôle, ajoutez Debloated TV et choisissez l'action à lancer."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nella galleria dei controlli del Centro di Controllo, aggiungi Debloated TV e scegli l'azione da eseguire."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Na galeria de controles da Central de Controle, adicione o Debloated TV e escolha a ação."
           }
         }
       }
@@ -9002,40 +8799,6 @@
         }
       }
     },
-    "No background TV companion" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keine Hintergrund-Begleit-App auf dem Fernseher"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sin app auxiliar en la TV en segundo plano"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucune app compagnon en arrière-plan sur la TV"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nessuna app di supporto in background sulla TV"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sem app auxiliar na TV em segundo plano"
-          }
-        }
-      }
-    },
     "No backups yet" : {
       "localizations" : {
         "de" : {
@@ -9373,6 +9136,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Agora não"
+          }
+        }
+      }
+    },
+    "Not on the TV yet. Open this tab with the TV on." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch nicht auf dem Fernseher. Öffne diesen Tab bei eingeschaltetem Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no está en la TV. Abre esta pestaña con la TV encendida."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas encore sur la TV. Ouvrez cet onglet avec la TV allumée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non ancora sulla TV. Apri questa scheda con la TV accesa."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ainda não está na TV. Abra esta aba com a TV ligada."
           }
         }
       }
@@ -10506,40 +10303,6 @@
         }
       }
     },
-    "Pair in Debloated TV first. Controls use the existing pairing in the app’s background process; they do not install another TV service. Unlock may be required." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kopple zuerst in Debloated TV. Die Steuerungen nutzen die bestehende Kopplung der App; sie installieren keinen weiteren Dienst auf dem Fernseher. Eventuell ist Entsperren nötig."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Empareja primero en Debloated TV. Los controles usan el emparejamiento existente de la app; no instalan otro servicio en la TV. Puede que haya que desbloquear."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Appairez d'abord dans Debloated TV. Les commandes utilisent l'appairage existant de l'app ; elles n'installent aucun autre service sur la TV. Un déverrouillage peut être nécessaire."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abbina prima in Debloated TV. I comandi usano l'abbinamento esistente dell'app; non installano altri servizi sulla TV. Potrebbe servire lo sblocco."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pareie primeiro no Debloated TV. Os controles usam o pareamento existente do app; não instalam outro serviço na TV. Pode ser preciso desbloquear."
-          }
-        }
-      }
-    },
     "Pair once while the TV is on, using the code displayed on it." : {
       "localizations" : {
         "de" : {
@@ -10949,6 +10712,40 @@
         }
       }
     },
+    "Pairing identity unavailable. Restart the app; if it persists, reinstall it." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopplungsidentität nicht verfügbar. Starte die App neu; wenn es so bleibt, installiere sie neu."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identidad de emparejamiento no disponible. Reinicia la app; si sigue igual, vuelve a instalarla."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identité d'appairage indisponible. Redémarrez l'app ; si le problème persiste, réinstallez-la."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identità di abbinamento non disponibile. Riavvia l'app; se il problema persiste, reinstallala."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identidade de pareamento indisponível. Reinicie o app; se continuar, reinstale-o."
+          }
+        }
+      }
+    },
     "Pairing needs attention" : {
       "localizations" : {
         "de" : {
@@ -11183,40 +10980,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pausar TV"
-          }
-        }
-      }
-    },
-    "Performance" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leistung"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rendimiento"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Performances"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prestazioni"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desempenho"
           }
         }
       }
@@ -11489,40 +11252,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Limite do buffer do protocolo excedido"
-          }
-        }
-      }
-    },
-    "Quick access" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schnellzugriff"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acceso rápido"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accès rapide"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accesso rapido"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acesso rápido"
           }
         }
       }
@@ -12820,40 +12549,6 @@
         }
       }
     },
-    "Save to draft" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Im Entwurf sichern"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guardar en el borrador"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enregistrer dans le brouillon"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salva nella bozza"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salvar no rascunho"
-          }
-        }
-      }
-    },
     "Saved backups" : {
       "localizations" : {
         "de" : {
@@ -13195,40 +12890,6 @@
         }
       }
     },
-    "Send to TV" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "An den Fernseher senden"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enviar a la TV"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Envoyer à la TV"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Invia alla TV"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enviar para a TV"
-          }
-        }
-      }
-    },
     "Sending the Home screen" : {
       "localizations" : {
         "de" : {
@@ -13259,40 +12920,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enviando a tela inicial"
-          }
-        }
-      }
-    },
-    "Sending…" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wird gesendet…"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enviando…"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Envoi…"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Invio…"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enviando…"
           }
         }
       }
@@ -14389,6 +14016,40 @@
         }
       }
     },
+    "Switches debugging off on the TV and checks it's closed. Removing this iPhone's approval still needs the TV's menu (step 1)." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schaltet das Debugging auf dem Fernseher aus und prüft, ob es geschlossen ist. Die Freigabe dieses iPhones entfernst du weiterhin im Menü des Fernsehers (Schritt 1)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactiva la depuración en la TV y comprueba que queda cerrada. Para quitar la autorización de este iPhone sigue haciendo falta el menú de la TV (paso 1)."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactive le débogage sur la TV et vérifie qu'il est fermé. Retirer l'autorisation de cet iPhone se fait toujours dans le menu de la TV (étape 1)."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disattiva il debug sulla TV e verifica che sia chiuso. Per togliere l'autorizzazione di questo iPhone serve ancora il menu della TV (passo 1)."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativa a depuração na TV e confirma que ela está fechada. Remover a autorização deste iPhone ainda exige o menu da TV (passo 1)."
+          }
+        }
+      }
+    },
     "Sync installed apps before uninstalling" : {
       "localizations" : {
         "de" : {
@@ -14623,40 +14284,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lista testada do cleanyourtv. Ligue o que quiser manter; o resto é desativado."
-          }
-        }
-      }
-    },
-    "Text sent" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Text gesendet"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Texto enviado"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Texte envoyé"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Testo inviato"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Texto enviado"
           }
         }
       }
@@ -15342,6 +14969,40 @@
         }
       }
     },
+    "The TV is no longer connected. Turn debugging off in the TV's menus." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher ist nicht mehr verbunden. Schalte das Debugging im Menü des Fernsehers aus."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV ya no está conectada. Desactiva la depuración en los menús de la TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'est plus connectée. Désactivez le débogage dans les menus de la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non è più collegata. Disattiva il debug dai menu della TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não está mais conectada. Desative a depuração nos menus da TV."
+          }
+        }
+      }
+    },
     "The TV listed no apps, so nothing was changed. Check the connection and try again." : {
       "localizations" : {
         "de" : {
@@ -15372,6 +15033,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A TV não listou nenhum app, então nada foi alterado. Verifique a conexão e tente de novo."
+          }
+        }
+      }
+    },
+    "The TV no longer accepts this phone’s pairing, for example after another app replaced it or the TV was reset. Pair this TV again in Settings › Connection." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher akzeptiert die Kopplung dieses Telefons nicht mehr, zum Beispiel weil eine andere App sie ersetzt hat oder der Fernseher zurückgesetzt wurde. Kopple den Fernseher erneut unter Einstellungen › Verbindung."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV ya no acepta el emparejamiento de este teléfono, por ejemplo porque otra app lo reemplazó o la TV se restableció. Vuelve a emparejar la TV en Ajustes › Conexión."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'accepte plus l'appairage de ce téléphone, par exemple parce qu'une autre app l'a remplacé ou que la TV a été réinitialisée. Appairez à nouveau la TV dans Réglages › Connexion."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non accetta più l'abbinamento di questo telefono, ad esempio perché un'altra app l'ha sostituito o la TV è stata ripristinata. Abbina di nuovo la TV in Impostazioni › Connessione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não aceita mais o pareamento deste telefone, por exemplo porque outro app o substituiu ou a TV foi redefinida. Pareie a TV novamente em Ajustes › Conexão."
           }
         }
       }
@@ -16023,6 +15718,40 @@
         }
       }
     },
+    "The TV’s identity changed, for example after a reset. Pair this TV again in Settings › Connection." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Identität des Fernsehers hat sich geändert, zum Beispiel nach einem Zurücksetzen. Kopple den Fernseher erneut unter Einstellungen › Verbindung."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La identidad de la TV ha cambiado, por ejemplo tras un restablecimiento. Vuelve a emparejar la TV en Ajustes › Conexión."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'identité de la TV a changé, par exemple après une réinitialisation. Appairez à nouveau la TV dans Réglages › Connexion."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'identità della TV è cambiata, ad esempio dopo un ripristino. Abbina di nuovo la TV in Impostazioni › Connessione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A identidade da TV mudou, por exemplo após uma redefinição. Pareie a TV novamente em Ajustes › Conexão."
+          }
+        }
+      }
+    },
     "The TV's IP address" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -16259,6 +15988,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta versão não inclui a tela inicial. Rode scripts/bundle-launcher.sh e compile de novo."
+          }
+        }
+      }
+    },
+    "This draft isn't on the TV yet." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieser Entwurf ist noch nicht auf dem Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este borrador aún no está en la TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce brouillon n'est pas encore sur la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa bozza non è ancora sulla TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este rascunho ainda não está na TV."
           }
         }
       }
@@ -16872,6 +16635,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tentar de novo"
+          }
+        }
+      }
+    },
+    "Turn off network debugging now" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Netzwerk-Debugging jetzt ausschalten"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivar ahora la depuración por red"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactiver le débogage réseau maintenant"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disattiva ora il debug di rete"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativar a depuração de rede agora"
           }
         }
       }
@@ -18476,6 +18273,40 @@
         }
       }
     },
+    "Use photo" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto verwenden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar foto"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utiliser la photo"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa foto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar foto"
+          }
+        }
+      }
+    },
     "Use the same local network as the TV. A connection test cannot distinguish every router, Local Network permission, or TV standby problem." : {
       "localizations" : {
         "de" : {
@@ -19130,40 +18961,6 @@
         }
       }
     },
-    "Widgets & Control Center" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Widgets und Kontrollzentrum"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Widgets y Centro de control"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Widgets et Centre de contrôle"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Widget e Centro di Controllo"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Widgets e Central de Controle"
-          }
-        }
-      }
-    },
     "Works with Android TV and Google TV. Next, your TV shows a 6-character code to confirm it's you." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -19301,40 +19098,6 @@
         }
       }
     },
-    "Your favorite actions, one tap away" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deine Lieblingsaktionen, einen Tipp entfernt"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tus acciones favoritas, a un toque"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vos actions préférées, à portée de doigt"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le tue azioni preferite, a un tocco"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Suas ações favoritas a um toque"
-          }
-        }
-      }
-    },
     "Your TV can be a lot faster" : {
       "localizations" : {
         "de" : {
@@ -19399,210 +19162,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sua TV, de volta para você"
-          }
-        }
-      }
-    },
-    "Turn off network debugging now" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Netzwerk-Debugging jetzt ausschalten"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desactivar ahora la depuración por red"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Désactiver le débogage réseau maintenant"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disattiva ora il debug di rete"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desativar a depuração de rede agora"
-          }
-        }
-      }
-    },
-    "Switches debugging off on the TV and checks it's closed. Removing this iPhone's approval still needs the TV's menu (step 1)." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schaltet das Debugging auf dem Fernseher aus und prüft, ob es geschlossen ist. Die Freigabe dieses iPhones entfernst du weiterhin im Menü des Fernsehers (Schritt 1)."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desactiva la depuración en la TV y comprueba que queda cerrada. Para quitar la autorización de este iPhone sigue haciendo falta el menú de la TV (paso 1)."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Désactive le débogage sur la TV et vérifie qu'il est fermé. Retirer l'autorisation de cet iPhone se fait toujours dans le menu de la TV (étape 1)."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disattiva il debug sulla TV e verifica che sia chiuso. Per togliere l'autorizzazione di questo iPhone serve ancora il menu della TV (passo 1)."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desativa a depuração na TV e confirma que ela está fechada. Remover a autorização deste iPhone ainda exige o menu da TV (passo 1)."
-          }
-        }
-      }
-    },
-    "The TV is no longer connected. Turn debugging off in the TV's menus." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Der Fernseher ist nicht mehr verbunden. Schalte das Debugging im Menü des Fernsehers aus."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La TV ya no está conectada. Desactiva la depuración en los menús de la TV."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La TV n'est plus connectée. Désactivez le débogage dans les menus de la TV."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La TV non è più collegata. Disattiva il debug dai menu della TV."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A TV não está mais conectada. Desative a depuração nos menus da TV."
-          }
-        }
-      }
-    },
-    "Pairing identity unavailable. Restart the app; if it persists, reinstall it." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kopplungsidentität nicht verfügbar. Starte die App neu; wenn es so bleibt, installiere sie neu."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Identidad de emparejamiento no disponible. Reinicia la app; si sigue igual, vuelve a instalarla."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Identité d'appairage indisponible. Redémarrez l'app ; si le problème persiste, réinstallez-la."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Identità di abbinamento non disponibile. Riavvia l'app; se il problema persiste, reinstallala."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Identidade de pareamento indisponível. Reinicie o app; se continuar, reinstale-o."
-          }
-        }
-      }
-    },
-    "The TV’s identity changed, for example after a reset. Pair this TV again in Settings › Connection." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Identität des Fernsehers hat sich geändert, zum Beispiel nach einem Zurücksetzen. Kopple den Fernseher erneut unter Einstellungen › Verbindung."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La identidad de la TV ha cambiado, por ejemplo tras un restablecimiento. Vuelve a emparejar la TV en Ajustes › Conexión."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L'identité de la TV a changé, par exemple après une réinitialisation. Appairez à nouveau la TV dans Réglages › Connexion."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L'identità della TV è cambiata, ad esempio dopo un ripristino. Abbina di nuovo la TV in Impostazioni › Connessione."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A identidade da TV mudou, por exemplo após uma redefinição. Pareie a TV novamente em Ajustes › Conexão."
-          }
-        }
-      }
-    },
-    "The TV no longer accepts this phone’s pairing, for example after another app replaced it or the TV was reset. Pair this TV again in Settings › Connection." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Der Fernseher akzeptiert die Kopplung dieses Telefons nicht mehr, zum Beispiel weil eine andere App sie ersetzt hat oder der Fernseher zurückgesetzt wurde. Kopple den Fernseher erneut unter Einstellungen › Verbindung."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La TV ya no acepta el emparejamiento de este teléfono, por ejemplo porque otra app lo reemplazó o la TV se restableció. Vuelve a emparejar la TV en Ajustes › Conexión."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La TV n'accepte plus l'appairage de ce téléphone, par exemple parce qu'une autre app l'a remplacé ou que la TV a été réinitialisée. Appairez à nouveau la TV dans Réglages › Connexion."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La TV non accetta più l'abbinamento di questo telefono, ad esempio perché un'altra app l'ha sostituito o la TV è stata ripristinata. Abbina di nuovo la TV in Impostazioni › Connessione."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A TV não aceita mais o pareamento deste telefone, por exemplo porque outro app o substituiu ou a TV foi redefinida. Pareie a TV novamente em Ajustes › Conexão."
           }
         }
       }

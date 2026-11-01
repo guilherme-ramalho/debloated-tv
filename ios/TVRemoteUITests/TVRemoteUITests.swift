@@ -43,7 +43,7 @@ final class TVRemoteUITests: XCTestCase {
         let app = launch(tvState: "installed")
         app.tabBars.buttons["TV"].tap()
         XCTAssertTrue(app.staticTexts["12 apps off · new Home screen"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["Apply to TV"].exists)
+        XCTAssertTrue(app.staticTexts["Changes apply to the TV automatically."].exists, "edits apply by themselves, no Apply button")
         app.staticTexts["Debloated"].tap()
         XCTAssertTrue(app.staticTexts["Undo TV setup"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Run setup again"].exists)

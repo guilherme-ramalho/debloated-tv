@@ -2,8 +2,15 @@ import SwiftUI
 import UniformTypeIdentifiers
 import ImageIO
 
+/// How a change to the Home draft reaches the TV: edits apply by themselves; switching profile or restoring a backup
+/// waits for Apply; loading the TV's own layout needs nothing.
+enum LayoutApply: Equatable { case auto, manual, matchesTV }
+struct LayoutChange: Equatable { var count = 0; var apply = LayoutApply.auto }
+
 @MainActor final class AppSettings: ObservableObject {
     @Published private(set) var value: RemotePreferences
+    /// Bumped on every change to the current profile's layout; TVRemoteApp hands it to HomeEditor.
+    @Published private(set) var layoutChange = LayoutChange()
     @Published private(set) var backups: [HomeBackup] = []
     @Published var notice = ""
     private let directory: URL
@@ -37,9 +44,20 @@ import ImageIO
     }
     var profile: HomeProfile { value.profiles.first(where: { $0.id == value.profileID }) ?? value.profiles[0] }
     var layout: HomeLayout { profile.layout }
-    func editLayout(_ change: (inout HomeLayout) -> Void) {
-        let id = profile.id
+    func editLayout(_ apply: LayoutApply = .auto, _ change: (inout HomeLayout) -> Void) {
+        let id = profile.id, before = layout
         update { settings in if let index = settings.profiles.firstIndex(where: { $0.id == id }) { change(&settings.profiles[index].layout) } }
+        if layout != before || apply != .auto { layoutChange = LayoutChange(count: layoutChange.count + 1, apply: apply) }
+    }
+    func deleteProfiles(at offsets: IndexSet) {
+        let before = profile.id
+        update { value in value.profiles.remove(atOffsets: offsets); if !value.profiles.contains(where: { $0.id == value.profileID }) { value.profileID = value.profiles.first?.id } }
+        if profile.id != before { layoutChange = LayoutChange(count: layoutChange.count + 1, apply: .manual) }
+    }
+    func selectProfile(_ id: UUID) {
+        guard id != value.profileID else { return }
+        update { $0.profileID = id }
+        layoutChange = LayoutChange(count: layoutChange.count + 1, apply: .manual)
     }
     func app(_ id: String) -> RemoteApp? { value.apps.first { $0.id == id } }
     var remoteApps: [RemoteApp] { Array(value.remoteOrder.compactMap(app).prefix(value.remoteCount)) }
@@ -132,7 +150,7 @@ import ImageIO
         _ = try HomeBackup.decode(JSONEncoder().encode(backup))
         var layout = backup.layout
         if let image = backup.wallpaperJPEG { layout.wallpaper = try importPhoto(image) }
-        editLayout { $0 = layout }
+        editLayout(.manual) { $0 = layout }
     }
 }
 

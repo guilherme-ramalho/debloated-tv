@@ -201,7 +201,7 @@ final class TVRemoteEndToEndTests: XCTestCase {
         try step("SET-06/SET-09: the TV tab now shows the Debloated strip and the editor") {
             XCTAssertTrue(app.staticTexts["Debloated"].waitForExistence(timeout: 10))
             XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'apps off · new Home screen'")).firstMatch.exists)
-            XCTAssertTrue(app.buttons["Apply to TV"].exists, "the editor is on the TV tab")
+            XCTAssertTrue(app.staticTexts["Changes apply to the TV automatically."].exists, "the editor is on the TV tab")
         }
     }
 
@@ -212,7 +212,7 @@ final class TVRemoteEndToEndTests: XCTestCase {
         try step("EDT-01/EDT-13: with Home in front, the editor connects by itself through the remote's app link") {
             XCTAssertTrue(waitForEditor(), "the editor should connect: \(visibleErrors())")
         }
-        try step("EDT-05: hide an app, apply, the TV's launcher config changes") {
+        try step("EDT-05: hide an app; it reaches the TV's launcher config without tapping Apply") {
             app.staticTexts["Apps & order"].tap()
             XCTAssertTrue(app.navigationBars["Apps & order"].waitForExistence(timeout: 5))
             app.staticTexts["YouTube"].firstMatch.tap()
@@ -220,11 +220,9 @@ final class TVRemoteEndToEndTests: XCTestCase {
             app.switches["Show on TV Home"].tap()
             app.buttons["Done"].tap()
             app.navigationBars["Apps & order"].buttons.element(boundBy: 0).tap()
-            XCTAssertTrue(app.buttons["Apply to TV"].waitForExistence(timeout: 5))
-            app.buttons["Apply to TV"].tap()
-            XCTAssertTrue(app.staticTexts["TV Home updated"].waitForExistence(timeout: 30), "apply should reach the TV: \(visibleErrors())")
-            let hidden = (try tv.launcherConfig()?["hidden_apps"] as? [String]) ?? []
-            XCTAssertTrue(hidden.contains(youtube), "the TV's config should hide YouTube, got \(hidden)")
+            XCTAssertFalse(app.buttons["Apply to TV"].exists, "an edit needs no Apply")
+            XCTAssertTrue(waitUntil(30) { ((try? self.tv.launcherConfig()?["hidden_apps"] as? [String]) ?? []).contains(self.youtube) },
+                          "the edit should reach the TV by itself: \(visibleErrors())")
             // Put it back, so the TV stays as setup left it.
             app.staticTexts["Apps & order"].tap()
             app.staticTexts["YouTube"].firstMatch.tap()
@@ -232,7 +230,6 @@ final class TVRemoteEndToEndTests: XCTestCase {
             app.switches["Show on TV Home"].tap()
             app.buttons["Done"].tap()
             app.navigationBars["Apps & order"].buttons.element(boundBy: 0).tap()
-            app.buttons["Apply to TV"].tap()
             XCTAssertTrue(waitUntil(30) { ((try? self.tv.launcherConfig()?["hidden_apps"] as? [String]) ?? []).contains(self.youtube) == false })
         }
         try step("EDT-09: profiles keep their own layout; the chosen one applies") {

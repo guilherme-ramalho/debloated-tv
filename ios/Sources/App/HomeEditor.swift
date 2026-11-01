@@ -20,10 +20,20 @@ import UniformTypeIdentifiers
     private var wanted = false
     private weak var model: RemoteModel?
     private var reconnects: [Date] = []
+    /// The current draft isn't on the TV yet.
+    @Published private(set) var unapplied = false
+    @Published private(set) var applying = false
+    /// Unapplied edits that go to the TV by themselves once TV Home connects (a profile switch waits for Apply).
+    private var pendingAuto = false
+    private var editStamp = 0
+    private var applyAgain = false
+    private var backedUp = false
+    /// Edits in quick succession (a stepper, a drag) become one apply: one Home rebuild on the TV, not one per tap.
+    static let applyDelay: Duration = .milliseconds(800)
 
     func close() {
         generation += 1; wanted = false; snapshot = nil; operation?.cancel(); operation = nil; client.close()
-        ready = false; busy = false; waitingFor = nil
+        ready = false; busy = false; waitingFor = nil; backedUp = false
         message = String(localized: "TV Home connects when you open the TV tab with the TV on.")
     }
 
@@ -111,19 +121,54 @@ import UniformTypeIdentifiers
         guard ready, let snapshot else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect before applying")) }
         guard (wallpaper?.count ?? 0) <= 1_000_000 else { throw RemoteFailure.message(String(localized: "Wallpaper exceeds 1 MB")) }
         var payload: [String: Any] = ["expectedRevision":snapshot.revision, "layout":try JSONSerialization.jsonObject(with: JSONEncoder().encode(layout))]
-        if let wallpaper, HomeLayout.validPhoto(layout.wallpaper) { payload["wallpaperJPEG"] = try Self.tvWallpaper(wallpaper).base64EncodedString() }
+        // The photo travels only when the TV doesn't have it yet, so reordering apps doesn't resend the wallpaper.
+        let tvHasPhoto = snapshot.layout.wallpaper == layout.wallpaper && snapshot.wallpaperJPEG != nil
+        if let wallpaper, HomeLayout.validPhoto(layout.wallpaper), !tvHasPhoto { payload["wallpaperJPEG"] = try Self.tvWallpaper(wallpaper).base64EncodedString() }
         let token = generation
         let result = try await client.request("applyLayout", payload: payload, as: LauncherSnapshot.self)
         guard generation == token else { throw CancellationError() }
         try result.validate(); self.snapshot = result; message = String(localized: "TV Home updated")
     }
-    /// Backs up the current draft, then applies it. Shared by the TV tab and the wallpaper screens.
-    func applyDraft(_ settings: AppSettings) async -> Bool {
-        do {
-            _ = try settings.backup(name: String(localized: "Before applying · \(settings.profile.name)"))
-            try await apply(settings.layout, wallpaper: settings.wallpaperData(settings.layout))
-            return true
-        } catch { settings.notice = error.localizedDescription; return false }
+    /// A change to the draft (AppSettings.layoutChange). Edits reach the TV by themselves after a short pause.
+    func layoutChanged(_ change: LayoutChange, settings: AppSettings) {
+        switch change.apply {
+        case .matchesTV: unapplied = false; pendingAuto = false
+        case .manual: unapplied = true; pendingAuto = false
+        case .auto:
+            unapplied = true; pendingAuto = true
+            editStamp += 1
+            let stamp = editStamp
+            Task { [weak self] in
+                try? await Task.sleep(for: Self.applyDelay)
+                guard let self, stamp == self.editStamp else { return }
+                await self.applyNow(settings)
+            }
+        }
+    }
+
+    /// TV Home just connected: edits made while it was away reach it now.
+    func connectedApplyPending(_ settings: AppSettings) {
+        if pendingAuto { Task { await applyNow(settings) } }
+    }
+
+    /// The Apply button: for a profile switch, a restored backup, or after a failed automatic apply.
+    func applyDraft(_ settings: AppSettings) async {
+        unapplied = true
+        await applyNow(settings)
+    }
+
+    /// Sends the draft if the TV doesn't have it. One apply at a time; edits made meanwhile follow in one more.
+    /// The first apply of a session backs the draft up first, so a run of edits can be undone from Backups.
+    private func applyNow(_ settings: AppSettings) async {
+        guard unapplied, ready else { return }
+        if applying { applyAgain = true; return }
+        applying = true; unapplied = false; pendingAuto = false
+        if !backedUp, (try? settings.backup(name: String(localized: "Before editing · \(settings.profile.name)"))) != nil { backedUp = true }
+        do { try await apply(settings.layout, wallpaper: settings.wallpaperData(settings.layout)) }
+        catch is CancellationError { unapplied = true }
+        catch { unapplied = true; settings.notice = error.localizedDescription }
+        applying = false
+        if applyAgain { applyAgain = false; await applyNow(settings) }
     }
     struct Confirmation: Decodable { let status: String }
     func uninstall(_ app: RemoteApp) async throws {
