@@ -300,6 +300,8 @@ struct DebloatSetupView: View {
                     .buttonStyle(QuietSecondaryStyle())
                 QuietCaption(text: "It's also kept in this app (Settings › Undo TV setup). Save a copy in Files in case you replace this iPhone.")
             }
+            Button("Turn off network debugging now") { flow.turnOffDebugging() }.buttonStyle(QuietPrimaryStyle()).disabled(flow.busy)
+            QuietCaption(text: "Switches debugging off on the TV and checks it's closed. Removing this iPhone's approval still needs the TV's menu (step 1).")
             QuietCard {
                 VStack(alignment: .leading, spacing: 12) {
                     step(1, "Settings › System › Developer options: choose Revoke USB debugging authorizations.")
@@ -308,12 +310,12 @@ struct DebloatSetupView: View {
                 }.padding(14)
             }
             QuietCaption(text: "The remote and TV Home editing don't need debugging. Only another setup or a restore does.")
-            Button("Check debugging is off") { flow.checkDebuggingClosed() }.buttonStyle(QuietSecondaryStyle())
+            Button("Check debugging is off") { flow.checkDebuggingClosed() }.buttonStyle(QuietSecondaryStyle()).disabled(flow.busy)
             if let closed = flow.debuggingClosed {
                 Label(closed ? "Debugging is off: the TV refuses connections." : "The debugging port still accepts connections.",
                       systemImage: closed ? "checkmark.shield" : "exclamationmark.shield").foregroundStyle(closed ? .green : .orange).font(.system(size: 13))
             }
-            Button("Done") { dismiss() }.buttonStyle(QuietPrimaryStyle())
+            Button("Done") { dismiss() }.buttonStyle(QuietSecondaryStyle())
         }
     }
 }

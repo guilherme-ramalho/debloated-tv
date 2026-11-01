@@ -8,9 +8,13 @@ import android.util.Log;
 
 /**
  * Receives tvhome://phone-edit?k=KEY from the paired iPhone, through the Android TV Remote Service's app-link
- * launch. Only a phone already paired with the TV's remote service can send it, so the key it carries is what
- * proves the phone to {@link EditorServer}: no second pairing code. Shows nothing and finishes at once, so the
- * app on screen stays where it is.
+ * launch. The link travels over the remote's pinned, paired connection, so the key it carries is what proves the
+ * phone to {@link EditorServer}: no second pairing code. Shows nothing and finishes at once, so the app on screen
+ * stays where it is.
+ *
+ * The activity has to be exported for the Remote Service to start it, so another app installed on the TV could start
+ * it too, with a key of its own. That reaches only what the editor offers (layout, wallpaper, the app list, the system's
+ * uninstall confirmation), never more. It is not BROWSABLE, so web pages can't start it.
  */
 public class EditorLinkActivity extends Activity {
     private static final String TAG = "TvHome.Editor";

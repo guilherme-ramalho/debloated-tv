@@ -122,6 +122,7 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | DBL-14 | Open debugging port warning (`ro.adb.secure=0`) | Note shown in review | Auto: `testOpenDebuggingPortIsCalledOut` |
 | DBL-15 | Test step: tick every check | "Everything works" enabled only when all ticked | Manual |
 | DBL-16 | Finish: turn debugging off, check | App confirms the port refuses connections | Manual |
+| DBL-16b | Finish: "Turn off network debugging now", also after leaving the TV idle on the test step for 10 min | Reconnects if needed without a prompt, switches debugging off, then shows "Debugging is off". On a TV that keeps the port open it says so | Manual, emulator + real TV |
 | DBL-17 | Export recovery record | Share sheet with the JSON | Manual |
 
 ## 5. New Home screen install (LCH) ⚠
@@ -164,6 +165,7 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | EDT-06 | Wallpaper presets and a photo; Adjust photo framing | TV shows it as framed, without colour tint | Manual |
 | EDT-07 | Very large photo (48 MP) | Downscaled; applies quickly | Manual |
 | EDT-08 | Load current TV layout | Replaces the draft after a backup | Manual |
+| EDT-09 | Editor link is not BROWSABLE: open the TV tab on the emulator and on a real TV | Connects as before (the TV Remote service starts the link without BROWSABLE) | Manual, emulator + real TV |
 | EDT-09 | Profiles: create, switch, apply | Each keeps its own layout | Manual + Auto `testDefaultPreferencesRoundTrip…` |
 | EDT-10 | Uninstall from TV (non-system app) | TV asks to confirm ("Continue on TV"); system apps can't be uninstalled | Manual |
 | EDT-11 | Editor protocol: wrong key, replayed or altered frames | Rejected | Auto: `EditorCipherTests` |

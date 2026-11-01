@@ -222,6 +222,33 @@ enum RecoveryStore {
     // MARK: finish
 
     /// After the user turns debugging off: the port should refuse connections.
+    /// The last ADB command of a setup: switches debugging off on the TV (adbd stops, so this connection drops), then
+    /// checks the port refuses connections. Saved "Always allow" approvals stay until revoked in the TV's menu.
+    func turnOffDebugging() {
+        guard let target = TVAddress(address) else { return }
+        debuggingClosed = nil
+        run {
+            // The link may have gone idle while the user tested the TV: reconnect with the approved key (no prompt).
+            var client = self.adb
+            if let current = client, (try? await current.shell("echo ok", timeout: 5)) == nil { await current.close(); client = nil }
+            if client == nil {
+                let fresh = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
+                do { _ = try await fresh.connect(name: "Debloated TV@iPhone", approvalTimeout: 15) }
+                catch {
+                    await fresh.close()
+                    throw RemoteFailure.message(String(localized: "The TV is no longer connected. Turn debugging off in the TV's menus."))
+                }
+                client = fresh
+            }
+            guard let client else { return }
+            _ = try? await client.shell("settings put global adb_wifi_enabled 0; settings put global adb_enabled 0", timeout: 8)
+            await client.close()
+            self.adb = nil
+            try? await Task.sleep(for: .seconds(2))
+            self.debuggingClosed = await PortProbe.refuses(host: target.host, port: target.port)
+        }
+    }
+
     func checkDebuggingClosed() {
         guard let target = TVAddress(address) else { return }
         cancel()
