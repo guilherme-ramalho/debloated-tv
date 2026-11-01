@@ -12,6 +12,10 @@ other build has to be uninstalled first.
 
 ## With the release key (maintainers)
 
+`scripts/launcher-key.sh setup` does all of the steps below on a Mac, including the backups, and
+`scripts/launcher-key.sh verify` checks the key, Gradle's settings, a backup image and the last built APK. The manual
+steps are here for reference and other systems.
+
 The key and its password live outside the repository. Never commit them, attach them to issues, or put them in CI
 logs. `.gitignore` excludes `*.jks` and `*.keystore` as a safety net.
 
@@ -43,6 +47,19 @@ logs. `.gitignore` excludes `*.jks` and `*.keystore` as a safety net.
 
 4. Build with `scripts/bundle-launcher.sh`. It prints which key signed the APK; `CN=Debloated TV launcher` is the
    release key, `CN=Android Debug` means Gradle didn't find the properties.
+
+## Releasing
+
+The key never leaves the maintainer's computer: only the signed APK ships, inside the iPhone app.
+
+1. If the launcher changed since the last release, raise `versionCode` (and `versionName`) in
+   `tv-launcher/launcher/app/build.gradle`. A TV refuses to install a lower `versionCode` over a higher one.
+2. Run `scripts/bundle-launcher.sh` and check it prints `Signed by: CN=Debloated TV launcher` (not `Android Debug`).
+   The APK lands in `ios/Resources/Launcher/tvhome.apk`, which git ignores.
+3. Archive the **Debloated TV** scheme in Xcode and upload it as usual. The APK is part of the app bundle.
+
+CI doesn't need the key: it only runs tests. If a release pipeline ever signs in CI, the key goes into the CI's
+encrypted secrets, never into the repository.
 
 ## Switching a TV from a debug-signed launcher
 
