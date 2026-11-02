@@ -91,7 +91,7 @@ print(pick["udid"] if pick else "")')"
   [ -n "$UDID" ] || die "No iPhone simulator available (Xcode › Settings › Components)."
   UI_LOG="$OUT/ui-tests-$STAMP.log"
   (cd "$ROOT/ios" && xcodebuild test -project TVRemote.xcodeproj -scheme "Debloated TV Dev" -destination "platform=iOS Simulator,id=$UDID" \
-      -only-testing:TVRemoteUITests/TVRemoteUITests CODE_SIGNING_ALLOWED=NO >"$UI_LOG" 2>&1) || die "UI smoke tests failed. Log: $UI_LOG"
+      -only-testing:TVRemoteUITests/TVRemoteUITests -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO >"$UI_LOG" 2>&1) || die "UI smoke tests failed. Log: $UI_LOG"
   ok "UI smoke tests pass ($(grep -ciE "Test case .*passed" "$UI_LOG") cases)."
   if [ "$E2E" = 1 ]; then
     echo "  Live ADB test (emulator)…"

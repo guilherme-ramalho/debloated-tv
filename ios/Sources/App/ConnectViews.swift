@@ -102,14 +102,10 @@ struct TVAddressField: View {
     @Binding var address: String
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            TextField("192.168.1.20", text: $address)
-                .keyboardType(.numbersAndPunctuation).textInputAutocapitalization(.never).autocorrectionDisabled()
-                .font(.system(size: 20, design: .monospaced))
+            AddressTextField(text: $address, label: String(localized: "The TV's IP address"))
                 .padding(.horizontal, 14).frame(minHeight: 52)
                 .background(QuietTheme.background, in: RoundedRectangle(cornerRadius: 13))
                 .overlay(RoundedRectangle(cornerRadius: 13).stroke(valid ? QuietTheme.cyan : .white.opacity(0.12), lineWidth: 1))
-                .onChange(of: address) { _, value in let tidy = TVAddress.typed(value); if tidy != value { address = tidy } }
-                .accessibilityLabel("The TV's IP address")
             if valid {
                 Label("Looks right", systemImage: "checkmark").font(.system(size: 12)).foregroundStyle(QuietTheme.cyan)
             } else if !address.isEmpty {
@@ -118,6 +114,63 @@ struct TVAddressField: View {
         }
     }
     var valid: Bool { TVAddress.isIPv4(address) }
+}
+
+/// The text field behind TVAddressField. Commas and spaces are fixed as each key is typed, inside UIKit,
+/// so the field never round-trips through SwiftUI mid-typing (rewriting the binding in onChange dropped keystrokes).
+private struct AddressTextField: UIViewRepresentable {
+    @Binding var text: String
+    let label: String
+
+    func makeUIView(context: Context) -> UITextField {
+        let field = UITextField()
+        field.placeholder = "192.168.1.20"
+        field.font = .monospacedSystemFont(ofSize: 20, weight: .regular)
+        field.textColor = .label
+        field.tintColor = .white
+        field.keyboardType = .numbersAndPunctuation
+        field.autocapitalizationType = .none
+        field.autocorrectionType = .no
+        field.spellCheckingType = .no
+        field.smartDashesType = .no
+        field.smartInsertDeleteType = .no
+        field.returnKeyType = .done
+        field.accessibilityLabel = label
+        field.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        field.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        field.delegate = context.coordinator
+        field.addTarget(context.coordinator, action: #selector(Coordinator.edited(_:)), for: .editingChanged)
+        field.text = text
+        return field
+    }
+
+    func updateUIView(_ field: UITextField, context: Context) {
+        context.coordinator.text = $text
+        if field.text != text { field.text = text }
+    }
+
+    func makeCoordinator() -> Coordinator { Coordinator(text: $text) }
+
+    final class Coordinator: NSObject, UITextFieldDelegate {
+        var text: Binding<String>
+        init(text: Binding<String>) { self.text = text }
+
+        @objc func edited(_ field: UITextField) { text.wrappedValue = field.text ?? "" }
+
+        func textField(_ field: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            let tidy = TVAddress.typed(string)
+            guard tidy != string, let current = field.text, let swapped = Range(range, in: current) else { return true }
+            let updated = current.replacingCharacters(in: swapped, with: tidy)
+            field.text = updated
+            if let caret = field.position(from: field.beginningOfDocument, offset: range.location + (tidy as NSString).length) {
+                field.selectedTextRange = field.textRange(from: caret, to: caret)
+            }
+            text.wrappedValue = updated
+            return false
+        }
+
+        func textFieldShouldReturn(_ field: UITextField) -> Bool { field.resignFirstResponder(); return true }
+    }
 }
 
 /// Typing the TV's address when it isn't found on the network.

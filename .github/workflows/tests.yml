@@ -59,4 +59,4 @@ jobs:
           device=$(xcrun simctl list devices available | grep -m1 -oE 'iPhone [^(]+' | sed 's/ *$//')
           xcodebuild test -project TVRemote.xcodeproj -scheme "Debloated TV Dev" \
             -destination "platform=iOS Simulator,name=$device" \
-            -only-testing:TVRemoteUITests CODE_SIGNING_ALLOWED=NO
+            -only-testing:TVRemoteUITests -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
