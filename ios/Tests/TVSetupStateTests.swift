@@ -128,4 +128,16 @@ import XCTest
         XCTAssertTrue(ModelRequest.text(info).contains("Acme TV"))
         XCTAssertFalse(ModelRequest.text(info).contains("192.168"), "no address or other personal data")
     }
+
+    func testAStockLauncherInFrontMeansTheTVWasPutBack() {
+        let status = TVSetupStatus(defaults: defaults(), offerDelay: .zero)
+        status.sawForeground("tv", TVSetupStatus.homePackage)
+        status.update("tv") { $0.disabledCount = 35 }
+        XCTAssertTrue(status.info("tv").homeInstalled)
+        status.sawForeground("tv", "com.netflix.ninja")
+        XCTAssertTrue(status.info("tv").homeInstalled, "an app in front says nothing about Home")
+        status.sawForeground("tv", "com.google.android.apps.tv.launcherx")
+        XCTAssertFalse(status.info("tv").homeInstalled, "the stock Home is back: restored outside the app")
+        XCTAssertNil(status.info("tv").disabledCount)
+    }
 }

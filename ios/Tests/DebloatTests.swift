@@ -70,7 +70,7 @@ final class DebloatTests: XCTestCase {
         let list = try DebloatList.parse(Self.tcl + "\n# 6. Launcher\ncom.google.android.apps.tv.launcherx\ncom.tcl.tvhdmi\ncom.tcl.settings.extra\n")
         let installed = Set(list.entries.map(\.package))
         let tv = FakeTV(enabled: installed, answers: [
-            ("dumpsys wifi", "WifiConfiguration ... cname=com.google.android.tungsten.setupwraith ..."),
+            ("dumpsys wifi", "Dump of WifiConfigManager\nID: 0 SSID: \"Office\" PROVIDER-NAME: null BSSID: null\n KeyMgmt: WPA_EAP IEEE8021X Protocols: RSN\n cuid=10071 cname=com.google.android.tungsten.setupwraith luid=1000\n"),
             ("cmd package query-activities --brief -a android.intent.action.MAIN -c android.intent.category.HOME",
              "com.google.android.apps.tv.launcherx/.home.HomeActivity\ncom.google.android.tungsten.setupwraith/.RecoveryActivity"),
             ("s=$(getprop", "com.tcl.tvhdmi\n"),
@@ -78,7 +78,7 @@ final class DebloatTests: XCTestCase {
         ])
         let plan = try await Debloater(tv: tv).plan(list.entries.map(\.package), list: list, inventory: inventory(installed))
         let skipped = Set(plan.skipped.map(\.package))
-        XCTAssertTrue(skipped.contains("com.google.android.tungsten.setupwraith"), "Wi-Fi belongs to setupwraith")
+        XCTAssertTrue(skipped.contains("com.google.android.tungsten.setupwraith"), "its enterprise Wi-Fi can't be saved again from the phone")
         XCTAssertTrue(skipped.contains("com.google.android.apps.tv.launcherx"), "owns Home with nothing else to take it")
         XCTAssertTrue(skipped.contains("com.tcl.tvhdmi"), "drives the inputs")
         XCTAssertTrue(skipped.contains("com.tcl.settings.extra"), "opens Settings")

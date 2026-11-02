@@ -40,6 +40,7 @@
 		700000000000000000000016 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000015 /* Localizable.xcstrings */; };
 		700000000000000000000017 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000015 /* Localizable.xcstrings */; };
 		700000000000000000000019 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000018 /* InfoPlist.xcstrings */; };
+		70000000000000000000001F /* AppShortcuts.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000001E /* AppShortcuts.xcstrings */; };
 		70000000000000000000000C /* Launcher in Resources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000B /* Launcher */; };
 		70000000000000000000000E /* Sources/App/DebloatFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000D /* Sources/App/DebloatFlow.swift */; };
 		700000000000000000000010 /* Sources/App/DebloatViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000000F /* Sources/App/DebloatViews.swift */; };
@@ -111,6 +112,7 @@
 		700000000000000000000009 /* Profiles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Profiles; path = Resources/Profiles; sourceTree = SOURCE_ROOT; };
 		700000000000000000000015 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = Resources/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
 		700000000000000000000018 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = InfoPlist.xcstrings; path = Resources/InfoPlist.xcstrings; sourceTree = SOURCE_ROOT; };
+		70000000000000000000001E /* AppShortcuts.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = AppShortcuts.xcstrings; path = Resources/AppShortcuts.xcstrings; sourceTree = SOURCE_ROOT; };
 		70000000000000000000000B /* Launcher */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Launcher; path = Resources/Launcher; sourceTree = SOURCE_ROOT; };
 		70000000000000000000000D /* Sources/App/DebloatFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/DebloatFlow.swift; sourceTree = SOURCE_ROOT; };
 		70000000000000000000000F /* Sources/App/DebloatViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/DebloatViews.swift; sourceTree = SOURCE_ROOT; };
@@ -186,6 +188,7 @@
 				70000000000000000000000B /* Launcher */,
 				700000000000000000000015 /* Localizable.xcstrings */,
 				700000000000000000000018 /* InfoPlist.xcstrings */,
+				70000000000000000000001E /* AppShortcuts.xcstrings */,
 				700000000000000000000005 /* Sources/Core/LauncherInstall.swift */,
 				700000000000000000000003 /* Sources/Core/Debloat.swift */,
 				300000000000000000000012 /* Sources/Core/Preferences.swift */,
@@ -317,6 +320,7 @@
 				70000000000000000000000C /* Launcher in Resources */,
 				700000000000000000000016 /* Localizable.xcstrings in Resources */,
 				700000000000000000000019 /* InfoPlist.xcstrings in Resources */,
+				70000000000000000000001F /* AppShortcuts.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

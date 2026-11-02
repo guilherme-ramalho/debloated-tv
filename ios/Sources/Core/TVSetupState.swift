@@ -114,6 +114,11 @@ public struct TVSetupInfo: Codable, Equatable {
             update(host) { $0.homeInstalled = true; $0.offerPending = nil }
             return
         }
+        // Setup disables the stock launcher, so seeing one means the TV was put back outside this app (a restore
+        // from a computer, a factory reset): the TV tab offers setup again instead of an editor with nothing behind it.
+        if DebloatRules.stockLaunchers.contains(package), info(host).homeInstalled {
+            update(host) { $0.homeInstalled = false; $0.disabledCount = nil }
+        }
         guard info(host).offerPending == true, !info(host).homeInstalled, Self.isLauncher(package) else { return }
         update(host) { $0.offerPending = nil; $0.offered = true }
         let delay = offerDelay

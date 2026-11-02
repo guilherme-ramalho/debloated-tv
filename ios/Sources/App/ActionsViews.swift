@@ -140,7 +140,7 @@ struct SiriSettingsView: View {
         List {
                 Group {
             Section {
-                Text("“Hey Siri, open Netflix with Debloated TV.”").font(.title2.weight(.semibold)).padding(.vertical, 10)
+                Text("“Hey Siri, open Netflix with Debloated.”").font(.title2.weight(.semibold)).padding(.vertical, 10)
                 SiriTipView(intent: TVCommandIntent(command: .wake))
             }
             Section {

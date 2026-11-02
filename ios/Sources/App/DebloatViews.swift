@@ -179,14 +179,6 @@ struct DebloatSetupView: View {
                     }
                 }
                 QuietCaption(text: "Keep switched on = stays enabled. \(flow.protectedCount) protected system apps are never touched. \(flow.alreadyHandled) listed apps are already off or not installed.")
-                if flow.choices.contains(where: { $0.package == DebloatRules.setupwraith }) {
-                    Toggle(isOn: $flow.setupwraithOnEthernet) {
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text("This TV uses Ethernet").font(.system(size: 14, weight: .medium))
-                            Text("Allows disabling the setup wizard even when it can’t tell who owns the Wi-Fi. Leave off on Wi-Fi.").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
-                        }
-                    }.toggleStyle(QuietToggleStyle())
-                }
             }
             Button(flow.busy ? "Checking…" : "Review changes") { flow.review() }.buttonStyle(QuietPrimaryStyle()).disabled(flow.busy)
         }
@@ -215,11 +207,12 @@ struct DebloatSetupView: View {
                     }
                 }
                 ForEach(plan.notes, id: \.self) { QuietCaption(text: $0) }
+                if !plan.wifiToResave.isEmpty { wifiResave(plan.wifiToResave) }
                 DisclosureGroup("Show the \(plan.disable.count) apps") {
                     VStack(alignment: .leading, spacing: 4) { ForEach(plan.disable, id: \.self) { Text($0).font(.system(size: 12, design: .monospaced)) } }.padding(.top, 6)
                 }.tint(.white).font(.system(size: 14))
                 Toggle("I reviewed these changes", isOn: $flow.understood).toggleStyle(QuietToggleStyle()).font(.system(size: 14, weight: .medium))
-                Button("Continue") { flow.step = .home }.buttonStyle(QuietPrimaryStyle()).disabled(!flow.understood)
+                Button("Continue") { flow.step = .home }.buttonStyle(QuietPrimaryStyle()).disabled(!flow.understood || !flow.wifiReady)
             }
         }
     }
@@ -250,7 +243,39 @@ struct DebloatSetupView: View {
                 }
                 QuietCaption(text: "You can rearrange everything later from the TV tab.")
             }
-            Button("Apply to TV") { flow.apply() }.buttonStyle(QuietPrimaryStyle()).disabled(flow.busy)
+            let blocked = flow.installLauncher && flow.plan?.setupKeepsHome == true
+            if blocked {
+                QuietCard {
+                    Label("The setup wizard stays on, and on this TV it takes the Home button, so the new Home screen can't take over. Go back to the review to see why it was kept, or apply without the new Home screen.", systemImage: "exclamationmark.triangle")
+                        .font(.system(size: 13)).foregroundStyle(.orange).padding(14)
+                }
+            }
+            Button("Apply to TV") { flow.apply() }.buttonStyle(QuietPrimaryStyle()).disabled(flow.busy || blocked)
+        }
+    }
+
+    /// The setup wizard owns these networks and deletes them when it's disabled, so they're saved again first.
+    private func wifiResave(_ networks: [WifiNetwork]) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            QuietSectionTitle(title: "Keep the TV's Wi-Fi")
+            QuietCaption(text: "These networks were saved by the TV's setup wizard, and switching it off deletes them. Enter each password and this phone saves them again on the TV first, so the TV stays online.")
+            QuietCard {
+                ForEach(networks) { network in
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(verbatim: network.ssid).font(.system(size: 14, weight: .medium))
+                        if network.needsPassword {
+                            SecureField("Wi-Fi password", text: Binding(get: { flow.wifiPasswords[network.ssid] ?? "" }, set: { flow.wifiPasswords[network.ssid] = $0 }))
+                                .textContentType(.password).textInputAutocapitalization(.never).autocorrectionDisabled()
+                                .padding(10).background(QuietTheme.background, in: RoundedRectangle(cornerRadius: 10))
+                                .accessibilityLabel(Text("Wi-Fi password for \(network.ssid)"))
+                        } else {
+                            Text("Open network: no password needed.").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+                        }
+                    }.padding(.horizontal, 13).padding(.vertical, 10)
+                    if network.id != networks.last?.id { Divider().overlay(QuietTheme.edge) }
+                }
+            }
+            QuietCaption(text: "The password goes to the TV once, over the debugging connection, which isn't encrypted. It's never saved on this phone.")
         }
     }
 

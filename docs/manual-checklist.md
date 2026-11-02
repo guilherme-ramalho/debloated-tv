@@ -23,6 +23,7 @@ Before setup on the TCL: the launcher on it is debug-signed, so restore to stock
 - [ ] REM-08 / REM-09 / REM-11 / REM-12 — keyboard into a TV search field; Input button; missing app; shortcut order
 - [ ] SET-07 / SET-08 / SET-08b / SET-08c — "Already set up? Check my TV" both ways; delete and reinstall keeps the editor
 - [ ] DBL-02 / DBL-03 / DBL-06 — debugging off; "Allow debugging?" left unanswered 2 min; an unsupported model
+- [ ] DBL-10 / DBL-10b — Google TV setup wizard: on a cable it goes with no question; on Wi-Fi the review asks for the password, the TV stays online, Home takes over
 - [ ] DBL-12 — network unplugged mid-apply: stops at the group, nothing after it changed, restore works
 - [ ] DBL-16 / DBL-16b / DBL-17 — debugging off by hand and by the button (also after 10 min idle); export the record
 - [ ] LCH-09 / LCH-10 / LCH-12 / LCH-14 — remote app buttons and Settings key; one volume step per tap; HDMI inputs and Live TV; hold OK opens App info, the glow changes colour at once
@@ -34,7 +35,7 @@ Before setup on the TCL: the launcher on it is debug-signed, so restore to stock
 
 ## Physical iPhone only
 
-- [ ] ACT-06 — Siri: "Open Netflix with Debloated TV"
+- [ ] ACT-06 — Siri: "Open Netflix with Debloated"; in Portuguese "Abra a Netflix na minha TV" and "Ligue a minha TV"
 - [ ] ACT-07 — Shortcuts app: Control TV, Run TV Quick Action, without opening the app
 - [ ] ACT-08 — Home Screen widget: four controls act on the TV, no background polling (Battery › app shows no background activity)
 - [ ] ACT-09 — Control Center control (iOS 18+)

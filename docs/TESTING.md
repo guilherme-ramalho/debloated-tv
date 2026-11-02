@@ -22,6 +22,13 @@ Each case has an ID, what to do, what should happen, and how it's covered: **Aut
 | An unsupported Android TV, or the emulator with its dev profile removed | "not supported" paths |
 | A TV in standby with network standby on | wake |
 
+### Resetting a real test TV
+
+Between setup runs, put the TV back to stock from a computer with `TV_HOST=<tv ip> scripts/tv-reset.sh
+--keep-disabled <apps that were off from the factory>`. It shows the plan, asks, switches every other disabled app back
+on, makes the stock launcher Home, uninstalls the new Home screen, then checks the result. Development only: users
+undo a setup in the app (UND cases).
+
 ## Automated tests
 
 | Suite | Command | Covers |
@@ -119,6 +126,7 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | SET-08 | Same button on a TV with its original Home | "This TV still has its original Home screen…"; setup card stays | Manual |
 | SET-08b | Delete and reinstall the app | TVs that had the new Home still show the editor (state kept in this iPhone's Keychain) | Manual |
 | SET-08c | TV marked set up by a build older than the Keychain copy: open the new build once, then delete and reinstall | Editor still shows after the reinstall (the old state is copied to the Keychain at launch) | Manual |
+| SET-08d | TV restored outside the app (computer restore, factory reset), then open the app with the stock Home on screen | The TV tab offers setup again instead of the editor | Auto: `testAStockLauncherInFrontMeansTheTVWasPutBack` |
 | SET-09 | Strip › Manage | Run setup again, Undo TV setup | Auto: `testInstalledTVShowsTheEditorAndManage`; E2E |
 | SET-10 | New pairing with a TV not showing our Home | One-time sheet "Your TV can be a lot faster"; Set up my TV opens setup | Auto: `testOfferSheetOpensSetupOnce`, `testOfferAppearsOnceAfterPairing`; E2E |
 | SET-11 | New pairing while the TV shows our Home | No sheet | Auto: `testNoOfferWhenTheTVAlreadyShowsTheNewHome` |
@@ -141,7 +149,9 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | DBL-07 | Choose: keep some apps on | Kept apps aren't in the review | E2E (the kept app stays enabled on the TV) |
 | DBL-08 | Review shows skipped apps with reasons (Wi-Fi owner, Home, input drivers, Settings) | Each skipped app explains why | Auto: `DebloatTests`, `DebloatEdgeTests` |
 | DBL-09 | Core Android packages can never be chosen or disabled, including `location.fused` | Never listed, never disabled | Auto: `testCorePackagesAreNeverDisabled`, `testNoProfileCanDisableCore…` |
-| DBL-10 | Setup wizard on a Wi-Fi TV | Skipped with the forget-and-rejoin explanation; Ethernet override allows it | Auto: `testSetupWizardNeedsTheWifiCheck…` |
+| DBL-10 | Google TV setup wizard, TV on a cable (no Wi-Fi saved by the wizard) | Disabled with no question; Chromecast note shown if casting stays on | Auto: `testSetupWizardFollowsTheWifiCheck` |
+| DBL-10b | Setup wizard owns the TV's Wi-Fi (network joined during first setup) | Review asks for each network's password; Continue waits for it; apply saves it again first, the TV stays (or comes back) online, then the wizard is disabled. Wrong password: stops before anything else changes, with how to rejoin on the TV | Auto: `testSetupWizardFollowsTheWifiCheck`, `testWifiParsingAndTheResaveCommand`; Manual on a Wi-Fi TV |
+| DBL-10c | Setup wizard kept (unreadable Wi-Fi, enterprise network, no connect-network) with the new Home chosen | Choose Home says the new Home can't take over and Apply is off until the Home screen is switched off | Auto: `testSetupWizardFollowsTheWifiCheck` (setupKeepsHome) |
 | DBL-11 | Apply | Progress per group; then "Disabled N apps"; apps refused by the TV listed | Manual + Auto `testApplyReadsTheTVBack`; E2E |
 | DBL-12 | Unplug network mid-apply | Stops, says which group; nothing after it changed | Manual + Auto `testApplyStopsWhenTheTVStopsAnswering` |
 | DBL-13 | Run setup twice | Recovery record keeps the state from before the first run; the second run connects without a prompt | Auto: `testRecordKeepsTheStateBeforeTheFirstRun…`; E2E (second run) |
@@ -208,7 +218,7 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | ACT-03 | Delete an action | Gone from the list and from Shortcuts | Manual |
 | ACT-04 | Sleep timer: 30 min, custom, cancel | TV turns off at the time; cancel works | Manual |
 | ACT-05 | Favorite inputs: add, rename, assign HDMI | Opens the right input | Manual |
-| ACT-06 | Siri: "Open Netflix with Debloated TV" | Netflix opens on the TV | Manual |
+| ACT-06 | Siri in each language: "Open Netflix with Debloated" (en), "Abra a Netflix na minha TV" (pt-BR), "Abre Netflix en mi tele" (es), "Ouvre Netflix sur ma télé" (fr), "Apri Netflix sulla mia TV" (it), "Öffne Netflix mit Debloated" (de); also "Ligue a minha TV" | Netflix opens on the TV; the alternative names (Debloated TV; Minha TV; Mi tele, Mi televisor, Mi TV; Ma télé, Ma TV; Mia TV) work too. Test on the TestFlight build alone: a Dev build on the same phone answers to the same names | Manual |
 | ACT-07 | Shortcuts app: Control TV, Run TV Quick Action | Work without opening the app | Manual |
 | ACT-08 | Home Screen widget, four chosen controls | Each control acts on the TV; no background polling | Manual |
 | ACT-09 | Control Center control (iOS 18+) | Sends its action | Manual |
