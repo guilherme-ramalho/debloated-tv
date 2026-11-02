@@ -53,7 +53,7 @@ com.google.android.tungsten.setupwraith
 # 2. Extras (the 60C635 kept com.tcl.android.webview; tested off on the 43C645 only).
 # com.tcl.keyhelp stays on: it opens Netflix/YouTube/Prime from the remote's buttons while another app is in front.
 # The launcher's app_keys only catch those TCL keys (4062+) on Home, the key helpers never see them
-# (43C645 with keyhelp off, 2026-11-02: Netflix button did nothing inside YouTube; enabling it and a restart fixed it).
+# (BeyondTV4 with keyhelp off, 2026-11-02: Netflix button did nothing inside YouTube; enabling it and a restart fixed it).
 com.tcl.useragreement
 com.tcl.android.webview
 com.tcl.guard
