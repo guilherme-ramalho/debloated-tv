@@ -81,8 +81,8 @@ import XCTest
         status.sawForeground("tv", TVSetupStatus.homePackage)
         status.sawForeground("tv", "com.google.android.tvlauncher")   // e.g. after an undo, later
         try await Task.sleep(for: .milliseconds(100))
-        XCTAssertNil(status.offerFor)
-        XCTAssertTrue(status.info("tv").homeInstalled)
+        XCTAssertNil(status.offerFor, "the one-time offer was settled by the new Home: no sheet later")
+        XCTAssertFalse(status.info("tv").homeInstalled, "the stock Home back in front means the TV was put back (SET-08d)")
         let already = TVSetupStatus(defaults: defaults(), offerDelay: .zero)
         already.sawHome("tv2")
         already.offerAfterPairing("tv2", showing: "com.google.android.tvlauncher")
