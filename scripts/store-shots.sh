@@ -62,8 +62,11 @@ shot() {
   read -r answer
   [ "$answer" = s ] && { echo "  skipped"; return; }
   xcrun simctl io "$UDID" screenshot --type=png "$OUT/$name.png" >/dev/null 2>&1
-  local size; size="$(sips -g pixelWidth -g pixelHeight "$OUT/$name.png" | awk '/pixel/ {printf "%s ", $2}')"
-  echo "  saved $OUT/$name.png ($size)"
+  # The simulator's PNGs carry an alpha channel, which App Store Connect refuses: the upload copy is a JPEG without one.
+  mkdir -p "$OUT-upload"
+  sips -s format jpeg -s formatOptions best "$OUT/$name.png" --out "$OUT-upload/$name.jpg" >/dev/null
+  local size; size="$(sips -g pixelWidth -g pixelHeight "$OUT-upload/$name.jpg" | awk '/pixel/ {printf "%s ", $2}')"
+  echo "  saved $OUT-upload/$name.jpg ($size)"
 }
 shot 01-remote "Remote tab, connected, with the app shortcuts row."
 shot 02-tv-home "TV tab: the Debloated strip and the Home editor (dock and wallpaper)."
@@ -72,4 +75,4 @@ shot 04-type "Remote with Type on TV open and a few words typed."
 shot 05-actions "Actions tab with a quick action or two."
 shot 06-action-steps "A quick action opened, showing its steps."
 xcrun simctl status_bar "$UDID" clear
-say "Done. Shots in $OUT"
+say "Done. Upload the files in $OUT-upload"
