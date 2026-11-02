@@ -15,6 +15,7 @@
     "settings_key_panel": false,
     "app_keys": ["KEYCODE_TCL_NETFLIX:com.netflix.ninja", "KEYCODE_TCL_YOUTUBE:com.google.android.youtube.tv",
                  "4099:com.amazon.amazonvideo.livingroom"],
-    "correct_prehandled_volume_keys": true
+    "correct_prehandled_volume_keys": true,
+    "glow_snap": true
   }
 }

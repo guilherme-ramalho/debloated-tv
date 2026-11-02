@@ -49,7 +49,9 @@ enum RecoveryStore {
     @Published var keep: Set<String> = []
     @Published private(set) var plan: DebloatPlan?
     @Published var understood = false
-    @Published var setupwraithOnEthernet = false
+    /// Passwords typed for the Wi-Fi networks the setup wizard owns (plan.wifiToResave). Kept only until they're
+    /// sent; never saved.
+    @Published var wifiPasswords: [String: String] = [:]
     @Published var installLauncher = true
     @Published var dock: [String] = []
     @Published private(set) var progress: Double = 0
@@ -161,7 +163,7 @@ enum RecoveryStore {
         guard let adb, let profile, let inventory else { return }
         run {
             self.message = String(localized: "Running the safety checks…")
-            var overrides = DebloatOverrides(); overrides.setupwraithOnEthernet = self.setupwraithOnEthernet
+            let overrides = DebloatOverrides()
             let chosen = self.choices.map(\.package).filter { !self.keep.contains($0) }
             self.plan = try await Debloater(tv: adb).plan(chosen, list: profile.list, inventory: inventory, overrides: overrides)
             self.understood = false
@@ -174,7 +176,14 @@ enum RecoveryStore {
         let apk = installLauncher ? launcherAPK : nil
         if installLauncher && apk == nil { error = String(localized: "This build doesn't include the Home screen. Run scripts/bundle-launcher.sh and rebuild."); return }
         step = .apply; log = []; progress = 0; result = nil
+        let passwords = wifiPasswords
         run {
+            var adb = adb
+            // Wi-Fi the setup wizard saved goes when the wizard is disabled: save it again as the shell's first.
+            if !plan.wifiToResave.isEmpty {
+                adb = try await self.resaveWifi(plan.wifiToResave, passwords: passwords, on: adb)
+                self.wifiPasswords = [:]
+            }
             let debloater = Debloater(tv: adb)
             // Group by group, as upstream's tested runs did, stopping if the TV stops answering.
             var disabled = [String](), still = [String]()
@@ -224,6 +233,40 @@ enum RecoveryStore {
     /// After the user turns debugging off: the port should refuse connections.
     /// The last ADB command of a setup: switches debugging off on the TV (adbd stops, so this connection drops), then
     /// checks the port refuses connections. Saved "Always allow" approvals stay until revoked in the TV's menu.
+    var wifiReady: Bool { plan?.wifiToResave.allSatisfy { !$0.needsPassword || !(wifiPasswords[$0.ssid] ?? "").isEmpty } ?? true }
+
+    /// Saves each network again, waits for the TV (it can drop off Wi-Fi for a moment), and checks the copies are
+    /// there and no longer the wizard's. Nothing else has changed yet if this fails.
+    private func resaveWifi(_ networks: [WifiNetwork], passwords: [String: String], on adb: AdbClient) async throws -> AdbClient {
+        guard let target = TVAddress(address) else { throw RemoteFailure.message(String(localized: "Enter the TV's IP address, for example 192.168.0.13")) }
+        note(String(localized: "Saving the TV's Wi-Fi again, so it stays when the setup wizard is off…"))
+        for network in networks {
+            _ = try? await adb.shell(DebloatRules.resaveWifiCommand(network, password: passwords[network.ssid] ?? ""), timeout: 15)
+        }
+        try await Task.sleep(for: .seconds(6))
+        var client = adb
+        var after: [WifiNetwork]?
+        for attempt in 1...8 {
+            if let dump = try? await client.run("dumpsys wifi", timeout: 30), let parsed = DebloatRules.wifiNetworks(dump) { after = parsed; break }
+            if attempt == 8 { break }
+            // The connection went with the old network: reconnect with the approved key (no prompt on the TV).
+            await client.close()
+            try await Task.sleep(for: .seconds(5))
+            let fresh = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
+            if (try? await fresh.connect(name: "Debloated TV@iPhone", approvalTimeout: 10)) != nil { client = fresh; self.adb = fresh }
+        }
+        let names = networks.map(\.ssid).joined(separator: ", ")
+        guard let after else {
+            throw RemoteFailure.message(String(localized: "The TV didn't come back after saving its Wi-Fi again. On the TV, join \(names) in Settings › Network & Internet, then connect again. Nothing else was changed."))
+        }
+        let missing = networks.filter { n in !after.contains { $0.ssid == n.ssid && !$0.owner.contains("setupwraith") } }
+        guard missing.isEmpty else {
+            throw RemoteFailure.message(String(localized: "Couldn't save \(missing.map(\.ssid).joined(separator: ", ")) again (check the password). On the TV, join it in Settings › Network & Internet, then review again. Nothing else was changed."))
+        }
+        note(String(localized: "Wi-Fi saved again: \(names)."))
+        return client
+    }
+
     func turnOffDebugging() {
         guard let target = TVAddress(address) else { return }
         debuggingClosed = nil

@@ -25,5 +25,7 @@ final class ProfileTests: XCTestCase {
         XCTAssertEqual(config["dock_apps"] as? [String], ["com.netflix.ninja"])
         XCTAssertEqual(config["correct_prehandled_volume_keys"] as? Bool, true)
         XCTAssertEqual(config["live_tv_package"] as? String, "com.tcl.tv")
+        XCTAssertEqual(config["tile_menu"] as? Bool, false, "the phone arranges Home; the TV's tile menu stays off")
+        XCTAssertEqual(config["glow_snap"] as? Bool, true, "no full-screen glow fade on the TCL's GPU")
     }
 }

@@ -7,6 +7,8 @@ final class FakeDevice: TVDevice, @unchecked Sendable {
     var pushed: [String: Data] = [:]
     var answers: [(String, String)]
     var homeAfterHandover: String
+    /// What the WRITE_SECURE_SETTINGS step prints; nil: the marker the step asked for, as a TV that did it.
+    var secureSettingsAnswer: String?
     private var handedOver = false
     init(answers: [(String, String)], homeAfterHandover: String = "com.gathin.tvhome/.MainActivity") {
         self.answers = answers; self.homeAfterHandover = homeAfterHandover
@@ -17,6 +19,9 @@ final class FakeDevice: TVDevice, @unchecked Sendable {
         if command.hasPrefix("cmd package set-home-activity --user 0 com.gathin.tvhome") { handedOver = true }
         if command.hasPrefix(DebloatRules.homeQuery) {
             return .init(output: handedOver ? homeAfterHandover : "com.google.android.apps.tv.launcherx/.home.HomeActivity", status: 0)
+        }
+        if command.contains("WRITE_SECURE_SETTINGS") {
+            return .init(output: secureSettingsAnswer ?? (command.hasPrefix("pm grant") ? "restore-granted\n" : "secure-settings-revoked\n"), status: 0)
         }
         if command.hasPrefix("md5sum"), let apk = pushed["/data/local/tmp/tvhome.apk"] {
             return .init(output: Insecure.MD5.hash(data: apk).map { String(format: "%02x", $0) }.joined() + "  /data/local/tmp/tvhome.apk", status: 0)
@@ -39,6 +44,23 @@ final class LauncherInstallTests: XCTestCase {
         XCTAssertLessThan(start, disable, "the stock launcher goes only after the new one started")
         XCTAssertTrue(tv.sent.contains { $0.contains("enabled_accessibility_services") && $0.contains("HomeKeyService enabled") })
         XCTAssertFalse(tv.sent.contains { $0.contains("InputKeyService") })
+    }
+
+    func testSecureSettingsFollowTheProfile() async throws {
+        // Upstream #2458: an install that doesn't ask for WRITE_SECURE_SETTINGS takes back one an earlier install left.
+        let revoke = FakeDevice(answers: answers)
+        _ = try await LauncherInstaller(tv: revoke).install(apk: apk, options: LauncherOptions())
+        XCTAssertTrue(revoke.sent.contains { $0.hasPrefix("pm revoke com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS") })
+        XCTAssertFalse(revoke.sent.contains { $0.hasPrefix("pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS") })
+        let grant = FakeDevice(answers: answers)
+        _ = try await LauncherInstaller(tv: grant).install(apk: apk, options: LauncherOptions(restoreKeyServices: true))
+        XCTAssertTrue(grant.sent.contains { $0.hasPrefix("pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS") })
+        // The step's own text contains the marker; only a line that is the marker counts.
+        let silent = FakeDevice(answers: answers); silent.secureSettingsAnswer = ""
+        do { _ = try await LauncherInstaller(tv: silent).install(apk: apk, options: LauncherOptions()); XCTFail("a missing marker must be reported") }
+        catch { XCTAssertTrue(error.localizedDescription.contains("system settings")) }
+        XCTAssertFalse(LauncherInstaller.secureSettingsDone(LauncherInstaller.secureSettingsStep(grant: false), grant: false))
+        XCTAssertTrue(LauncherInstaller.secureSettingsDone("secure-settings-revoked\r\n", grant: false))
     }
 
     func testFailedHandoverPutsTheStockLauncherBack() async throws {

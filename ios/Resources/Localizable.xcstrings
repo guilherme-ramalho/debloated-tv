@@ -4,40 +4,6 @@
     "" : {
 
     },
-    "“Hey Siri, open Netflix with Debloated TV.”" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "„Hey Siri, öffne Netflix mit Debloated TV.“"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "“Oye Siri, abre Netflix con Debloated TV.”"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "« Dis Siri, ouvre Netflix avec Debloated TV. »"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "“Ehi Siri, apri Netflix con Debloated TV.”"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "“E aí Siri, abrir Netflix com Debloated TV.”"
-          }
-        }
-      }
-    },
     "%@" : {
 
     },
@@ -850,40 +816,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Permita este iPhone na TV"
-          }
-        }
-      }
-    },
-    "Allows disabling the setup wizard even when it can’t tell who owns the Wi-Fi. Leave off on Wi-Fi." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erlaubt das Deaktivieren des Einrichtungsassistenten, auch wenn unklar ist, wem das WLAN gehört. Bei WLAN ausgeschaltet lassen."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Permite desactivar el asistente de configuración aunque no se sepa quién es dueño del Wi-Fi. Déjalo apagado si usas Wi-Fi."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Permet de désactiver l'assistant de configuration même s'il est impossible de savoir à qui appartient le Wi-Fi. Laissez désactivé en Wi-Fi."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Consente di disattivare la procedura guidata anche quando non si sa a chi appartiene il Wi-Fi. Lascia spento se usi il Wi-Fi."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Permite desativar o assistente de configuração mesmo sem saber de quem é o Wi-Fi. Deixe desligado se usar Wi-Fi."
           }
         }
       }
@@ -4260,40 +4192,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não foi possível perguntar à TV quais apps respondem ao Home, e este é um launcher original."
-          }
-        }
-      }
-    },
-    "Couldn't check which app owns the saved Wi-Fi networks. If the TV uses Ethernet, you can allow it." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es ließ sich nicht prüfen, welcher App die gespeicherten WLANs gehören. Nutzt der Fernseher ein Netzwerkkabel, kannst du es erlauben."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se pudo comprobar qué app es dueña de las redes Wi-Fi guardadas. Si la TV usa cable de red, puedes permitirlo."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impossible de vérifier à quelle app appartiennent les réseaux Wi-Fi enregistrés. Si la TV utilise un câble réseau, vous pouvez l'autoriser."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impossibile verificare a quale app appartengono le reti Wi-Fi salvate. Se la TV usa un cavo di rete, puoi consentirlo."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não foi possível verificar qual app é dono das redes Wi-Fi salvas. Se a TV usa cabo de rede, você pode permitir."
           }
         }
       }
@@ -15822,40 +15720,6 @@
         }
       }
     },
-    "The TV's Wi-Fi network belongs to the setup wizard, and disabling it would delete that network and take the TV offline. On the TV, forget the network and join it again in Settings › Network & Internet, then run this again." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das WLAN des Fernsehers gehört dem Einrichtungsassistenten; ihn zu deaktivieren würde das Netzwerk löschen und den Fernseher offline nehmen. Entferne das Netzwerk am Fernseher und verbinde dich in Einstellungen › Netzwerk und Internet neu, dann starte das hier erneut."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La red Wi-Fi de la TV pertenece al asistente de configuración, y desactivarlo borraría esa red y dejaría la TV sin conexión. En la TV, olvida la red y vuelve a unirte en Ajustes › Red e Internet; después repite esto."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le réseau Wi-Fi de la TV appartient à l'assistant de configuration ; le désactiver supprimerait ce réseau et mettrait la TV hors ligne. Sur la TV, oubliez le réseau et rejoignez-le à nouveau dans Réglages › Réseau et Internet, puis relancez ceci."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La rete Wi-Fi della TV appartiene alla procedura guidata; disattivarla eliminerebbe quella rete e porterebbe la TV offline. Sulla TV, dimentica la rete e ricollegati in Impostazioni › Rete e Internet, poi ripeti."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A rede Wi-Fi da TV pertence ao assistente de configuração, e desativá-lo apagaria essa rede e deixaria a TV offline. Na TV, esqueça a rede e conecte-se de novo em Ajustes › Rede e Internet, depois rode isto de novo."
-          }
-        }
-      }
-    },
     "There’s no list tested on this model, so nothing was changed. Guessing which apps are safe to disable can leave inputs black or the TV unable to start." : {
       "localizations" : {
         "de" : {
@@ -16363,40 +16227,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta TV ainda tem a tela inicial original, então ainda não foi configurada."
-          }
-        }
-      }
-    },
-    "This TV uses Ethernet" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dieser Fernseher nutzt ein Netzwerkkabel"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta TV usa cable de red"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cette TV utilise un câble réseau"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Questa TV usa il cavo di rete"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta TV usa cabo de rede"
           }
         }
       }
@@ -19162,6 +18992,618 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sua TV, de volta para você"
+          }
+        }
+      }
+    },
+    "The new Home screen is installed, but the TV didn't give it permission to restore the remote's helpers after a force stop. Run setup again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der neue Startbildschirm ist installiert, aber der Fernseher hat ihm nicht erlaubt, die Helfer der Fernbedienung nach einem erzwungenen Beenden wiederherzustellen. Führe die Einrichtung erneut aus."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La nueva pantalla de inicio está instalada, pero la TV no le dio permiso para recuperar los ayudantes del mando tras un cierre forzado. Vuelve a ejecutar la configuración."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nouvel écran d'accueil est installé, mais la TV ne lui a pas donné la permission de rétablir les assistants de la télécommande après un arrêt forcé. Relancez la configuration."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La nuova schermata Home è installata, ma la TV non le ha dato il permesso di ripristinare gli aiuti del telecomando dopo un arresto forzato. Esegui di nuovo la configurazione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A nova tela inicial está instalada, mas a TV não deu permissão para ela restaurar os auxiliares do controle após uma parada forçada. Execute a configuração novamente."
+          }
+        }
+      }
+    },
+    "The new Home screen is installed, but it may still hold permission to change system settings from an earlier install. Run setup again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der neue Startbildschirm ist installiert, hat aber möglicherweise noch die Berechtigung einer früheren Installation, Systemeinstellungen zu ändern. Führe die Einrichtung erneut aus."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La nueva pantalla de inicio está instalada, pero puede que aún conserve el permiso para cambiar ajustes del sistema de una instalación anterior. Vuelve a ejecutar la configuración."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nouvel écran d'accueil est installé, mais il a peut-être encore l'autorisation de modifier les réglages système d'une installation précédente. Relancez la configuration."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La nuova schermata Home è installata, ma potrebbe avere ancora il permesso di modificare le impostazioni di sistema da un'installazione precedente. Esegui di nuovo la configurazione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A nova tela inicial está instalada, mas ainda pode ter a permissão para alterar configurações do sistema de uma instalação anterior. Execute a configuração novamente."
+          }
+        }
+      }
+    },
+    "A Wi-Fi network on the TV belongs to the setup wizard and uses a sign-in this phone can't save again. On the TV, forget it and join it again in Settings › Network & Internet, then review again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein WLAN auf dem Fernseher gehört dem Einrichtungsassistenten und nutzt eine Anmeldung, die dieses Telefon nicht neu speichern kann. Vergiss es auf dem Fernseher und verbinde dich unter Einstellungen › Netzwerk & Internet neu, dann prüfe erneut."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una red Wi-Fi de la TV pertenece al asistente de configuración y usa un inicio de sesión que este teléfono no puede volver a guardar. En la TV, olvídala y vuelve a conectarte en Ajustes › Red e Internet; luego revisa de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un réseau Wi-Fi de la TV appartient à l'assistant de configuration et utilise une connexion que ce téléphone ne peut pas réenregistrer. Sur la TV, oubliez-le et rejoignez-le dans Paramètres › Réseau et Internet, puis vérifiez à nouveau."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una rete Wi-Fi della TV appartiene alla procedura guidata di configurazione e usa un accesso che questo telefono non può salvare di nuovo. Sulla TV, dimenticala e ricollegati in Impostazioni › Rete e Internet, poi controlla di nuovo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma rede Wi-Fi da TV pertence ao assistente de configuração e usa um login que este telefone não consegue salvar de novo. Na TV, esqueça a rede e conecte de novo em Configurações › Rede e Internet; depois revise novamente."
+          }
+        }
+      }
+    },
+    "The TV's Wi-Fi network belongs to the setup wizard, and this TV can't have it saved again from the phone. On the TV, forget the network and join it again in Settings › Network & Internet, then review again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das WLAN des Fernsehers gehört dem Einrichtungsassistenten, und dieser Fernseher lässt es nicht vom Telefon neu speichern. Vergiss das Netzwerk auf dem Fernseher und verbinde dich unter Einstellungen › Netzwerk & Internet neu, dann prüfe erneut."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La red Wi-Fi de la TV pertenece al asistente de configuración, y esta TV no permite volver a guardarla desde el teléfono. En la TV, olvida la red y vuelve a conectarte en Ajustes › Red e Internet; luego revisa de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le réseau Wi-Fi de la TV appartient à l'assistant de configuration, et cette TV ne permet pas de le réenregistrer depuis le téléphone. Sur la TV, oubliez le réseau et rejoignez-le dans Paramètres › Réseau et Internet, puis vérifiez à nouveau."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La rete Wi-Fi della TV appartiene alla procedura guidata di configurazione, e questa TV non permette di salvarla di nuovo dal telefono. Sulla TV, dimentica la rete e ricollegati in Impostazioni › Rete e Internet, poi controlla di nuovo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A rede Wi-Fi da TV pertence ao assistente de configuração, e esta TV não permite salvá-la de novo pelo telefone. Na TV, esqueça a rede e conecte de novo em Configurações › Rede e Internet; depois revise novamente."
+          }
+        }
+      }
+    },
+    "Couldn't read the TV's saved Wi-Fi networks, so the setup wizard stays: disabling it could delete them. Restart the TV and review again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die gespeicherten WLANs des Fernsehers konnten nicht gelesen werden, daher bleibt der Einrichtungsassistent an: Ihn abzuschalten könnte sie löschen. Starte den Fernseher neu und prüfe erneut."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron leer las redes Wi-Fi guardadas de la TV, así que el asistente de configuración se queda: desactivarlo podría borrarlas. Reinicia la TV y revisa de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de lire les réseaux Wi-Fi enregistrés de la TV, donc l'assistant de configuration reste : le désactiver pourrait les supprimer. Redémarrez la TV et vérifiez à nouveau."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile leggere le reti Wi-Fi salvate della TV, quindi la procedura guidata resta attiva: disattivarla potrebbe eliminarle. Riavvia la TV e controlla di nuovo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível ler as redes Wi-Fi salvas da TV, então o assistente de configuração fica: desativá-lo poderia apagá-las. Reinicie a TV e revise novamente."
+          }
+        }
+      }
+    },
+    "Chromecast built-in keeps its credentials in the setup wizard: with the wizard off, casting to this TV stops working." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chromecast built-in speichert seine Zugangsdaten im Einrichtungsassistenten: Ist er aus, funktioniert Streamen auf diesen Fernseher nicht mehr."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chromecast integrado guarda sus credenciales en el asistente de configuración: con el asistente desactivado, enviar contenido a esta TV deja de funcionar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chromecast intégré garde ses identifiants dans l'assistant de configuration : assistant désactivé, la diffusion vers cette TV ne fonctionne plus."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chromecast integrato conserva le sue credenziali nella procedura guidata: con la procedura disattivata, la trasmissione a questa TV smette di funzionare."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Chromecast integrado guarda as credenciais no assistente de configuração: com o assistente desativado, transmitir para esta TV para de funcionar."
+          }
+        }
+      }
+    },
+    "Saving the TV's Wi-Fi again, so it stays when the setup wizard is off…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das WLAN des Fernsehers wird neu gespeichert, damit es bleibt, wenn der Einrichtungsassistent aus ist…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volviendo a guardar la Wi-Fi de la TV para que se mantenga con el asistente desactivado…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réenregistrement du Wi-Fi de la TV, pour qu'il reste quand l'assistant est désactivé…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salvataggio di nuovo del Wi-Fi della TV, così resta con la procedura guidata disattivata…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salvando de novo o Wi-Fi da TV, para ele continuar quando o assistente estiver desativado…"
+          }
+        }
+      }
+    },
+    "The TV didn't come back after saving its Wi-Fi again. On the TV, join %@ in Settings › Network & Internet, then connect again. Nothing else was changed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat sich nach dem neuen Speichern des WLANs nicht zurückgemeldet. Verbinde ihn mit %@ unter Einstellungen › Netzwerk & Internet und verbinde dich dann erneut. Sonst wurde nichts geändert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV no volvió después de guardar de nuevo su Wi-Fi. En la TV, conéctate a %@ en Ajustes › Red e Internet y vuelve a conectar. No se cambió nada más."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'est pas revenue après le réenregistrement de son Wi-Fi. Sur la TV, rejoignez %@ dans Paramètres › Réseau et Internet, puis reconnectez-vous. Rien d'autre n'a été modifié."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non è tornata dopo il nuovo salvataggio del Wi-Fi. Sulla TV, collegati a %@ in Impostazioni › Rete e Internet, poi riconnettiti. Nient'altro è stato cambiato."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não voltou depois de salvar o Wi-Fi de novo. Na TV, conecte a %@ em Configurações › Rede e Internet e conecte novamente. Nada mais foi alterado."
+          }
+        }
+      }
+    },
+    "Couldn't save %@ again (check the password). On the TV, join it in Settings › Network & Internet, then review again. Nothing else was changed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ konnte nicht neu gespeichert werden (prüfe das Passwort). Verbinde dich auf dem Fernseher unter Einstellungen › Netzwerk & Internet und prüfe dann erneut. Sonst wurde nichts geändert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo volver a guardar %@ (revisa la contraseña). En la TV, conéctate en Ajustes › Red e Internet y luego revisa de nuevo. No se cambió nada más."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de réenregistrer %@ (vérifiez le mot de passe). Sur la TV, rejoignez-le dans Paramètres › Réseau et Internet, puis vérifiez à nouveau. Rien d'autre n'a été modifié."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile salvare di nuovo %@ (controlla la password). Sulla TV, collegati in Impostazioni › Rete e Internet, poi controlla di nuovo. Nient'altro è stato cambiato."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível salvar %@ de novo (confira a senha). Na TV, conecte em Configurações › Rede e Internet e revise novamente. Nada mais foi alterado."
+          }
+        }
+      }
+    },
+    "Wi-Fi saved again: %@." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WLAN neu gespeichert: %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi guardada de nuevo: %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi réenregistré : %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi salvato di nuovo: %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi salvo de novo: %@."
+          }
+        }
+      }
+    },
+    "The setup wizard stays on, and on this TV it takes the Home button, so the new Home screen can't take over. Go back to the review to see why it was kept, or apply without the new Home screen." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Einrichtungsassistent bleibt an und übernimmt auf diesem Fernseher die Home-Taste, daher kann der neue Startbildschirm nicht übernehmen. Geh zurück zur Prüfung, um den Grund zu sehen, oder wende ohne den neuen Startbildschirm an."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El asistente de configuración sigue activo y en esta TV toma el botón de inicio, así que la nueva pantalla de inicio no puede tomar el control. Vuelve a la revisión para ver por qué se mantuvo, o aplica sin la nueva pantalla de inicio."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'assistant de configuration reste actif et, sur cette TV, prend le bouton Accueil : le nouvel écran d'accueil ne peut pas prendre la main. Revenez à la vérification pour voir pourquoi il a été gardé, ou appliquez sans le nouvel écran d'accueil."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La procedura guidata resta attiva e su questa TV prende il tasto Home, quindi la nuova schermata Home non può subentrare. Torna alla revisione per vedere perché è stata mantenuta, o applica senza la nuova schermata Home."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O assistente de configuração continua ativo e, nesta TV, assume o botão Início, então a nova tela inicial não consegue assumir. Volte à revisão para ver por que ele foi mantido, ou aplique sem a nova tela inicial."
+          }
+        }
+      }
+    },
+    "Keep the TV's Wi-Fi" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WLAN des Fernsehers behalten"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantener la Wi-Fi de la TV"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Garder le Wi-Fi de la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantieni il Wi-Fi della TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manter o Wi-Fi da TV"
+          }
+        }
+      }
+    },
+    "These networks were saved by the TV's setup wizard, and switching it off deletes them. Enter each password and this phone saves them again on the TV first, so the TV stays online." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Netzwerke hat der Einrichtungsassistent des Fernsehers gespeichert, und ihn abzuschalten löscht sie. Gib jedes Passwort ein, dann speichert dieses Telefon sie vorher neu auf dem Fernseher, damit er online bleibt."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estas redes las guardó el asistente de configuración de la TV, y desactivarlo las borra. Escribe cada contraseña y este teléfono las vuelve a guardar en la TV antes, para que siga conectada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ces réseaux ont été enregistrés par l'assistant de configuration de la TV, et le désactiver les supprime. Saisissez chaque mot de passe : ce téléphone les réenregistre d'abord sur la TV, qui reste en ligne."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Queste reti sono state salvate dalla procedura guidata della TV, e disattivarla le elimina. Inserisci ogni password e questo telefono le salva di nuovo sulla TV prima, così resta online."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estas redes foram salvas pelo assistente de configuração da TV, e desativá-lo as apaga. Digite cada senha e este telefone as salva de novo na TV antes, para ela continuar online."
+          }
+        }
+      }
+    },
+    "Wi-Fi password" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WLAN-Passwort"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña de la Wi-Fi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mot de passe Wi-Fi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password Wi-Fi"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha do Wi-Fi"
+          }
+        }
+      }
+    },
+    "Wi-Fi password for %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WLAN-Passwort für %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña de la Wi-Fi %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mot de passe Wi-Fi de %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password Wi-Fi di %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha do Wi-Fi %@"
+          }
+        }
+      }
+    },
+    "Open network: no password needed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offenes Netzwerk: kein Passwort nötig."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Red abierta: no hace falta contraseña."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réseau ouvert : aucun mot de passe nécessaire."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rete aperta: nessuna password necessaria."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rede aberta: não precisa de senha."
+          }
+        }
+      }
+    },
+    "The password goes to the TV once, over the debugging connection, which isn't encrypted. It's never saved on this phone." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Passwort geht einmal über die Debugging-Verbindung an den Fernseher, die nicht verschlüsselt ist. Auf diesem Telefon wird es nie gespeichert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La contraseña se envía una vez a la TV por la conexión de depuración, que no está cifrada. Nunca se guarda en este teléfono."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le mot de passe est envoyé une fois à la TV par la connexion de débogage, qui n'est pas chiffrée. Il n'est jamais enregistré sur ce téléphone."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La password viene inviata una volta alla TV tramite la connessione di debug, che non è cifrata. Non viene mai salvata su questo telefono."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A senha vai uma vez para a TV pela conexão de depuração, que não é criptografada. Ela nunca é salva neste telefone."
+          }
+        }
+      }
+    },
+    "“Hey Siri, open Netflix with Debloated.”" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„Hey Siri, öffne Netflix mit Debloated.“"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“Oye Siri, abre Netflix en mi tele.”"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« Dis Siri, ouvre Netflix sur ma télé. »"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“Ehi Siri, apri Netflix sulla mia TV.”"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“E aí Siri, abra a Netflix na minha TV.”"
           }
         }
       }

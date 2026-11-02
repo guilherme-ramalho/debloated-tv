@@ -130,6 +130,51 @@ public enum DebloatRules {
             || Pattern.matches("factorytest|factory_test|factorymode", package, caseInsensitive: true)
     }
     /// Packages among HOME claims that are real launchers (not the setup wizard, settings, FallbackHome or factory test).
+    public static let castReceiver = "com.google.android.apps.mediashell"
+
+    /// Saved networks from `dumpsys wifi` (WifiConfiguration lines: "ID: 0 SSID: \"Home\" …", " KeyMgmt: WPA_PSK …",
+    /// "… cname=<creator> …"). nil when the dump has no network section to read (a hung system, no Wi-Fi service).
+    public static func wifiNetworks(_ dump: String) -> [WifiNetwork]? {
+        guard dump.contains("WifiConfigManager") else { return nil }
+        guard let header = try? NSRegularExpression(pattern: "ID:\\s*(\\d+)\\s+SSID:\\s*\"(.*)\"\\s+PROVIDER-NAME:") else { return nil }
+        var found: [WifiNetwork] = []
+        var current: (id: Int, ssid: String, security: String, owner: String)?
+        func close() { if let c = current { found.append(WifiNetwork(networkId: c.id, ssid: c.ssid, security: c.security, owner: c.owner)) }; current = nil }
+        for raw in dump.split(separator: "\n", omittingEmptySubsequences: false) {
+            let line = String(raw)
+            if let m = header.firstMatch(in: line, range: NSRange(line.startIndex..., in: line)),
+               let idRange = Range(m.range(at: 1), in: line), let ssidRange = Range(m.range(at: 2), in: line) {
+                close()
+                current = (Int(line[idRange]) ?? -1, String(line[ssidRange]), "", "")
+            }
+            guard current != nil else { continue }
+            if let r = line.range(of: "KeyMgmt:") {
+                let kinds = line[r.upperBound...].split(separator: " ").prefix(while: { !$0.hasSuffix(":") }).map(String.init)
+                current?.security = kinds.contains(where: { $0.contains("EAP") || $0.contains("8021X") || $0.contains("SUITE_B") }) ? ""
+                    : kinds.contains("SAE") ? "wpa3" : kinds.contains(where: { $0.contains("PSK") }) ? "wpa2"
+                    : kinds.contains("OWE") ? "owe" : kinds.contains("NONE") ? "open" : ""
+            }
+            if let r = line.range(of: "cname=") {
+                current?.owner = String(line[r.upperBound...].prefix(while: { !$0.isWhitespace }))
+                close()
+            }
+        }
+        close()
+        return found.filter { $0.networkId >= 0 }
+    }
+
+    /// Saves a network again as the shell's, so disabling the setup wizard keeps it: forget the wizard's copy, then
+    /// connect with the same name and password. Detached with nohup, so it finishes even when forgetting the network
+    /// drops this connection (a TV on Wi-Fi); the phone reconnects and checks. `connect-network` keeps an existing
+    /// network's creator, which is why the old one goes first.
+    public static func resaveWifiCommand(_ network: WifiNetwork, password: String) -> String {
+        func q(_ s: String) -> String { "'" + s.replacingOccurrences(of: "'", with: "'\\''") + "'" }
+        var connect = "cmd wifi connect-network \(q(network.ssid)) \(network.security)"
+        if network.needsPassword { connect += " " + q(password) }
+        let inner = "cmd wifi forget-network \(network.networkId) && \(connect)"
+        return "nohup sh -c \(q(inner)) >/dev/null 2>&1 &"
+    }
+
     static func launchers(in claims: [String]) -> Set<String> {
         Set(claims.filter { !Pattern.matches("/[^ ]*FallbackHome$", $0) }
             .map { String($0.split(separator: "/").first ?? "") }
@@ -170,11 +215,31 @@ public struct DebloatPlan: Equatable {
     public var disable: [String]
     public var skipped: [DebloatSkip]
     public var notes: [String]
+    /// Wi-Fi networks the setup wizard created. Disabling the wizard deletes them, so each is saved again from the
+    /// phone (with the password the user types) before the wizard goes. Empty: nothing to move.
+    public var wifiToResave: [WifiNetwork] = []
+    /// The setup wizard stays enabled and answers Home: a new Home screen can't take over (Google TV gives Home to
+    /// the wizard's RecoveryActivity). The Home step says so before anything changes.
+    public var setupKeepsHome = false
+}
+
+/// A Wi-Fi network saved on the TV, as `dumpsys wifi` lists it.
+public struct WifiNetwork: Equatable, Identifiable, Sendable {
+    public var id: String { ssid }
+    public let networkId: Int
+    public let ssid: String
+    /// The type `cmd wifi connect-network` takes: wpa2, wpa3, owe or open. Empty: one the phone can't save again
+    /// (enterprise sign-in), so the user rejoins it on the TV.
+    public let security: String
+    public let owner: String
+    public init(networkId: Int, ssid: String, security: String, owner: String) {
+        self.networkId = networkId; self.ssid = ssid; self.security = security; self.owner = owner
+    }
+    public var needsPassword: Bool { security == "wpa2" || security == "wpa3" }
 }
 
 /// Upstream's per-run overrides, off by default. Each is offered only with the explanation of what it bypasses.
 public struct DebloatOverrides: Equatable {
-    public var setupwraithOnEthernet = false
     public var home = false
     public init() {}
 }
@@ -236,14 +301,25 @@ public struct Debloater: Sendable {
         }
         for p in pkgs where list.neverDisable.contains(p) { drop(p, String(localized: "This TV's tested list says never to disable it.")) }
 
-        // Wi-Fi saved during setup belongs to setupwraith; disabling it deletes the network (and this connection).
-        if pkgs.contains(DebloatRules.setupwraith) && !overrides.setupwraithOnEthernet {
-            let wifi = (try? await tv.run("dumpsys wifi")) ?? ""
-            let owners = wifi.components(separatedBy: .whitespacesAndNewlines).filter { $0.hasPrefix("cname=") }
-            if owners.isEmpty {
-                drop(DebloatRules.setupwraith, String(localized: "Couldn't check which app owns the saved Wi-Fi networks. If the TV uses Ethernet, you can allow it."))
-            } else if owners.contains(where: { $0.contains("setupwraith") }) {
-                drop(DebloatRules.setupwraith, String(localized: "The TV's Wi-Fi network belongs to the setup wizard, and disabling it would delete that network and take the TV offline. On the TV, forget the network and join it again in Settings › Network & Internet, then run this again."))
+        // Wi-Fi saved during first setup belongs to setupwraith, and disabling it deletes those networks (and, on
+        // Wi-Fi, this connection). No such network: disable it. Some: they're saved again from the phone first
+        // (wifiToResave), which needs the shell's connect-network; one that can't be (enterprise) keeps the wizard.
+        var wifiToResave: [WifiNetwork] = []
+        if pkgs.contains(DebloatRules.setupwraith) {
+            if let saved = DebloatRules.wifiNetworks((try? await tv.run("dumpsys wifi")) ?? "") {
+                let wizard = saved.filter { $0.owner.contains("setupwraith") }
+                if wizard.contains(where: { $0.security.isEmpty }) {
+                    drop(DebloatRules.setupwraith, String(localized: "A Wi-Fi network on the TV belongs to the setup wizard and uses a sign-in this phone can't save again. On the TV, forget it and join it again in Settings › Network & Internet, then review again."))
+                } else if !wizard.isEmpty {
+                    let help = (try? await tv.run("cmd wifi help 2>&1")) ?? ""
+                    if help.contains("connect-network") && help.contains("forget-network") {
+                        wifiToResave = wizard
+                    } else {
+                        drop(DebloatRules.setupwraith, String(localized: "The TV's Wi-Fi network belongs to the setup wizard, and this TV can't have it saved again from the phone. On the TV, forget the network and join it again in Settings › Network & Internet, then review again."))
+                    }
+                }
+            } else {
+                drop(DebloatRules.setupwraith, String(localized: "Couldn't read the TV's saved Wi-Fi networks, so the setup wizard stays: disabling it could delete them. Restart the TV and review again."))
             }
         }
 
@@ -322,7 +398,19 @@ public struct Debloater: Sendable {
         if inventory.adbSecure == "0" || inventory.adbSecure.isEmpty {
             notes.append(String(localized: "This TV lets any device on your network use its debugging port without asking. Turn debugging off when you're done."))
         }
-        return DebloatPlan(disable: pkgs, skipped: skipped, notes: notes)
+        let wizardOff = pkgs.contains(DebloatRules.setupwraith)
+        // Chromecast built-in reads its device credentials from a provider inside the setup wizard (upstream).
+        if wizardOff, inventory.installed.contains(DebloatRules.castReceiver), !inventory.disabled.contains(DebloatRules.castReceiver),
+           !pkgs.contains(DebloatRules.castReceiver) {
+            notes.append(String(localized: "Chromecast built-in keeps its credentials in the setup wizard: with the wizard off, casting to this TV stops working."))
+        }
+        var plan = DebloatPlan(disable: pkgs, skipped: skipped, notes: notes)
+        plan.wifiToResave = wizardOff ? wifiToResave : []
+        if !wizardOff, inventory.installed.contains(DebloatRules.setupwraith), !inventory.disabled.contains(DebloatRules.setupwraith) {
+            let claims = DebloatRules.components((try? await tv.run(DebloatRules.claimQuery)) ?? "")
+            plan.setupKeepsHome = claims.contains { $0.hasPrefix(DebloatRules.setupwraith + "/") }
+        }
+        return plan
     }
 
     /// The record of how things were before the first run (recovery.py save). An existing record is extended, never overwritten.

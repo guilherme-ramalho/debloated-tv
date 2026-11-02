@@ -21,6 +21,7 @@ final class ScriptedTV: TVDevice, @unchecked Sendable {
         }
         if let answer = exact[command] { return .init(output: answer, status: 0) }
         for (prefix, answer) in prefixes where command.hasPrefix(prefix) { return .init(output: answer, status: 0) }
+        if command.contains("WRITE_SECURE_SETTINGS") { return .init(output: command.hasPrefix("pm grant") ? "restore-granted" : "secure-settings-revoked", status: 0) }
         return .init(output: "", status: 0)
     }
 }
@@ -58,15 +59,60 @@ final class DebloatEdgeTests: XCTestCase {
         catch { XCTAssertTrue(error.localizedDescription.contains("no apps")) }
     }
 
-    func testSetupWizardNeedsTheWifiCheckOrTheEthernetOverride() async throws {
+    static let wizardWifi = """
+    Dump of WifiConfigManager
+    Configured networks Begin ----
+      ID: 3 SSID: "Casa 'Ramalho'" PROVIDER-NAME: null BSSID: null FQDN: null PRIO: 0 HIDDEN: false
+     NetworkSelectionStatus NETWORK_SELECTION_ENABLED
+     KeyMgmt: WPA_PSK Protocols: WPA RSN
+     cuid=10071 cname=com.google.android.tungsten.setupwraith luid=1000 lname=android.uid.system:1000
+      ID: 4 SSID: "Guest" PROVIDER-NAME: null BSSID: null FQDN: null PRIO: 0 HIDDEN: false
+     KeyMgmt: NONE Protocols: RSN
+     cuid=1000 cname=android.uid.system:1000 luid=1000
+    """
+
+    func testSetupWizardFollowsTheWifiCheck() async throws {
         let list = try DebloatList.parse("# 1. Setup\ncom.google.android.tungsten.setupwraith\ncom.tcl.bi\n")
         let inv = inventory(["com.google.android.tungsten.setupwraith", "com.tcl.bi", "com.google.android.apps.tv.launcherx"])
-        let tv = ScriptedTV()   // dumpsys wifi answers nothing: owner unknown
-        let strict = try await Debloater(tv: tv).plan(list.entries.map(\.package), list: list, inventory: inv)
-        XCTAssertEqual(strict.disable, ["com.tcl.bi"])
-        var overrides = DebloatOverrides(); overrides.setupwraithOnEthernet = true
-        let ethernet = try await Debloater(tv: tv).plan(list.entries.map(\.package), list: list, inventory: inv, overrides: overrides)
-        XCTAssertEqual(Set(ethernet.disable), ["com.google.android.tungsten.setupwraith", "com.tcl.bi"])
+        let claims = (DebloatRules.claimQuery, "com.google.android.apps.tv.launcherx/.home.HomeActivity\ncom.google.android.tungsten.setupwraith/.RecoveryActivity")
+        let wizard = DebloatRules.setupwraith
+
+        // Unreadable: the wizard stays, and the Home step is warned that it keeps Home.
+        let unknown = ScriptedTV(); unknown.prefixes = [claims]
+        let kept = try await Debloater(tv: unknown).plan(list.entries.map(\.package), list: list, inventory: inv)
+        XCTAssertEqual(kept.disable, ["com.tcl.bi"])
+        XCTAssertTrue(kept.setupKeepsHome)
+
+        // Readable, no network of the wizard's (a TV on a cable): disabled, nothing to ask.
+        let cable = ScriptedTV(); cable.prefixes = [("dumpsys wifi", "Dump of WifiConfigManager\nConfigured networks Begin ----\n"), claims]
+        let off = try await Debloater(tv: cable).plan(list.entries.map(\.package), list: list, inventory: inv)
+        XCTAssertEqual(Set(off.disable), [wizard, "com.tcl.bi"])
+        XCTAssertTrue(off.wifiToResave.isEmpty)
+        XCTAssertFalse(off.setupKeepsHome)
+
+        // The wizard owns a WPA2 network and the TV can save networks from the shell: saved again first.
+        let wifi = ScriptedTV(); wifi.prefixes = [("dumpsys wifi", Self.wizardWifi), ("cmd wifi help", "connect-network <ssid> open|owe|wpa2|wpa3 [<passphrase>]\nforget-network <networkId>\n"), claims]
+        let resave = try await Debloater(tv: wifi).plan(list.entries.map(\.package), list: list, inventory: inv)
+        XCTAssertEqual(Set(resave.disable), [wizard, "com.tcl.bi"])
+        XCTAssertEqual(resave.wifiToResave, [WifiNetwork(networkId: 3, ssid: "Casa 'Ramalho'", security: "wpa2", owner: wizard)])
+
+        // Without connect-network on the TV: the wizard stays, with the rejoin-on-the-TV explanation.
+        let old = ScriptedTV(); old.prefixes = [("dumpsys wifi", Self.wizardWifi), ("cmd wifi help", "status\n"), claims]
+        let noShell = try await Debloater(tv: old).plan(list.entries.map(\.package), list: list, inventory: inv)
+        XCTAssertEqual(noShell.disable, ["com.tcl.bi"])
+        XCTAssertTrue(noShell.skipped.contains { $0.package == wizard && $0.reason.contains("join it again") })
+    }
+
+    func testWifiParsingAndTheResaveCommand() {
+        let networks = DebloatRules.wifiNetworks(Self.wizardWifi) ?? []
+        XCTAssertEqual(networks.map(\.ssid), ["Casa 'Ramalho'", "Guest"])
+        XCTAssertEqual(networks.map(\.security), ["wpa2", "open"])
+        XCTAssertNil(DebloatRules.wifiNetworks("Service dumps disabled due to hung system process."))
+        // Forget first (connect-network keeps an existing network's creator), detached so a TV on Wi-Fi finishes it.
+        // Checked with sh: the TV runs  forget-network 3 && connect-network "Casa 'Ramalho'" wpa2 "it's $ecret".
+        XCTAssertEqual(DebloatRules.resaveWifiCommand(networks[0], password: "it's $ecret"),
+                       #"nohup sh -c 'cmd wifi forget-network 3 && cmd wifi connect-network '\''Casa '\''\'\'''\''Ramalho'\''\'\'''\'''\'' wpa2 '\''it'\''\'\'''\''s $ecret'\''' >/dev/null 2>&1 &"#)
+        XCTAssertFalse(DebloatRules.resaveWifiCommand(networks[1], password: "ignored").contains("ignored"), "open networks take no password")
     }
 
     func testOpenDebuggingPortIsCalledOut() async throws {
