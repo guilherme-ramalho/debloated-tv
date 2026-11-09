@@ -157,6 +157,18 @@ final class PreferencesTests: XCTestCase {
         XCTAssertThrowsError(try TVSession.textMessage("", imeCounter: 0, fieldCounter: 0))
         XCTAssertThrowsError(try TVSession.textMessage(String(repeating: "a", count: 4097), imeCounter: 0, fieldCounter: 0))
     }
+
+    /// REM-16: typing after a pause sends only the change; the TV inserts at its cursor, so the whole text doubled it.
+    func testTypingSendsOnlyTheChange() {
+        func edit(_ a: String, _ b: String) -> String { let e = TVSession.typingEdit(from: a, to: b); return "\(e.deletes)|\(e.insert)" }
+        XCTAssertEqual(edit("test", "testing"), "0|ing")
+        XCTAssertEqual(edit("", "hi"), "0|hi")
+        XCTAssertEqual(edit("testing", "test"), "3|")
+        XCTAssertEqual(edit("hi", ""), "2|")
+        XCTAssertEqual(edit("abc", "abd"), "1|d", "a changed last letter: delete it, type the new one")
+        XCTAssertEqual(edit("café", "cafe"), "1|e", "counts characters, not bytes")
+        XCTAssertEqual(edit("same", "same"), "0|")
+    }
     func testLargeEditorFramesDoNotRelaxControlConnectionLimit() throws {
         let body = Data(repeating: 31, count: 100_000)
         let frame = Wire.varint(UInt64(body.count)) + body

@@ -103,6 +103,13 @@ public final class TVSession {
         guard commandReady, !pairMode, let channel, !url.isEmpty, url.utf8.count <= 2048 else { throw RemoteFailure.message(String(localized: "Invalid app or input link")) }
         try await channel.write(Wire.bytes(90, Wire.string(1, url)))
     }
+    /// How to bring the TV's field from `sent` to `value`. The TV inserts what it is sent at its cursor (the end of
+    /// what was typed) instead of replacing the field, so sending the whole text again after a pause doubled it
+    /// ("test", then "testing", gave "testtesting"). Keep the shared start, delete the rest, insert the new tail.
+    public static func typingEdit(from sent: String, to value: String) -> (deletes: Int, insert: String) {
+        let shared = zip(sent, value).prefix { $0 == $1 }.count
+        return (sent.count - shared, String(value.dropFirst(shared)))
+    }
     static func textMessage(_ text: String, imeCounter: UInt64, fieldCounter: UInt64) throws -> Data {
         guard !text.isEmpty, text.utf16.count <= 4096 else { throw RemoteFailure.message(String(localized: "Enter between 1 and 4096 characters")) }
         let end = UInt64(text.utf16.count - 1)

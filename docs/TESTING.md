@@ -113,6 +113,7 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | REM-13 | Touch feedback off | No haptics on presses | Manual |
 | REM-14 | Header (1.1): connected, standby, offline, then tap the TV name and the app line | Power, then the TV name with a green dot and the app on screen below it, then Keyboard and Inputs. Standby shows "Standby · Wake" (tap wakes), offline "Offline · Retry" (first tap retries, second opens connection settings); the name and app line open connection settings. Nothing clipped on a 4.7-inch iPhone | Manual; E2E reads "On TV: YouTube" |
 | REM-15 | Second row (1.1): Rewind and Fast-forward in Netflix and YouTube while playing; Subtitles in a show with subtitles; TV settings from Home and from inside an app | Skips back/forward once per tap; subtitles toggle or their menu opens where the app supports it; the TV's settings menu opens. Note on the TCL which ones the firmware ignores | Manual (TCL first) |
+| REM-16 | Type on TV: type "test", pause, type "ing"; then delete two letters, pause, type "ed" | The TV field reads "testing", then "testied" ("testi" after the two deletes, plus "ed"): only the change is sent each pause, never the whole text again | Auto `testTypingSendsOnlyTheChange` + Manual (TCL; 9 Nov 2026: was "testtesting") |
 
 ## 3. TV tab and setup entry (SET)
 
