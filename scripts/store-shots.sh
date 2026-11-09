@@ -75,6 +75,6 @@ shot 04-type "Remote with Type on TV open and a few words typed."
 shot 05-actions "Actions tab with a quick action or two."
 shot 06-action-steps "A quick action opened, showing its steps."
 shot 07-look "TV tab › Look, with the four looks (TV Home connected, so the row shows)."
-shot 08-widgets "Simulator Home Screen with the Remote widget (medium) and a Quick action widget added (long-press › Edit › Add Widget › Purio TV)."
+shot 08-widgets "Simulator Home Screen with the TV controls widget (medium) and a Quick action widget added (long-press › Edit › Add Widget › Purio TV)."
 xcrun simctl status_bar "$UDID" clear
 say "Done. Upload the files in $OUT-upload"
