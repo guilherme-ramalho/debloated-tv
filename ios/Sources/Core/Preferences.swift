@@ -63,11 +63,19 @@ public struct TVInput: Codable, Identifiable, Equatable {
     public var launchURL: String
 }
 public struct ActionStep: Codable, Identifiable, Equatable {
-    public enum Kind: String, Codable, CaseIterable { case wake, sleep, openApp, input, home, mute, playPause, pause, volumeUp, volumeDown }
+    /// `key` (1.1) presses one remote key, its Android keycode in `argument`, from `keys` only (the widgets' D-pad).
+    public enum Kind: String, Codable, CaseIterable { case wake, sleep, openApp, input, home, mute, playPause, pause, volumeUp, volumeDown, key }
     public var id = UUID()
     public var kind: Kind
     public var argument: String
     public init(_ kind: Kind, argument: String = "") { self.kind = kind; self.argument = argument }
+    public init(key: TVKey) { self.init(.key, argument: String(key.rawValue)) }
+    public static let keys: Set<TVKey> = [.up, .down, .left, .right, .select, .back, .power, .rewind, .fastForward, .captions, .settings]
+    /// The key a `key` step presses, if it is one of `keys`.
+    public var key: TVKey? {
+        guard kind == .key, let raw = UInt64(argument), let key = TVKey(rawValue: raw), Self.keys.contains(key) else { return nil }
+        return key
+    }
 }
 public struct QuickAction: Codable, Identifiable, Equatable {
     public var id = UUID()
@@ -76,7 +84,7 @@ public struct QuickAction: Codable, Identifiable, Equatable {
     public init(name: String, steps: [ActionStep]) { self.name = name; self.steps = steps }
     public func validate() throws {
         guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, name.count <= 60, (1...12).contains(steps.count),
-              steps.allSatisfy({ $0.argument.utf8.count <= 1024 && ($0.kind != .openApp || RemoteApp.validPackage($0.argument)) && ($0.kind != .input || !$0.argument.isEmpty) }),
+              steps.allSatisfy({ $0.argument.utf8.count <= 1024 && ($0.kind != .openApp || RemoteApp.validPackage($0.argument)) && ($0.kind != .input || !$0.argument.isEmpty) && ($0.kind != .key || $0.key != nil) }),
               !steps.dropLast().contains(where: { $0.kind == .sleep }) else {
             throw RemoteFailure.message(String(localized: "An action needs a name and between 1 and 12 valid steps."))
         }
@@ -130,6 +138,19 @@ public struct RemotePreferences: Codable, Equatable {
     }
 }
 
+/// The `home` part of a snapshot (docs/launcher-editor-contract.md, homeSettings).
+public struct LauncherHome: Codable, Equatable {
+    public var features: [String]?
+    public var weather: Bool?
+    public var weatherAuto: Bool?
+    public var weatherPlace: String?
+    public var locationAllowed: Bool?
+    /// cinema, calm, glass or gallery (launcher HomeLooks).
+    public var look: String?
+    public static let looks = ["cinema", "calm", "glass", "gallery"]
+    public func supports(_ feature: String) -> Bool { features?.contains(feature) ?? false }
+}
+
 public struct LauncherSnapshot: Codable {
     public let revision: String
     public let layout: HomeLayout
@@ -137,8 +158,11 @@ public struct LauncherSnapshot: Codable {
     public let inputs: [TVInput]
     public let sleepDeadline: Double?
     public let wallpaperJPEG: Data?
+    /// Home-wide settings and what this launcher build supports (1.1+); nil from older launchers.
+    public let home: LauncherHome?
     public func validate() throws {
         try layout.validate()
+        if let home { guard (home.weatherPlace?.count ?? 0) <= 60, (home.features?.count ?? 0) <= 32, home.look.map({ LauncherHome.looks.contains($0) }) ?? true else { throw RemoteFailure.message(String(localized: "Invalid TV editor response")) } }
         guard revision.count <= 120, apps.count <= 200, inputs.count <= 40, (wallpaperJPEG?.count ?? 0) <= 1_000_000,
               apps.allSatisfy({ RemoteApp.validPackage($0.id) && $0.name.count <= 120 && $0.launchURL.utf8.count <= 2048 }),
               inputs.allSatisfy({ $0.id.utf8.count <= 512 && $0.name.count <= 120 && $0.launchURL.utf8.count <= 2048 }) else { throw RemoteFailure.message(String(localized: "Invalid TV editor response")) }

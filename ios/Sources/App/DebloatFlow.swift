@@ -112,7 +112,7 @@ enum RecoveryStore {
             self.message = String(localized: "Connecting to \(target.host)…")
             let client = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
             self.adb = client
-            let props = try await client.connect(name: "Debloated TV@iPhone", approvalTimeout: 120) {
+            let props = try await client.connect(name: "Purio TV@iPhone", approvalTimeout: 120) {
                 Task { @MainActor in self.waitingForApproval = true; self.message = String(localized: "On the TV, choose “Always allow” and Allow.") }
             }
             self.waitingForApproval = false
@@ -253,7 +253,7 @@ enum RecoveryStore {
             await client.close()
             try await Task.sleep(for: .seconds(5))
             let fresh = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
-            if (try? await fresh.connect(name: "Debloated TV@iPhone", approvalTimeout: 10)) != nil { client = fresh; self.adb = fresh }
+            if (try? await fresh.connect(name: "Purio TV@iPhone", approvalTimeout: 10)) != nil { client = fresh; self.adb = fresh }
         }
         let names = networks.map(\.ssid).joined(separator: ", ")
         guard let after else {
@@ -276,7 +276,7 @@ enum RecoveryStore {
             if let current = client, (try? await current.shell("echo ok", timeout: 5)) == nil { await current.close(); client = nil }
             if client == nil {
                 let fresh = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
-                do { _ = try await fresh.connect(name: "Debloated TV@iPhone", approvalTimeout: 15) }
+                do { _ = try await fresh.connect(name: "Purio TV@iPhone", approvalTimeout: 15) }
                 catch {
                     await fresh.close()
                     throw RemoteFailure.message(String(localized: "The TV is no longer connected. Turn debugging off in the TV's menus."))

@@ -156,7 +156,7 @@ public enum ModelRequest {
     public static let addTVGuide = URL(string: "https://github.com/guilherme-ramalho/debloated-tv/tree/main/ios/Resources/Profiles")!
 
     public static func text(_ info: TVSetupInfo) -> String {
-        String(localized: "Debloated TV: please add support for this TV.\nModel: \(info.model)\nDetails: \(info.detail)")
+        String(localized: "Purio TV: please add support for this TV.\nModel: \(info.model)\nDetails: \(info.detail)")
     }
     public static func url(_ info: TVSetupInfo, form: String? = formURL) -> URL? {
         guard let base = form, var parts = URLComponents(string: base), parts.scheme == "https" else { return nil }

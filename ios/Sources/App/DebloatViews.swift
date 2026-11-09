@@ -392,7 +392,7 @@ struct UndoSetupView: View {
             defer { busy = false; waiting = false }
             do {
                 let client = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
-                _ = try await client.connect(name: "Debloated TV@iPhone", approvalTimeout: 120) { Task { @MainActor in waiting = true } }
+                _ = try await client.connect(name: "Purio TV@iPhone", approvalTimeout: 120) { Task { @MainActor in waiting = true } }
                 waiting = false
                 let profile = Bundle.main.url(forResource: "Profiles", withExtension: nil)
                     .flatMap { try? DebloatProfile.load($0.appendingPathComponent(record.list)) }

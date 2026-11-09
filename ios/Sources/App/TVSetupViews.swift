@@ -91,7 +91,7 @@ struct TVSetupUnsupportedCard: View {
             if let url = ModelRequest.url(info) {
                 Button { openURL(url) } label: { Text("Ask for this model").frame(maxWidth: .infinity) }.buttonStyle(QuietSecondaryStyle())
             } else {
-                ShareLink(item: ModelRequest.text(info), subject: Text("Debloated TV model request")) {
+                ShareLink(item: ModelRequest.text(info), subject: Text("Purio TV model request")) {
                     Text("Share this model's details").frame(maxWidth: .infinity)
                 }.buttonStyle(QuietSecondaryStyle())
             }
@@ -110,7 +110,7 @@ struct TVSetupStrip: View {
             Image(systemName: "checkmark.shield").font(.system(size: 20)).foregroundStyle(Color(red: 127/255, green: 211/255, blue: 196/255))
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
-                Text("Debloated").font(.system(size: 14, weight: .medium))
+                Text("Purio TV").font(.system(size: 14, weight: .medium))
                 Text(info.disabledCount.map { "\($0) apps off · new Home screen" } ?? "New Home screen installed")
                     .font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
             }

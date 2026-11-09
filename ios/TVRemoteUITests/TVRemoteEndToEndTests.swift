@@ -198,8 +198,8 @@ final class TVRemoteEndToEndTests: XCTestCase {
             XCTAssertTrue(app.buttons["Export recovery record"].exists, "DBL-17: the record can be exported")
             app.buttons["Done"].tap()
         }
-        try step("SET-06/SET-09: the TV tab now shows the Debloated strip and the editor") {
-            XCTAssertTrue(app.staticTexts["Debloated"].waitForExistence(timeout: 10))
+        try step("SET-06/SET-09: the TV tab now shows the Purio TV strip and the editor") {
+            XCTAssertTrue(app.staticTexts["Purio TV"].waitForExistence(timeout: 10))
             XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'apps off · new Home screen'")).firstMatch.exists)
             XCTAssertTrue(app.staticTexts["Changes apply to the TV automatically."].exists, "the editor is on the TV tab")
         }
@@ -254,7 +254,7 @@ final class TVRemoteEndToEndTests: XCTestCase {
             app.buttons["Load current TV layout"].tap()
             app.buttons["Load TV layout"].tap()
             XCTAssertTrue(waitUntil(5) { !self.app.buttons["Load TV layout"].exists })
-            XCTAssertFalse(app.alerts["Debloated TV"].exists, "loading the TV layout should not raise an error")
+            XCTAssertFalse(app.alerts["Purio TV"].exists, "loading the TV layout should not raise an error")
         }
         try step("EDT-02/EDT-03: with an app on screen the editor asks first; Connect now reconnects") {
             _ = try tv.call("start", ["package": youtube])
@@ -274,7 +274,7 @@ final class TVRemoteEndToEndTests: XCTestCase {
 
     private func undo() throws {
         try step("SET-09/UND-02: Manage › Undo; a closed port is a clear error, nothing changed") {
-            app.staticTexts["Debloated"].tap()
+            app.staticTexts["Purio TV"].tap()
             XCTAssertTrue(app.staticTexts["Undo TV setup"].waitForExistence(timeout: 5))
             app.staticTexts["Undo TV setup"].tap()
             XCTAssertTrue(app.navigationBars["Undo TV setup"].waitForExistence(timeout: 5))

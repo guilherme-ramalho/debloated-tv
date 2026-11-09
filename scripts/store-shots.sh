@@ -69,7 +69,7 @@ shot() {
   echo "  saved $OUT-upload/$name.jpg ($size)"
 }
 shot 01-remote "Remote tab, connected, with the app shortcuts row."
-shot 02-tv-home "TV tab: the Debloated strip and the Home editor (dock and wallpaper)."
+shot 02-tv-home "TV tab: the Purio TV strip and the Home editor (dock and wallpaper)."
 shot 03-setup-review "Settings › Debloat & new Home, up to 'Choose what stays' (network debugging on). Don't press Apply."
 shot 04-type "Remote with Type on TV open and a few words typed."
 shot 05-actions "Actions tab with a quick action or two."

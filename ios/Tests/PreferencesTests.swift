@@ -98,6 +98,23 @@ final class PreferencesTests: XCTestCase {
         XCTAssertThrowsError(try HomeBackup.decode(JSONEncoder().encode(HomeBackup(name: "Photo", layout: photo))))
         XCTAssertThrowsError(try HomeBackup.decode(Data(repeating: 0, count: 2_000_001)))
     }
+    func testKeyStepsAllowOnlyTheWidgetKeys() throws {
+        try QuickAction(name: "Pad", steps: [.init(key: .up), .init(key: .select), .init(key: .power)]).validate()
+        XCTAssertEqual(ActionStep(key: .rewind).key, .rewind)
+        XCTAssertThrowsError(try QuickAction(name: "Delete", steps: [.init(key: .delete)]).validate())
+        XCTAssertThrowsError(try QuickAction(name: "Junk", steps: [.init(.key, argument: "abc")]).validate())
+        XCTAssertNil(ActionStep(.home).key)
+    }
+
+    func testSnapshotsFromOlderLaunchersHaveNoHomeSettings() throws {
+        let old = #"{"revision":"r","layout":{"dockCount":5,"order":[],"hidden":[],"wallpaper":"quiet-night"},"apps":[],"inputs":[]}"#
+        XCTAssertNil(try JSONDecoder().decode(LauncherSnapshot.self, from: Data(old.utf8)).home)
+        let new = #"{"revision":"r","layout":{"dockCount":5,"order":[],"hidden":[],"wallpaper":"quiet-night"},"apps":[],"inputs":[],"home":{"features":["weather","sleepTimer"],"weather":true,"weatherAuto":true,"weatherPlace":"Valladolid","locationAllowed":true}}"#
+        let home = try XCTUnwrap(try JSONDecoder().decode(LauncherSnapshot.self, from: Data(new.utf8)).home)
+        XCTAssertTrue(home.supports("weather"))
+        XCTAssertEqual(home.weatherPlace, "Valladolid")
+    }
+
     func testQuickActionsRejectInvalidStepsAndPostShutdownCommands() throws {
         try QuickAction(name: "Movie time", steps: [.init(.wake), .init(.openApp, argument: "com.netflix.ninja")]).validate()
         XCTAssertThrowsError(try QuickAction(name: "Empty", steps: []).validate())

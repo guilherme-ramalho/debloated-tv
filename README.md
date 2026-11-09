@@ -1,4 +1,4 @@
-# Debloated TV
+# Purio TV (formerly Debloated TV)
 
 A personal native SwiftUI remote for Android TV, developed against a TCL Smart TV Pro running Android 11.
 
@@ -85,7 +85,7 @@ To report a vulnerability, see [SECURITY.md](SECURITY.md).
 
 ## Beta identity
 
-App Store name: **Debloated TV**. Subtitle: **Android TV Remote & Control**. Home Screen name: **Debloated**. Bundle identifiers and existing pairing storage remain unchanged. Build 15 includes the approved flat Android robot peeking above the TV’s left corner, and a static launch screen containing the mark, name and subtitle. There is no onboarding button or artificial launch delay.
+App Store name: **Purio TV** (renamed from Debloated TV in 1.1). Home Screen name: **Purio TV**. Siri also answers to "Purio" and each language's "my TV". Bundle identifiers and existing pairing storage remain unchanged, so updating keeps pairings and settings. A static launch screen shows the mark; there is no onboarding button or artificial launch delay.
 
 Manual App Store Connect setup and upload steps are in [docs/testflight.md](docs/testflight.md). No App Store record or TestFlight upload has been created by this work.
 

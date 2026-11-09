@@ -169,12 +169,12 @@ public final class TVSession {
 
 /// The name this install pairs under. The TV keeps one certificate per client name, so two phones pairing under the
 /// same name sign each other out: the last one to pair keeps working, the other fails on its next connection.
-/// Each install gets its own stable name ("Debloated TV iPhone 3F2A"); it also shows in the TV's paired devices.
+/// Each install gets its own stable name ("Purio TV iPhone 3F2A"); it also shows in the TV's paired devices.
 public enum RemoteClientName {
     static let key = "remoteClientName"
     public static func current(_ defaults: UserDefaults = .standard) -> String {
         if let saved = defaults.string(forKey: key), !saved.isEmpty { return saved }
-        let name = "Debloated TV iPhone " + String(UUID().uuidString.prefix(4))
+        let name = "Purio TV iPhone " + String(UUID().uuidString.prefix(4))
         defaults.set(name, forKey: key)
         return name
     }

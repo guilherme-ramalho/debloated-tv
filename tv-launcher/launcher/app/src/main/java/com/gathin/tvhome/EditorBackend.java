@@ -35,7 +35,7 @@ import java.util.UUID;
 
 /**
  * Answers the phone editor's requests (docs/launcher-editor-contract.md): snapshot, applyLayout, uninstall and
- * sleepTimer. A layout is written the same way a theme push is: dock_apps, hidden_apps and columns in config.json,
+ * sleepTimer (SleepTimer). A layout is written the same way a theme push is: dock_apps, hidden_apps and columns in config.json,
  * wallpaper.jpg next to it, and the grid order in order.txt. Home then rebuilds (EditorHome) and reads it all back
  * through Config, so nothing here keeps running after the session.
  */
@@ -65,8 +65,8 @@ final class EditorBackend implements EditorServer.Backend {
                 case "snapshot": result = snapshot(); break;
                 case "applyLayout": result = applyLayout(payload); break;
                 case "uninstall": result = uninstall(payload); break;
-                case "sleepTimer":
-                    return error(id, "This TV doesn't let Home switch it off on a timer yet. Use the TV's own sleep timer for now.");
+                case "sleepTimer": result = sleepTimer(payload); break;
+                case "homeSettings": result = homeSettings(payload); break;
                 default: return error(id, "Unsupported request");
             }
             return new JSONObject().put("type", "response").put("id", id).put("ok", true).put("result", result).toString();
@@ -207,6 +207,9 @@ final class EditorBackend implements EditorServer.Backend {
         }
         JSONObject snap = new JSONObject().put("revision", revision(apps)).put("layout", layout)
                 .put("apps", appList).put("inputs", inputs());
+        long sleepAt = SleepTimer.deadline(ctx);
+        if (sleepAt > 0) snap.put("sleepDeadline", sleepAt / 1000.0);
+        snap.put("home", homeState(cfg));
         if (EditorLayout.photo(wallpaperId) && wallpaper.isFile() && wallpaper.length() <= EditorLayout.MAX_JPEG) {
             snap.put("wallpaperJPEG", Base64.encodeToString(new AtomicFile(wallpaper).readFully(), Base64.NO_WRAP));
         }
@@ -232,6 +235,50 @@ final class EditorBackend implements EditorServer.Backend {
             // Inputs are optional; the layout still works without them.
         }
         return out;
+    }
+
+    // ---- sleepTimer ----------------------------------------------------------------------------------
+
+    /** minutes 1–240 sets a TV-owned timer, 0 cancels it; the snapshot carries the confirmed deadline. */
+    private JSONObject sleepTimer(JSONObject payload) throws IOException, JSONException {
+        if (!payload.has("minutes")) throw new IllegalArgumentException("Choose between 1 and 240 minutes.");
+        SleepTimer.set(ctx, payload.getInt("minutes"));
+        return snapshot();
+    }
+
+    // ---- homeSettings --------------------------------------------------------------------------------
+
+    /** What this Home build can change from the phone, and the current values. Older builds send no "home". */
+    private JSONObject homeState(Config cfg) throws IOException, JSONException {
+        JSONObject w = cfg.weather;
+        boolean on = w != null && w.optBoolean("enabled", false);
+        JSONObject home = new JSONObject()
+                .put("features", new JSONArray().put("weather").put("sleepTimer").put("looks"))
+                .put("look", HomeLooks.current(readJson(new File(themeDir(), Config.FILE_NAME))))
+                .put("weather", on)
+                .put("weatherAuto", on && w.optBoolean("auto", false))
+                .put("locationAllowed", TvLocation.permitted(ctx));
+        String place = on && w.optBoolean("auto", false) ? TvLocation.keptPlace(ctx) : on ? w.optString("city", "") : "";
+        if (!place.isEmpty()) home.put("weatherPlace", trim(place, 60));
+        return home;
+    }
+
+    /**
+     * weather: true turns the clock-side weather on with the TV's own location; false turns it off.
+     * look: cinema, calm, glass or gallery (HomeLooks). Either or both.
+     */
+    private JSONObject homeSettings(JSONObject payload) throws IOException, JSONException {
+        if (!payload.has("weather") && !payload.has("look")) throw new IllegalArgumentException("Nothing to change");
+        File configFile = new File(themeDir(), Config.FILE_NAME);
+        JSONObject config = readJson(configFile);
+        if (payload.has("look")) HomeLooks.apply(config, payload.getString("look"));
+        if (payload.has("weather")) {
+            boolean on = payload.getBoolean("weather");
+            config.put("weather", on ? new JSONObject().put("enabled", true).put("auto", true) : new JSONObject().put("enabled", false));
+        }
+        writeAtomic(configFile, config.toString(2).getBytes(StandardCharsets.UTF_8));
+        EditorHome.rebuild();
+        return snapshot();
     }
 
     // ---- applyLayout ---------------------------------------------------------------------------------

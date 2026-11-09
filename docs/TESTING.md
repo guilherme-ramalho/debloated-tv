@@ -1,6 +1,6 @@
 # Testing plan
 
-How to test Debloated TV before and after a release. Anyone should be able to follow it.
+How to test Purio TV before and after a release. Anyone should be able to follow it.
 **Keep it current:** every new feature or bug fix adds or updates its cases here, in the same pull request.
 
 ## How to use it
@@ -111,6 +111,8 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | REM-11 | Shortcut for an app not installed on the TV | Clear message; nothing else happens | Manual |
 | REM-12 | Settings › Remote shortcuts: hide, reorder | Remote reflects the change | Manual |
 | REM-13 | Touch feedback off | No haptics on presses | Manual |
+| REM-14 | Header (1.1): connected, standby, offline, then tap the TV name and the app line | Power, then the TV name with a green dot and the app on screen below it, then Keyboard and Inputs. Standby shows "Standby · Wake" (tap wakes), offline "Offline · Retry" (first tap retries, second opens connection settings); the name and app line open connection settings. Nothing clipped on a 4.7-inch iPhone | Manual; E2E reads "On TV: YouTube" |
+| REM-15 | Second row (1.1): Rewind and Fast-forward in Netflix and YouTube while playing; Subtitles in a show with subtitles; TV settings from Home and from inside an app | Skips back/forward once per tap; subtitles toggle or their menu opens where the app supports it; the TV's settings menu opens. Note on the TCL which ones the firmware ignores | Manual (TCL first) |
 
 ## 3. TV tab and setup entry (SET)
 
@@ -121,7 +123,7 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | SET-03 | After a setup checked a supported model | Model name with "Supported" badge | Auto: `testSupportedTVShowsItsModel`, `TVSetupStateTests` |
 | SET-04 | After a setup found no tested list | "This TV isn't supported for setup yet", model details, share/request button, no Start setup | Auto: `testUnsupportedTVExplainsAndOffersARequest` |
 | SET-05 | Share this model's details | Share sheet with model and Android version only, no IP or personal data | Manual + Auto `testModelRequestCarriesOnlyModelDetails…` |
-| SET-06 | TV with the new Home screen; press Home on the TV | TV tab switches to the editor with the green "Debloated" strip | Manual (state: Auto `TVSetupStateTests`); E2E |
+| SET-06 | TV with the new Home screen; press Home on the TV | TV tab switches to the editor with the green "Purio TV" strip | Manual (state: Auto `TVSetupStateTests`); E2E |
 | SET-07 | TV already has the new Home (e.g. app reinstalled), TV playing something: "Already set up? Check my TV" | TV goes to Home; tab switches to the editor | Manual |
 | SET-08 | Same button on a TV with its original Home | "This TV still has its original Home screen…"; setup card stays | Manual |
 | SET-08b | Delete and reinstall the app | TVs that had the new Home still show the editor (state kept in this iPhone's Keychain) | Manual |
@@ -216,11 +218,19 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | ACT-01 | Create a quick action with several steps, Run | Steps run in order; progress shown; Cancel stops | Manual |
 | ACT-02 | Invalid steps (empty, after Turn off TV) | Rejected with a message | Auto: `testQuickActionsRejectInvalidSteps…` |
 | ACT-03 | Delete an action | Gone from the list and from Shortcuts | Manual |
-| ACT-04 | Sleep timer: 30 min, custom, cancel | TV turns off at the time; cancel works | Manual |
+| ACT-04 | Sleep timer (1.1, TV-owned): 1 min, 30 min, custom, cancel; disconnect the phone after setting it | The TV confirms the time; it goes to standby at the time with the phone away; Cancel clears it. Turning the TV off and on again drops it after a reboot only. With the remote-key helper off the TV refuses with a clear message | Manual (TCL first) + Auto `SleepTimerTest` |
+| HOM-W1 | Weather on TV (1.1): TV tab › Weather on TV on, with TV Home in front | Home redraws with the weather by the clock within a minute; the row says "From the TV · <town>" (or "Location from the TV" until the TV names it); off removes it | Manual (TCL first) + Auto `TvLocationTest` |
+| HOM-W2 | Weather on a TV that has no location yet (fresh TV, or location off in Android settings) | No weather line and no "Loading…" on Home; it appears on its own once the TV knows where it is | Manual |
+| HOM-W3 | Older launcher (1.0) on the TV | No Weather row in the TV tab | Manual |
+| HOM-L1 | Look (1.1): TV tab › Look › Calm, Glass, Gallery, then Cinema | Home redraws within seconds each time and matches the preset boards; apps, order and wallpaper unchanged; Cinema brings back today's Home exactly | Manual (TCL first) + Auto `HomeLooksTest` |
+| HOM-L2 | Pick Calm, then apply a layout change (dock icons) from the phone | The look stays Calm after the layout applies | Manual |
 | ACT-05 | Favorite inputs: add, rename, assign HDMI | Opens the right input | Manual |
-| ACT-06 | Siri in each language: "Open Netflix with Debloated" (en), "Abra a Netflix na minha TV" (pt-BR), "Abre Netflix en mi tele" (es), "Ouvre Netflix sur ma télé" (fr), "Apri Netflix sulla mia TV" (it), "Öffne Netflix mit Debloated" (de); also "Ligue a minha TV" | Netflix opens on the TV; the alternative names (Debloated TV; Minha TV; Mi tele, Mi televisor, Mi TV; Ma télé, Ma TV; Mia TV) work too. Test on the TestFlight build alone: a Dev build on the same phone answers to the same names | Manual |
+| ACT-06 | Siri in each language: "Open Netflix with Purio TV" (en), "Abra a Netflix na minha TV" (pt-BR), "Abre Netflix en mi tele" (es), "Ouvre Netflix sur ma télé" (fr), "Apri Netflix sulla mia TV" (it), "Öffne Netflix mit Purio TV" (de); also "Ligue a minha TV" | Netflix opens on the TV; the alternative names (Purio, Purio Remote, My TV; Minha TV, Purio Controle; Mi tele, Mi televisor; Ma télé, Ma TV; Mia TV, Purio Telecomando; Mein Fernseher, Purio Fernbedienung) work too. Test on the TestFlight build alone: a Dev build on the same phone answers to the same names | Manual |
 | ACT-07 | Shortcuts app: Control TV, Run TV Quick Action | Work without opening the app | Manual |
 | ACT-08 | Home Screen widget, four chosen controls | Each control acts on the TV; no background polling | Manual |
+| ACT-08b | Remote widget (1.1, medium): each arrow, OK, Power, Home, Vol −/+ with the app closed and with the phone locked | Each tap acts once on the TV after a short delay (it connects per tap); nothing runs between taps. Note the delay on the TCL | Manual + Auto `testKeyStepsAllowOnlyTheWidgetKeys` |
+| ACT-08c | TV button (1.1, Lock Screen circle) set to TV power, then to Up | Power toggles the TV; Up moves once; asks to unlock first (the intent requires authentication) | Manual |
+| ACT-08d | Quick action widget (1.1, small and Lock Screen circle): add it, choose Movie night, tap Run; then rename the action in the app | The action runs on the TV; the widget shows the new name; with no actions it says how to create one | Manual |
 | ACT-09 | Control Center control (iOS 18+) | Sends its action | Manual |
 
 ## 9. Backups and settings (BAK)

@@ -1,4 +1,5 @@
 import SwiftUI
+import WidgetKit
 import UniformTypeIdentifiers
 import ImageIO
 
@@ -36,11 +37,21 @@ struct LayoutChange: Equatable { var count = 0; var apply = LayoutApply.auto }
                           let data = try? Data(contentsOf: url) else { return nil }; return try? HomeBackup.decode(data)
                 }.sorted { $0.date > $1.date }
         } catch { notice = String(localized: "Saved preferences could not be loaded. Your existing file was preserved. \(error.localizedDescription)") }
+        if directory == nil { shareActions() }   // actions saved by 1.0 reach the widgets on first launch
     }
     func update(_ change: (inout RemotePreferences) -> Void) {
         var next = value; change(&next)
         do { try next.validate(); try JSONEncoder().encode(next).write(to: settingsURL, options: .atomic); value = next }
-        catch { notice = error.localizedDescription }
+        catch { notice = error.localizedDescription; return }
+        shareActions()
+    }
+    /// Quick action names for the widgets (App Group). The steps stay here; widgets only show and pick by ID.
+    func shareActions() {
+        let list = value.actions.map { action in
+            SharedAction(id: action.id.uuidString, name: action.name,
+                         summary: action.steps.map { stepName($0, settings: self) }.joined(separator: " · "))
+        }
+        if SharedActions.write(list) { WidgetCenter.shared.reloadAllTimelines() }
     }
     var profile: HomeProfile { value.profiles.first(where: { $0.id == value.profileID }) ?? value.profiles[0] }
     var layout: HomeLayout { profile.layout }

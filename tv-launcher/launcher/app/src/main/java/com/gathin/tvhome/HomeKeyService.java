@@ -376,6 +376,11 @@ public class HomeKeyService extends AccessibilityService {
         return now < armedUntil;
     }
 
+    /** The bound helper, or null: SleepTimer puts the TV in standby through it. */
+    static HomeKeyService bound() {
+        return running;
+    }
+
     /** The settings menu offers Restart only while this helper is bound: it opens the system power menu. */
     static boolean canOpenPowerMenu() {
         return running != null;

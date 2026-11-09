@@ -91,6 +91,9 @@ public enum TVPairingStore {
             case .playPause: try await session.writeKey(.playPause)
             case .volumeUp: try await session.writeKey(.volumeUp)
             case .volumeDown: try await session.writeKey(.volumeDown)
+            case .key:
+                guard let key = step.key else { throw RemoteFailure.message(String(localized: "Unsupported remote key")) }
+                try await session.writeKey(key)
             case .mute:
                 if muted == nil { try await Task.sleep(nanoseconds: 300_000_000) }
                 guard let muted else { throw RemoteFailure.message(String(localized: "Could not read the TV’s mute state")) }

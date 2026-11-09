@@ -41,7 +41,7 @@ import SwiftUI
                 else if value == .background { model.deactivate(); editor.close(); actions.cancel() }
             }
             .sheet(isPresented: Binding(get: { model.pairing }, set: { if !$0 { model.cancelPairing() } })) { TVPairingView(model: model).environmentObject(settings) }
-            .alert("Debloated TV", isPresented: Binding(get: { !settings.notice.isEmpty }, set: { if !$0 { settings.notice = "" } })) {
+            .alert("Purio TV", isPresented: Binding(get: { !settings.notice.isEmpty }, set: { if !$0 { settings.notice = "" } })) {
                 Button("OK") { settings.notice = "" }
             } message: { Text(settings.notice) }
         }
@@ -95,6 +95,13 @@ struct RemoteView: View {
                         command("house.fill", "Home", .home)
                         command("playpause.fill", "Play or pause", .playPause)
                     }
+                    // 1.1: media skip, subtitles and the TV's own settings, same buttons as the row above.
+                    HStack(spacing: 14) {
+                        command("backward.fill", "Rewind", .rewind)
+                        command("forward.fill", "Fast-forward", .fastForward)
+                        command("captions.bubble", "Subtitles", .captions)
+                        command("gearshape", "TV settings", .settings)
+                    }
                     HStack(spacing: 0) {
                         HoldKey(symbol: "minus", key: .volumeDown, model: model).frame(width: 64, height: 56)
                         Text(model.volume).font(.subheadline.weight(.medium)).frame(maxWidth: .infinity)
@@ -125,40 +132,36 @@ struct RemoteView: View {
 
         }
     }
+    /// Remote 1: power, then the TV and the app on screen (tap for connection settings), then typing and inputs.
     private var controlsHeader: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 12) {
             topCommand("power", "Power", .power, Color(red: 1, green: 0.34, blue: 0.36))
-            Group {
-                if let name = model.currentAppName {
-                    Label { Text(name).font(.system(size: 13, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.85) }
-                        icon: { Image(systemName: "tv").font(.system(size: 15, weight: .medium)) }
-                        .foregroundStyle(.white).accessibilityElement(children: .ignore).accessibilityLabel("On TV: " + name)
-                } else { Color.clear.frame(height: 1).accessibilityHidden(true) }
-            }.frame(maxWidth: .infinity, alignment: .leading)
-            TVConnectionChip(model: model) { settings = true }
+            TVConnectionChip(model: model, layout: .block) { settings = true }
                 .contextMenu { Button("Connection settings", systemImage: "wifi") { settings = true } }
-            Button { keyboard = true } label: { Image(systemName: "keyboard").frame(width: 44, height: 44) }
-                .accessibilityLabel("Type on TV").buttonStyle(RemotePressStyle(radius: 12))
+            Button { keyboard = true } label: {
+                Image(systemName: "keyboard").font(.system(size: 19, weight: .medium)).frame(width: 46, height: 46)
+                    .background(QuietTheme.panel, in: Circle())
+            }.accessibilityLabel("Type on TV").buttonStyle(RemotePressStyle(radius: 23))
             Button { inputs = true } label: {
-                Image(systemName: "rectangle.on.rectangle").font(.system(size: 24, weight: .medium)).frame(width: 52, height: 52)
-                    .background(Color.blue.opacity(0.11), in: Circle())
-            }.accessibilityLabel("Favorite inputs").buttonStyle(RemotePressStyle(radius: 26))
+                Image(systemName: "rectangle.on.rectangle").font(.system(size: 19, weight: .medium)).frame(width: 46, height: 46)
+                    .background(Color(red: 22/255, green: 48/255, blue: 79/255), in: Circle())
+            }.accessibilityLabel("Favorite inputs").buttonStyle(RemotePressStyle(radius: 23))
         }.frame(minHeight: 52)
     }
-    private func command(_ symbol: String, _ label: String, _ key: TVKey) -> some View {
+    private func command(_ symbol: String, _ label: LocalizedStringKey, _ key: TVKey) -> some View {
         Button { model.tap(key) } label: {
             Image(systemName: symbol).font(.system(size: 23, weight: .medium)).frame(width: 65, height: 50)
                 .background(ink, in: RoundedRectangle(cornerRadius: 21))
-        }.accessibilityLabel(label).disabled(!model.ready).tint(.white).buttonStyle(RemotePressStyle())
+        }.accessibilityLabel(Text(label)).disabled(!model.ready).tint(.white).buttonStyle(RemotePressStyle())
     }
     private func topCommand(_ symbol: String, _ label: String, _ key: TVKey, _ accent: Color) -> some View {
         let available = key == .power ? !model.preparing && !model.showingPIN && !model.waking : model.ready
         return Button { if key == .power { model.power() } else { model.tap(key) } } label: {
-            Image(systemName: symbol).font(.system(size: 24, weight: .medium)).foregroundStyle(.white)
-                .frame(width: 52, height: 52)
+            Image(systemName: symbol).font(.system(size: 22, weight: .medium)).foregroundStyle(.white)
+                .frame(width: 48, height: 48)
                 .background(accent.opacity(0.11), in: Circle())
                 .overlay(Circle().stroke(accent.opacity(0.25), lineWidth: 1))
-        }.buttonStyle(RemotePressStyle(radius: 26)).disabled(!available)
+        }.buttonStyle(RemotePressStyle(radius: 24)).disabled(!available)
             .opacity(available ? 1 : 0.45)
             .accessibilityLabel(key == .power && (!model.ready || model.powerOn == false) ? "Wake TV" : label)
     }

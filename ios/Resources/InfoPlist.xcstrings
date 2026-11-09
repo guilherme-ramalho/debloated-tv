@@ -8,7 +8,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Debloated"
+            "value" : "Purio TV"
           }
         }
       }
@@ -20,7 +20,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Debloated TV"
+            "value" : "Purio TV"
           }
         }
       }
@@ -68,19 +68,19 @@
       }
     },
     "APP_NAME_SYNONYM_1" : {
-      "comment" : "Other names Siri accepts for the app, per language (INAlternativeAppNames in Info.plist, up to three). The \"my TV\" form that fits the translated Siri phrases.",
+      "comment" : "Other names Siri accepts for the app, per language (INAlternativeAppNames in Info.plist, up to three): the short name \"Purio\" and the \"my TV\" forms that fit the translated Siri phrases.",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "Purio"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "Purio"
           }
         },
         "es" : {
@@ -110,19 +110,19 @@
       }
     },
     "APP_NAME_SYNONYM_2" : {
-      "comment" : "Other names Siri accepts for the app, per language (INAlternativeAppNames in Info.plist, up to three). The \"my TV\" form that fits the translated Siri phrases.",
+      "comment" : "Other names Siri accepts for the app, per language (INAlternativeAppNames in Info.plist, up to three): the short name \"Purio\" and the \"my TV\" forms that fit the translated Siri phrases.",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "Mein Fernseher"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "My TV"
           }
         },
         "es" : {
@@ -140,55 +140,55 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "Purio"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "Purio"
           }
         }
       }
     },
     "APP_NAME_SYNONYM_3" : {
-      "comment" : "Other names Siri accepts for the app, per language (INAlternativeAppNames in Info.plist, up to three). The \"my TV\" form that fits the translated Siri phrases.",
+      "comment" : "Other names Siri accepts for the app, per language (INAlternativeAppNames in Info.plist, up to three): the short name \"Purio\" and the \"my TV\" forms that fit the translated Siri phrases.",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "Purio Fernbedienung"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "Purio Remote"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mi TV"
+            "value" : "Purio"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "Purio"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "Purio Telecomando"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Debloated TV"
+            "value" : "Purio Controle"
           }
         }
       }

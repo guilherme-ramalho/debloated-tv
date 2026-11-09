@@ -69,10 +69,27 @@ struct ActionsView: View {
                     Divider().overlay(QuietTheme.edge)
                     NavigationLink { SleepTimerView(model: model) } label: { QuietRow(title: "Sleep timer", detail: "Switch off after a delay", symbol: "moon", value: "") }
                 }
-                QuietCaption(text: "For one-tap control, add Debloated TV from your iPhone’s widget gallery or from Control Center (iOS 18 and later).")
+                QuietCaption(text: "For one-tap control, add Purio TV from your iPhone’s widget gallery or from Control Center (iOS 18 and later).")
             }.buttonStyle(.plain).toolbar(.hidden, for: .navigationBar)
                 .sheet(item: $editing) { QuickActionForm(action: $0).environmentObject(settings) }
         }
+    }
+}
+
+func keyName(_ key: TVKey) -> String {
+    switch key {
+    case .up: return String(localized: "Up")
+    case .down: return String(localized: "Down")
+    case .left: return String(localized: "Left")
+    case .right: return String(localized: "Right")
+    case .select: return String(localized: "OK")
+    case .back: return String(localized: "Back")
+    case .power: return String(localized: "Power")
+    case .rewind: return String(localized: "Rewind")
+    case .fastForward: return String(localized: "Fast-forward")
+    case .captions: return String(localized: "Subtitles")
+    case .settings: return String(localized: "TV settings")
+    default: return String(localized: "Remote key")
     }
 }
 
@@ -86,6 +103,7 @@ struct ActionsView: View {
     case .playPause: return String(localized: "Play / Pause")
     case .volumeUp: return String(localized: "Volume up")
     case .volumeDown: return String(localized: "Volume down")
+    case .key: return step.key.map(keyName) ?? String(localized: "Remote key")
     case .openApp: return String(localized: "Open \(settings.app(step.argument)?.name ?? String(localized: "app"))")
     case .input: return String(localized: "Select \(settings.value.tvInputs.first(where: { $0.id == step.argument })?.name ?? String(localized: "input"))")
     }
@@ -140,7 +158,7 @@ struct SiriSettingsView: View {
         List {
                 Group {
             Section {
-                Text("“Hey Siri, open Netflix with Debloated.”").font(.title2.weight(.semibold)).padding(.vertical, 10)
+                Text("“Hey Siri, open Netflix with Purio TV.”").font(.title2.weight(.semibold)).padding(.vertical, 10)
                 SiriTipView(intent: TVCommandIntent(command: .wake))
             }
             Section {
@@ -253,7 +271,7 @@ struct SettingsView: View {
                     Toggle(isOn: settings.binding(\.autoReconnect)) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Reconnect automatically").font(.system(size: 14, weight: .medium))
-                            Text("When returning to Debloated TV").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+                            Text("When returning to Purio TV").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
                         }
                     }.toggleStyle(QuietToggleStyle()).padding(.horizontal, 13).padding(.vertical, 10)
                 }
@@ -261,12 +279,12 @@ struct SettingsView: View {
                     .sheet(isPresented: $credits) {
                         NavigationStack {
                             QuietPage {
-                                Text("Debloated TV").font(.title2.weight(.semibold))
+                                Text("Purio TV").font(.title2.weight(.semibold))
                                 Text("Android TV Remote & Control").foregroundStyle(QuietTheme.muted)
                                 QuietSectionTitle(title: "Android robot")
                                 Text("The Android robot is reproduced or modified from work created and shared by Google and used according to terms described in the Creative Commons 3.0 Attribution License.").font(.footnote)
                                 Link("Creative Commons Attribution 3.0", destination: URL(string: "https://creativecommons.org/licenses/by/3.0/")!)
-                                QuietCaption(text: "Android is a trademark of Google LLC. Debloated TV is an independent app.")
+                                QuietCaption(text: "Android is a trademark of Google LLC. Purio TV is an independent app.")
                                 Link("Streaming logo sources", destination: URL(string: "https://github.com/guilherme-ramalho/debloated-tv#references-and-assets")!)
                                 QuietSectionTitle(title: "cleanyourtv")
                                 Text("The TV Home screen this app installs and the tested per-TV app lists come from cleanyourtv by Gathin, used under the MIT License.").font(.footnote)
