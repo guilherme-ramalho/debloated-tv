@@ -68,10 +68,14 @@ struct TVCommandIntent: AppIntent {
     init() {}
     init(command: TVQuickCommand) { self.command = command }
     func perform() async throws -> some IntentResult & ProvidesDialog {
+        IntentTrace.log("TVCommandIntent \(command.rawValue) start")
         #if WIDGET_EXTENSION
+        IntentTrace.log("TVCommandIntent ran in the widget extension: throwing")
         throw RemoteFailure.message(String(localized: "Open Purio TV once to finish setup"))
         #else
-        try await IntentSettings.run(command.steps)
+        do { try await IntentSettings.run(command.steps) }
+        catch { IntentTrace.log("TVCommandIntent \(command.rawValue) failed: \(error.localizedDescription)"); throw error }
+        IntentTrace.log("TVCommandIntent \(command.rawValue) done")
         #endif
         return .result(dialog: "Sent to your TV.")
     }
@@ -81,6 +85,11 @@ struct TVCommandIntent: AppIntent {
 // existing pairing identity lives. No shared private keys, App Group or foreground UI is needed.
 @available(iOSApplicationExtension, unavailable)
 extension TVCommandIntent: ForegroundContinuableIntent {}
+// iOS 26+: the conformance above alone now compiles to foreground-only (mode 8 in Metadata.appintents), so every
+// widget, Lock Screen and Control Center tap opened the app and sent nothing (found on iOS 27.2, 9 Nov 2026).
+// Background, stated explicitly: the tap runs in the background and the app stays closed.
+@available(iOS 26.0, macOS 26.0, *)
+extension TVCommandIntent { static var supportedModes: IntentModes { .background } }
 
 /// The quick actions' names and step summaries, shared with the widgets through the App Group (1.1). Only names and
 /// IDs: the steps run in the app, which reads its own preferences; no pairing keys are shared.
@@ -89,6 +98,27 @@ struct SharedAction: Codable, Equatable {
     let name: String
     let summary: String
 }
+/// Debug builds only: one line per intent step in the App Group folder (intent-trace.log), so a widget tap can be
+/// followed across the widget and app processes (`xcrun devicectl device copy from --domain-type appGroupDataContainer`).
+enum IntentTrace {
+    static func log(_ line: String) {
+        #if DEBUG
+        guard let group = Bundle.main.object(forInfoDictionaryKey: "PurioAppGroup") as? String, !group.isEmpty,
+              let dir = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: group) else { return }
+        let url = dir.appendingPathComponent("intent-trace.log")
+        let state: String
+        #if WIDGET_EXTENSION
+        state = "widget"
+        #else
+        state = "app"
+        #endif
+        let text = "\(ISO8601DateFormatter().string(from: Date())) [\(state) pid \(ProcessInfo.processInfo.processIdentifier)] \(line)\n"
+        if let handle = try? FileHandle(forWritingTo: url) { handle.seekToEndOfFile(); handle.write(Data(text.utf8)); try? handle.close() }
+        else { try? Data(text.utf8).write(to: url) }
+        #endif
+    }
+}
+
 enum SharedActions {
     static var url: URL? {
         guard let group = Bundle.main.object(forInfoDictionaryKey: "PurioAppGroup") as? String, !group.isEmpty,
@@ -151,6 +181,8 @@ struct RunTVQuickActionIntent: AppIntent {
 // Like TVCommandIntent: widget and Control Center taps run in the app's background process.
 @available(iOSApplicationExtension, unavailable)
 extension RunTVQuickActionIntent: ForegroundContinuableIntent {}
+@available(iOS 26.0, macOS 26.0, *)
+extension RunTVQuickActionIntent { static var supportedModes: IntentModes { .background } }
 
 #if !WIDGET_EXTENSION
 struct TVAppShortcuts: AppShortcutsProvider {
