@@ -134,12 +134,17 @@ struct RunTVQuickActionIntent: AppIntent {
     init() {}
     init(action: SavedTVAction) { self.action = action }
     func perform() async throws -> some IntentResult & ProvidesDialog {
+        let name = try await runSaved()
+        return .result(dialog: "Sent \(name) to your TV.")
+    }
+    /// Runs the saved action and returns its name. The widget process can't run it (it continues in the app).
+    private func runSaved() async throws -> String {
         #if WIDGET_EXTENSION
         throw RemoteFailure.message(String(localized: "Open Purio TV once to finish setup"))
         #else
         guard let saved = try IntentSettings.read().actions.first(where: { $0.id.uuidString == action.id }) else { throw RemoteFailure.message(String(localized: "This quick action no longer exists")) }
         try saved.validate(); try await IntentSettings.run(saved.steps)
-        return .result(dialog: "Sent \(saved.name) to your TV.")
+        return saved.name
         #endif
     }
 }

@@ -179,4 +179,14 @@ public class EditorTest {
                 EditorLayout.reportedOrder(Arrays.asList("b.b", "gone.app"), Collections.singletonList("c.c"),
                         Arrays.asList("a.a", "b.b", "c.c", "h.h"), Collections.singletonList("h.h")));
     }
+
+    /** HOM-L3: a wallpaper chosen on the phone is seen, also in the Cinema look: no app-colour glow, lighter shelf. */
+    @Test public void aPhoneWallpaperIsSeenInEveryLook() {
+        java.util.Map<String, Object> m = EditorLayout.wallpaperShows();
+        assertEquals(Boolean.FALSE, m.get("ambient_glow"));
+        int scrim = (Integer) m.get("cinematic_scrim"), art = (Integer) m.get("cinematic_art");
+        assertTrue("lighter than Cinema's own 100", scrim > 0 && scrim < 100);
+        assertTrue("softer than Cinema's own 50", art >= 0 && art < 50);
+        assertFalse("never touches the look's own switches", m.containsKey("cinematic_home"));
+    }
 }

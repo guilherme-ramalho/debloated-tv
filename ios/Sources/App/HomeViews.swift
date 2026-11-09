@@ -18,6 +18,10 @@ struct TVHomeView: View {
                 QuietHeading(title: "TV") { EmptyView() }
                 if info.homeInstalled {
                     NavigationLink { TVSetupManageView(host: model.host) } label: { TVSetupStrip(info: info) }.buttonStyle(.plain)
+                    if homeUpdateAvailable {
+                        NavigationLink { HomeUpdateView(host: model.host) { editor.connect(model: model, force: true) } } label: { HomeUpdateCard() }
+                            .buttonStyle(.plain)
+                    }
                     editorContent
                 } else if info.supported == false {
                     TVSetupUnsupportedCard(info: info) { status.openSetup = true }
@@ -53,6 +57,11 @@ struct TVHomeView: View {
     }
 
     private var info: TVSetupInfo { status.info(model.host) }
+    /// Known only once TV Home answered: its snapshot says which build it runs.
+    private var homeUpdateAvailable: Bool {
+        guard let snapshot = editor.snapshot else { return false }
+        return LauncherVersion.updateAvailable(tv: LauncherVersion.onTV(snapshot), bundled: HomeUpdateFlow.bundledVersion)
+    }
 
     /// Presses Home on the TV and reads which Home answers. Ours flips the tab to the editor (TVRemoteApp watches the
     /// app in front); a stock launcher means this TV isn't set up yet.

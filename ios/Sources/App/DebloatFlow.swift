@@ -69,7 +69,7 @@ enum RecoveryStore {
 
     init(host: String) {
         address = host
-        profiles = Bundle.main.url(forResource: "Profiles", withExtension: nil).map { DebloatProfile.loadAll($0, includeDevelopment: Self.isDevelopmentBuild) } ?? []
+        profiles = Self.loadProfiles()
     }
 
     /// Debug builds (Cmd+R in Xcode) include development-only profiles; Release (Archive, TestFlight, App Store) never does.
@@ -81,8 +81,12 @@ enum RecoveryStore {
         #endif
     }
 
-    var launcherAPK: Data? {
+    var launcherAPK: Data? { Self.bundledAPK }
+    static var bundledAPK: Data? {
         Bundle.main.url(forResource: "tvhome", withExtension: "apk", subdirectory: "Launcher").flatMap { try? Data(contentsOf: $0) }
+    }
+    static func loadProfiles() -> [DebloatProfile] {
+        Bundle.main.url(forResource: "Profiles", withExtension: nil).map { DebloatProfile.loadAll($0, includeDevelopment: isDevelopmentBuild) } ?? []
     }
 
     func cancel() {
@@ -107,7 +111,7 @@ enum RecoveryStore {
     // MARK: connect and inspect
 
     func connect() {
-        guard let target = TVAddress(address) else { error = String(localized: "Enter the TV's IP address, for example 192.168.0.13"); return }
+        guard let target = TVAddress(address) else { error = String(localized: "Enter the TV's IP address, for example 192.168.1.20"); return }
         run {
             self.message = String(localized: "Connecting to \(target.host)…")
             let client = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
@@ -230,15 +234,13 @@ enum RecoveryStore {
 
     // MARK: finish
 
-    /// After the user turns debugging off: the port should refuse connections.
-    /// The last ADB command of a setup: switches debugging off on the TV (adbd stops, so this connection drops), then
-    /// checks the port refuses connections. Saved "Always allow" approvals stay until revoked in the TV's menu.
+    /// Every Wi-Fi network the wizard owns that needs a password has one typed in.
     var wifiReady: Bool { plan?.wifiToResave.allSatisfy { !$0.needsPassword || !(wifiPasswords[$0.ssid] ?? "").isEmpty } ?? true }
 
     /// Saves each network again, waits for the TV (it can drop off Wi-Fi for a moment), and checks the copies are
     /// there and no longer the wizard's. Nothing else has changed yet if this fails.
     private func resaveWifi(_ networks: [WifiNetwork], passwords: [String: String], on adb: AdbClient) async throws -> AdbClient {
-        guard let target = TVAddress(address) else { throw RemoteFailure.message(String(localized: "Enter the TV's IP address, for example 192.168.0.13")) }
+        guard let target = TVAddress(address) else { throw RemoteFailure.message(String(localized: "Enter the TV's IP address, for example 192.168.1.20")) }
         note(String(localized: "Saving the TV's Wi-Fi again, so it stays when the setup wizard is off…"))
         for network in networks {
             _ = try? await adb.shell(DebloatRules.resaveWifiCommand(network, password: passwords[network.ssid] ?? ""), timeout: 15)
@@ -267,28 +269,14 @@ enum RecoveryStore {
         return client
     }
 
+    /// The last step of a setup (DebuggingSwitch).
     func turnOffDebugging() {
         guard let target = TVAddress(address) else { return }
         debuggingClosed = nil
         run {
-            // The link may have gone idle while the user tested the TV: reconnect with the approved key (no prompt).
-            var client = self.adb
-            if let current = client, (try? await current.shell("echo ok", timeout: 5)) == nil { await current.close(); client = nil }
-            if client == nil {
-                let fresh = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
-                do { _ = try await fresh.connect(name: "Purio TV@iPhone", approvalTimeout: 15) }
-                catch {
-                    await fresh.close()
-                    throw RemoteFailure.message(String(localized: "The TV is no longer connected. Turn debugging off in the TV's menus."))
-                }
-                client = fresh
-            }
-            guard let client else { return }
-            _ = try? await client.shell("settings put global adb_wifi_enabled 0; settings put global adb_enabled 0", timeout: 8)
-            await client.close()
+            let client = self.adb
             self.adb = nil
-            try? await Task.sleep(for: .seconds(2))
-            self.debuggingClosed = await PortProbe.refuses(host: target.host, port: target.port)
+            self.debuggingClosed = try await DebuggingSwitch.turnOff(client, target: target)
         }
     }
 
@@ -298,6 +286,125 @@ enum RecoveryStore {
         debuggingClosed = nil
         Task {
             debuggingClosed = await PortProbe.refuses(host: target.host, port: target.port)
+        }
+    }
+}
+
+/// The last ADB command of a setup or an update: switches debugging off on the TV (adbd stops, so the connection
+/// drops), then checks the port refuses connections. Saved "Always allow" approvals stay until revoked in the TV's menu.
+enum DebuggingSwitch {
+    static func turnOff(_ current: AdbClient?, target: TVAddress) async throws -> Bool? {
+        // The link may have gone idle while the user tested the TV: reconnect with the approved key (no prompt).
+        var client = current
+        if let open = client, (try? await open.shell("echo ok", timeout: 5)) == nil { await open.close(); client = nil }
+        if client == nil {
+            let fresh = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
+            do { _ = try await fresh.connect(name: "Purio TV@iPhone", approvalTimeout: 15) }
+            catch {
+                await fresh.close()
+                throw RemoteFailure.message(String(localized: "The TV is no longer connected. Turn debugging off in the TV's menus."))
+            }
+            client = fresh
+        }
+        guard let client else { return nil }
+        _ = try? await client.shell("settings put global adb_wifi_enabled 0; settings put global adb_enabled 0", timeout: 8)
+        await client.close()
+        try? await Task.sleep(for: .seconds(2))
+        return await PortProbe.refuses(host: target.host, port: target.port)
+    }
+}
+
+/// "Update Home screen" on the TV tab: installs the newer launcher this app carries over the one on the TV
+/// (`pm install -r`), keeping its config.json, wallpaper, order and settings. Offered only when the TV's launcher
+/// reports an older versionCode (LauncherVersion); checked again over ADB before anything is installed.
+@MainActor final class HomeUpdateFlow: ObservableObject {
+    enum Step { case start, connecting, updating, done }
+    /// The bundled launcher's versionCode (tvhome.json from scripts/bundle-launcher.sh); nil in a build without it.
+    static let bundledVersion: Int? = LauncherVersion.bundled(
+        Bundle.main.url(forResource: "tvhome", withExtension: "json", subdirectory: "Launcher").flatMap { try? Data(contentsOf: $0) })
+
+    @Published var step: Step = .start
+    @Published var address: String
+    @Published private(set) var busy = false
+    @Published private(set) var waitingForApproval = false
+    @Published private(set) var message = ""
+    @Published var error: String?
+    @Published private(set) var progress: Double = 0
+    /// True when the TV already had this version (nothing installed).
+    @Published private(set) var alreadyCurrent = false
+    @Published private(set) var debuggingClosed: Bool?
+    private var adb: AdbClient?
+    private var task: Task<Void, Never>?
+
+    init(host: String) { address = host }
+
+    func cancel() {
+        task?.cancel(); task = nil
+        busy = false; waitingForApproval = false
+        if let adb { Task { await adb.close() } }
+        adb = nil
+    }
+
+    private func run(_ work: @escaping () async throws -> Void) {
+        task?.cancel()
+        error = nil; busy = true
+        task = Task {
+            do { try await work() }
+            catch is CancellationError {}
+            catch { self.error = error.localizedDescription }
+            self.busy = false; self.waitingForApproval = false
+        }
+    }
+
+    func update() {
+        guard let target = TVAddress(address) else { error = String(localized: "Enter the TV's IP address, for example 192.168.1.20"); return }
+        guard let apk = DebloatFlow.bundledAPK, let bundled = Self.bundledVersion else {
+            error = String(localized: "This build doesn't include the Home screen. Run scripts/bundle-launcher.sh and rebuild."); return
+        }
+        step = .connecting; progress = 0; alreadyCurrent = false; debuggingClosed = nil
+        run {
+            self.message = String(localized: "Connecting to \(target.host)…")
+            if let old = self.adb { await old.close() }
+            let client = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
+            self.adb = client
+            _ = try await client.connect(name: "Purio TV@iPhone", approvalTimeout: 120) {
+                Task { @MainActor in self.waitingForApproval = true; self.message = String(localized: "On the TV, choose “Always allow” and Allow.") }
+            }
+            self.waitingForApproval = false
+            // The profile decides the remote helpers and permissions, exactly as setup installed them.
+            let properties = try await Debloater(tv: client).profileProperties(await client.properties)
+            guard let profile = DebloatProfile.match(properties, in: DebloatFlow.loadProfiles()) else {
+                throw RemoteFailure.message(String(localized: "There's no tested profile for this TV, so its Home screen can't be updated from here. Nothing was changed."))
+            }
+            let installer = LauncherInstaller(tv: client)
+            guard let installed = try await installer.installedVersion() else {
+                throw RemoteFailure.message(String(localized: "The new Home screen isn't on this TV. Use Run setup instead. Nothing was changed."))
+            }
+            if installed >= bundled { self.alreadyCurrent = true; self.step = .done; return }
+            self.step = .updating
+            _ = try await installer.install(apk: apk, options: profile.manifest.launcher, theme: nil) { step, fraction in
+                Task { @MainActor in
+                    self.message = step.title
+                    let index = Double(LauncherStep.allCases.firstIndex(of: step) ?? 0)
+                    self.progress = min(1, (index + fraction) / Double(LauncherStep.allCases.count))
+                }
+            }
+            let now = try await installer.installedVersion()
+            guard now == bundled else {
+                throw RemoteFailure.message(String(localized: "The TV still reports the old Home screen after the update. Try again."))
+            }
+            self.progress = 1
+            self.step = .done
+        }
+    }
+
+    func turnOffDebugging() {
+        guard let target = TVAddress(address) else { return }
+        debuggingClosed = nil
+        run {
+            let client = self.adb
+            self.adb = nil
+            self.debuggingClosed = try await DebuggingSwitch.turnOff(client, target: target)
         }
     }
 }

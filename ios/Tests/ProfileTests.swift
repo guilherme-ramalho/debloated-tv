@@ -27,5 +27,19 @@ final class ProfileTests: XCTestCase {
         XCTAssertEqual(config["live_tv_package"] as? String, "com.tcl.tv")
         XCTAssertEqual(config["tile_menu"] as? Bool, false, "the phone arranges Home; the TV's tile menu stays off")
         XCTAssertEqual(config["glow_snap"] as? Bool, true, "no full-screen glow fade on the TCL's GPU")
+        XCTAssertEqual(config["app_keys"] as? [String], ["KEYCODE_TCL_NETFLIX:com.netflix.ninja", "KEYCODE_TCL_YOUTUBE:com.google.android.youtube.tv",
+                                                         "4099:com.amazon.amazonvideo.livingroom"], "a profile keeps its own remote buttons")
+    }
+
+    /// LCH-17: a model whose profile doesn't name remote buttons, a Settings key or a Live TV app gets none, never the
+    /// launcher's built-in ones (upstream's TCL).
+    func testOtherModelsDontInheritTheLaunchersTCLDefaults() throws {
+        let emulator = try DebloatProfile.load(profilesRoot().appendingPathComponent("dev-android-tv-emulator"))
+        let config = try XCTUnwrap(JSONSerialization.jsonObject(with: try emulator.themeConfig(dock: [])) as? [String: Any])
+        XCTAssertEqual(config["app_keys"] as? [String], [])
+        XCTAssertEqual(config["settings_key_keycodes"] as? [Int], [])
+        XCTAssertEqual(config["hidden_apps"] as? [String], [])
+        XCTAssertEqual(config["live_tv_package"] as? String, "")
+        XCTAssertEqual(config["columns"] as? Int, 5, "the profile's own values still apply")
     }
 }

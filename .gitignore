@@ -29,6 +29,7 @@ __pycache__/
 
 # Built by scripts/bundle-launcher.sh
 ios/Resources/Launcher/*.apk
+ios/Resources/Launcher/tvhome.json
 
 # Local scratch and tool output
 *.xcresult

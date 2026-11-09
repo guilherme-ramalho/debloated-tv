@@ -2,7 +2,7 @@ import Foundation
 import Combine
 import Security
 
-/// "192.168.0.13", "192.168.0.13:15555" or "mac.local:15555" (an emulator shared from a Mac). Port 5555 by default.
+/// "192.168.1.20", "192.168.1.20:15555" or "mac.local:15555" (an emulator shared from a Mac). Port 5555 by default.
 public struct TVAddress: Equatable {
     public var host: String
     public var port: UInt16

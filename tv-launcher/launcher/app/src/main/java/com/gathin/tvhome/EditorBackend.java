@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.BitmapFactory;
@@ -41,7 +42,6 @@ import java.util.UUID;
  */
 final class EditorBackend implements EditorServer.Backend {
     static final String STATE_FILE = "phone_editor.json";
-    private static final String GLOW_MARKER = "phone_editor_glow_off";
 
     private final Context ctx;
 
@@ -248,6 +248,17 @@ final class EditorBackend implements EditorServer.Backend {
 
     // ---- homeSettings --------------------------------------------------------------------------------
 
+    /** This build's versionCode, or 0 if the package manager won't say. */
+    @SuppressWarnings("deprecation")
+    private long versionCode() {
+        try {
+            PackageInfo info = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
+            return android.os.Build.VERSION.SDK_INT >= 28 ? info.getLongVersionCode() : info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            return 0;
+        }
+    }
+
     /** What this Home build can change from the phone, and the current values. Older builds send no "home". */
     private JSONObject homeState(Config cfg) throws IOException, JSONException {
         JSONObject w = cfg.weather;
@@ -258,6 +269,8 @@ final class EditorBackend implements EditorServer.Backend {
                 .put("weather", on)
                 .put("weatherAuto", on && w.optBoolean("auto", false))
                 .put("locationAllowed", TvLocation.permitted(ctx));
+        long version = versionCode();
+        if (version > 0) home.put("version", version);   // the phone offers an update only when it carries a newer build
         String place = on && w.optBoolean("auto", false) ? TvLocation.keptPlace(ctx) : on ? w.optString("city", "") : "";
         if (!place.isEmpty()) home.put("weatherPlace", trim(place, 60));
         return home;
@@ -325,16 +338,9 @@ final class EditorBackend implements EditorServer.Backend {
         config.put("dock_apps", new JSONArray(dock));
         config.put("hidden_apps", new JSONArray(layout.hidden));
         config.put("columns", layout.dockCount);
-        if (EditorLayout.photo(layout.wallpaper)) {
-            config.put("wallpaper", true);
-            // The focused app's colour glow (ambient_glow) tints a photo red with Netflix or YouTube in focus; a photo
-            // is shown as taken. The marker lets a preset bring the theme's glow back.
-            config.put("ambient_glow", false);
-            config.put(GLOW_MARKER, true);
-        } else if (config.optBoolean(GLOW_MARKER, false)) {
-            config.remove("ambient_glow");
-            config.remove(GLOW_MARKER);
-        }
+        if (EditorLayout.photo(layout.wallpaper)) config.put("wallpaper", true);
+        for (Map.Entry<String, Object> e : EditorLayout.wallpaperShows().entrySet()) config.put(e.getKey(), e.getValue());
+        config.remove("phone_editor_glow_off");   // 1.0's marker for the glow, now always off with a phone wallpaper
         config.remove("wallpaper_rotation_minutes");   // a single chosen picture, not a rotating collection
         writeAtomic(configFile, config.toString(2).getBytes(StandardCharsets.UTF_8));
         List<String> keys = new ArrayList<>();

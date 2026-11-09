@@ -147,6 +147,8 @@ public struct LauncherHome: Codable, Equatable {
     public var locationAllowed: Bool?
     /// cinema, calm, glass or gallery (launcher HomeLooks).
     public var look: String?
+    /// The launcher's versionCode (1.1+). Missing means a build older than the update check (LauncherVersion).
+    public var version: Int?
     public static let looks = ["cinema", "calm", "glass", "gallery"]
     public func supports(_ feature: String) -> Bool { features?.contains(feature) ?? false }
 }

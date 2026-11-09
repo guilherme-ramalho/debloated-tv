@@ -115,6 +115,27 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(home.weatherPlace, "Valladolid")
     }
 
+    /// LCH-15: the update is offered only when the app carries a newer launcher than the TV reports.
+    func testHomeUpdateIsOfferedOnlyForANewerBundledLauncher() throws {
+        let base = #"{"revision":"r","layout":{"dockCount":5,"order":[],"hidden":[],"wallpaper":"quiet-night"},"apps":[],"inputs":[]"#
+        let old = try JSONDecoder().decode(LauncherSnapshot.self, from: Data((base + "}").utf8))
+        let withoutVersion = try JSONDecoder().decode(LauncherSnapshot.self, from: Data((base + #","home":{"features":["looks"]}}"#).utf8))
+        let current = try JSONDecoder().decode(LauncherSnapshot.self, from: Data((base + #","home":{"features":["looks"],"version":13}}"#).utf8))
+        XCTAssertEqual(LauncherVersion.onTV(old), 12, "the 1.0 launcher reports nothing: it is versionCode 12")
+        XCTAssertEqual(LauncherVersion.onTV(withoutVersion), 12)
+        XCTAssertEqual(LauncherVersion.onTV(current), 13)
+
+        let bundled = LauncherVersion.bundled(Data(#"{"versionCode": 13}"#.utf8))
+        XCTAssertEqual(bundled, 13)
+        XCTAssertTrue(LauncherVersion.updateAvailable(tv: LauncherVersion.onTV(old), bundled: bundled))
+        XCTAssertFalse(LauncherVersion.updateAvailable(tv: LauncherVersion.onTV(current), bundled: bundled), "same version: no card")
+        XCTAssertFalse(LauncherVersion.updateAvailable(tv: 14, bundled: bundled), "the TV is newer than the app: no card")
+        XCTAssertFalse(LauncherVersion.updateAvailable(tv: 12, bundled: nil), "a build without tvhome.json never offers it")
+        for broken in [nil, Data("junk".utf8), Data(#"{"versionCode":"13"}"#.utf8), Data(#"{"versionCode":0}"#.utf8)] {
+            XCTAssertNil(LauncherVersion.bundled(broken))
+        }
+    }
+
     func testQuickActionsRejectInvalidStepsAndPostShutdownCommands() throws {
         try QuickAction(name: "Movie time", steps: [.init(.wake), .init(.openApp, argument: "com.netflix.ninja")]).validate()
         XCTAssertThrowsError(try QuickAction(name: "Empty", steps: []).validate())

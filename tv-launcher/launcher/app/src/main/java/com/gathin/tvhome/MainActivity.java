@@ -588,10 +588,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (lunar) lunarDate.setVisibility(View.VISIBLE);
         greetingName = cfg.greetingName;
         if (cfg.dateBelowClock) moveDateBelowClock();
-        if (cfg.dateBelowClock && cfg.iconOnlyButtons && !cfg.topMenu
-                && !getResources().getBoolean(R.bool.rtl_menu_bar)) {
-            alignDateBelowIconsWithClock();
-        }
+        // The top buttons stay pinned to the header's top, level with the greeting (layout: alignTop leftBlock), so
+        // the weather or date lines growing under the clock never move them.
         if (shamsi) {
             shamsiDate.setVisibility(View.VISIBLE);
             TextView date = findViewById(R.id.date);
@@ -863,13 +861,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             ((TextView) btnSettings).setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_settings, 0, 0, 0);
             if (!iconOnlyButtons) makeIconOnly((TextView) btnSettings);
             btnSettings.setOnClickListener(v -> showTopMenu());
-            // The lone gear sits at the header's middle, not on its bottom line like the row of pills.
-            LinearLayout topButtons = findViewById(R.id.topButtons);
-            RelativeLayout.LayoutParams tlp = (RelativeLayout.LayoutParams) topButtons.getLayoutParams();
-            tlp.addRule(RelativeLayout.ALIGN_TOP, R.id.leftBlock);
-            tlp.bottomMargin = 0;
-            topButtons.setLayoutParams(tlp);
-            topButtons.setGravity(Gravity.CENTER_VERTICAL);
+            // The lone gear sits where the row of pills does: at the header's top, level with the greeting, so the
+            // weather or date lines growing under the clock never move it.
         }
         if (iconOnlyButtons) {
             if (cfg.wifiLabelWidth > 0) btnWifi.setMaxWidth(Math.round(cfg.wifiLabelWidth * density));
@@ -2530,30 +2523,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             lp.bottomMargin = 0;
             column.setLayoutParams(lp);
         }
-        LinearLayout buttons = findViewById(R.id.topButtons);
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) buttons.getLayoutParams();
-        lp.addRule(RelativeLayout.ALIGN_TOP, R.id.leftBlock);
-        lp.bottomMargin = 0;
-        buttons.setLayoutParams(lp);
-        buttons.setGravity(Gravity.CENTER_VERTICAL);
-    }
-
-    /** With the date below, keep the icons beside the clock rather than beside the last date line. */
-    private void alignDateBelowIconsWithClock() {
-        View clock = findViewById(R.id.clock);
-        View clockRow = (View) clock.getParent();
-        LinearLayout buttons = findViewById(R.id.topButtons);
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) buttons.getLayoutParams();
-        lp.addRule(RelativeLayout.ALIGN_TOP, R.id.leftBlock);
-        lp.removeRule(RelativeLayout.ALIGN_BOTTOM);
-        lp.topMargin = 0;
-        lp.bottomMargin = 0;
-        buttons.setLayoutParams(lp);
-        // Either side can be laid out first; update after both without requesting another layout mid-pass.
-        Runnable align = () -> buttons.setTranslationY(clockRow.getTop() + clock.getTop()
-                + (clock.getHeight() - buttons.getHeight()) / 2f);
-        clockRow.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> align.run());
-        buttons.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> align.run());
     }
 
     /** The first top-bar button after Inputs that is shown, in bar order (top_bar_apps, the network pill, ...); Settings is always there. */

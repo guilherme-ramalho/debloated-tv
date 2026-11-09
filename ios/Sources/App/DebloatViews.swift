@@ -104,7 +104,7 @@ struct DebloatSetupView: View {
             }
             VStack(alignment: .leading, spacing: 6) {
                 Text("TV address").font(.system(size: 13, weight: .medium)).foregroundStyle(QuietTheme.muted)
-                TextField("192.168.0.13", text: $flow.address).keyboardType(.numbersAndPunctuation).textInputAutocapitalization(.never).autocorrectionDisabled()
+                TextField("192.168.1.20", text: $flow.address).keyboardType(.numbersAndPunctuation).textInputAutocapitalization(.never).autocorrectionDisabled()
                     .padding(12).background(QuietTheme.panel, in: RoundedRectangle(cornerRadius: 12))
             }
             QuietCaption(text: "Newer TVs with only “Wireless debugging” (a pairing code) aren’t supported yet.")

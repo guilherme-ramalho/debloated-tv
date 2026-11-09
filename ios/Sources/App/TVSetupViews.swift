@@ -184,3 +184,117 @@ struct TVSetupOfferSheet: View {
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(.white.opacity(0.08), lineWidth: 1))
     }
 }
+
+// MARK: Home screen update
+
+/// TV tab: shown only when this app carries a newer TV Home than the TV reports (LauncherVersion).
+struct HomeUpdateCard: View {
+    var body: some View {
+        HStack(spacing: 11) {
+            Image(systemName: "arrow.down.circle").font(.system(size: 20)).foregroundStyle(QuietTheme.cyan).accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Home screen update").font(.system(size: 14, weight: .medium))
+                Text("A newer TV Home comes with this app. Your layout stays.").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 6)
+            Text("Update").font(.system(size: 13)).foregroundStyle(QuietTheme.cyan)
+            Image(systemName: "chevron.right").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+        }.padding(.horizontal, 13).padding(.vertical, 11).frame(minHeight: 44)
+            .background(QuietTheme.cyan.opacity(0.1), in: RoundedRectangle(cornerRadius: 16))
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(QuietTheme.cyan.opacity(0.35), lineWidth: 1))
+            .contentShape(Rectangle())
+    }
+}
+
+/// Installs the newer TV Home over the old one and keeps everything the TV has (HomeUpdateFlow).
+struct HomeUpdateView: View {
+    @StateObject private var flow: HomeUpdateFlow
+    /// Called once the TV has the new Home (to reconnect the editor and read the new version).
+    let updated: () -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    init(host: String, updated: @escaping () -> Void) {
+        _flow = StateObject(wrappedValue: HomeUpdateFlow(host: host)); self.updated = updated
+    }
+
+    var body: some View {
+        QuietPage {
+            switch flow.step {
+            case .start: start
+            case .connecting, .updating: working
+            case .done: done
+            }
+            if let error = flow.error {
+                QuietCard { Label(error, systemImage: "exclamationmark.triangle").font(.system(size: 13)).foregroundStyle(.orange).padding(14) }
+                if !flow.busy && flow.step != .done { Button("Try again") { flow.update() }.buttonStyle(QuietPrimaryStyle()) }
+            }
+        }
+        .quietNavigation("Update Home screen")
+        .navigationBarBackButtonHidden(flow.busy)
+        .onDisappear { flow.cancel() }
+        .onChange(of: flow.step) { _, step in if step == .done { updated() } }
+    }
+
+    private var start: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Update the TV's Home screen").font(.system(size: 24, weight: .bold))
+            Text("A newer version of the Home screen comes with this app. Your dock, apps, wallpaper and Home settings stay as they are. Takes about a minute.")
+                .font(.system(size: 14)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true)
+            QuietCard {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Turn on network debugging for a moment").font(.system(size: 15, weight: .semibold))
+                    numbered(1, "On the TV, open Settings › System › Developer options.")
+                    numbered(2, "Turn on USB debugging, and Network or ADB debugging if your TV shows it.")
+                    numbered(3, "Check the TV's address in Settings › Network & Internet.")
+                }.padding(14)
+            }
+            VStack(alignment: .leading, spacing: 6) {
+                Text("TV address").font(.system(size: 13, weight: .medium)).foregroundStyle(QuietTheme.muted)
+                TextField("192.168.1.20", text: $flow.address).keyboardType(.numbersAndPunctuation).textInputAutocapitalization(.never).autocorrectionDisabled()
+                    .padding(12).background(QuietTheme.panel, in: RoundedRectangle(cornerRadius: 12))
+            }
+            Button("Update Home screen") { flow.update() }.buttonStyle(QuietPrimaryStyle()).disabled(TVAddress(flow.address) == nil || flow.busy)
+            QuietCaption(text: "You'll turn debugging off again at the end.")
+        }
+    }
+
+    private var working: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            if flow.waitingForApproval {
+                Image(systemName: "tv.badge.wifi").font(.system(size: 44)).foregroundStyle(QuietTheme.cyan)
+                Text("Allow this iPhone on the TV").font(.system(size: 24, weight: .bold))
+                Text("The TV shows “Allow USB debugging?”. Tick “Always allow from this computer” and choose Allow. This continues by itself.")
+                    .foregroundStyle(QuietTheme.muted)
+            } else {
+                Text(flow.step == .connecting ? "Connecting" : "Updating the Home screen").font(.system(size: 24, weight: .bold))
+                if flow.step == .updating { ProgressView(value: flow.progress).tint(QuietTheme.cyan) }
+            }
+            if flow.busy { HStack { ProgressView(); Text(flow.message).font(.system(size: 13)).foregroundStyle(QuietTheme.muted) } }
+        }
+    }
+
+    private var done: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Label(flow.alreadyCurrent ? "The TV already has this Home screen" : "Home screen updated", systemImage: "checkmark.circle")
+                .font(.system(size: 20, weight: .semibold)).foregroundStyle(QuietTheme.cyan)
+            if !flow.alreadyCurrent {
+                QuietCaption(text: "Your layout and settings are as they were. New options appear in the TV tab once TV Home reconnects.")
+            }
+            Button("Turn off network debugging now") { flow.turnOffDebugging() }.buttonStyle(QuietPrimaryStyle()).disabled(flow.busy)
+            if flow.busy { ProgressView() }
+            if let closed = flow.debuggingClosed {
+                Label(closed ? "Debugging is off: the TV refuses connections." : "The debugging port still accepts connections.",
+                      systemImage: closed ? "checkmark.shield" : "exclamationmark.shield").foregroundStyle(closed ? .green : .orange).font(.system(size: 13))
+            }
+            Button("Done") { dismiss() }.buttonStyle(QuietSecondaryStyle())
+        }
+    }
+
+    private func numbered(_ n: Int, _ text: LocalizedStringKey) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Text("\(n)").font(.system(size: 13, weight: .bold)).frame(width: 24, height: 24).background(QuietTheme.cyan.opacity(0.2), in: Circle())
+            Text(text).font(.system(size: 14)).fixedSize(horizontal: false, vertical: true)
+        }
+    }
+}

@@ -160,6 +160,51 @@ final class LauncherInstallEdgeTests: XCTestCase {
         XCTAssertFalse(tv.sent.contains { $0.hasPrefix("pm disable-user") })
     }
 
+    /// LCH-16: a TV with a newer launcher than the app carries refuses the install; the message says so.
+    func testNewerBuildOnTheTVIsExplained() async {
+        let tv = tv(); tv.prefixes.insert(("pm install", "Failure [INSTALL_FAILED_VERSION_DOWNGRADE]"), at: 0)
+        do { _ = try await LauncherInstaller(tv: tv).install(apk: apk, options: .init()); XCTFail() }
+        catch { XCTAssertTrue(error.localizedDescription.contains("newer Home screen")) }
+        XCTAssertFalse(tv.sent.contains { $0.hasPrefix("pm disable-user") })
+    }
+
+    /// LCH-15: the update reads the installed launcher's version over ADB before installing anything.
+    func testInstalledVersionComesFromDumpsys() async throws {
+        let tv = ScriptedTV()
+        tv.prefixes = [("dumpsys package com.gathin.tvhome", "    versionCode=12 minSdk=26 targetSdk=34")]
+        let installed = try await LauncherInstaller(tv: tv).installedVersion()
+        XCTAssertEqual(installed, 12)
+        let missing = try await LauncherInstaller(tv: ScriptedTV()).installedVersion()
+        XCTAssertNil(missing, "not installed")
+        XCTAssertNil(LauncherVersion.fromDumpsys("versionCode="))
+    }
+
+    /// LCH-15: the update finds the TV's profile like setup does. The ADB banner has no Android version, which the
+    /// TCL profile matches on; found on the TCL on 9 Nov 2026 ("no tested profile for this TV").
+    func testUpdateMatchesTheProfileFromBannerPlusGetprop() async throws {
+        let banner = ["ro.product.name": "G03_4K_GB", "ro.product.model": "Smart_TV_Pro", "ro.product.device": "BeyondTV4"]
+        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/Profiles")
+        let profiles = DebloatProfile.loadAll(root, includeDevelopment: false)
+        XCTAssertNil(DebloatProfile.match(banner, in: profiles), "the banner alone isn't enough")
+        let tv = ScriptedTV(); tv.exact["getprop ro.build.version.sdk"] = "30"
+        let props = try await Debloater(tv: tv).profileProperties(banner)
+        XCTAssertEqual(DebloatProfile.match(props, in: profiles)?.id, "tcl-43c645")
+        XCTAssertFalse(tv.sent.contains("getprop ro.product.device"), "banner values aren't read again")
+    }
+
+    /// LCH-15: an update without a theme leaves config.json alone (no theme push, no content write).
+    func testUpdateWithoutAThemeKeepsTheTVsLayout() async throws {
+        let tv = ScriptedTV()
+        tv.exact["getprop ro.build.version.sdk"] = "30"
+        tv.prefixes = [("pm install", "Success"), ("am start -W", "Status: ok"),
+                       (DebloatRules.homeQuery, "com.gathin.tvhome/.MainActivity")]
+        _ = try await LauncherInstaller(tv: tv).install(apk: apk, options: .init(homeKeyService: true))
+        XCTAssertNil(tv.pushed["/data/local/tmp/tvhome-config.json"])
+        XCTAssertFalse(tv.sent.contains { $0.contains("content write") || $0.contains("config.json") })
+        XCTAssertFalse(tv.sent.contains { $0.hasPrefix("pm disable-user") }, "Home is already ours: no stock launcher to disable")
+        XCTAssertTrue(tv.sent.contains { $0.contains("HomeKeyService") }, "the profile's helpers stay on")
+    }
+
     func testHomeChooserWithOneStockLauncherIsResolved() async throws {
         let tv = ScriptedTV()
         tv.prefixes = [(DebloatRules.homeQuery, "android/com.android.internal.app.ResolverActivity"),
