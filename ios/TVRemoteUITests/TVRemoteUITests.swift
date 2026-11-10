@@ -92,11 +92,23 @@ final class TVRemoteUITests: XCTestCase {
 
 /// App Store screenshots (scripts/store-shots-auto.sh), skipped in every other run. Drives the RELEASE app already
 /// installed in the simulator (bundle ID without .dev), paired with a real TV, in each language: Remote, Type on TV,
-/// TV tab, Look, Actions, a quick action's steps. Setup review (03) and widgets (08) stay manual (store-shots.sh).
+/// TV tab, Look, Actions, a quick action's steps, setup (03). Widgets (08) stay manual (store-shots.sh).
 /// Taps go by accessibility identifier or position, never by text, so every language works.
 final class StoreScreenshots: XCTestCase {
     private var dir = ""
     private var app: XCUIApplication!
+
+    /// 03: Settings › Debloat & new Home, its first screen (what setup does and its risks), as in the 1.0 listing.
+    /// Nothing connects to the TV.
+    private func setupReview(_ tabs: XCUIElementQuery) {
+        tabs.element(boundBy: 3).tap(); pause(1)
+        let row = app.buttons["setupRow"]
+        if !row.waitForExistence(timeout: 3) { app.swipeUp() }
+        guard row.waitForExistence(timeout: 3) else { print("STORE-SHOTS: no setup row"); return }
+        row.tap(); pause(2)
+        shot("03-setup-review")
+        app.navigationBars.buttons.firstMatch.tap(); pause(1)
+    }
 
     func testStoreScreenshots() throws {
         let env = ProcessInfo.processInfo.environment
@@ -112,6 +124,7 @@ final class StoreScreenshots: XCTestCase {
             app.launch()
             let tabs = app.tabBars.buttons
             XCTAssertTrue(tabs.element(boundBy: 0).waitForExistence(timeout: 10), "\(lang): app didn't start")
+            if env["STORE_SHOTS_ONLY"] == "03" { setupReview(tabs); app.terminate(); continue }
 
             tabs.element(boundBy: 0).tap(); pause(5)            // the remote connects to the paired TV
             shot("01-remote")
@@ -138,6 +151,7 @@ final class StoreScreenshots: XCTestCase {
                 edit.tap(); pause(2); shot("06-action-steps")
                 app.navigationBars.buttons.firstMatch.tap(); pause(1)
             }
+            setupReview(tabs)
             app.terminate()
         }
     }

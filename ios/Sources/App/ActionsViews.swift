@@ -250,7 +250,7 @@ struct SettingsView: View {
                 }.buttonStyle(.plain)
                 QuietSectionTitle(title: "TV setup")
                 QuietCard {
-                    NavigationLink { DebloatSetupView(host: model.host) } label: { QuietRow(title: "Debloat & new Home", detail: "Guided setup over network debugging, no computer", symbol: "wand.and.stars") }
+                    NavigationLink { DebloatSetupView(host: model.host) } label: { QuietRow(title: "Debloat & new Home", detail: "Guided setup over network debugging, no computer", symbol: "wand.and.stars") }.accessibilityIdentifier("setupRow")
                     Divider().overlay(QuietTheme.edge)
                     NavigationLink { UndoSetupView(defaultHost: model.host) } label: { QuietRow(title: "Undo TV setup", detail: "Restore from a saved recovery record", symbol: "arrow.uturn.backward") }
                 }.buttonStyle(.plain)

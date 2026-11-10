@@ -1,22 +1,25 @@
 #!/usr/bin/env bash
 # App Store screenshots, automated: the release build in two simulators (6.9" iPhone 17 Pro Max, 1320 x 2868, and
 # 6.3" iPhone 17 Pro, 1206 x 2622), each paired with a real TV on this Mac's network, driven by the StoreScreenshots
-# UI test in every language. Shots 03 (setup review) and 08 (widgets) stay manual: scripts/store-shots.sh.
+# UI test in every language. Shot 08 (widgets) stays manual: scripts/store-shots.sh.
 #
 #   scripts/store-shots-auto.sh                  all six languages, both sizes
 #   scripts/store-shots-auto.sh --langs en,de    only these languages
+#   scripts/store-shots-auto.sh --only 03        only shot 03 (setup review)
 #   scripts/store-shots-auto.sh --pair           open both simulators to pair them with the TV first (once)
+
 #
 # Output: ios/build/store-shots-auto/<size>/<lang>/NN-name.png, and JPEG copies without alpha (App Store Connect
 # refuses an alpha channel) in ios/build/store-shots-auto/upload/<size>/<lang>/.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-LANGS="en,de,es,fr,it,pt-BR"; PAIR=0
+LANGS="en,de,es,fr,it,pt-BR"; PAIR=0; ONLY=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --langs) LANGS="$2"; shift ;;
+    --only) ONLY="$2"; shift ;;
     --pair) PAIR=1 ;;
-    *) sed -n '2,13p' "$0"; exit 1 ;;
+    *) sed -n '2,14p' "$0"; exit 1 ;;
   esac
   shift
 done
@@ -55,7 +58,7 @@ fi
 
 shoot() {   # udid, size label
   say "Screenshots on the $2 simulator ($LANGS)…"
-  (cd "$ROOT/ios" && TEST_RUNNER_STORE_SHOTS_DIR="$OUT/$2" TEST_RUNNER_STORE_SHOTS_LANGS="$LANGS" \
+  (cd "$ROOT/ios" && TEST_RUNNER_STORE_SHOTS_DIR="$OUT/$2" TEST_RUNNER_STORE_SHOTS_LANGS="$LANGS" TEST_RUNNER_STORE_SHOTS_ONLY="$ONLY" \
     xcodebuild test -project TVRemote.xcodeproj -scheme "Debloated TV Dev" -destination "id=$1" \
     -only-testing:TVRemoteUITests/StoreScreenshots -parallel-testing-enabled NO -derivedDataPath "$ROOT/ios/build/store-shots-test-dd" 2>&1 \
     | grep -E "STORE-SHOTS|error:|failed|\*\* TEST" || true)
@@ -69,4 +72,4 @@ find "$OUT/6.9" "$OUT/6.3" -name '*.png' 2>/dev/null | while read -r png; do
   sips -s format jpeg -s formatOptions best "$png" --out "$jpg" >/dev/null
 done
 for udid in "$BIG" "$SMALL"; do xcrun simctl status_bar "$udid" clear; done
-say "Done: $(find "$OUT/upload" -name '*.jpg' | wc -l | tr -d ' ') screenshots in $OUT/upload (03 and 08: scripts/store-shots.sh)."
+say "Done: $(find "$OUT/upload" -name '*.jpg' | wc -l | tr -d ' ') screenshots in $OUT/upload (08: scripts/store-shots.sh)."
