@@ -103,6 +103,13 @@ public final class TVSession {
         guard commandReady, !pairMode, let channel, !url.isEmpty, url.utf8.count <= 2048 else { throw RemoteFailure.message(String(localized: "Invalid app or input link")) }
         try await channel.write(Wire.bytes(90, Wire.string(1, url)))
     }
+    /// How to bring the TV's field from `sent` to `value`. The TV inserts what it is sent at its cursor (the end of
+    /// what was typed) instead of replacing the field, so sending the whole text again after a pause doubled it
+    /// ("test", then "testing", gave "testtesting"). Keep the shared start, delete the rest, insert the new tail.
+    public static func typingEdit(from sent: String, to value: String) -> (deletes: Int, insert: String) {
+        let shared = zip(sent, value).prefix { $0 == $1 }.count
+        return (sent.count - shared, String(value.dropFirst(shared)))
+    }
     static func textMessage(_ text: String, imeCounter: UInt64, fieldCounter: UInt64) throws -> Data {
         guard !text.isEmpty, text.utf16.count <= 4096 else { throw RemoteFailure.message(String(localized: "Enter between 1 and 4096 characters")) }
         let end = UInt64(text.utf16.count - 1)
@@ -169,12 +176,12 @@ public final class TVSession {
 
 /// The name this install pairs under. The TV keeps one certificate per client name, so two phones pairing under the
 /// same name sign each other out: the last one to pair keeps working, the other fails on its next connection.
-/// Each install gets its own stable name ("Debloated TV iPhone 3F2A"); it also shows in the TV's paired devices.
+/// Each install gets its own stable name ("Purio TV iPhone 3F2A"); it also shows in the TV's paired devices.
 public enum RemoteClientName {
     static let key = "remoteClientName"
     public static func current(_ defaults: UserDefaults = .standard) -> String {
         if let saved = defaults.string(forKey: key), !saved.isEmpty { return saved }
-        let name = "Debloated TV iPhone " + String(UUID().uuidString.prefix(4))
+        let name = "Purio TV iPhone " + String(UUID().uuidString.prefix(4))
         defaults.set(name, forKey: key)
         return name
     }

@@ -97,6 +97,7 @@ public struct FrameDecoder {
 public enum TVKey: UInt64 {
     case home = 3, back = 4, up = 19, down = 20, left = 21, right = 22, select = 23
     case delete = 67, volumeUp = 24, volumeDown = 25, power = 26, playPause = 85, play = 126, pause = 127, mute = 164, settings = 176, inputs = 178
+    case rewind = 89, fastForward = 90, captions = 175
 }
 
 /// Only an explicit wake action may survive reconnection, once and for at most 30 seconds.

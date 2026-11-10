@@ -17,16 +17,24 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import javax.net.ssl.HttpsURLConnection;
 
-/** Personal launcher fork: weather is fetched only while Home is resumed. No service or alarm. */
+/**
+ * Personal launcher fork: weather is fetched only while Home is resumed. No service or alarm.
+ * Two modes: a typed city with its coordinates (weather.city, latitude, longitude), or weather.auto, where the TV's own
+ * rough location is used (TvLocation) and the row stays hidden until the TV knows where it is.
+ */
 final class HomeWeather {
     private final TextView view;
     private final View row;
     private final ImageView icon;
     private final SharedPreferences cache;
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private final String location;
-    private final String endpoint;
-    private final String city;
+    private final Context app;
+    private final boolean auto;
+    private String location;
+    private String endpoint;
+    private String city;
+    private double latitude = Double.NaN;
+    private double longitude = Double.NaN;
     private ExecutorService worker;
     private Future<?> request;
     private volatile HttpsURLConnection connection;
@@ -45,14 +53,20 @@ final class HomeWeather {
         this.view = view;
         this.row = row;
         this.icon = icon;
+        this.app = context.getApplicationContext();
+        this.auto = settings != null && settings.optBoolean("enabled", false) && settings.optBoolean("auto", false);
         this.city = city;
         cache = context.getSharedPreferences("home_weather", Context.MODE_PRIVATE);
-        boolean enabled = !city.isEmpty() && HomeWeatherData.validLocation(latitude, longitude);
+        if (auto) {
+            double[] here = TvLocation.current(app);
+            if (here != null) { latitude = here[0]; longitude = here[1]; }
+            this.city = TvLocation.keptPlace(app);
+        }
+        this.latitude = latitude;
+        this.longitude = longitude;
+        boolean enabled = (auto || !city.isEmpty()) && HomeWeatherData.validLocation(latitude, longitude);
         row.setVisibility(enabled ? View.VISIBLE : View.GONE);
-        location = enabled ? latitude + "," + longitude : "";
-        endpoint = enabled ? "https://api.open-meteo.com/v1/forecast?latitude=" + latitude
-                + "&longitude=" + longitude + "&current=temperature_2m,apparent_temperature,weather_code,is_day"
-                + "&temperature_unit=celsius&forecast_days=1&timezone=auto" : "";
+        point(enabled);
         if (enabled && location.equals(cache.getString("location", ""))) {
             try {
                 data = new HomeWeatherData(Double.parseDouble(cache.getString("temperature", "NaN")),
@@ -62,11 +76,38 @@ final class HomeWeather {
         }
     }
 
+    private void point(boolean enabled) {
+        location = enabled ? latitude + "," + longitude : "";
+        endpoint = enabled ? "https://api.open-meteo.com/v1/forecast?latitude=" + latitude
+                + "&longitude=" + longitude + "&current=temperature_2m,apparent_temperature,weather_code,is_day"
+                + "&temperature_unit=celsius&forecast_days=1&timezone=auto" : "";
+    }
+
+    /** weather.auto: follow the TV's rough location; a new place drops the old reading. False while unknown. */
+    private boolean locate() {
+        if (!auto) return !endpoint.isEmpty();
+        double[] here = TvLocation.current(app);
+        if (here == null) {
+            TvLocation.askOnce(app, () -> { if (active) refresh(); });
+            row.setVisibility(View.GONE);
+            return false;
+        }
+        if (here[0] != latitude || here[1] != longitude) {
+            latitude = here[0];
+            longitude = here[1];
+            point(true);
+            city = TvLocation.keptPlace(app);
+            if (!location.equals(cache.getString("location", ""))) data = null;
+        }
+        row.setVisibility(View.VISIBLE);
+        return true;
+    }
+
     void start() {
-        if (endpoint.isEmpty() || active) return;
+        if ((!auto && endpoint.isEmpty()) || active) return;
         active = true;
         if (worker == null || worker.isShutdown()) worker = Executors.newSingleThreadExecutor();
-        render();
+        if (!endpoint.isEmpty()) render();
         refresh();
     }
 
@@ -84,6 +125,10 @@ final class HomeWeather {
     private void refresh() {
         if (!active) return;
         handler.removeCallbacks(refresh);
+        if (!locate()) {   // weather.auto and the TV doesn't know where it is yet: look again later, quietly
+            handler.postDelayed(refresh, HomeWeatherData.RETRY_MS);
+            return;
+        }
         long now = System.currentTimeMillis();
         if (now < retryAt) {
             render();
@@ -96,13 +141,18 @@ final class HomeWeather {
             return;
         }
         int token = generation;
+        final String url = endpoint, here = location;
+        final double lat = latitude, lon = longitude;
+        final boolean named = !auto || !city.isEmpty();
         request = worker.submit(() -> {
             HomeWeatherData result = null;
-            try { result = fetch(); } catch (Exception unavailable) { /* Cached values or the unavailable label. */ }
+            try { result = fetch(url); } catch (Exception unavailable) { /* Cached values or the unavailable label. */ }
             final HomeWeatherData fetched = result;
+            final String place = named ? null : TvLocation.place(app, lat, lon);
             handler.post(() -> {
-                if (!active || token != generation) return;
+                if (!active || token != generation || !here.equals(location)) return;
                 request = null;
+                if (place != null && !place.isEmpty()) city = place;
                 failed = fetched == null;
                 if (fetched != null) {
                     data = fetched;
@@ -121,8 +171,13 @@ final class HomeWeather {
         });
     }
 
-    private HomeWeatherData fetch() throws Exception {
-        HttpsURLConnection current = (HttpsURLConnection) new URL(endpoint).openConnection();
+    /** The place shown and reported to the phone ("" when the TV hasn't named it). */
+    String place() {
+        return city;
+    }
+
+    private HomeWeatherData fetch(String url) throws Exception {
+        HttpsURLConnection current = (HttpsURLConnection) new URL(url).openConnection();
         connection = current;
         current.setConnectTimeout(5000);
         current.setReadTimeout(5000);
@@ -177,7 +232,7 @@ final class HomeWeather {
             int image = iconResource(data.icon());
             icon.setVisibility(image == 0 ? View.GONE : View.VISIBLE);
             if (image != 0) icon.setImageResource(image);
-            view.setContentDescription(city + ": " + line);
+            view.setContentDescription(city.isEmpty() ? line : city + ": " + line);
         } else {
             icon.setVisibility(View.GONE);
             view.setText(failed ? R.string.weather_unavailable : R.string.weather_loading);

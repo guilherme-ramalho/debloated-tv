@@ -200,8 +200,11 @@ struct AddressEntrySheet: View {
 }
 
 /// The connection button at the top of the remote: says what's going on and does the useful thing when tapped.
+/// `.pill` is the compact capsule; `.block` is the remote's two-line header (TV and its state, then the app on screen).
 struct TVConnectionChip: View {
+    enum Layout { case pill, block }
     @ObservedObject var model: RemoteModel
+    var layout: Layout = .pill
     let openDetails: () -> Void
     @State private var retried = false
     private enum ChipState { case connect, busy, connected, standby, offline }
@@ -212,6 +215,43 @@ struct TVConnectionChip: View {
         return .offline
     }
     var body: some View {
+        if layout == .block { block } else { pill }
+    }
+    private static let green = Color(red: 92/255, green: 200/255, blue: 168/255)
+    private static let amber = Color(red: 240/255, green: 170/255, blue: 90/255)
+    private var block: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Button(action: tap) {
+                HStack(spacing: 7) {
+                    switch state {
+                    case .connect: Image(systemName: "plus.circle.fill").font(.system(size: 14)).foregroundStyle(QuietTheme.cyan); Text("Connect TV")
+                    case .busy: ProgressView().controlSize(.mini); Text(verbatim: model.tvName).foregroundStyle(QuietTheme.muted)
+                    case .connected: Circle().fill(Self.green).frame(width: 8, height: 8); Text(verbatim: model.tvName)
+                    case .standby: Circle().fill(QuietTheme.muted).frame(width: 8, height: 8); Text("Standby · Wake")
+                    case .offline: Circle().fill(Self.amber).frame(width: 8, height: 8); Text("Offline · Retry").foregroundStyle(Self.amber)
+                    }
+                }
+                .font(.system(size: 16, weight: .semibold)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.8)
+                .frame(maxWidth: .infinity, minHeight: 24, alignment: .leading).contentShape(Rectangle())
+            }
+            .buttonStyle(.plain).disabled(state == .busy || model.showingPIN)
+            .accessibilityLabel(state == .connect ? Text("Connect TV") : Text("TV connection"))
+            .accessibilityValue(Text(verbatim: model.status))
+            // The app on screen sits outside the button so VoiceOver and UI tests read it on its own ("On TV: …").
+            if state == .connected, let app = model.currentAppName {
+                HStack(spacing: 5) {
+                    Image(systemName: "tv").font(.system(size: 12, weight: .medium))
+                    Text(app).lineLimit(1).minimumScaleFactor(0.85)
+                }
+                .font(.system(size: 13)).foregroundStyle(QuietTheme.muted)
+                .frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle()).onTapGesture(perform: tap)
+                .accessibilityElement(children: .ignore).accessibilityLabel("On TV: " + app)
+            }
+        }
+        .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
+        .onChange(of: model.ready) { _, ready in if ready { retried = false } }
+    }
+    private var pill: some View {
         Button(action: tap) {
             HStack(spacing: 7) {
                 switch state {
@@ -252,3 +292,4 @@ struct TVConnectionChip: View {
         }
     }
 }
+

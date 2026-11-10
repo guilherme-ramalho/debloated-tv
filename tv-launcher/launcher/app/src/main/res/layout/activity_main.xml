@@ -180,6 +180,13 @@
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/topButtons"
                 android:layout_marginEnd="16dp"
+                android:orientation="horizontal">
+
+              <!-- The greeting over the clock; the day, date and weather column beside both, starting on the greeting's
+                   line, so lines added under the date (weather, lunar date) grow downward and move nothing above. -->
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <!-- The header texts use gravity left, not start: the launcher lays out left to right
@@ -188,7 +195,7 @@
                 <TextView
                     android:id="@+id/greeting"
                     android:gravity="left"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:ellipsize="end"
@@ -200,7 +207,7 @@
                     android:textAllCaps="true" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:baselineAligned="true">
@@ -231,23 +238,25 @@
                         android:fontFamily="@string/font_medium"
                         android:letterSpacing="0.08"
                         android:textAllCaps="true" />
+                </LinearLayout>
+              </LinearLayout>
 
                     <View
                         android:id="@+id/clockDivider"
                         android:layout_width="1dp"
-                        android:layout_height="26dp"
-                        android:layout_gravity="bottom"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="top"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="10dp"
                         android:background="#33FFFFFF" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="9dp"
+                        android:layout_gravity="top"
                         android:orientation="vertical">
 
                         <!-- Shamsi date ("27 Mehr 1405"), shown when shamsi_date is on. -->
@@ -326,7 +335,6 @@
                                 android:includeFontPadding="false" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
             </LinearLayout>
 
@@ -354,8 +362,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignBottom="@id/leftBlock"
-                android:layout_marginBottom="6dp"
+                android:layout_alignTop="@id/leftBlock"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:orientation="horizontal">

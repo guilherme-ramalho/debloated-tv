@@ -34,8 +34,15 @@ public struct DebloatProfile: Identifiable, Equatable {
     }
 
     /// config.json for the launcher: the profile's theme with the dock the user chose.
+    /// The launcher's built-in defaults for these are upstream's author's TV (TCL: its remote's app buttons and
+    /// Settings keycode, com.tcl.tv as Live TV). Every model starts from none of them; its profile's theme names its
+    /// own (ios/Resources/Profiles/README.md). An empty list or string in config.json overrides the built-in default.
+    public static let modelSpecificDefaults: [String: Any] = [
+        "app_keys": [String](), "settings_key_keycodes": [Int](), "hidden_apps": [String](), "live_tv_package": "",
+    ]
+
     public func themeConfig(dock: [String]) throws -> Data {
-        var config = theme
+        var config = Self.modelSpecificDefaults.merging(theme) { _, profile in profile }
         config["dock_apps"] = dock.filter(Pattern.isPackage)
         // The phone is where Home is arranged: the launcher's tile menu (on by default since 3.3: hold OK for Move,
         // Remove from Home) would change the layout behind the phone's editor. A profile can still turn it on.

@@ -41,6 +41,32 @@ public enum LauncherStep: String, CaseIterable {
     }
 }
 
+/// Which launcher build the TV runs against the one this app carries, to offer "Update Home screen" only when the
+/// app's is newer. The TV reports its versionCode in the editor snapshot (home.version); the app's comes from
+/// Resources/Launcher/tvhome.json, which scripts/bundle-launcher.sh writes from the APK itself.
+public enum LauncherVersion {
+    /// What a launcher that doesn't report its version is: the build app 1.0 shipped (versionCode 12).
+    public static let unreported = 12
+
+    public static func onTV(_ snapshot: LauncherSnapshot) -> Int { snapshot.home?.version ?? unreported }
+
+    /// The bundled APK's versionCode from tvhome.json ({"versionCode": 13}); nil if missing or unreadable.
+    public static func bundled(_ json: Data?) -> Int? {
+        guard let json, let object = try? JSONSerialization.jsonObject(with: json) as? [String: Any],
+              let code = object["versionCode"] as? Int, code > 0 else { return nil }
+        return code
+    }
+
+    /// Only a strictly newer bundled build is offered; an unknown bundled version never is.
+    public static func updateAvailable(tv: Int, bundled: Int?) -> Bool { bundled.map { $0 > tv } ?? false }
+
+    /// The versionCode in `dumpsys package` output ("versionCode=12 minSdk=26 targetSdk=34"); nil if absent.
+    static func fromDumpsys(_ output: String) -> Int? {
+        guard let range = output.range(of: "versionCode=") else { return nil }
+        return Int(output[range.upperBound...].prefix { $0.isNumber })
+    }
+}
+
 public struct LauncherInstaller: Sendable {
     public static let package = "com.gathin.tvhome"
     public static let activity = "com.gathin.tvhome/.MainActivity"
@@ -69,6 +95,11 @@ public struct LauncherInstaller: Sendable {
         throw RemoteFailure.message(String(localized: "Home currently belongs to \(package.isEmpty ? "nothing" : package), which isn't a stock launcher this app knows. Nothing was changed."))
     }
 
+    /// The installed launcher's versionCode, read over ADB; nil when it isn't installed.
+    public func installedVersion() async throws -> Int? {
+        LauncherVersion.fromDumpsys(try await tv.run("dumpsys package \(Self.package) | grep -m 1 versionCode="))
+    }
+
     public func install(apk: Data, options: LauncherOptions, theme: Data? = nil,
                         step: (@Sendable (LauncherStep, Double) -> Void)? = nil) async throws -> String {
         step?(.checking, 0)
@@ -90,6 +121,9 @@ public struct LauncherInstaller: Sendable {
         if out.contains("INSTALL_FAILED_OLDER_SDK") { throw RemoteFailure.message("The TV refused the Home screen as too new for its Android version. Nothing else was changed.") }
         if out.contains("INSTALL_FAILED_UPDATE_INCOMPATIBLE") {
             throw RemoteFailure.message(String(localized: "A different build of this Home screen is already on the TV, signed with another key. Uninstall it on the TV first, then try again."))
+        }
+        if out.contains("INSTALL_FAILED_VERSION_DOWNGRADE") {
+            throw RemoteFailure.message(String(localized: "The TV already has a newer Home screen than this app carries. Update Purio TV, then try again. Nothing was changed."))
         }
         guard out.contains("Success") else { throw RemoteFailure.message("The TV refused to install the Home screen: \(out.trimmingCharacters(in: .whitespacesAndNewlines))") }
 

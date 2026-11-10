@@ -29,6 +29,12 @@ public enum TVPairingStore {
     private var waiter: CheckedContinuation<Void, Error>?
     private var waitForOn = false
     private var timeout: Task<Void, Never>?
+    /// When the TV said its remote started. Keys sent sooner are dropped on the TCL (its input bridge isn't ready),
+    /// which made every widget key a no-op: the first key waits until `keySettle` has passed (Wake already did).
+    /// A connection can't be kept between widget taps: iOS suspends the app after each one and closes its sockets.
+    private var readyAt: Date?
+    private var keysSettled = false
+    static let keySettle: TimeInterval = 1.5
     public init() {}
     public func cancel() { finishWait(RemoteFailure.message(String(localized: "Action cancelled"))); session?.disconnect(); session = nil }
     private func finishWait(_ error: Error? = nil) {
@@ -57,7 +63,7 @@ public enum TVPairingStore {
         let identity = try ClientIdentity.loadOrCreate()
         let session = TVSession(host: host, identity: identity); self.session = session
         defer { timeout?.cancel(); self.session?.disconnect(); self.session = nil }
-        power = nil; muted = nil
+        power = nil; muted = nil; readyAt = nil; keysSettled = false
         session.event = { [weak self] event in
             guard let self else { return }
             switch event {
@@ -68,37 +74,56 @@ public enum TVPairingStore {
             }
         }
         try await wait(seconds: 15) { session.connect(pin: pin) }
+        readyAt = Date()
+        var sentKey = false
         for (index, step) in steps.enumerated() {
             try Task.checkCancellation()
             switch step.kind {
-            case .wake:
-                if power == false {
-                    try await Task.sleep(nanoseconds: 1_500_000_000)
-                    if power == false {
-                        try await session.writeKey(.power)
-                        if power != true { try await wait(seconds: 10, onOnly: true, start: {}) }
-                    }
-                }
-            case .sleep: if power == true { try await session.writeKey(.power) }
+            case .wake: try await wakeIfOff(session)
+            case .sleep: if power == true { try await settleKeys(); try await session.writeKey(.power); sentKey = true }
             case .openApp:
                 guard power == true, let app = apps.first(where: { $0.id == step.argument }) else { throw RemoteFailure.message(String(localized: "Wake the TV and choose an available app")) }
                 try await session.writeLaunch(app.launchURL)
             case .input:
                 guard power == true, let input = inputs.first(where: { $0.id == step.argument }) else { throw RemoteFailure.message(String(localized: "Connect the TV editor and assign this input first")) }
                 try await session.writeLaunch(input.launchURL)
-            case .home: try await session.writeKey(.home)
-            case .pause: try await session.writeKey(.pause)
-            case .playPause: try await session.writeKey(.playPause)
-            case .volumeUp: try await session.writeKey(.volumeUp)
-            case .volumeDown: try await session.writeKey(.volumeDown)
+            case .home: try await settleKeys(); try await session.writeKey(.home); sentKey = true
+            case .pause: try await settleKeys(); try await session.writeKey(.pause); sentKey = true
+            case .playPause: try await settleKeys(); try await session.writeKey(.playPause); sentKey = true
+            case .volumeUp: try await settleKeys(); try await session.writeKey(.volumeUp); sentKey = true
+            case .volumeDown: try await settleKeys(); try await session.writeKey(.volumeDown); sentKey = true
+            case .key:
+                guard let key = step.key else { throw RemoteFailure.message(String(localized: "Unsupported remote key")) }
+                // Power on a TV in standby wakes it the way Wake does; otherwise it's a plain key (standby when on).
+                if key == .power && power == false { try await wakeIfOff(session) }
+                else { try await settleKeys(); try await session.writeKey(key); sentKey = true }
             case .mute:
                 if muted == nil { try await Task.sleep(nanoseconds: 300_000_000) }
                 guard let muted else { throw RemoteFailure.message(String(localized: "Could not read the TV’s mute state")) }
-                if !muted { try await session.writeKey(.mute) }
+                if !muted { try await settleKeys(); try await session.writeKey(.mute); sentKey = true }
             }
             progress?(index + 1)
             if index < steps.count - 1 { try await Task.sleep(nanoseconds: 350_000_000) }
         }
+        // Let the last key reach the TV's input before the connection closes.
+        if sentKey { try await Task.sleep(nanoseconds: 300_000_000) }
+    }
+
+    /// Waits out what's left of `keySettle` since the TV's remote started, once per connection.
+    private func settleKeys() async throws {
+        guard !keysSettled else { return }
+        keysSettled = true
+        let left = Self.keySettle - Date().timeIntervalSince(readyAt ?? Date())
+        if left > 0 { try await Task.sleep(nanoseconds: UInt64(left * 1_000_000_000)) }
+    }
+
+    /// Wakes a TV that reported it's off: let its remote input settle, press Power once, wait for it to report on.
+    private func wakeIfOff(_ session: TVSession) async throws {
+        guard power == false else { return }
+        try await settleKeys()
+        guard power == false else { return }
+        try await session.writeKey(.power)
+        if power != true { try await wait(seconds: 10, onOnly: true, start: {}) }
     }
     public func diagnose(host: String) async throws {
         // An empty quick action is never allowed; this action requests no state-changing command.

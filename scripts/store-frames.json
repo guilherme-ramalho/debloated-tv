@@ -1,0 +1,60 @@
+{
+  "_comment": "Store frames (scripts/store-frames.py): store order, the raw shot each frame uses, and its label and two-line headline per language. \\n breaks the headline.",
+  "order": ["01-remote", "02-tv-home", "07-look", "03-setup-review", "04-type", "05-actions", "06-action-steps"],
+  "text": {
+    "en": [
+      ["TV remote", "Your iPhone is\nthe remote"],
+      ["New Home screen", "A clean, fast\nHome for your TV"],
+      ["Four looks", "Make it yours\nin one tap"],
+      ["Debloat", "Turn off the clutter,\nsafely"],
+      ["Keyboard", "Type on the TV\nfrom your phone"],
+      ["Quick actions", "One tap for\nmovie night"],
+      ["Siri & Shortcuts", "Build your own\nroutines"]
+    ],
+    "de": [
+      ["TV-Fernbedienung", "Dein iPhone ist\ndie Fernbedienung"],
+      ["Neuer Startbildschirm", "Ein aufgeräumter,\nschneller Start"],
+      ["Vier Looks", "Dein Stil\nmit einem Tipp"],
+      ["Aufräumen", "Ballast abschalten,\nsicher"],
+      ["Tastatur", "Auf dem TV tippen,\nvom iPhone aus"],
+      ["Schnellaktionen", "Ein Tipp für\nden Filmabend"],
+      ["Siri & Kurzbefehle", "Eigene Abläufe\nerstellen"]
+    ],
+    "es": [
+      ["Mando de TV", "Tu iPhone es\nel mando"],
+      ["Nueva pantalla de inicio", "Un inicio limpio\ny rápido para tu TV"],
+      ["Cuatro estilos", "Hazlo tuyo\ncon un toque"],
+      ["Limpieza", "Quita lo que sobra,\nsin riesgos"],
+      ["Teclado", "Escribe en la TV\ndesde tu iPhone"],
+      ["Acciones rápidas", "Un toque para\nla noche de cine"],
+      ["Siri y Atajos", "Crea tus\npropias rutinas"]
+    ],
+    "fr": [
+      ["Télécommande", "Votre iPhone devient\nla télécommande"],
+      ["Nouvel écran d'accueil", "Un accueil épuré\net rapide pour votre TV"],
+      ["Quatre styles", "À votre goût,\nen un geste"],
+      ["Nettoyage", "Désactivez le superflu,\nen toute sécurité"],
+      ["Clavier", "Écrivez sur la TV\ndepuis votre iPhone"],
+      ["Actions rapides", "Un geste pour\nla soirée film"],
+      ["Siri et Raccourcis", "Créez vos\npropres routines"]
+    ],
+    "it": [
+      ["Telecomando", "Il tuo iPhone è\nil telecomando"],
+      ["Nuova schermata Home", "Una Home pulita\ne veloce per la TV"],
+      ["Quattro stili", "Rendila tua\ncon un tocco"],
+      ["Pulizia", "Spegni il superfluo,\nin sicurezza"],
+      ["Tastiera", "Scrivi sulla TV\ndall'iPhone"],
+      ["Azioni rapide", "Un tocco per\nla serata film"],
+      ["Siri e Comandi Rapidi", "Crea le tue\nroutine"]
+    ],
+    "pt-BR": [
+      ["Controle remoto", "Seu iPhone é\no controle"],
+      ["Nova tela inicial", "Uma tela inicial\nlimpa e rápida"],
+      ["Quatro visuais", "Do seu jeito,\ncom um toque"],
+      ["Limpeza", "Desative o excesso\ncom segurança"],
+      ["Teclado", "Digite na TV\npelo iPhone"],
+      ["Ações rápidas", "Um toque para\na noite de filme"],
+      ["Siri e Atalhos", "Crie suas\npróprias rotinas"]
+    ]
+  }
+}

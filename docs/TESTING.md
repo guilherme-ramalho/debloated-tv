@@ -1,6 +1,6 @@
 # Testing plan
 
-How to test Debloated TV before and after a release. Anyone should be able to follow it.
+How to test Purio TV before and after a release. Anyone should be able to follow it.
 **Keep it current:** every new feature or bug fix adds or updates its cases here, in the same pull request.
 
 ## How to use it
@@ -111,6 +111,9 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | REM-11 | Shortcut for an app not installed on the TV | Clear message; nothing else happens | Manual |
 | REM-12 | Settings › Remote shortcuts: hide, reorder | Remote reflects the change | Manual |
 | REM-13 | Touch feedback off | No haptics on presses | Manual |
+| REM-14 | Header (1.1): connected, standby, offline, then tap the TV name and the app line | Power, then the TV name with a green dot and the app on screen below it, then Keyboard and Inputs. Standby shows "Standby · Wake" (tap wakes), offline "Offline · Retry" (first tap retries, second opens connection settings); the name and app line open connection settings. Nothing clipped on a 4.7-inch iPhone | Manual; E2E reads "On TV: YouTube" |
+| REM-15 | Second row (1.1): Rewind and Fast-forward in Netflix and YouTube while playing; Subtitles in a show with subtitles; TV settings from Home and from inside an app | Skips back/forward once per tap; subtitles toggle or their menu opens where the app supports it; the TV's settings menu opens. Note on the TCL which ones the firmware ignores | Manual (TCL first) |
+| REM-16 | Type on TV: type "test", pause, type "ing"; then delete two letters, pause, type "ed" | The TV field reads "testing", then "testied" ("testi" after the two deletes, plus "ed"): only the change is sent each pause, never the whole text again | Auto `testTypingSendsOnlyTheChange` + Manual (TCL; 9 Nov 2026: was "testtesting") |
 
 ## 3. TV tab and setup entry (SET)
 
@@ -121,7 +124,7 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | SET-03 | After a setup checked a supported model | Model name with "Supported" badge | Auto: `testSupportedTVShowsItsModel`, `TVSetupStateTests` |
 | SET-04 | After a setup found no tested list | "This TV isn't supported for setup yet", model details, share/request button, no Start setup | Auto: `testUnsupportedTVExplainsAndOffersARequest` |
 | SET-05 | Share this model's details | Share sheet with model and Android version only, no IP or personal data | Manual + Auto `testModelRequestCarriesOnlyModelDetails…` |
-| SET-06 | TV with the new Home screen; press Home on the TV | TV tab switches to the editor with the green "Debloated" strip | Manual (state: Auto `TVSetupStateTests`); E2E |
+| SET-06 | TV with the new Home screen; press Home on the TV | TV tab switches to the editor with the green "Purio TV" strip | Manual (state: Auto `TVSetupStateTests`); E2E |
 | SET-07 | TV already has the new Home (e.g. app reinstalled), TV playing something: "Already set up? Check my TV" | TV goes to Home; tab switches to the editor | Manual |
 | SET-08 | Same button on a TV with its original Home | "This TV still has its original Home screen…"; setup card stays | Manual |
 | SET-08b | Delete and reinstall the app | TVs that had the new Home still show the editor (state kept in this iPhone's Keychain) | Manual |
@@ -179,6 +182,10 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | LCH-12 | TV inputs and Live TV from the new Home | Inputs open, picture shows | Manual |
 | LCH-13 | Install over a launcher that holds WRITE_SECURE_SETTINGS, with a profile that doesn't ask for it | The permission is taken back (`dumpsys package com.gathin.tvhome` shows granted=false); if the TV doesn't confirm, setup says so | Auto: `testSecureSettingsFollowTheProfile`; Manual on TV |
 | LCH-14 | Launcher 3.3 on the TV: hold OK on a tile; move the focus across dock apps of different colours | App info opens (tile menu off, the phone arranges Home); on TCL the glow changes colour at once, without a fade | Manual + Auto `testThemeGetsTheChosenDock` |
+| LCH-15 | Update Home screen (1.1): TV with the 1.0 launcher (versionCode 12) and TV Home connected; TV tab › Home screen update › turn on network debugging › Update | Card shows only when the app's launcher is newer than the TV's (never for the same or an older one, never before TV Home answers); the update installs with `pm install -r` and no theme, so dock, order, hidden apps, wallpaper, weather and look stay; remote helpers stay on; the TV reports the new version afterwards and the card goes away once TV Home reconnects; a TV already on that version installs nothing; then debugging is turned off | Auto: `testHomeUpdateIsOfferedOnlyForANewerBundledLauncher`, `testInstalledVersionComesFromDumpsys`, `testUpdateWithoutAThemeKeepsTheTVsLayout`; Manual on emulator, then TCL |
+| LCH-16 | The TV has a newer launcher than the app carries (setup again or update) | Install refused with "newer Home screen… update Purio TV"; nothing else changed | Auto: `testNewerBuildOnTheTVIsExplained` |
+| LCH-17 | Set up a model whose profile names no remote buttons, Settings key or Live TV app (the emulator profile) | config.json has empty `app_keys`, `settings_key_keycodes`, `hidden_apps` and `live_tv_package`: nothing from the launcher's built-in TCL defaults; a profile that names them keeps its own | Auto: `testOtherModelsDontInheritTheLaunchersTCLDefaults`, `testThemeGetsTheChosenDock`; E2E reads the TV's config |
+| LCH-18 | Turn weather on and off from the phone (also with the date or lunar date lines) | The tops of Inputs, network and Settings and the day name line up with the top of the greeting ("Good evening"); date and weather run down beside the clock; nothing in the top bar moves. Also check `date_below_clock` and a header without greeting | Manual (TCL, 9 Nov 2026: pass) |
 
 ## 6. Undo (UND) ⚠
 
@@ -216,11 +223,21 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | ACT-01 | Create a quick action with several steps, Run | Steps run in order; progress shown; Cancel stops | Manual |
 | ACT-02 | Invalid steps (empty, after Turn off TV) | Rejected with a message | Auto: `testQuickActionsRejectInvalidSteps…` |
 | ACT-03 | Delete an action | Gone from the list and from Shortcuts | Manual |
-| ACT-04 | Sleep timer: 30 min, custom, cancel | TV turns off at the time; cancel works | Manual |
+| ACT-04 | Sleep timer (1.1, TV-owned): 1 min, 30 min, custom, cancel; disconnect the phone after setting it | The TV confirms the time; it goes to standby at the time with the phone away; Cancel clears it. Turning the TV off and on again drops it after a reboot only. With the remote-key helper off the TV refuses with a clear message | Manual (TCL first) + Auto `SleepTimerTest` |
+| HOM-W1 | Weather on TV (1.1): TV tab › Weather on TV on, with TV Home in front | Home redraws with the weather by the clock within a minute; the row says "From the TV · <town>" (or "Location from the TV" until the TV names it); off removes it | Manual (TCL first) + Auto `TvLocationTest` |
+| HOM-W2 | Weather on a TV that has no location yet (fresh TV, or location off in Android settings) | No weather line and no "Loading…" on Home; it appears on its own once the TV knows where it is | Manual |
+| HOM-W3 | Older launcher (1.0) on the TV | No Weather row in the TV tab | Manual |
+| HOM-L1 | Look (1.1): TV tab › Look › Calm, Glass, Gallery, then Cinema | Home redraws within seconds each time and matches the preset boards; apps, order and wallpaper unchanged; Cinema brings back today's Home exactly | Manual (TCL first) + Auto `HomeLooksTest` |
+| HOM-L2 | Pick Calm, then apply a layout change (dock icons) from the phone | The look stays Calm after the layout applies | Manual |
+| HOM-L3 | Cinema look, Netflix in focus: pick Aurora, then Dusk, then a photo on the phone | Each wallpaper is clearly visible behind Home; no red tint from the focused app; clock, app name and dock stay readable | Manual (TCL, 9 Nov 2026: pass) + Auto `aPhoneWallpaperIsSeenInEveryLook` |
 | ACT-05 | Favorite inputs: add, rename, assign HDMI | Opens the right input | Manual |
-| ACT-06 | Siri in each language: "Open Netflix with Debloated" (en), "Abra a Netflix na minha TV" (pt-BR), "Abre Netflix en mi tele" (es), "Ouvre Netflix sur ma télé" (fr), "Apri Netflix sulla mia TV" (it), "Öffne Netflix mit Debloated" (de); also "Ligue a minha TV" | Netflix opens on the TV; the alternative names (Debloated TV; Minha TV; Mi tele, Mi televisor, Mi TV; Ma télé, Ma TV; Mia TV) work too. Test on the TestFlight build alone: a Dev build on the same phone answers to the same names | Manual |
+| ACT-06 | Siri in each language: "Open Netflix with Purio TV" (en), "Abra a Netflix na minha TV" (pt-BR), "Abre Netflix en mi tele" (es), "Ouvre Netflix sur ma télé" (fr), "Apri Netflix sulla mia TV" (it), "Öffne Netflix mit Purio TV" (de); also "Ligue a minha TV" | Netflix opens on the TV; the alternative names (Purio, Purio Remote, My TV; Minha TV, Purio Controle; Mi tele, Mi televisor; Ma télé, Ma TV; Mia TV, Purio Telecomando; Mein Fernseher, Purio Fernbedienung) work too. Test on the TestFlight build alone: a Dev build on the same phone answers to the same names | Manual |
 | ACT-07 | Shortcuts app: Control TV, Run TV Quick Action | Work without opening the app | Manual |
 | ACT-08 | Home Screen widget, four chosen controls | Each control acts on the TV; no background polling | Manual |
+| ACT-08b | TV controls widget (1.1, small 2×2 and medium one row): each of its four actions with the app closed and with the phone locked | Each tap acts once on the TV about 1.5–2 s later (it connects per tap, so it's for one-off actions; the D-pad widget was dropped for being too slow to navigate with); the app stays closed | Manual (TCL) |
+| ACT-08c | TV action control (1.0, unchanged; iOS 18+) in Control Center and, if added, a Lock Screen corner: Wake, then TV power (on or off) | Runs without opening the app. In a Lock Screen corner it needs a press-and-hold (a tap does nothing, by iOS design). 1.1 adds no Lock Screen widget: one below the clock only opens the app on iPhone | Manual (TCL; hold verified 9 Nov 2026) |
+| ACT-08d | Quick action widget (1.1, Home Screen small): choose Movie night, tap Run; then rename the action in the app | The action runs on the TV without opening the app; the widget shows the new name; with no actions it says how to create one | Manual (TCL) |
+| ACT-08e | Power on the TV controls widget with the TV in standby, then with it on | From standby the TV wakes (a moment after the tap, like Wake); when on it goes to standby. The app doesn't open | Manual (TCL; 9 Nov 2026: pass) |
 | ACT-09 | Control Center control (iOS 18+) | Sends its action | Manual |
 
 ## 9. Backups and settings (BAK)

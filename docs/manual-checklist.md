@@ -35,7 +35,7 @@ Before setup on the TCL: the launcher on it is debug-signed, so restore to stock
 
 ## Physical iPhone only
 
-- [ ] ACT-06 — Siri: "Open Netflix with Debloated"; in Portuguese "Abra a Netflix na minha TV" and "Ligue a minha TV"
+- [ ] ACT-06 — Siri: "Open Netflix with Purio TV"; in Portuguese "Abra a Netflix na minha TV" and "Ligue a minha TV"
 - [ ] ACT-07 — Shortcuts app: Control TV, Run TV Quick Action, without opening the app
 - [ ] ACT-08 — Home Screen widget: four controls act on the TV, no background polling (Battery › app shows no background activity)
 - [ ] ACT-09 — Control Center control (iOS 18+)

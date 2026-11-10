@@ -98,6 +98,44 @@ final class PreferencesTests: XCTestCase {
         XCTAssertThrowsError(try HomeBackup.decode(JSONEncoder().encode(HomeBackup(name: "Photo", layout: photo))))
         XCTAssertThrowsError(try HomeBackup.decode(Data(repeating: 0, count: 2_000_001)))
     }
+    func testKeyStepsAllowOnlyTheWidgetKeys() throws {
+        try QuickAction(name: "Pad", steps: [.init(key: .up), .init(key: .select), .init(key: .power)]).validate()
+        XCTAssertEqual(ActionStep(key: .rewind).key, .rewind)
+        XCTAssertThrowsError(try QuickAction(name: "Delete", steps: [.init(key: .delete)]).validate())
+        XCTAssertThrowsError(try QuickAction(name: "Junk", steps: [.init(.key, argument: "abc")]).validate())
+        XCTAssertNil(ActionStep(.home).key)
+    }
+
+    func testSnapshotsFromOlderLaunchersHaveNoHomeSettings() throws {
+        let old = #"{"revision":"r","layout":{"dockCount":5,"order":[],"hidden":[],"wallpaper":"quiet-night"},"apps":[],"inputs":[]}"#
+        XCTAssertNil(try JSONDecoder().decode(LauncherSnapshot.self, from: Data(old.utf8)).home)
+        let new = #"{"revision":"r","layout":{"dockCount":5,"order":[],"hidden":[],"wallpaper":"quiet-night"},"apps":[],"inputs":[],"home":{"features":["weather","sleepTimer"],"weather":true,"weatherAuto":true,"weatherPlace":"Valladolid","locationAllowed":true}}"#
+        let home = try XCTUnwrap(try JSONDecoder().decode(LauncherSnapshot.self, from: Data(new.utf8)).home)
+        XCTAssertTrue(home.supports("weather"))
+        XCTAssertEqual(home.weatherPlace, "Valladolid")
+    }
+
+    /// LCH-15: the update is offered only when the app carries a newer launcher than the TV reports.
+    func testHomeUpdateIsOfferedOnlyForANewerBundledLauncher() throws {
+        let base = #"{"revision":"r","layout":{"dockCount":5,"order":[],"hidden":[],"wallpaper":"quiet-night"},"apps":[],"inputs":[]"#
+        let old = try JSONDecoder().decode(LauncherSnapshot.self, from: Data((base + "}").utf8))
+        let withoutVersion = try JSONDecoder().decode(LauncherSnapshot.self, from: Data((base + #","home":{"features":["looks"]}}"#).utf8))
+        let current = try JSONDecoder().decode(LauncherSnapshot.self, from: Data((base + #","home":{"features":["looks"],"version":13}}"#).utf8))
+        XCTAssertEqual(LauncherVersion.onTV(old), 12, "the 1.0 launcher reports nothing: it is versionCode 12")
+        XCTAssertEqual(LauncherVersion.onTV(withoutVersion), 12)
+        XCTAssertEqual(LauncherVersion.onTV(current), 13)
+
+        let bundled = LauncherVersion.bundled(Data(#"{"versionCode": 13}"#.utf8))
+        XCTAssertEqual(bundled, 13)
+        XCTAssertTrue(LauncherVersion.updateAvailable(tv: LauncherVersion.onTV(old), bundled: bundled))
+        XCTAssertFalse(LauncherVersion.updateAvailable(tv: LauncherVersion.onTV(current), bundled: bundled), "same version: no card")
+        XCTAssertFalse(LauncherVersion.updateAvailable(tv: 14, bundled: bundled), "the TV is newer than the app: no card")
+        XCTAssertFalse(LauncherVersion.updateAvailable(tv: 12, bundled: nil), "a build without tvhome.json never offers it")
+        for broken in [nil, Data("junk".utf8), Data(#"{"versionCode":"13"}"#.utf8), Data(#"{"versionCode":0}"#.utf8)] {
+            XCTAssertNil(LauncherVersion.bundled(broken))
+        }
+    }
+
     func testQuickActionsRejectInvalidStepsAndPostShutdownCommands() throws {
         try QuickAction(name: "Movie time", steps: [.init(.wake), .init(.openApp, argument: "com.netflix.ninja")]).validate()
         XCTAssertThrowsError(try QuickAction(name: "Empty", steps: []).validate())
@@ -118,6 +156,18 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(try Wire.fields(object).first(where: { $0.number == 3 })?.bytes, Data(text.utf8))
         XCTAssertThrowsError(try TVSession.textMessage("", imeCounter: 0, fieldCounter: 0))
         XCTAssertThrowsError(try TVSession.textMessage(String(repeating: "a", count: 4097), imeCounter: 0, fieldCounter: 0))
+    }
+
+    /// REM-16: typing after a pause sends only the change; the TV inserts at its cursor, so the whole text doubled it.
+    func testTypingSendsOnlyTheChange() {
+        func edit(_ a: String, _ b: String) -> String { let e = TVSession.typingEdit(from: a, to: b); return "\(e.deletes)|\(e.insert)" }
+        XCTAssertEqual(edit("test", "testing"), "0|ing")
+        XCTAssertEqual(edit("", "hi"), "0|hi")
+        XCTAssertEqual(edit("testing", "test"), "3|")
+        XCTAssertEqual(edit("hi", ""), "2|")
+        XCTAssertEqual(edit("abc", "abd"), "1|d", "a changed last letter: delete it, type the new one")
+        XCTAssertEqual(edit("café", "cafe"), "1|e", "counts characters, not bytes")
+        XCTAssertEqual(edit("same", "same"), "0|")
     }
     func testLargeEditorFramesDoNotRelaxControlConnectionLimit() throws {
         let body = Data(repeating: 31, count: 100_000)

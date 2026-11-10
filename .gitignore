@@ -4,6 +4,8 @@
 local.properties
 *.keystore
 *.jks
+# Encrypted launcher-key backup image (scripts/launcher-key.sh). Keep it off the repo even if moved here.
+*.dmg
 *.p12
 *.mobileprovision
 *.pem
@@ -27,6 +29,7 @@ __pycache__/
 
 # Built by scripts/bundle-launcher.sh
 ios/Resources/Launcher/*.apk
+ios/Resources/Launcher/tvhome.json
 
 # Local scratch and tool output
 *.xcresult

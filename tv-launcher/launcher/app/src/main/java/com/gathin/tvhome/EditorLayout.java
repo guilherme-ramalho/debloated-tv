@@ -5,8 +5,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -38,6 +41,22 @@ final class EditorLayout {
 
     static boolean validPackage(String p) {
         return p != null && !p.isEmpty() && p.getBytes(StandardCharsets.UTF_8).length <= 180 && PACKAGE.matcher(p).matches();
+    }
+
+    /**
+     * What applying a layout from the phone writes so its wallpaper (a preset or a photo) is seen: no glow in the
+     * focused app's colour (it tinted the whole screen red with Netflix in focus), and in the Cinema look a lighter
+     * scrim and softer app artwork over it. The name, clock and dock stay readable (checked on a TCL, 9 Nov 2026).
+     * Only switches Home already has: nothing new is drawn, and the glow off is one full-screen layer less.
+     */
+    static final int WALLPAPER_SCRIM = 55, WALLPAPER_ART = 20;
+
+    static Map<String, Object> wallpaperShows() {
+        Map<String, Object> m = new LinkedHashMap<>();
+        m.put("ambient_glow", false);
+        m.put("cinematic_scrim", WALLPAPER_SCRIM);
+        m.put("cinematic_art", WALLPAPER_ART);
+        return Collections.unmodifiableMap(m);
     }
 
     static boolean preset(String id) {

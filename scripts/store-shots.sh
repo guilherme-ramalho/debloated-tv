@@ -69,10 +69,12 @@ shot() {
   echo "  saved $OUT-upload/$name.jpg ($size)"
 }
 shot 01-remote "Remote tab, connected, with the app shortcuts row."
-shot 02-tv-home "TV tab: the Debloated strip and the Home editor (dock and wallpaper)."
+shot 02-tv-home "TV tab: the Purio TV strip and the Home editor (dock and wallpaper)."
 shot 03-setup-review "Settings › Debloat & new Home, up to 'Choose what stays' (network debugging on). Don't press Apply."
 shot 04-type "Remote with Type on TV open and a few words typed."
 shot 05-actions "Actions tab with a quick action or two."
 shot 06-action-steps "A quick action opened, showing its steps."
+shot 07-look "TV tab › Look, with the four looks (TV Home connected, so the row shows)."
+shot 08-widgets "Simulator Home Screen with the TV controls widget (medium) and a Quick action widget added (long-press › Edit › Add Widget › Purio TV)."
 xcrun simctl status_bar "$UDID" clear
 say "Done. Upload the files in $OUT-upload"

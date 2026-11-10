@@ -18,6 +18,10 @@ struct TVHomeView: View {
                 QuietHeading(title: "TV") { EmptyView() }
                 if info.homeInstalled {
                     NavigationLink { TVSetupManageView(host: model.host) } label: { TVSetupStrip(info: info) }.buttonStyle(.plain)
+                    if homeUpdateAvailable {
+                        NavigationLink { HomeUpdateView(host: model.host) { editor.connect(model: model, force: true) } } label: { HomeUpdateCard() }
+                            .buttonStyle(.plain)
+                    }
                     editorContent
                 } else if info.supported == false {
                     TVSetupUnsupportedCard(info: info) { status.openSetup = true }
@@ -53,6 +57,11 @@ struct TVHomeView: View {
     }
 
     private var info: TVSetupInfo { status.info(model.host) }
+    /// Known only once TV Home answered: its snapshot says which build it runs.
+    private var homeUpdateAvailable: Bool {
+        guard let snapshot = editor.snapshot else { return false }
+        return LauncherVersion.updateAvailable(tv: LauncherVersion.onTV(snapshot), bundled: HomeUpdateFlow.bundledVersion)
+    }
 
     /// Presses Home on the TV and reads which Home answers. Ours flips the tab to the editor (TVRemoteApp watches the
     /// app in front); a stock launcher means this TV isn't set up yet.
@@ -103,6 +112,15 @@ struct TVHomeView: View {
                 QuietCard {
                     NavigationLink { WallpaperView() } label: { QuietRow(title: "Wallpaper", symbol: "photo", value: wallpaperName) }
                     Divider().overlay(QuietTheme.edge)
+                    if let home = editor.snapshot?.home, home.supports("looks") {
+                        NavigationLink { LookView() } label: { QuietRow(title: Text("Look"), detail: Text("Cinema, Calm, Glass or Gallery"), symbol: "sparkles", value: Text(LookView.name(home.look ?? "cinema"))) }
+                            .accessibilityIdentifier("lookRow")
+                        Divider().overlay(QuietTheme.edge)
+                    }
+                    if let home = editor.snapshot?.home, home.supports("weather") {
+                        WeatherRow(home: home)
+                        Divider().overlay(QuietTheme.edge)
+                    }
                     NavigationLink { HomeAppsView() } label: { QuietRow(title: "Apps & order", detail: "Reorder, hide or uninstall", symbol: "square.grid.2x2") }
                     Divider().overlay(QuietTheme.edge)
                     NavigationLink { ProfilesView() } label: { QuietRow(title: "Profiles", detail: "Save a layout for each person", symbol: "person.2") }
@@ -497,4 +515,95 @@ struct BackupsView: View {
 
 extension View {
     func remoteForm() -> some View { scrollContentBackground(.hidden).background(QuietTheme.background).tint(QuietTheme.cyan).toolbar(.visible, for: .navigationBar).toolbarBackground(QuietTheme.background, for: .navigationBar).toolbarBackground(.visible, for: .navigationBar) }
+}
+
+/// Weather by the clock on TV Home. The TV finds its own rough location (about 1 km) from nearby Wi-Fi, so there is no
+/// city to type; it checks the forecast every 30 minutes while Home is on screen, never in the background.
+struct WeatherRow: View {
+    let home: LauncherHome
+    @EnvironmentObject private var editor: HomeEditor
+    @EnvironmentObject private var settings: AppSettings
+    @State private var working = false
+    private var detail: String {
+        guard home.weather == true else { return String(localized: "Off") }
+        if home.locationAllowed == false { return String(localized: "The TV can't share its location") }
+        if let place = home.weatherPlace, !place.isEmpty { return String(localized: "From the TV · \(place)") }
+        return String(localized: "Location from the TV")
+    }
+    var body: some View {
+        Toggle(isOn: Binding(get: { home.weather == true }, set: { change($0) })) {
+            HStack(spacing: 11) {
+                Image(systemName: "cloud.sun").font(.system(size: 20)).frame(width: 25).foregroundStyle(.white)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Weather on TV").font(.system(size: 14, weight: .medium)).foregroundStyle(.white)
+                    Text(verbatim: detail).font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+                }
+            }
+        }
+        .tint(Color(red: 71/255, green: 156/255, blue: 142/255)).disabled(working || !editor.ready)
+        .padding(.horizontal, 13).padding(.vertical, 10).frame(minHeight: 61)
+    }
+    private func change(_ on: Bool) {
+        working = true
+        Task {
+            defer { working = false }
+            do { try await editor.setWeather(on) } catch { settings.notice = error.localizedDescription }
+        }
+    }
+}
+
+/// How TV Home looks (1.1). Each look switches on features the TV's Home already has; apps, order and wallpaper stay.
+struct LookView: View {
+    @EnvironmentObject private var editor: HomeEditor
+    @EnvironmentObject private var settings: AppSettings
+    @State private var working: String?
+    static func name(_ look: String) -> LocalizedStringKey {
+        switch look { case "calm": return "Calm"; case "glass": return "Glass"; case "gallery": return "Gallery"; default: return "Cinema" }
+    }
+    private static func detail(_ look: String) -> LocalizedStringKey {
+        switch look {
+        case "calm": return "One quiet row of named apps; the big clock after a minute"
+        case "glass": return "Your wallpaper behind a frosted glass dock"
+        case "gallery": return "Your photo first, with one row of apps over it"
+        default: return "The app in focus fills the top with its colour"
+        }
+    }
+    private static func symbol(_ look: String) -> String {
+        switch look { case "calm": return "clock"; case "glass": return "square.stack"; case "gallery": return "photo"; default: return "sparkles.tv" }
+    }
+    private var current: String { editor.snapshot?.home?.look ?? "cinema" }
+    var body: some View {
+        QuietPage {
+            QuietCaption(text: "How the Home screen on your TV looks. Your apps, order and wallpaper stay the same.")
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
+                ForEach(LauncherHome.looks, id: \.self) { look in
+                    Button { pick(look) } label: {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Image(systemName: Self.symbol(look)).font(.system(size: 22))
+                                Spacer()
+                                if working == look { ProgressView().controlSize(.small) }
+                                else if current == look { Image(systemName: "checkmark").foregroundStyle(QuietTheme.cyan) }
+                            }
+                            Text(Self.name(look)).font(.system(size: 15, weight: .semibold))
+                            Text(Self.detail(look)).font(.system(size: 11)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true)
+                        }
+                        .foregroundStyle(.white).padding(14).frame(maxWidth: .infinity, minHeight: 128, alignment: .topLeading)
+                        .background(QuietTheme.panel, in: RoundedRectangle(cornerRadius: 16))
+                        .overlay(RoundedRectangle(cornerRadius: 16).stroke(current == look ? QuietTheme.cyan : QuietTheme.edge, lineWidth: current == look ? 2 : 1))
+                    }.buttonStyle(.plain).disabled(working != nil || !editor.ready)
+                        .accessibilityAddTraits(current == look ? .isSelected : [])
+                }
+            }
+            QuietCaption(text: "Changes apply to the TV right away.")
+        }.quietNavigation("Look")
+    }
+    private func pick(_ look: String) {
+        guard look != current else { return }
+        working = look
+        Task {
+            defer { working = nil }
+            do { try await editor.setLook(look) } catch { settings.notice = error.localizedDescription }
+        }
+    }
 }

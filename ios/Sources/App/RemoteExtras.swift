@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-/// Typing here fills the focused field on the TV as you go. The field's whole text is sent once typing pauses
+/// Typing here fills the focused field on the TV as you go. What changed since the last send goes once typing pauses
 /// (debounced), so the TV gets one update per pause instead of one per keystroke; Return sends at once.
 struct KeyboardView: View {
     @ObservedObject var model: RemoteModel
@@ -49,8 +49,10 @@ struct KeyboardView: View {
         sending = true
         let value = text
         do {
-            // The TV can't be sent an empty field, so clearing it deletes what was sent, one character at a time.
-            if value.isEmpty { for _ in 0..<min(sent.count, 256) { model.tap(.delete) } } else { try await model.sendText(value) }
+            // Only the change goes to the TV: it inserts at its cursor, so the whole text again would repeat it.
+            let edit = TVSession.typingEdit(from: sent, to: value)
+            for _ in 0..<min(edit.deletes, 256) { model.tap(.delete) }
+            if !edit.insert.isEmpty { try await model.sendText(edit.insert) }
             sent = value; message = ""
         } catch { message = error.localizedDescription }
         sending = false

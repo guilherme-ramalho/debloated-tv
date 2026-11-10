@@ -104,7 +104,7 @@ struct DebloatSetupView: View {
             }
             VStack(alignment: .leading, spacing: 6) {
                 Text("TV address").font(.system(size: 13, weight: .medium)).foregroundStyle(QuietTheme.muted)
-                TextField("192.168.0.13", text: $flow.address).keyboardType(.numbersAndPunctuation).textInputAutocapitalization(.never).autocorrectionDisabled()
+                TextField("192.168.1.20", text: $flow.address).keyboardType(.numbersAndPunctuation).textInputAutocapitalization(.never).autocorrectionDisabled()
                     .padding(12).background(QuietTheme.panel, in: RoundedRectangle(cornerRadius: 12))
             }
             QuietCaption(text: "Newer TVs with only “Wireless debugging” (a pairing code) aren’t supported yet.")
@@ -392,7 +392,7 @@ struct UndoSetupView: View {
             defer { busy = false; waiting = false }
             do {
                 let client = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
-                _ = try await client.connect(name: "Debloated TV@iPhone", approvalTimeout: 120) { Task { @MainActor in waiting = true } }
+                _ = try await client.connect(name: "Purio TV@iPhone", approvalTimeout: 120) { Task { @MainActor in waiting = true } }
                 waiting = false
                 let profile = Bundle.main.url(forResource: "Profiles", withExtension: nil)
                     .flatMap { try? DebloatProfile.load($0.appendingPathComponent(record.list)) }

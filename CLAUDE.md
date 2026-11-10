@@ -1,4 +1,4 @@
-# Debloated TV
+# Purio TV (formerly Debloated TV)
 
 An iPhone app (SwiftUI, `ios/`) that remotes, customizes and debloats Android TVs, plus the TV Home screen it
 installs (`tv-launcher/`, a fork of cleanyourtv by Gathin, MIT). Design decisions and their reasons are in

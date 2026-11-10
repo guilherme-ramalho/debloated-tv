@@ -187,6 +187,24 @@ import UniformTypeIdentifiers
         try result.validate(); snapshot = result
     }
 
+    /// A look is a preset of Home switches the launcher already has (cinema, calm, glass, gallery). Applies at once.
+    func setLook(_ look: String) async throws {
+        guard ready, snapshot?.home?.supports("looks") == true, LauncherHome.looks.contains(look) else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect to change the look")) }
+        let token = generation
+        let result = try await client.request("homeSettings", payload: ["look": look], as: LauncherSnapshot.self)
+        guard generation == token else { throw CancellationError() }
+        try result.validate(); snapshot = result
+    }
+
+    /// Weather by the clock on TV Home, placed by the TV itself. Applies at once; Home redraws on the TV.
+    func setWeather(_ on: Bool) async throws {
+        guard ready, snapshot?.home?.supports("weather") == true else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect to change the weather")) }
+        let token = generation
+        let result = try await client.request("homeSettings", payload: ["weather": on], as: LauncherSnapshot.self)
+        guard generation == token else { throw CancellationError() }
+        try result.validate(); snapshot = result
+    }
+
     /// The photo as the TV shows it: centre-cropped to 16:9 at 1280×720. Home decodes it at that size, about 1.8 MB
     /// instead of about 4 MB at 1080p; behind the tiles it looks the same from the sofa.
     static func tvWallpaper(_ data: Data) throws -> Data {

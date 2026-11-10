@@ -1,6 +1,6 @@
 # Support
 
-Debloated (on the App Store as Debloated TV): an iPhone remote for Android TV and Google TV that can also clean up
+Purio TV (formerly Debloated TV): an iPhone remote for Android TV and Google TV that can also clean up
 supported TVs and give them a faster Home screen.
 
 ## Contact
@@ -14,7 +14,7 @@ did just before it happened.
 ## Common questions
 
 **The app doesn't find my TV.** The iPhone and the TV must be on the same network. Check that Local Network access
-is on for Debloated in iOS Settings › Privacy & Security › Local Network. You can also type the TV's IP address
+is on for Purio TV in iOS Settings › Privacy & Security › Local Network. You can also type the TV's IP address
 (on the TV: Settings › Network & Internet › your connection).
 
 **The TV doesn't show a pairing code.** Turn the TV on (not in standby) and try again. Some TVs need the Android TV

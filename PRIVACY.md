@@ -1,8 +1,8 @@
 # Privacy Policy
 
-Debloated (on the App Store as Debloated TV) · effective 2 November 2026
+Purio TV (formerly Debloated TV) · effective 2 November 2026
 
-Debloated collects no personal data. It has no accounts, no ads, no analytics and no servers of its own.
+Purio TV collects no personal data. It has no accounts, no ads, no analytics and no servers of its own.
 
 ## What the app does with data
 
@@ -20,9 +20,12 @@ Debloated collects no personal data. It has no accounts, no ads, no analytics an
 
 ## On the TV
 
-TV setup turns off apps you choose and can install an open-source Home screen. That Home screen can show the
-weather only if you enter a city: the TV then asks Open-Meteo (open-meteo.com) for the forecast at that location.
-It sends no other data.
+TV setup turns off apps you choose and can install an open-source Home screen. That Home screen shows the weather
+only if you turn it on. The TV then uses its own approximate location (Android's network location, from nearby
+Wi-Fi networks), rounds it to about 1 km, and asks Open-Meteo (open-meteo.com) for the forecast there, about every
+30 minutes while the Home screen is showing. The TV may also look up the town's name through Android's location
+service. Your iPhone's location is never used, and the TV sends no other data. Turning the weather off stops all of
+this.
 
 ## Crash reports
 

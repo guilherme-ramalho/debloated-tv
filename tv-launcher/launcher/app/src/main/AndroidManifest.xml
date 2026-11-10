@@ -263,6 +263,11 @@
             </intent-filter>
         </receiver>
 
+        <!-- SleepTimer's alarm; not exported, only this app's own PendingIntent reaches it. -->
+        <receiver
+            android:name=".SleepTimer$Receiver"
+            android:exported="false" />
+
         <service
             android:name=".InputKeyService"
             android:exported="false"

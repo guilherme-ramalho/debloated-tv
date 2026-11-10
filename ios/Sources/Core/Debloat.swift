@@ -267,12 +267,18 @@ public struct Debloater: Sendable {
     let tv: TVShell
     public init(tv: TVShell) { self.tv = tv }
 
-    public func inspect(properties: [String: String] = [:]) async throws -> TVInventory {
-        var props = properties
+    /// The properties profiles match on. The ADB banner carries only some (no Android version), so the rest are read.
+    public func profileProperties(_ banner: [String: String] = [:]) async throws -> [String: String] {
+        var props = banner
         for key in ["ro.product.model", "ro.product.device", "ro.product.name", "ro.product.manufacturer", "ro.build.id",
                     "ro.build.display.id", "ro.build.version.sdk", "ro.build.version.release"] where props[key] == nil {
             props[key] = try await tv.run("getprop " + key).trimmingCharacters(in: .whitespacesAndNewlines)
         }
+        return props
+    }
+
+    public func inspect(properties: [String: String] = [:]) async throws -> TVInventory {
+        let props = try await profileProperties(properties)
         var scoped = true
         var installed = Pattern.packageNames(try await tv.run("pm list packages --user 0"))
         if installed.isEmpty { scoped = false; installed = Pattern.packageNames(try await tv.run("pm list packages")) }

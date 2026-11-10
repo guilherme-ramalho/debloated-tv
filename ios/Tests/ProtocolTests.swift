@@ -115,6 +115,6 @@ final class ProtocolTests: XCTestCase {
         let first = RemoteClientName.current(a)
         XCTAssertEqual(RemoteClientName.current(a), first, "stable across launches")
         XCTAssertNotEqual(RemoteClientName.current(b), first, "two phones never pair under the same name")
-        XCTAssertTrue(first.hasPrefix("Debloated TV"))
+        XCTAssertTrue(first.hasPrefix("Purio TV"))
     }
 }
