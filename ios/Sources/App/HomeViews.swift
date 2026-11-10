@@ -114,6 +114,7 @@ struct TVHomeView: View {
                     Divider().overlay(QuietTheme.edge)
                     if let home = editor.snapshot?.home, home.supports("looks") {
                         NavigationLink { LookView() } label: { QuietRow(title: Text("Look"), detail: Text("Cinema, Calm, Glass or Gallery"), symbol: "sparkles", value: Text(LookView.name(home.look ?? "cinema"))) }
+                            .accessibilityIdentifier("lookRow")
                         Divider().overlay(QuietTheme.edge)
                     }
                     if let home = editor.snapshot?.home, home.supports("weather") {

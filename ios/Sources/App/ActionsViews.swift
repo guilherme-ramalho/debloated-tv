@@ -47,6 +47,7 @@ struct ActionsView: View {
                                 Image(systemName: action.steps.contains(where: { $0.kind == .input }) ? "gamecontroller" : "movieclapper").font(.system(size: 21)).frame(width: 25)
                                 Text(action.name).font(.system(size: 17, weight: .medium)); Spacer()
                                 Button { editing = action } label: { Image(systemName: "ellipsis").frame(width: 44, height: 44) }.accessibilityLabel("Edit " + action.name)
+                                    .accessibilityIdentifier("editAction")
                             }
                             Text(action.steps.map { stepName($0, settings: settings) }.joined(separator: " → "))
                                 .font(.system(size: 12)).foregroundStyle(QuietTheme.muted).lineSpacing(4)

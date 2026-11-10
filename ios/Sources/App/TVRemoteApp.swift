@@ -141,7 +141,7 @@ struct RemoteView: View {
             Button { keyboard = true } label: {
                 Image(systemName: "keyboard").font(.system(size: 19, weight: .medium)).frame(width: 46, height: 46)
                     .background(QuietTheme.panel, in: Circle())
-            }.accessibilityLabel("Type on TV").buttonStyle(RemotePressStyle(radius: 23))
+            }.accessibilityLabel("Type on TV").accessibilityIdentifier("typeOnTV").buttonStyle(RemotePressStyle(radius: 23))
             Button { inputs = true } label: {
                 Image(systemName: "rectangle.on.rectangle").font(.system(size: 19, weight: .medium)).frame(width: 46, height: 46)
                     .background(Color(red: 22/255, green: 48/255, blue: 79/255), in: Circle())
@@ -152,7 +152,7 @@ struct RemoteView: View {
         Button { model.tap(key) } label: {
             Image(systemName: symbol).font(.system(size: 23, weight: .medium)).frame(width: 65, height: 50)
                 .background(ink, in: RoundedRectangle(cornerRadius: 21))
-        }.accessibilityLabel(Text(label)).disabled(!model.ready).tint(.white).buttonStyle(RemotePressStyle())
+        }.accessibilityLabel(Text(label)).accessibilityIdentifier("remote-\(symbol)").disabled(!model.ready).tint(.white).buttonStyle(RemotePressStyle())
     }
     private func topCommand(_ symbol: String, _ label: String, _ key: TVKey, _ accent: Color) -> some View {
         let available = key == .power ? !model.preparing && !model.showingPIN && !model.waking : model.ready
