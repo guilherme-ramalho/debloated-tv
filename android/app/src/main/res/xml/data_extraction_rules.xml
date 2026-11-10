@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The pairing key lives in the Android Keystore and can't move; keep the saved TV pin off backups too, so a
+     restored phone pairs again instead of holding a pin without its key. -->
+<data-extraction-rules>
+    <cloud-backup><exclude domain="sharedpref" path="." /></cloud-backup>
+    <device-transfer><exclude domain="sharedpref" path="." /></device-transfer>
+</data-extraction-rules>

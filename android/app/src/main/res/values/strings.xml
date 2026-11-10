@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Purio TV</string>
+
+    <string name="find_title">Choose your TV</string>
+    <string name="find_searching">Looking for TVs on this Wi-Fi…</string>
+    <string name="find_none">No TV found yet. Check the TV is on and on the same Wi-Fi, or type its address.</string>
+    <string name="find_resolving">Finding address…</string>
+    <string name="address_label">TV address (for example 192.168.0.13)</string>
+    <string name="address_use">Use this address</string>
+    <string name="pair_title">Pair with %1$s</string>
+    <string name="pair_starting">Asking the TV for a code…</string>
+    <string name="pair_hint">Type the six-character code shown on the TV.</string>
+    <string name="pair_code">Code</string>
+    <string name="pair_submit">Pair</string>
+    <string name="cancel">Cancel</string>
+    <string name="retry">Try again</string>
+    <string name="forget_tv">Choose another TV</string>
+    <string name="connecting">Connecting to %1$s…</string>
+    <string name="connected">Connected</string>
+    <string name="tv_off">TV is in standby</string>
+    <string name="now_on">%1$s on TV</string>
+    <string name="volume">Volume %1$d of %2$d</string>
+    <string name="muted">Muted</string>
+
+    <string name="key_power">Power</string>
+    <string name="key_home">Home</string>
+    <string name="key_back">Back</string>
+    <string name="key_up">Up</string>
+    <string name="key_down">Down</string>
+    <string name="key_left">Left</string>
+    <string name="key_right">Right</string>
+    <string name="key_select">OK</string>
+    <string name="key_volume_up">Volume up</string>
+    <string name="key_volume_down">Volume down</string>
+    <string name="key_mute">Mute</string>
+    <string name="key_play_pause">Play or pause</string>
+    <string name="key_inputs">Inputs</string>
+    <string name="key_settings">TV settings</string>
+
+    <!-- Problem codes from the core module (Problem.kt). Same wording as the iPhone app. -->
+    <string name="problem_invalid_protocol">The TV sent an invalid remote-protocol message.</string>
+    <string name="problem_connect_failed">Could not connect to the paired TV. Check Wi-Fi and TV power.</string>
+    <string name="problem_timed_out">TV connection timed out.</string>
+    <string name="problem_closed">TV connection closed.</string>
+    <string name="problem_interrupted">TV connection was interrupted.</string>
+    <string name="problem_not_ready">TV is not ready.</string>
+    <string name="problem_identity_changed">The TV’s identity changed, for example after a reset. Pair this TV again.</string>
+    <string name="problem_pairing_rejected_by_tv">The TV no longer accepts this phone’s pairing, for example after another app replaced it or the TV was reset. Pair this TV again.</string>
+    <string name="problem_pairing_refused">The TV rejected pairing. Start again and enter the current TV code.</string>
+    <string name="problem_pairing_expired">Pairing expired. Start pairing again.</string>
+    <string name="problem_handshake_incomplete">The TV did not complete the remote handshake.</string>
+    <string name="problem_no_key_commands">This TV does not support remote key commands.</string>
+    <string name="problem_command_rejected">The TV rejected a remote command.</string>
+    <string name="problem_no_keyboard">The TV does not accept keyboard input.</string>
+    <string name="problem_text_length">Enter between 1 and 4096 characters.</string>
+    <string name="problem_invalid_link">Invalid app or input link.</string>
+    <string name="problem_start_pairing_first">Start pairing before entering the TV code.</string>
+    <string name="problem_code_length">Enter the six-character code shown on the TV.</string>
+    <string name="problem_code_characters">The code uses 0–9 and A–F.</string>
+    <string name="problem_code_mismatch">That code does not match this TV. Check the code and try again.</string>
+    <string name="problem_identity_unavailable">Could not use this phone’s pairing identity.</string>
+    <string name="problem_editor">TV Home did not answer. Check that the TV launcher is up to date.</string>
+    <string name="problem_other">Something went wrong. Try again.</string>
+</resources>
