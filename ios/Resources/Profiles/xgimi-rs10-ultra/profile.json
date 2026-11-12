@@ -1,0 +1,86 @@
+{
+  "id": "xgimi-rs10-ultra",
+  "name": "XGIMI RS10 Ultra projector (device pig_chivalrous, MediaTek m7642), China",
+  "source": "cleanyourtv examples/xgimi-rs10-ultra at b9538048",
+  "community": true,
+  "brand": "XGIMI",
+  "os": "Android 9",
+  "match": {},
+  "names": {
+    "device": [
+      "m7642",
+      "pig_chivalrous"
+    ],
+    "product": [
+      "m7642_db"
+    ]
+  },
+  "stockLauncher": "com.xgimi.home",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "org.smarttube.stable",
+    "com.netflix.ninja",
+    "com.oumi.utility.media.hub",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not launch the factory packages (mediatek.factorymenu.ui, com.xgimi.minitvfactory) to look for a switch; the repository's rules forbid starting factory/test packages."
+  ],
+  "theme": {
+    "columns": 4,
+    "fill_dock": false,
+    "live_tv_package": "",
+    "input_action": "com.xgimi.action.hdmiPlayer",
+    "stock_home_redirect": "com.xgimi.home",
+    "key_filter": false,
+    "restore_key_services": true,
+    "app_library": true,
+    "tile_menu": true,
+    "rows_below_dock": 0,
+    "library_apps": [
+      "com.xgimi.wirelessscreen",
+      "com.xgimi.filemanager"
+    ],
+    "hidden_apps": [
+      "com.xgimi.home",
+      "com.android.newsettings",
+      "com.xgimi.newappmarket",
+      "com.xgimi.account",
+      "com.xgimi.user",
+      "com.xgimi.payview",
+      "com.xgimi.upgrade",
+      "com.xgimi.adservice",
+      "com.xgimi.instruction30",
+      "com.xgimi.bootwizard",
+      "com.xgimi.minitvfactory",
+      "mediatek.factorymenu.ui",
+      "com.xgimi.atmosphere",
+      "com.xgimi.doubanfm",
+      "com.netease.cloudmusic.tv",
+      "com.ktcp.tvvideo",
+      "com.hunantv.license",
+      "cn.com.wasu.main",
+      "com.gitv.dvb.live",
+      "com.xgimi.gimiplayer",
+      "com.xgimi.xhplayer",
+      "com.xgimi.stream.video",
+      "com.smarttv.manager"
+    ],
+    "library_excluded_apps": [
+      "mediatek.factorymenu.ui",
+      "com.xgimi.minitvfactory",
+      "com.xgimi.bootwizard"
+    ]
+  }
+}

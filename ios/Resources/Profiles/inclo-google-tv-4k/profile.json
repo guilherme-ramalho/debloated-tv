@@ -1,0 +1,32 @@
+{
+  "id": "inclo-google-tv-4k",
+  "name": "INCLO Google TV 4K (KTC, Realtek, khardi, KTC_INCLO_4K_EU_23GV1), Taiwan",
+  "source": "cleanyourtv examples/inclo-google-tv-4k at b9538048",
+  "community": true,
+  "brand": "INCLO",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The Netflix and YouTube buttons go out over IR as KTC keycodes 3001/3003 and are consumed by com.realtek.keyintercept, which on Google TV only broadcasts com.google.global_button.ACTION_LAUNCH_APP to launcherx: with launcherx disabled they do nothing, and no key helper sees them.",
+    "Kept: all com.realtek.* TV/input packages; com.realsil.ota (remote firmware updater, RcuUpdate); KTC factory packages com.kgzn.serialport and com.kgzn.tvfactory (global key receivers, never launched); Chromecast; voice (katniss, tv.remote.service); YouTube Music, karaoke, the ambient screensaver, TalkBack by choice."
+  ],
+  "theme": {}
+}

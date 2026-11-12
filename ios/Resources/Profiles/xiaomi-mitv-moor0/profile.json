@@ -1,0 +1,49 @@
+{
+  "id": "xiaomi-mitv-moor0",
+  "name": "Xiaomi MiTV-MOOR0 (venom, MediaTek)",
+  "source": "cleanyourtv examples/xiaomi-mitv-moor0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "venom"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "ar.tvplayer.tv",
+    "org.smarttube.beta",
+    "de.rtli.tvnow",
+    "org.jellyfin.androidtv",
+    "de.swr.avp.ard.tv",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Disable it before disabling launcherx so Home can never fall back to the factory test app. ---- Xiaomi and Google telemetry ----"
+  ],
+  "theme": {
+    "columns": 5,
+    "hidden_apps": [
+      "com.mitv.livetv"
+    ],
+    "live_tv_package": "com.mitv.livetv",
+    "app_keys": [
+      "190:org.smarttube.beta"
+    ]
+  }
+}

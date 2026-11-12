@@ -1,0 +1,33 @@
+{
+  "id": "amazon-fire-tv-afttiff43",
+  "name": "Amazon Fire TV 4K smart TV, 50\" and 75\" Omni Series (AFTTIFF43, brandenburg)",
+  "source": "cleanyourtv examples/amazon-fire-tv-afttiff43 at b9538048",
+  "community": true,
+  "brand": "Amazon Fire TV",
+  "os": "Fire OS 7.7.1.4 / 7.7.1.7, Android 9",
+  "match": {},
+  "names": {
+    "device": [
+      "brandenburg"
+    ]
+  },
+  "stockLauncher": "com.amazon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "fireOS",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,33 @@
+{
+  "id": "sharp-4t-c43dl1",
+  "name": "SHARP AQUOS 4T-C43DL1 (AQUOS-TVJ21-2, tcve2uj, MediaTek), Japan",
+  "source": "cleanyourtv examples/sharp-4t-c43dl1 at b9538048",
+  "community": true,
+  "brand": "SHARP",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "org.smarttube.stable",
+    "jp.co.tver.tvapp",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.google.android.youtube.tv",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "live_tv_package": "jp.co.sharp.av.android.aquostvapp"
+  }
+}

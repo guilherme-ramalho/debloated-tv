@@ -1,0 +1,42 @@
+{
+  "id": "metz-43mub8000",
+  "name": "Metz 43MUB8000 (Skyworth SW3H_ATV, MediaTek MT5886), Europe",
+  "source": "cleanyourtv examples/metz-43mub8000 at b9538048",
+  "community": true,
+  "brand": "Metz",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "product": [
+      "SW3H_ATV_G"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "ru.kinopoisk.tv",
+    "ru.ivi.client",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Connecting: Developer options has USB debugging only (no Network debugging, no Wireless debugging), and USB debugging alone never opened 5555, not even after a restart."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.smartdevice.livetv"
+    ],
+    "live_tv_package": "com.smartdevice.livetv"
+  }
+}

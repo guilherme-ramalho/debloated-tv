@@ -1,0 +1,46 @@
+{
+  "id": "xiaomi-mitv-afmu1",
+  "name": "Xiaomi TV Stick 4K 2nd gen (MiTV-AFMU1, twilight, adastra, Amlogic), streaming stick",
+  "source": "cleanyourtv examples/xiaomi-mitv-afmu1 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "twilight"
+    ],
+    "product": [
+      "adastra"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.android.vending",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Network debugging was off after a reboot on one unit (seen once); re-enable it before running the tools. - Keeping on purpose: Google Play Store, Play Services, TV input and remote services, Bluetooth, Droidlogic. - Leave alone: com.xiaomi.android.tvsetup.partnercustomizer, mitv.service, com.droidlogic*, and the YouTube app (com.google.android.youtube.tv stays enabled on both units).",
+    "Only that old network was lost. - The remote's YouTube, Netflix and Prime Video buttons do nothing once launcherx is off."
+  ],
+  "theme": {
+    "app_keys": [
+      "KEYCODE_BUTTON_3:com.google.android.youtube.tv",
+      "KEYCODE_BUTTON_6:com.netflix.ninja",
+      "KEYCODE_BUTTON_7:com.amazon.amazonvideo.livingroom"
+    ]
+  }
+}

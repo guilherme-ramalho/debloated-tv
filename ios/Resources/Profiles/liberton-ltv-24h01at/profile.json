@@ -1,0 +1,42 @@
+{
+  "id": "liberton-ltv-24h01at",
+  "name": "Liberton LTV 24H01AT (Liberton, built by Changhong, device redwood), Ukraine",
+  "source": "cleanyourtv examples/liberton-ltv-24h01at at b9538048",
+  "community": true,
+  "brand": "Liberton",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "redwood"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.kyivstar.tv.androidtv",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.spotify.tv.android",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "columns": 4,
+    "rows_below_dock": 0,
+    "reduced_motion": false,
+    "background_color": "#000000",
+    "wallpaper": false
+  }
+}

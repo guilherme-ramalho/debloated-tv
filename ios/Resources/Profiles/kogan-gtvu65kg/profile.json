@@ -1,0 +1,36 @@
+{
+  "id": "kogan-gtvu65kg",
+  "name": "Kogan Google TV (Changhong CHiQ AI PONT, GTVU65KG, dangni, MediaTek mt5867), Australia",
+  "source": "cleanyourtv examples/kogan-gtvu65kg at b9538048",
+  "community": true,
+  "brand": "Kogan",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "dangni"
+    ],
+    "product": [
+      "GTVU65KG"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

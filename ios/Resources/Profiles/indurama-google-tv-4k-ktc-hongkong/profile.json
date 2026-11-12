@@ -1,0 +1,33 @@
+{
+  "id": "indurama-google-tv-4k-ktc-hongkong",
+  "name": "Indurama Google TV 4K (KTC hongkong, ISDB)",
+  "source": "cleanyourtv examples/indurama-google-tv-4k-ktc-hongkong at b9538048",
+  "community": true,
+  "brand": "Indurama",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "hongkong"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

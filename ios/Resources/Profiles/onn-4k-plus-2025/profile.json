@@ -1,0 +1,33 @@
+{
+  "id": "onn-4k-plus-2025",
+  "name": "onn. 4K Plus Streaming (2025, Walmart; coffey, Amlogic S905X5M), US",
+  "source": "cleanyourtv examples/onn-4k-plus-2025 at b9538048",
+  "community": true,
+  "brand": "onn",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "coffey"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

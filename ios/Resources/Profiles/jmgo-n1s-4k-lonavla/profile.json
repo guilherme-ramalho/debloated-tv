@@ -1,0 +1,36 @@
+{
+  "id": "jmgo-n1s-4k-lonavla",
+  "name": "JMGO N1S 4K projector (S91A, lonavla, MediaTek m7632)",
+  "source": "cleanyourtv examples/jmgo-n1s-4k-lonavla at b9538048",
+  "community": true,
+  "brand": "JMGO",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "lonavla"
+    ],
+    "model": [
+      "S91A"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

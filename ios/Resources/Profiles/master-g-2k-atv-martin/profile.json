@@ -1,0 +1,35 @@
+{
+  "id": "master-g-2k-atv-martin",
+  "name": "Master-G Android TV 2K (Expressluck martin, MASTERG_2K_ATV), Chile",
+  "source": "cleanyourtv examples/master-g-2k-atv-martin at b9538048",
+  "community": true,
+  "brand": "Master-G",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "martin"
+    ],
+    "product": [
+      "MASTERG_2K_ATV"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

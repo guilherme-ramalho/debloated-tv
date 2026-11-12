@@ -1,0 +1,38 @@
+{
+  "id": "tornado-65ua1400e",
+  "name": "Tornado 65UA1400E (El Araby, Skyworth-built SW4H, MediaTek m7332), Egypt",
+  "source": "cleanyourtv examples/tornado-65ua1400e at b9538048",
+  "community": true,
+  "brand": "Tornado",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "SW4H",
+      "SW4H_FF"
+    ],
+    "product": [
+      "SW4H_Tornado",
+      "SW4H_FF_realme"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

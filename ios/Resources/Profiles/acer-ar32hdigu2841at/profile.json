@@ -1,0 +1,48 @@
+{
+  "id": "acer-ar32hdigu2841at",
+  "name": "Acer AR32HDIGU2841AT 32\" HD (device R3_GTV, MOKA, Realtek RTD2841A), India",
+  "source": "cleanyourtv examples/acer-ar32hdigu2841at at b9538048",
+  "community": true,
+  "brand": "Acer",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "R3_GTV"
+    ],
+    "product": [
+      "ACER"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "in.startv.hotstar",
+    "com.graymatrix.did",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "DO NOT disable launcherx or com.google.android.tungsten.setupwraith on this TV.",
+    "Keep launcherx enabled and use HOME_KEY_SERVICE with stock_home_redirect=com.google.android.apps.tv.launcherx to redirect Home to the new launcher without triggering RecoveryActivity loops."
+  ],
+  "theme": {
+    "columns": 5,
+    "dock_glass": true,
+    "app_glow": true,
+    "advanced_effects": true,
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx"
+  }
+}

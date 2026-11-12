@@ -1,0 +1,29 @@
+{
+  "id": "sony-kd-65x9300d",
+  "name": "Sony BRAVIA KD-65X9300D (2016, SVP-DTV15, MediaTek), Asia-Pacific",
+  "source": "cleanyourtv examples/sony-kd-65x9300d at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 8.0",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

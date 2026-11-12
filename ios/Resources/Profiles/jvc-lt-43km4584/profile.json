@@ -1,0 +1,32 @@
+{
+  "id": "jvc-lt-43km4584",
+  "name": "JVC LT-43KM4584",
+  "source": "cleanyourtv examples/jvc-lt-43km4584 at b9538048",
+  "community": true,
+  "brand": "JVC",
+  "os": "Android TV 14 (UKN7.260716.013)",
+  "match": {},
+  "names": {
+    "device": [
+      "jagalchi"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

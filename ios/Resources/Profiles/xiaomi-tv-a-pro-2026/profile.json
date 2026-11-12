@@ -1,0 +1,36 @@
+{
+  "id": "xiaomi-tv-a-pro-2026",
+  "name": "Xiaomi TV A Pro 55\"/75\" 2026 (MiTV-MZTU0, river, MediaTek)",
+  "source": "cleanyourtv examples/xiaomi-tv-a-pro-2026 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "river"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Keep (apps, on this model): com.google.android.apps.mediashell.",
+    "The firmware re-enables com.netflix.ninja by itself (Netflix button), so don't bother disabling it."
+  ],
+  "theme": {}
+}

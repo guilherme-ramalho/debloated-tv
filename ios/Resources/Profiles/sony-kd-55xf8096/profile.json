@@ -1,0 +1,33 @@
+{
+  "id": "sony-kd-55xf8096",
+  "name": "Sony BRAVIA KD-55XF8096 (2018, \"BRAVIA 4K GB ATV3\", BRAVIA_ATV3_4K_EU, MediaTek MT5891), Spain; second unit KD-43XF8096, Ukraine",
+  "source": "cleanyourtv examples/sony-kd-55xf8096 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "product": [
+      "BRAVIA_ATV3_4K_EU"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

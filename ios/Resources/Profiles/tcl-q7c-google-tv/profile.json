@@ -1,0 +1,53 @@
+{
+  "id": "tcl-q7c-google-tv",
+  "name": "TCL Q7C (Smart TV Pro, G08, G08_4K_GB, MediaTek tcl9618), European firmware",
+  "source": "cleanyourtv examples/tcl-q7c-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": true,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.nousguide.android.orftvthek",
+    "com.zappntv",
+    "org.jellyfin.androidtv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never launch com.tcl.factory.view."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.tcl.dashboard",
+      "com.tcl.partnercustomizer",
+      "com.tcl.suspension",
+      "com.tcl.gallery"
+    ],
+    "live_tv_package": "com.tcl.tv",
+    "app_labels": [
+      "com.tcl.tv=Live TV",
+      "com.nousguide.android.orftvthek=ORF ON"
+    ],
+    "settings_key_keycodes": [
+      83
+    ],
+    "app_keys": [
+      "190:com.google.android.youtube.tv"
+    ]
+  }
+}

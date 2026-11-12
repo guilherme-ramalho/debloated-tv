@@ -1,0 +1,42 @@
+{
+  "id": "formovie-xming-page-one-tianshan",
+  "name": "Formovie XMing Page One projector (XMM2101, tianshan, MediaTek MT9630)",
+  "source": "cleanyourtv examples/formovie-xming-page-one-tianshan at b9538048",
+  "community": true,
+  "brand": "Formovie",
+  "os": "Google TV (Android 11)",
+  "match": {},
+  "names": {
+    "device": [
+      "tianshan"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never launch com.fengmi.testsuite or mediatek.factorymenu.ui (factory tools)."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter"
+    ],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "columns": 4,
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx"
+  }
+}

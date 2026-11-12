@@ -1,0 +1,32 @@
+{
+  "id": "hisense-65e5h",
+  "name": "Hisense 65E5H (VIDAA_TV, MediaTek MT9652, hisense_m7642_cn), China",
+  "source": "cleanyourtv examples/hisense-65e5h at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Android 9",
+  "match": {},
+  "names": {
+    "device": [
+      "MTK9652"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

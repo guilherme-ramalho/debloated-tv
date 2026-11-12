@@ -1,0 +1,33 @@
+{
+  "id": "grundig-50gfu7850b",
+  "name": "Grundig 50 GFU 7850 B 50\" (Arçelik, CO3Plus, sinchon, MediaTek), Turkey",
+  "source": "cleanyourtv examples/grundig-50gfu7850b at b9538048",
+  "community": true,
+  "brand": "Grundig",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "sinchon"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

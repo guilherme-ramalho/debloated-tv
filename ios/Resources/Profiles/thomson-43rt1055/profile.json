@@ -1,0 +1,43 @@
+{
+  "id": "thomson-43rt1055",
+  "name": "Thomson 43RT1055 FA Series (SPPL-built, sauve, Realtek RTD2841A), India",
+  "source": "cleanyourtv examples/thomson-43rt1055 at b9538048",
+  "community": true,
+  "brand": "Thomson",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "sauve"
+    ],
+    "product": [
+      "SPPL_2K_RT41"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "AtvSearchAssistantService\" and nothing happened; re-enabling it brought voice search back. - Factory packages, never launched: com.hk.factorymenu (HikeenFactory), com.factory.factoryautomation (HikeenAutoTest). - com.realtek.mdnsoffload, com.android.tv.mdnsoffloadmanager, com.realtek.media.notification (codec notices)."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.realtek.tv"
+    ],
+    "live_tv_package": "com.realtek.tv"
+  }
+}

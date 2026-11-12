@@ -1,0 +1,35 @@
+{
+  "id": "xiaomi-mitv-aesp0",
+  "name": "Xiaomi MiTV-AESP0 stick (aquaman, 1 GB)",
+  "source": "cleanyourtv examples/xiaomi-mitv-aesp0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "aquaman"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Accessibility services never see it, so it cannot be remapped (app_keys, Button Mapper) without root; with Netflix disabled the key just does nothing. - Closing ADB: switching off \"USB debugging\" alone, then rebooting, left 5555 open."
+  ],
+  "theme": {}
+}

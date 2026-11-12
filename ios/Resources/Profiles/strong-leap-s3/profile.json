@@ -1,0 +1,39 @@
+{
+  "id": "strong-leap-s3",
+  "name": "Strong LEAP-S3 box (SkyworthDigital YDA, Amlogic S905Y4), Italy",
+  "source": "cleanyourtv examples/strong-leap-s3 at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "YDA"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "This box has NO reset button: a first attempt that disabled setupwraith and launcherx together and then rebooted ended in a black screen and needed a hardware reset from a pad on the board."
+  ],
+  "theme": {
+    "settings_key_keycodes": [
+      83
+    ]
+  }
+}

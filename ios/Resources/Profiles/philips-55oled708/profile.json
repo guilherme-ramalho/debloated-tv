@@ -1,0 +1,39 @@
+{
+  "id": "philips-55oled708",
+  "name": "Philips 55OLED708/12 (TPV, PH1M_WW_9972, MediaTek), Poland",
+  "source": "cleanyourtv examples/philips-55oled708 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "PH1M_WW_9972"
+    ],
+    "product": [
+      "PH1M_WW_9972"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The org.droidtv layer is shared with those files, so their DO NOT DISABLE blocks still apply (xtv, eum, aurora, icp, playtv...).",
+    "With launcherx disabled both do nothing."
+  ],
+  "theme": {}
+}

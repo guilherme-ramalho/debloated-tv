@@ -1,0 +1,41 @@
+{
+  "id": "xiaomi-mi-box-s",
+  "name": "Xiaomi Mi Box S (MIBOX4, oneday), streaming box",
+  "source": "cleanyourtv examples/xiaomi-mi-box-s at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "oneday"
+    ],
+    "product": [
+      "oneday"
+    ],
+    "model": [
+      "MIBOX4"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "No crashes either way. - Survives a reboot: nothing is re-enabled at boot, the launcher stays Home."
+  ],
+  "theme": {}
+}

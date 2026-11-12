@@ -1,0 +1,35 @@
+{
+  "id": "eko-4k-bangbae",
+  "name": "EKO 4K Android TV (bangbae, MTC, MediaTek)",
+  "source": "cleanyourtv examples/eko-4k-bangbae at b9538048",
+  "community": true,
+  "brand": "EKO",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "bangbae"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never launch either. mediatek.factorymenu.ui has a LAUNCHER entry on this firmware, so it is reachable from the app grid; hide it with hidden_apps rather than disabling it. - com.airoha.btd: the Bluetooth remote's firmware updater, shown as \"RemoteOTA\". - com.mediatek.tvinput, com.mediatek.tv.service, com.mediatek.wwtv.tvcenter (Live TV).",
+    "On this TV it owned one saved network but not the one in use, so it was safe to leave alone; it is not in this list either way."
+  ],
+  "theme": {}
+}

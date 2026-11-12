@@ -1,0 +1,35 @@
+{
+  "id": "rocktek-g2",
+  "name": "RockTek G2 (RT-G2, SEI Robotics/NES, SEI804RT, YYJ, Amlogic S905X4)",
+  "source": "cleanyourtv examples/rocktek-g2 at b9538048",
+  "community": true,
+  "brand": "RockTek",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "YYJ"
+    ],
+    "product": [
+      "SEI804RT"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

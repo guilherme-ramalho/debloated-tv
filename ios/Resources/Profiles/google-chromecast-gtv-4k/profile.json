@@ -1,0 +1,39 @@
+{
+  "id": "google-chromecast-gtv-4k",
+  "name": "Google Chromecast with Google TV 4K (sabrina)",
+  "source": "cleanyourtv examples/google-chromecast-gtv-4k at b9538048",
+  "community": true,
+  "brand": "Google",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "sabrina"
+    ],
+    "product": [
+      "sabrina_prod_stable"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Don't add them to a restore list either. - Disabling dreamx leaves screensaver_components pointing at it."
+  ],
+  "theme": {}
+}

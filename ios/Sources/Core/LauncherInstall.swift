@@ -17,8 +17,22 @@ public struct LauncherOptions: Equatable, Codable {
     public var inputKeyService = false
     /// Puts the key helpers back after a force stop (needs WRITE_SECURE_SETTINGS).
     public var restoreKeyServices = false
-    public init(homeKeyService: Bool = false, inputKeyService: Bool = false, restoreKeyServices: Bool = false) {
+    /// The TV's list installed the launcher with STOCK_LAUNCHER=none: the stock launcher stays enabled (some firmware
+    /// leaves a black Home or blocks the remote's app buttons without it). The new one is still made Home.
+    public var keepStockLauncher = false
+    public init(homeKeyService: Bool = false, inputKeyService: Bool = false, restoreKeyServices: Bool = false,
+                keepStockLauncher: Bool = false) {
         self.homeKeyService = homeKeyService; self.inputKeyService = inputKeyService; self.restoreKeyServices = restoreKeyServices
+        self.keepStockLauncher = keepStockLauncher
+    }
+    enum CodingKeys: String, CodingKey { case homeKeyService, inputKeyService, restoreKeyServices, keepStockLauncher }
+    /// Every key is optional in a profile.json.
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        homeKeyService = try c.decodeIfPresent(Bool.self, forKey: .homeKeyService) ?? false
+        inputKeyService = try c.decodeIfPresent(Bool.self, forKey: .inputKeyService) ?? false
+        restoreKeyServices = try c.decodeIfPresent(Bool.self, forKey: .restoreKeyServices) ?? false
+        keepStockLauncher = try c.decodeIfPresent(Bool.self, forKey: .keepStockLauncher) ?? false
     }
 }
 
@@ -75,17 +89,19 @@ public struct LauncherInstaller: Sendable {
     let tv: TVDevice
     public init(tv: TVDevice) { self.tv = tv }
 
-    /// Which launcher to disable once the new one is Home: the one owning Home now, if it's a known stock launcher.
+    /// Which launcher to disable once the new one is Home: the one owning Home now, if it's a known stock launcher or
+    /// the one the TV's own list names (`listed`, a vendor launcher such as com.xgimi.home).
     /// nil means leave every launcher alone (the new one already owns Home, or Home is something unexpected).
-    public func stockLauncher() async throws -> String? {
+    public func stockLauncher(listed: String? = nil) async throws -> String? {
+        let known = DebloatRules.stockLaunchers + [listed].compactMap { $0 }.filter(Pattern.isPackage)
         let answer = try await tv.run(DebloatRules.homeQuery)
         let home = answer.split(separator: "\n").last.map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
         let package = String(home.split(separator: "/").first ?? "")
         if package == Self.package { return nil }
-        if DebloatRules.stockLaunchers.contains(package) { return package }
+        if known.contains(package) { return package }
         if package == "android" {   // the chooser: take the one known stock launcher among the claimants, if exactly one
             let claimants = Set(DebloatRules.components(try await tv.run(DebloatRules.claimQuery)).map { String($0.split(separator: "/").first ?? "") })
-            let known = DebloatRules.stockLaunchers.filter(claimants.contains)
+            let known = known.filter(claimants.contains)
             if known.count == 1 { return known[0] }
             throw RemoteFailure.message(String(localized: "Home has no default and \(known.count) stock launchers claim it. Pick a default Home on the TV first."))
         }
@@ -100,12 +116,13 @@ public struct LauncherInstaller: Sendable {
         LauncherVersion.fromDumpsys(try await tv.run("dumpsys package \(Self.package) | grep -m 1 versionCode="))
     }
 
-    public func install(apk: Data, options: LauncherOptions, theme: Data? = nil,
+    public func install(apk: Data, options: LauncherOptions, theme: Data? = nil, listedStock: String? = nil,
                         step: (@Sendable (LauncherStep, Double) -> Void)? = nil) async throws -> String {
         step?(.checking, 0)
         let sdk = Int(try await tv.run("getprop ro.build.version.sdk").trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0
         guard sdk >= Self.minSDK else { throw RemoteFailure.message(String(localized: "This TV runs Android SDK \(sdk); the new Home screen needs Android 8.0 (SDK 26) or newer. Nothing was changed.")) }
-        let stock = try await stockLauncher()
+        // As build-and-install.sh with STOCK_LAUNCHER=none: nothing is disabled, so whatever owns Home now stays.
+        let stock = options.keepStockLauncher ? nil : try await stockLauncher(listed: listedStock)
 
         step?(.pushing, 0)
         try await tv.push(apk, to: Self.tmpAPK, mode: 0o644) { step?(.pushing, $0) }
@@ -144,6 +161,9 @@ public struct LauncherInstaller: Sendable {
         let home = try await tv.run(DebloatRules.homeQuery).split(separator: "\n").last.map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
         guard home.hasPrefix(Self.package + "/") else {
             if let stock { try await rollback(stock) }
+            else if !home.isEmpty, !home.hasPrefix(Self.package + "/") {
+                throw RemoteFailure.message(String(localized: "Home stayed on \(home) instead of the new Home screen. The stock one was never turned off, so the TV works as before."))
+            }
             throw RemoteFailure.message(home.isEmpty
                 ? String(localized: "The TV stopped answering while Home was being switched. The stock Home screen was put back.")
                 : String(localized: "Home went to \(home) instead of the new Home screen, so the stock one was put back. On Google TV this usually means the setup wizard also claims Home: include it in the debloat, then try again."))

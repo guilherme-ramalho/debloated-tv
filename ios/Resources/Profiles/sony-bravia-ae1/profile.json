@@ -1,0 +1,49 @@
+{
+  "id": "sony-bravia-ae1",
+  "name": "Sony BRAVIA XR-55A95L (A95L, 2023 QD-OLED; Android reports BRAVIA 4K AE1, BRAVIA_AE_M6L, MediaTek MT5838), EU",
+  "source": "cleanyourtv examples/sony-bravia-ae1 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_AE_M6L"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.android.vending",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "It also plays the HDMI inputs, so keep it even if you never watch broadcast TV; set it as live_tv_package and in hidden_apps (config.json here).",
+    "Left alone because their components don't say enough: fingerprinterserver, crashlogcollector, lastaccess, interactivetvutil.",
+    "Check yours first. - The remote's Input key opens Sony's own source panel (tvlin's GlobalKeyReceiver): no helper needed. - With launcherx disabled the Settings, Netflix, YouTube and Prime Video buttons do nothing."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.sony.dtv.tvlin"
+    ],
+    "live_tv_package": "com.sony.dtv.tvlin",
+    "columns": 4,
+    "app_keys": [
+      "scan:583:com.netflix.ninja",
+      "scan:485:com.google.android.youtube.tv",
+      "scan:490:com.amazon.amazonvideo.livingroom"
+    ]
+  }
+}

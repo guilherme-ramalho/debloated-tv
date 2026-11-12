@@ -1,0 +1,29 @@
+{
+  "id": "portronics-beem-470",
+  "name": "Portronics Beem 470 Smart LED Projector (Allwinner H713, 1 GB), India",
+  "source": "cleanyourtv examples/portronics-beem-470 at b9538048",
+  "community": true,
+  "brand": "Portronics",
+  "os": "Android 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.htc.htclauncherhighenglishd08",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,36 @@
+{
+  "id": "turkcell-tv-plus-4k-box-dv6069y",
+  "name": "Turkcell TV+ 4K Box (SDMC DV6069Y, Amlogic), Turkey, operator streaming box",
+  "source": "cleanyourtv examples/turkcell-tv-plus-4k-box-dv6069y at b9538048",
+  "community": true,
+  "brand": "Turkcell",
+  "os": "Android TV 10",
+  "match": {},
+  "names": {
+    "device": [
+      "DV6069Y_TVPLUS"
+    ],
+    "product": [
+      "TVPLUS_OTT"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

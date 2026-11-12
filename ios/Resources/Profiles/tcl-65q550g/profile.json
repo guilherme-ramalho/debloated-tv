@@ -1,0 +1,31 @@
+{
+  "id": "tcl-65q550g",
+  "name": "TCL 65Q550G (TCL Smart TV, Google TV 11, V8-R51MT08-LF1V095.021344)",
+  "source": "cleanyourtv examples/tcl-65q550g at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not disable it over Wi-Fi."
+  ],
+  "theme": {}
+}

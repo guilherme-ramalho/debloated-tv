@@ -1,0 +1,38 @@
+{
+  "id": "sony-x9000h-cn",
+  "name": "Sony BRAVIA X9000H (2020, BRAVIA_VH1_CN, MediaTek MT5895), China",
+  "source": "cleanyourtv examples/sony-x9000h-cn at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_VH1_CN",
+      "report"
+    ],
+    "product": [
+      "BRAVIA_VH1"
+    ]
+  },
+  "stockLauncher": "com.dangbei.TVHomeLauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

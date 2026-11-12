@@ -1,0 +1,31 @@
+{
+  "id": "tcl-43ep660",
+  "name": "TCL 43EP660 (Europe, BeyondTV, Realtek rtd285o, V8-R851T02-LF1V378)",
+  "source": "cleanyourtv examples/tcl-43ep660 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Other HOME claimants are fallbacks: com.tcl.keycustomfunctionservice/.FallbackHome and com.android.tv.settings FallbackHome. setupwraith does not claim HOME here, but it owns one saved Wi-Fi network: leave it enabled."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,42 @@
+{
+  "id": "philips-55oled707",
+  "name": "Philips 55OLED707/12 / 55OLED887/12 / 77OLED806/12 / 65OLED707/12 (TP Vision, PH1M_EA_9970A, MediaTek MT5895), UK, Poland, Germany and Croatia",
+  "source": "cleanyourtv examples/philips-55oled707 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "PH1M_EA_9970A"
+    ],
+    "product": [
+      "PH1M_EA_9970A"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "That file's quirks and its DO NOT DISABLE block apply here as written; read them first.",
+    "Nothing in its DO NOT DISABLE block is disabled below: eum, aurora, xtv, playtv, contentexplorer, homeintentresolver and the browser engine all stay on.",
+    "At every boot org.droidtv.tv.tptvservice (TPTvServiceReceiver) puts screen_off_timeout and sleep_timeout back to 604800000 ms, \"Never\", logging \"screensaver put when to start is not never\".",
+    "It drifts the clock to spare the panel and starts only on Home, never over an app or Live TV.",
+    "It is re-enabled here, as the browser-engine entry in the 50PUS8517 DO NOT DISABLE block says it should be. 2. com.phorus.playfi.tv (Play-Fi) could NOT be kept disabled and is commented out below, like mediashell in 50PUS8517 quirk 4."
+  ],
+  "theme": {}
+}

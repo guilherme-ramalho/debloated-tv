@@ -1,0 +1,31 @@
+{
+  "id": "homeplus-stb-6252c",
+  "name": "Home+ STB-6252C (中嘉寬頻, Inspur, MT5221), DVB-C/OTT box",
+  "source": "cleanyourtv examples/homeplus-stb-6252c at b9538048",
+  "community": true,
+  "brand": "Home+",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.inspur.isoc.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never start com.inspur.factory (factory test)."
+  ],
+  "theme": {}
+}

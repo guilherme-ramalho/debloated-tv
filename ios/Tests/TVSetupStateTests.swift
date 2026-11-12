@@ -48,6 +48,9 @@ import XCTest
         status.inspected("c", properties: [:], profile: nil)
         XCTAssertEqual(status.info("c").model, "Unknown model")
         XCTAssertEqual(status.info("c").detail, "")
+        // Community lists fit but none is picked yet: still a TV setup can handle, not "unsupported".
+        status.inspected("d", properties: ["ro.product.model": "MiTV"], profile: nil, listsFound: true)
+        XCTAssertEqual(status.info("d").supported, true)
     }
 
     func testOfferAppearsOnceWhenTheTVShowsAStockHome() async throws {

@@ -1,0 +1,37 @@
+{
+  "id": "xiaomi-mitv-mooq2",
+  "name": "Xiaomi Mi TV P1 43\" (MiTV-MOOQ2, croods)",
+  "source": "cleanyourtv examples/xiaomi-mitv-mooq2 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "croods"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.wbd.stream",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.google.android.youtube.tv",
+    "com.disney.disneyplus",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "columns": 4
+  }
+}

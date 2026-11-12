@@ -1,0 +1,35 @@
+{
+  "id": "xiaomi-mitv-mffu0",
+  "name": "Xiaomi TV S Pro 100 Mini LED 2025 (小米电视 S Pro 100, L100MB-SP, MiTV-MFFU0, finch, MediaTek), China firmware OS3.0.115.0.UFFMATV, 4 GB RAM",
+  "source": "cleanyourtv examples/xiaomi-mitv-mffu0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android 14 (HyperOS 3, CN build)",
+  "match": {},
+  "names": {
+    "device": [
+      "finch"
+    ]
+  },
+  "stockLauncher": "com.mitv.tvhome",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Home brings the TV back; turning HDMI device control (CEC) off in the input settings stops it. - Do not disable com.xiaomi.mitv.tvmanager (\"TV Manager\"): XiaoAI's \"open <app>\" runs through its com.xiaomi.aicr.action.provider."
+  ],
+  "theme": {}
+}

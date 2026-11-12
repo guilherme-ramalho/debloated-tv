@@ -1,0 +1,31 @@
+{
+  "id": "tcl-50j7000a",
+  "name": "TCL 50J7000A (Thailand, BeyondTV, Realtek RT2851 / rtd285o, AR04, V8-R851T02-LF1V674)",
+  "source": "cleanyourtv examples/tcl-50j7000a at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "DO NOT DISABLE: com.tcl.tv com.tcl.tvinput com.tcl.autopair com.tcl.keycustomfunctionservice com.tcl.settings com.tcl.inputmethod.international com.tcl.initsetup com.tcl.factory.view com.tcl.providers.config com.tcl.systemserver com.tcl.xian.StartandroidService com.google.android.tv.remote.service 1."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,35 @@
+{
+  "id": "sony-bravia-vu31",
+  "name": "Sony BRAVIA VU31 4K (BRAVIA_VU31_4K, Realtek; BRAVIA 2 K-50S20B), India",
+  "source": "cleanyourtv examples/sony-bravia-vu31 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_VU31_4K"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Checked with the real remote. - SonyLIV (3004) and JioHotstar (3006) cannot be fixed this way: Realtek's KeyEventManager delivers those Sony codes to advancesetting only, they never reach Android's input pipeline, so no accessibility service sees them."
+  ],
+  "theme": {}
+}

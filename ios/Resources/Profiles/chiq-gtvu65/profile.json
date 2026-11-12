@@ -1,0 +1,36 @@
+{
+  "id": "chiq-gtvu65",
+  "name": "CHiQ AI PONT (Changhong GTVU65, dangni, MediaTek mt5867); also CHiQ L32FM10V",
+  "source": "cleanyourtv examples/chiq-gtvu65 at b9538048",
+  "community": true,
+  "brand": "CHiQ",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "dangni"
+    ],
+    "product": [
+      "GTVU65"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

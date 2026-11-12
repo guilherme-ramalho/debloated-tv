@@ -1,0 +1,48 @@
+{
+  "id": "anker-nebula-mars-3-air",
+  "name": "Anker Nebula Mars 3 Air projector D2325 (Nebula_Mars_2_V2, taihang, MediaTek m7332), Portugal",
+  "source": "cleanyourtv examples/anker-nebula-mars-3-air at b9538048",
+  "community": true,
+  "brand": "Anker Nebula",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "taihang"
+    ],
+    "model": [
+      "D2325"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "tv.twitch.android.app",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.vodafone.vtv.atv.pt",
+    "org.videolan.vlc",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Re-enable it before a factory reset.",
+    "Unlike the D2426 Capsule (anker-nebula-d2426, where setupwraith owns the Wi-Fi but never claims Home), here it owned only one old hidden network that was no longer connected; the network in use belongs to android.uid.system and kept working after the disable, verified live before proceeding."
+  ],
+  "theme": {
+    "live_tv_package": "",
+    "app_library": true,
+    "hidden_apps": [],
+    "top_menu": true,
+    "columns": 6
+  }
+}

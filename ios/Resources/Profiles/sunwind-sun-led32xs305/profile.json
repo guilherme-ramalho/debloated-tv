@@ -1,0 +1,44 @@
+{
+  "id": "sunwind-sun-led32xs305",
+  "name": "SunWind SUN-LED32XS305 32\" (Yandex TV / YaOS, CVTE TP.MT9256.PB721, MediaTek MT9256), Russia",
+  "source": "cleanyourtv examples/sunwind-sun-led32xs305 at b9538048",
+  "community": true,
+  "brand": "SunWind",
+  "os": "Android 11",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.yandex.tv.home",
+    "com.vk.tv",
+    "ru.rutube.app",
+    "innova.films.android.tv",
+    "org.smarttube.stable",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Factory and test packages (com.cvte.fac.menu, com.cvte.factory.at, com.cvte.license.at, com.cvte.tv.burn, com.stb.factorymenu): never disabled; com.cvte.factory.at was never started."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.stb.factorymenu",
+      "de.szalkowski.activitylauncher",
+      "com.mediatek.androidbox"
+    ],
+    "input_uri_scheme": "live-tv",
+    "reduced_motion": true
+  }
+}

@@ -136,9 +136,10 @@ public struct TVSetupInfo: Codable, Equatable {
     }
 
     /// Records what a setup connection learned about the TV.
-    public func inspected(_ host: String, properties: [String: String], profile: DebloatProfile?) {
+    /// `listsFound`: cleanyourtv lists fit this TV but none is chosen yet; setup is still possible.
+    public func inspected(_ host: String, properties: [String: String], profile: DebloatProfile?, listsFound: Bool = false) {
         update(host) {
-            $0.supported = profile != nil
+            $0.supported = profile != nil || listsFound
             $0.profile = profile?.manifest.name ?? ""
             let brand = (properties["ro.product.manufacturer"] ?? "").trimmingCharacters(in: .whitespaces)
             let model = (properties["ro.product.model"] ?? "").trimmingCharacters(in: .whitespaces)

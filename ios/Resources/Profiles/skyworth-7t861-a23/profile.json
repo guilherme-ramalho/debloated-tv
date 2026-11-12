@@ -1,0 +1,40 @@
+{
+  "id": "skyworth-7t861-a23",
+  "name": "Skyworth 7T861_A23 (MediaTek MT9638), China market",
+  "source": "cleanyourtv examples/skyworth-7t861-a23 at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Coocaa OS / Android 10",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.amazon.firetv.youtube",
+    "org.videolan.vlc",
+    "com.github.mytv.android",
+    "com.tcl.browser",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "CRITICAL SAFETY NOTE: Do NOT disable com.skyworth.officehomepage or com.tianci.movieplatform directly.",
+    "Recovery requires a hardware factory reset."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.skyworth.tv"
+    ],
+    "live_tv_package": "com.skyworth.tv"
+  }
+}

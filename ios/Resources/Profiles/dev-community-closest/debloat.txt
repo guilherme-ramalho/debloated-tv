@@ -1,0 +1,7 @@
+# Another Google TV box: development only. The end-to-end suite's "closest" list: it names no device the emulator
+# reports, so it can only be offered as made for another model.
+# Never disable: com.google.android.tv.remote.service com.google.android.gms com.android.vending
+
+# 1. Feedback and accessibility
+com.google.android.feedback
+com.google.android.marvin.talkback

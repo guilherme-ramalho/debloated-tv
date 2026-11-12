@@ -36,6 +36,7 @@
 		700000000000000000000004 /* Sources/Core/Debloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000003 /* Sources/Core/Debloat.swift */; };
 		700000000000000000000006 /* Sources/Core/LauncherInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000005 /* Sources/Core/LauncherInstall.swift */; };
 		700000000000000000000008 /* Sources/Core/Profiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000007 /* Sources/Core/Profiles.swift */; };
+		7000000000000000000000F2 /* Sources/Core/ProfileMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7000000000000000000000F1 /* Sources/Core/ProfileMatcher.swift */; };
 		70000000000000000000000A /* Profiles in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000009 /* Profiles */; };
 		700000000000000000000016 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000015 /* Localizable.xcstrings */; };
 		700000000000000000000017 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000015 /* Localizable.xcstrings */; };
@@ -109,6 +110,7 @@
 		700000000000000000000003 /* Sources/Core/Debloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Debloat.swift; sourceTree = SOURCE_ROOT; };
 		700000000000000000000005 /* Sources/Core/LauncherInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/LauncherInstall.swift; sourceTree = SOURCE_ROOT; };
 		700000000000000000000007 /* Sources/Core/Profiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Profiles.swift; sourceTree = SOURCE_ROOT; };
+		7000000000000000000000F1 /* Sources/Core/ProfileMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/ProfileMatcher.swift; sourceTree = SOURCE_ROOT; };
 		700000000000000000000009 /* Profiles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Profiles; path = Resources/Profiles; sourceTree = SOURCE_ROOT; };
 		700000000000000000000015 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = Resources/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
 		700000000000000000000018 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = InfoPlist.xcstrings; path = Resources/InfoPlist.xcstrings; sourceTree = SOURCE_ROOT; };
@@ -184,6 +186,7 @@
 				300000000000000000000010 /* Sources/Core/LauncherClient.swift */,
 				700000000000000000000001 /* Sources/Core/Adb.swift */,
 				700000000000000000000007 /* Sources/Core/Profiles.swift */,
+				7000000000000000000000F1 /* Sources/Core/ProfileMatcher.swift */,
 				700000000000000000000009 /* Profiles */,
 				70000000000000000000000B /* Launcher */,
 				700000000000000000000015 /* Localizable.xcstrings */,
@@ -364,6 +367,7 @@
 				300000000000000000000011 /* Sources/Core/LauncherClient.swift in Sources */,
 				700000000000000000000002 /* Sources/Core/Adb.swift in Sources */,
 				700000000000000000000008 /* Sources/Core/Profiles.swift in Sources */,
+				7000000000000000000000F2 /* Sources/Core/ProfileMatcher.swift in Sources */,
 				700000000000000000000006 /* Sources/Core/LauncherInstall.swift in Sources */,
 				700000000000000000000004 /* Sources/Core/Debloat.swift in Sources */,
 				300000000000000000000013 /* Sources/Core/Preferences.swift in Sources */,

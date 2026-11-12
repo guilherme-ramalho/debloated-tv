@@ -1,0 +1,31 @@
+{
+  "id": "verizon-stream-tv",
+  "name": "Verizon Stream TV, 1st gen (WNC JS8V, Amlogic), US",
+  "source": "cleanyourtv examples/verizon-stream-tv at b9538048",
+  "community": true,
+  "brand": "Verizon",
+  "os": "Android 12",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.verizon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Tablo and IPTV apps are standalone apps (own guide), they do not feed Live Channels."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,44 @@
+{
+  "id": "hotack-l018",
+  "name": "HOTACK L018 Smart Projector (Allwinner H713, reports ADT-3, LuminaOS)",
+  "source": "cleanyourtv examples/hotack-l018 at b9538048",
+  "community": true,
+  "brand": "HOTACK",
+  "os": "Android 11",
+  "match": {},
+  "names": {
+    "device": [
+      "adt3"
+    ],
+    "product": [
+      "adt3"
+    ]
+  },
+  "stockLauncher": "com.htc.luminaos",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.htc.luminaos",
+      "com.softwinner.tv.factorymenu"
+    ],
+    "reduced_motion": true,
+    "focus_overshoot": false
+  }
+}

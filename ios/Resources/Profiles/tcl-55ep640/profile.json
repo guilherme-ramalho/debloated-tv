@@ -1,0 +1,39 @@
+{
+  "id": "tcl-55ep640",
+  "name": "TCL 55EP640 (Greece, BeyondTV, Realtek RTD2851 / rtd285o, AR04)",
+  "source": "cleanyourtv examples/tcl-55ep640 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "BeyondTV"
+    ],
+    "product": [
+      "BeyondTV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "One saved Wi-Fi network belongs to com.google.android.tungsten.setupwraith: leave it enabled (it is not in this list), or forget and re-join that network in Settings first.",
+    "Tuner and HDMI: com.tcl.tvinput (never disable either)."
+  ],
+  "theme": {}
+}

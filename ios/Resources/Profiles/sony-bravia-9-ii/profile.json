@@ -1,0 +1,36 @@
+{
+  "id": "sony-bravia-9-ii",
+  "name": "Sony BRAVIA 9 II (K-65XR90M2, BRAVIA_AE3, MediaTek MT5838)",
+  "source": "cleanyourtv examples/sony-bravia-9-ii at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_AE3"
+    ],
+    "product": [
+      "BRAVIA_AE3_PA"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

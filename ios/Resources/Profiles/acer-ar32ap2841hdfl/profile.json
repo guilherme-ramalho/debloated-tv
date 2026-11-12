@@ -1,0 +1,40 @@
+{
+  "id": "acer-ar32ap2841hdfl",
+  "name": "Acer P Series AR32AP2841HDFL 32\" HD (SCBC R1, Realtek RTD2841), India",
+  "source": "cleanyourtv examples/acer-ar32ap2841hdfl at b9538048",
+  "community": true,
+  "brand": "Acer",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "R1"
+    ],
+    "product": [
+      "ACER"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "in.startv.hotstar",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "columns": 4,
+    "dock_glass": true
+  }
+}

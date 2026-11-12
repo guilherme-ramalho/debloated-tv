@@ -1,0 +1,36 @@
+{
+  "id": "sharp-85hp5465e",
+  "name": "SHARP 85HP5465E (Sharp Google TV, maniatika, MediaTek MT9676), EU",
+  "source": "cleanyourtv examples/sharp-85hp5465e at b9538048",
+  "community": true,
+  "brand": "SHARP",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "maniatika"
+    ],
+    "product": [
+      "MT9676_Sharp"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

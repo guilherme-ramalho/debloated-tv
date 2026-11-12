@@ -1,0 +1,38 @@
+{
+  "id": "alwtniet-hy320-mini",
+  "name": "Alwtniet HY320 Mini projector (device adt3, Askey; Allwinner/HTC firmware), 1 GB, 720p",
+  "source": "cleanyourtv examples/alwtniet-hy320-mini at b9538048",
+  "community": true,
+  "brand": "Alwtniet",
+  "os": "Android 11",
+  "match": {},
+  "names": {
+    "device": [
+      "adt3"
+    ],
+    "model": [
+      "HY320Mini"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "A factory reset removes them; they are not listed here because this list only disables. com.hotack.silentsdk (the dropper on some H713 units) is not present on this build."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,31 @@
+{
+  "id": "aipro4k",
+  "name": "AiPro4K (Expressluck, sepolia; Changhong AI PONT family)",
+  "source": "cleanyourtv examples/aipro4k at b9538048",
+  "community": true,
+  "brand": "AiPro4K",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Already disabled from the factory (do not re-enable them on restore): com.at.factory.androidtvaidlservice, com.cltv.hybrid, com.cltv.mal, com.ctv.factorytest, com.expressluck.factorymanager, com.mediatek.dtv.tvinput.atsctuner, com.mediatek.dtv.tvinput.isdbtuner, com.mediatek.opapp."
+  ],
+  "theme": {}
+}

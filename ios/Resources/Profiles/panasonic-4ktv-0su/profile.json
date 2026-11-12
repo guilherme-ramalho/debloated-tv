@@ -1,0 +1,38 @@
+{
+  "id": "panasonic-4ktv-0su",
+  "name": "Panasonic 4KTV-0SU (Skyworth-built SW4H, MediaTek m7332), Gulf region",
+  "source": "cleanyourtv examples/panasonic-4ktv-0su at b9538048",
+  "community": true,
+  "brand": "Panasonic",
+  "os": "Android TV 10",
+  "match": {},
+  "names": {
+    "device": [
+      "SW4H"
+    ],
+    "product": [
+      "SW4H_PANATV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never disable any com.mediatek.* package."
+  ],
+  "theme": {}
+}

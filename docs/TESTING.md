@@ -53,9 +53,21 @@ an ADB entrance of its own, so adb on the Mac keeps working during setup. A smal
 (`scripts/e2e-helper.py`) does the TV side over adb: it reads the pairing code off the emulator's screen
 (`uiautomator dump`), accepts "Allow USB debugging?", reports which app is in front, presses Home, reads the
 launcher's `config.json`, and drops the ADB link to stand in for a TV that went idle. The test itself is
-`ios/TVRemoteUITests/TVRemoteEndToEndTests.swift`, one run in the order a user goes through it (pair › remote › setup
-and Home install › edit › undo › a second setup › turn debugging off), each case an activity in the result bundle. It
-skips unless the script sets `E2E_HELPER`, so Xcode and CI never need the emulator.
+`ios/TVRemoteUITests/TVRemoteEndToEndTests.swift`, with two scenarios, each on a freshly reset emulator and
+simulator from one build (`--only main|community` runs one):
+
+- **main** (`testPairSetUpEditUndoAndSecure`), in the order a user goes through it: pair › remote › setup with the
+  emulator's tested profile and the Home install › the restart check › edit › undo › a second setup › turn
+  debugging off.
+- **community** (`testCommunityListSetupAndUndo`), a TV without a tested profile, like most: the list picker, a
+  "closest" list's confirmation, a debloat-only list made for this model, apply with the restart, undo. Two
+  development-only lists stand in for cleanyourtv's (`Resources/Profiles/dev-community-*`, loaded only with the
+  `-e2eCommunity` launch switch, never in release builds).
+
+Each case is an activity in the result bundle and a live line in the terminal (▶ start, ✓/✗ with its time, failures
+as they happen, and the TV side's events: prompts approved, restarts, forwards restored). The test skips unless the
+script sets `E2E_HELPER`, so Xcode and CI never need the emulator. TV discovery is off during the run
+(`-e2eNoDiscovery`), so it never opens a connection to a real TV on the network.
 
 The script resets the emulator to its `clean` snapshot before and after (the run ends with debugging off on the
 TV, so the reset goes through the emulator console), reboots the guest when its clock is stale, builds the app
@@ -136,6 +148,17 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | SET-12 | Not now on the sheet; pair again later | Sheet doesn't come back | Auto: `testOfferAppearsOnceAfterPairing`; E2E (after a relaunch) |
 | SET-13 | Two TVs (different IPs) | Each keeps its own state | Auto: `testStatePersistsPerTVAndUndoResetsIt` |
 | SET-14 | Settings › TV setup links | Both open | Auto: `testSettingsKeepsTVSetupAndLicenses` |
+| SET-20 | Every cleanyourtv list bundled (`scripts/import-tv-lists.py`) loads; Home screen offered only where the list ships a launcher config, never on Fire TV or CVTE | Pass | Auto: `testEveryCommunityListLoads` |
+| SET-21 | TCL Smart TV Pro, the maintainer's firmware (BeyondTV4, G03_4K_GB, AR11, SDK 30) | The tested `tcl-43c645` profile is used with no picker; another product (G03_4K_US) or firmware (AR09) gets the picker; its list leaves `com.tcl.usercenter` and `com.tcl.keyhelp` on | Auto: `testBundledProfilesLoadAndMatchTheirTVs`, `testMatcherPrefersTheTestedProfileThenTheModel` |
+| SET-22 | A TV whose model has its own list (e.g. Acer R3) | That list first, marked "Made for this model" | Auto: `testMatcherFindsTheModelsOwnList` |
+| SET-23 | A model with no list, same brand as others | Closest lists of its brand, marked "Made for another model"; review warns to check each app | Auto: `testMatcherOffersTheClosestListForAnUnknownModel`; Manual (warning text) |
+| SET-24 | A TV no list resembles | "None of cleanyourtv's lists fits this TV"; nothing changed | Auto: `testMatcherOffersNothingForAnUnrelatedTV` |
+| SET-25 | Setup on a non-TCL TV: list picker | Model and device shown; best 3 lists, "Show N more"; picking one goes to Choose what stays with the list's testers' notes and "About this list" | E2E (community) |
+| SET-26 | Close the list picker, open the TV tab | Setup card (not "isn't supported") | Auto: `testInspectionNamesTheTVWithoutRepeatingTheBrand` |
+| SET-27 | Choose Home with a list that has no Home screen rule (Fire TV, CVTE board, debloat-only, custom launcher build, special procedure, no launcher config) | "The TV keeps its own Home screen" with the reason; no toggle; Test step asks for "The Home button opens the TV's Home screen" | E2E (community: debloat only); Manual (the other reasons) |
+| SET-28 | "Made for this model" only from the list's own names: a shared board name (BeyondTV4, R3) needs the product too; another list mentioned in a header claims nothing | Pass | Auto: `testModelClaimsComeFromTheListsOwnNames`, `testMatcherFindsTheModelsOwnList` |
+| SET-29 | Pick a "closest" list (made for another model) | Confirmation "Use a list made for another model?"; Cancel keeps the picker; a "closest" list never disables a CVTE stock launcher (`com.cvte.tv.launcher*`) | E2E (community: the confirmation); Manual (CVTE launcher) |
+| SET-30 | Importer: `scripts/import-tv-lists.py` after a cleanyourtv fetch | Lists byte-identical to upstream; stops while a list's theme needs a helper its install command doesn't turn on (settle in `scripts/tv-list-overrides.json`); keep-stock lists get `keepStockLauncher`, custom-build and special lists no Home | Manual (run it); Auto checks the output: `testEveryCommunityListLoads` |
 
 ## 4. Debloat setup (DBL) ⚠
 
@@ -155,7 +178,10 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | DBL-10 | Google TV setup wizard, TV on a cable (no Wi-Fi saved by the wizard) | Disabled with no question; Chromecast note shown if casting stays on | Auto: `testSetupWizardFollowsTheWifiCheck` |
 | DBL-10b | Setup wizard owns the TV's Wi-Fi (network joined during first setup) | Review asks for each network's password; Continue waits for it; apply saves it again first, the TV stays (or comes back) online, then the wizard is disabled. Wrong password: stops before anything else changes, with how to rejoin on the TV | Auto: `testSetupWizardFollowsTheWifiCheck`, `testWifiParsingAndTheResaveCommand`; Manual on a Wi-Fi TV |
 | DBL-10c | Setup wizard kept (unreadable Wi-Fi, enterprise network, no connect-network) with the new Home chosen | Choose Home says the new Home can't take over and Apply is off until the Home screen is switched off | Auto: `testSetupWizardFollowsTheWifiCheck` (setupKeepsHome) |
+| DBL-10d | The wizard owns a network the parser can't read (SSID printed as hex) | The wizard stays (upstream's raw `cname=` check) | Auto: `testSetupWizardFollowsTheWifiCheck` |
+| DBL-10e | Wizard-owned Wi-Fi: password typed twice | Continue stays off until both match; warning that a wrong password takes the TV off Wi-Fi; "Safer: do it on the TV" + Review again re-runs the checks | Manual |
 | DBL-11 | Apply | Progress per group; then "Disabled N apps"; apps refused by the TV listed | Manual + Auto `testApplyReadsTheTVBack`; E2E |
+| DBL-11b | The TV answers nothing when read back after disabling | "couldn't be checked", not "all disabled" | Auto: `testApplyRefusesAnEmptyReadback` |
 | DBL-12 | Unplug network mid-apply | Stops, says which group; nothing after it changed | Manual + Auto `testApplyStopsWhenTheTVStopsAnswering` |
 | DBL-13 | Run setup twice | Recovery record keeps the state from before the first run; the second run connects without a prompt | Auto: `testRecordKeepsTheStateBeforeTheFirstRun…`; E2E (second run) |
 | DBL-14 | Open debugging port warning (`ro.adb.secure=0`) | Note shown in review | Auto: `testOpenDebuggingPortIsCalledOut` |
@@ -163,6 +189,8 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | DBL-16 | Finish: turn debugging off, check | App confirms the port refuses connections | Manual |
 | DBL-16b | Finish: "Turn off network debugging now", also after leaving the TV idle on the test step for 10 min | Reconnects if needed without a prompt, switches debugging off, then shows "Debugging is off". On a TV that keeps the port open it says so | E2E (link dropped first; checks the TV's adb state) + Manual on a real TV |
 | DBL-17 | Export recovery record | Share sheet with the JSON | Manual (E2E checks the button is there) |
+| DBL-18 | End of apply | "The TV restarts once…" shown before Apply; TV syncs, restarts, the app reconnects (prompt if "Always allow" wasn't ticked), then the test step shows Home's state and any apps the firmware turned back on; a black Home (RecoveryActivity/FallbackHome) or the stock launcher taking Home back shows "Restore the TV now" | Auto: `testRestartCheckJudgesHomeAndReEnabledApps`; E2E (the helper restores the emulator's forwards after the reboot); Manual (real TV) |
+| DBL-19 | The TV doesn't let the phone back in after the restart (network ADB closes at boot on some firmware) | Test step says it couldn't check and what to look at; nothing else fails | Manual |
 
 ## 5. New Home screen install (LCH) ⚠
 
@@ -186,17 +214,27 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | LCH-16 | The TV has a newer launcher than the app carries (setup again or update) | Install refused with "newer Home screen… update Purio TV"; nothing else changed | Auto: `testNewerBuildOnTheTVIsExplained` |
 | LCH-17 | Set up a model whose profile names no remote buttons, Settings key or Live TV app (the emulator profile) | config.json has empty `app_keys`, `settings_key_keycodes`, `hidden_apps` and `live_tv_package`: nothing from the launcher's built-in TCL defaults; a profile that names them keeps its own | Auto: `testOtherModelsDontInheritTheLaunchersTCLDefaults`, `testThemeGetsTheChosenDock`; E2E reads the TV's config |
 | LCH-18 | Turn weather on and off from the phone (also with the date or lunar date lines) | The tops of Inputs, network and Settings and the day name line up with the top of the greeting ("Good evening"); date and weather run down beside the clock; nothing in the top bar moves. Also check `date_below_clock` and a header without greeting | Manual (TCL, 9 Nov 2026: pass) |
+| LCH-19 | Install on a TV whose Home is a vendor launcher its list names (e.g. `com.xgimi.home`) | That launcher is disabled after the handover; an unnamed unknown Home still stops setup | Auto: `testListedVendorLauncherIsTreatedAsStock` |
+| LCH-20 | Update Home screen from the TV tab on a TV set up with a community list; and after an Undo | Uses the list applied last in this TV's record (by `android_id`); after an Undo (stock Home again) it refuses with "nothing to update" and changes nothing; another phone gets "This phone didn't set up this TV's Home screen" | Manual |
+| LCH-21 | Install with a list that keeps the stock launcher (`STOCK_LAUNCHER=none`) | Nothing disabled; the new Home started without claiming Home first, then made Home; if Home doesn't move, "The stock one was never turned off" | Auto: `testKeepStockLauncherDisablesNothing` |
 
 ## 6. Undo (UND) ⚠
 
 | ID | What to do | Expected | How |
 |---|---|---|---|
-| UND-01 | Undo TV setup with the saved record | Apps back on, stock Home back; "N apps stay disabled because they were off before" | E2E + Manual on a real TV |
+| UND-01 | Undo TV setup with the saved record | Apps back on, stock Home back; "Restored and checked: … N apps stay disabled because they were already off before setup" | E2E + Manual on a real TV |
 | UND-02 | Undo with a wrong address or debugging off | Clear error, nothing changed | E2E (closed port); Manual (debugging off) |
 | UND-03 | After undo, TV tab | Setup card again | Auto: `testStatePersistsPerTVAndUndoResetsIt`; E2E |
 | UND-04 | Records from upstream's recovery.py (and older scripts) | Restore the same way | Auto: `RecoveryCompatibilityTests` |
 | UND-05 | A tampered record (shell text in names, Home or settings) | Ignored; valid entries still restore | Auto: `testRestoreNeverRuns…` |
 | UND-06 | "Something's wrong: restore" during setup's test step | Restores immediately | Manual |
+| UND-07 | Setup with list A, then again with list B (or setup again) | One record per TV; Undo returns to the state before A (stock Home, A's apps on), lists "A + B" | Auto: `testOneRecordPerTVAcrossLists` |
+| UND-13 | After a setup, without restarting the app: Settings › Undo TV setup | The record from that setup is listed | E2E (community) |
+| UND-08 | Records saved by builds before this one (one per list) | Folded into the TV's record at the next Apply, oldest state first; old files removed | Auto: `testOlderRecordsMergeOldestFirst` (merge); Manual (files) |
+| UND-09 | Two TVs with the same dummy serial (0123456789ABCDEF) | Separate records (by `android_id`) | Auto: `testIdentityIgnoresDummySerials` |
+| UND-10 | Restore a record on another TV | Refused before any command: "belongs to another TV" | Auto: `testRestoreRefusesAnotherTV` |
+| UND-11 | Restore where an app doesn't come back or Home lands elsewhere | Says which apps and where Home is; TV tab not reset | Auto: `testRestoreChecksItsResult` |
+| UND-12 | Restore after a setup that turned on HomeKeyService | Accessibility settings back to before setup, WRITE_SECURE_SETTINGS revoked; remote buttons go to the stock Home | Auto: `testRestorePutsTheHelpersBack`; Manual (real remote) |
 
 ## 7. TV Home editor (EDT)
 

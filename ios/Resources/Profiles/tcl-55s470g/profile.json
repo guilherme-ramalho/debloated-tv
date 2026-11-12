@@ -1,0 +1,31 @@
+{
+  "id": "tcl-55s470g",
+  "name": "TCL 55S470G (G10, G10_4K_US_NF, Realtek), US; also TCL 65S450G-CA, Canada (same build)",
+  "source": "cleanyourtv examples/tcl-55s470g at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Disable it only if you don't want TV firmware updates."
+  ],
+  "theme": {}
+}

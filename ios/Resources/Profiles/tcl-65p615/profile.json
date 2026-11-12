@@ -1,0 +1,37 @@
+{
+  "id": "tcl-65p615",
+  "name": "TCL 65P615 (Europe, BeyondTV, Realtek RTD2851, AP06, V8-R851T02-LF1V637)",
+  "source": "cleanyourtv examples/tcl-65p615 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "BeyondTV"
+    ],
+    "product": [
+      "BeyondTV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.tcl.tv",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

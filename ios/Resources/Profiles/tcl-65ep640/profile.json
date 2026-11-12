@@ -1,0 +1,39 @@
+{
+  "id": "tcl-65ep640",
+  "name": "TCL 65EP640 (Finland, BeyondTV, Realtek RTD2851 / rtd285o, AP06)",
+  "source": "cleanyourtv examples/tcl-65ep640 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "BeyondTV"
+    ],
+    "product": [
+      "BeyondTV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.yle.webtv",
+    "com.disney.disneyplus",
+    "com.amazon.amazonvideo.livingroom",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Tuner and HDMI: com.tcl.tvinput (never disable either)."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,36 @@
+{
+  "id": "sharp-2t-c32gh3000i",
+  "name": "SHARP 2T-C32GH3000I (SHARP 2K Smart TV-A; Skyworth-built, beomil, MediaTek mt5867), Indonesia",
+  "source": "cleanyourtv examples/sharp-2t-c32gh3000i at b9538048",
+  "community": true,
+  "brand": "SHARP",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "beomil"
+    ],
+    "product": [
+      "SW11_SHARP_APEU"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

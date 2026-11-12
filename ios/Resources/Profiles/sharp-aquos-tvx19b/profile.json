@@ -1,0 +1,35 @@
+{
+  "id": "sharp-aquos-tvx19b",
+  "name": "SHARP AQUOS-TVX19B (AQUOS-TVX19B, gangnam, MediaTek m7322), Taiwan",
+  "source": "cleanyourtv examples/sharp-aquos-tvx19b at b9538048",
+  "community": true,
+  "brand": "SHARP",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "gangnam"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Package names never say what they do on this firmware: every entry below was checked against the live TV first. 121 packages installed before the debloat."
+  ],
+  "theme": {}
+}

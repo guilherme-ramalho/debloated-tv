@@ -1,0 +1,35 @@
+{
+  "id": "oneplus-tv-dubai",
+  "name": "OnePlus TV (D00, Dubai)",
+  "source": "cleanyourtv examples/oneplus-tv-dubai at b9538048",
+  "community": true,
+  "brand": "OnePlus",
+  "os": "Android TV 11 / Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "Dubai"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Seen on this unit: Developer options -> \"Don't keep activities\" was switched on, which makes every app restart when you leave it."
+  ],
+  "theme": {}
+}

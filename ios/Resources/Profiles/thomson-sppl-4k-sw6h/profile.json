@@ -1,0 +1,46 @@
+{
+  "id": "thomson-sppl-4k-sw6h",
+  "name": "Thomson SPPL 4K Google TV (Skyworth SW6H, MediaTek, same board as `skyworth-sw-22sa/`), India, ~1.9 GB",
+  "source": "cleanyourtv examples/thomson-sppl-4k-sw6h at b9538048",
+  "community": true,
+  "brand": "Thomson",
+  "os": "Android TV 14 (Google TV home)",
+  "match": {},
+  "names": {
+    "device": [
+      "SW6H"
+    ],
+    "product": [
+      "SW6H_Thomson"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Off on this unit by the owner's choice but left out of the list, since keyboards stay enabled: org.liskovsoft.androidtv.rukeyboard (a Russian soft keyboard, not the active IME; Gboard is)."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.smartdevice.livetv"
+    ],
+    "live_tv_package": "com.smartdevice.livetv",
+    "settings_key_keycodes": [
+      83
+    ]
+  }
+}

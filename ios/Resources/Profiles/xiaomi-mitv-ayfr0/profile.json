@@ -1,0 +1,41 @@
+{
+  "id": "xiaomi-mitv-ayfr0",
+  "name": "Xiaomi TV Stick 4K (MiTV-AYFR0, soul, Amlogic), streaming stick",
+  "source": "cleanyourtv examples/xiaomi-mitv-ayfr0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "soul"
+    ],
+    "product": [
+      "soul"
+    ],
+    "model": [
+      "MiTV-AYFR0"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The custom launcher never asks it for rows."
+  ],
+  "theme": {}
+}

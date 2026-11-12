@@ -1,0 +1,36 @@
+{
+  "id": "hitachi-cdh-le32smart21",
+  "name": "Hitachi CDH-LE32SMART21 (TCL-built C06, C06_2K_GB, MediaTek MT9221, 1 GB), Argentina",
+  "source": "cleanyourtv examples/hitachi-cdh-le32smart21 at b9538048",
+  "community": true,
+  "brand": "Hitachi",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "C06"
+    ],
+    "product": [
+      "C06_2K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

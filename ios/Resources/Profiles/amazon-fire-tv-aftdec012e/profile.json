@@ -1,0 +1,36 @@
+{
+  "id": "amazon-fire-tv-aftdec012e",
+  "name": "Amazon Fire TV, AFTDEC012E (ginza), Android 11",
+  "source": "cleanyourtv examples/amazon-fire-tv-aftdec012e at b9538048",
+  "community": true,
+  "brand": "Amazon Fire TV",
+  "os": "Android 11 / Fire OS",
+  "match": {},
+  "names": {
+    "device": [
+      "ginza"
+    ],
+    "model": [
+      "AFTDEC012E"
+    ]
+  },
+  "stockLauncher": "com.amazon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "fireOS",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,38 @@
+{
+  "id": "jmgo-n1s-holan",
+  "name": "JMGO N1S projector (K80A, holan, MediaTek m7332), Australia",
+  "source": "cleanyourtv examples/jmgo-n1s-holan at b9538048",
+  "community": true,
+  "brand": "JMGO",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "holan"
+    ],
+    "model": [
+      "K80A"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Disabling it kept the saved Wi-Fi network on this unit. - Standby is suspend-to-RAM: apps keep running across power off and on."
+  ],
+  "theme": {}
+}

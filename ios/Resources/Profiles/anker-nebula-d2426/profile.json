@@ -1,0 +1,45 @@
+{
+  "id": "anker-nebula-d2426",
+  "name": "Anker Nebula projector D2426 (D2426_CapsuleIIIPro, baekdu, SDMC/MediaTek m7632, 1.7 GB), Brazil",
+  "source": "cleanyourtv examples/anker-nebula-d2426 at b9538048",
+  "community": true,
+  "brand": "Anker Nebula",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "baekdu"
+    ],
+    "model": [
+      "D2426"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.mediaclient",
+    "com.disney.disneyplus",
+    "com.amazon.amazonvideo.livingroom",
+    "com.netflix.ninja",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "live_tv_package": "",
+    "app_library": true,
+    "vpn_app": "com.nordvpn.android",
+    "greeting_name": "Sedir",
+    "columns": 4,
+    "rows_below_dock": 0
+  }
+}

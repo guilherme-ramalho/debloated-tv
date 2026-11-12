@@ -1,0 +1,36 @@
+{
+  "id": "turbo-x-40as60t",
+  "name": "Turbo-X 40AS60T (Vestel-built, BARTU_TurboX, menlo, MediaTek mt5867), Greece",
+  "source": "cleanyourtv examples/turbo-x-40as60t at b9538048",
+  "community": true,
+  "brand": "Turbo-X",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "menlo"
+    ],
+    "product": [
+      "BARTU_TurboX"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

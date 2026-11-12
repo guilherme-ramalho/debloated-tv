@@ -1,0 +1,45 @@
+{
+  "id": "xgimi-horizon-20",
+  "name": "XGIMI Horizon 20 projector (XR13A, kasol)",
+  "source": "cleanyourtv examples/xgimi-horizon-20 at b9538048",
+  "community": true,
+  "brand": "XGIMI",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "kasol"
+    ],
+    "product": [
+      "athenamin"
+    ],
+    "model": [
+      "XR13A"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not copy their package lines here.",
+    "On 2026-10-28, with it disabled, Netflix and Disney+ opened and would not start an episode.",
+    "Disabling com.google.android.tungsten.setupwraith costs casting on Google TV; keep it enabled if you cast. setupwraith owns a Wi-Fi network saved during first setup.",
+    "Do not start com.xgimi.factoryservice or com.xgimi.minitvfactory.",
+    "Leave enabled: com.xgimi.autokst (auto keystone), com.xgimi.tof (focus), com.xgimi.xrmservice, com.xgimi.gimiplayer, the other com.xgimi hardware packages, katniss, mediashell, com.mediatek.tv.systemupdater, Play Store, Play Services and com.android.tv.settings."
+  ],
+  "theme": {}
+}

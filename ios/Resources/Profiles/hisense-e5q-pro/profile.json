@@ -1,0 +1,34 @@
+{
+  "id": "hisense-e5q-pro",
+  "name": "Hisense E5Q Pro (VIDAA_TV, MediaTek MT9653), China",
+  "source": "cleanyourtv examples/hisense-e5q-pro at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "live_tv_package": "",
+    "live_tv_action": "",
+    "source_panel_service": "com.hisense.tv.inputs/com.hisense.tv.InputsUIService",
+    "source_panel_action": "com.hisense.tv.start_inputs"
+  }
+}

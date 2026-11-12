@@ -1,0 +1,37 @@
+{
+  "id": "sony-xbr-55x805g-br",
+  "name": "Sony BRAVIA XBR-55X805G (2019, BRAVIA_ATV3_4K_BR, MediaTek MT5891), Brazil",
+  "source": "cleanyourtv examples/sony-xbr-55x805g-br at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_ATV3_4K"
+    ],
+    "product": [
+      "BRAVIA_ATV3_4K_BR",
+      "still"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

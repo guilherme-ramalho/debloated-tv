@@ -21,6 +21,10 @@
   on TCP inside the guest, and `adb forward tcp:15555 tcp:5555` reaches that listener through the adb server, which
   stays up. The app connects to 127.0.0.1:15555 while adb on the Mac keeps working, and can even accept the
   "Allow USB debugging?" prompt for the app (`scripts/e2e-helper.py approve`).
+- **A reboot takes the forwards with it.** Setup restarts the TV at the end of apply (TESTING.md DBL-18); the
+  reboot ends adb's transport, drops every forward and brings adbd back in USB mode. The helper's `watch-reboot`
+  endpoint waits for the boot to finish, runs `adb tcpip 5555` again and re-adds the forwards, so the app reconnects
+  as it would to a real TV.
 - **Port 15555, not 5565.** adb scans ports 5555–5585 for emulators and would grab a forwarder there as a second
   device ("more than one device/emulator").
 - **The remote can pair but not control.** The Android TV Remote Service on the `android-tv` API 31 image accepts

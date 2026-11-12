@@ -1,0 +1,38 @@
+{
+  "id": "sony-kdl-43w950d",
+  "name": "Sony BRAVIA KDL-43W950D (2015/2016, SVP-DTV15, MediaTek), India (\"PA\") firmware",
+  "source": "cleanyourtv examples/sony-kdl-43w950d at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 8.0.0",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.android.vending",
+    "com.sony.dtv.tvx",
+    "com.sony.dtv.tvxlauncher.programguide",
+    "com.sony.dtv.timers",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Live TV AND every HDMI input: com.sony.dtv.tvx — KEEP IT ENABLED.  com.sony.dtv.b2b.hotelmode must stay enabled on this board: com.android.tv.settings' MainFragment reads its hotelsettings content provider while building the Settings menu."
+  ],
+  "theme": {
+    "live_tv_package": "com.sony.dtv.tvx",
+    "columns": 4
+  }
+}

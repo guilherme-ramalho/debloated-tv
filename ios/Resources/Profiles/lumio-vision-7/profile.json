@@ -1,0 +1,36 @@
+{
+  "id": "lumio-vision-7",
+  "name": "Lumio Vision 7 55\" (KTC ODM, Realtek, khardi, KTC_LUMIO_4K_EU_23GV1), India",
+  "source": "cleanyourtv examples/lumio-vision-7 at b9538048",
+  "community": true,
+  "brand": "Lumio",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "khardi"
+    ],
+    "product": [
+      "KTC_LUMIO_4K_EU_23GV1"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

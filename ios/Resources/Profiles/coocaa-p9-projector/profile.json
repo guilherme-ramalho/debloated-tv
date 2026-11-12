@@ -1,0 +1,28 @@
+{
+  "id": "coocaa-p9-projector",
+  "name": "Coocaa P9 projector (MediaTek mt5862), China",
+  "source": "cleanyourtv examples/coocaa-p9-projector at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Android 9 (Coocaa OS)",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "customBuild",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

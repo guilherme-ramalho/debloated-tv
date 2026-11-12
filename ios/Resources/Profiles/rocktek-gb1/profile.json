@@ -1,0 +1,38 @@
+{
+  "id": "rocktek-gb1",
+  "name": "RockTek GB1",
+  "source": "cleanyourtv examples/rocktek-gb1 at b9538048",
+  "community": true,
+  "brand": "RockTek",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Rejoin the network in Settings first if necessary, and re-enable it before a factory reset or remote re-pairing."
+  ],
+  "theme": {
+    "settings_key_keycodes": [
+      83
+    ],
+    "app_keys": [
+      "KEYCODE_GUIDE:com.seena.app"
+    ]
+  }
+}

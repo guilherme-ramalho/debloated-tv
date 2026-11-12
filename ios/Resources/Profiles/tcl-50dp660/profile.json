@@ -1,0 +1,37 @@
+{
+  "id": "tcl-50dp660",
+  "name": "TCL 50DP660 / L49C2US (\"Percee TV\", tcl_eu, MediaTek MT5658 / board mt5891, V8-T658T01-LF1V602 / V570)",
+  "source": "cleanyourtv examples/tcl-50dp660 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 8.0",
+  "match": {},
+  "names": {
+    "device": [
+      "tcl_eu"
+    ],
+    "product": [
+      "Percee"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Developer options > USB debugging must be on as well, or the RSA dialog never appears and adb says \"unauthorized\". service.adb.tcp.port is preset to 5555 by the vendor, so ADB comes up on the network, not USB."
+  ],
+  "theme": {}
+}

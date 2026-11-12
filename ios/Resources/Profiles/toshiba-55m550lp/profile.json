@@ -1,0 +1,39 @@
+{
+  "id": "toshiba-55m550lp",
+  "name": "Toshiba 55M550LP (Hisense-built, songshan, MediaTek m7632), Malaysia",
+  "source": "cleanyourtv examples/toshiba-55m550lp at b9538048",
+  "community": true,
+  "brand": "Toshiba",
+  "os": "Android 11 (SDK 30)",
+  "match": {},
+  "names": {
+    "device": [
+      "songshan"
+    ],
+    "product": [
+      "songshan_emT_FFM"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Keep, as on the Hisense list: com.mediatek.*, com.hisense.tv.hitvinput, com.vt.tv.input, com.hisense.tv.smartservice, com.hisense.tv.customerlauncher, com.hisense.tv.protector, and never com.hisense.tv.smartsense, com.vt.tv.smartsense.ui or com.vt.tv.aiot (Recovery on the Hisense huangshan list).",
+    "Never open com.hisense.uifac (HisenseFactoryUI), not even to look."
+  ],
+  "theme": {}
+}

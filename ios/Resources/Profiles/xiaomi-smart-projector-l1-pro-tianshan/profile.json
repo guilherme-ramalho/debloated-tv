@@ -1,0 +1,51 @@
+{
+  "id": "xiaomi-smart-projector-l1-pro-tianshan",
+  "name": "Xiaomi Smart Projector L1 Pro (C045RGN, tianshan, FORMOVIE ODM, MediaTek T32)",
+  "source": "cleanyourtv examples/xiaomi-smart-projector-l1-pro-tianshan at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Google TV (Android 14)",
+  "match": {},
+  "names": {
+    "device": [
+      "tianshan"
+    ],
+    "product": [
+      "Brooke"
+    ],
+    "model": [
+      "C045RGN"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.google.android.youtube.tvmusic",
+    "com.android.vending",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Note that com.mediatek.tis, com.mediatek.tv.agent and com.cltv.mal do not exist on this build.",
+    "Never launch com.fengmi.testsuite or mediatek.factorymenu.ui (factory tools)."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter"
+    ],
+    "live_tv_package": "",
+    "columns": 5,
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx"
+  }
+}

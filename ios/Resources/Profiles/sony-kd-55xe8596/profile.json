@@ -1,0 +1,33 @@
+{
+  "id": "sony-kd-55xe8596",
+  "name": "Sony BRAVIA KD-55XE8596 (2017, \"BRAVIA 4K GB\", BRAVIA_ATV2_EU, MediaTek MT5891), UK",
+  "source": "cleanyourtv examples/sony-kd-55xe8596 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "product": [
+      "BRAVIA_ATV2_EU"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

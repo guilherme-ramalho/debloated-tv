@@ -1,0 +1,29 @@
+{
+  "id": "sony-kj-55x9300d",
+  "name": "Sony BRAVIA KJ-55X9300D (2016, SVP-DTV15, MediaTek mt5890), Japan",
+  "source": "cleanyourtv examples/sony-kj-55x9300d at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 7.0",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.leanbacklauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,45 @@
+{
+  "id": "tcl-beyondtv4-uk",
+  "name": "TCL Smart TV Pro, UK Freeview Play (BeyondTV4 / BeyondTV6, Realtek rtd288o, 2 GB, AR05)",
+  "source": "cleanyourtv examples/tcl-beyondtv4-uk at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "BeyondTV4"
+    ],
+    "product": [
+      "BeyondTV6"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.google.android.youtube.tv",
+    "com.android.vending",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not apply one list to the other.",
+    "Tested: applied on 2026-10-23 over network ADB in four batches with a screenshot after each and a full reboot at the end, then re-checked on 2026-10-26 after a cold start."
+  ],
+  "theme": {
+    "live_tv_package": "com.tcl.tv",
+    "columns": 4,
+    "reduced_motion": true,
+    "focus_overshoot": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "prosonic-bodrum-finch",
+  "name": "Prosonic Android TV (Vestel-built, BODRUM, finch, MediaTek m7332), Denmark",
+  "source": "cleanyourtv examples/prosonic-bodrum-finch at b9538048",
+  "community": true,
+  "brand": "Prosonic",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "finch"
+    ],
+    "product": [
+      "BODRUM"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Netflix and Prime buttons: MediaTek's hotkey service (com.mediatek.tv.service) receives both as global buttons and starts Netflix / Prime Video itself, so the launcher's app_keys never see them; with both apps disabled the start fails quietly (\"result code=-91\" / \"-92\" in the log).",
+    "Held volume: with a key-filtering accessibility helper on (the launcher's key_filter), a held volume key stops ramping, and filtered volume keys never reach the helper, so consume_volume_keys cannot bring it back.",
+    "Leave key_filter off on this set."
+  ],
+  "theme": {}
+}

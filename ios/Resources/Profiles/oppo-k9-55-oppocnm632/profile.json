@@ -1,0 +1,31 @@
+{
+  "id": "oppo-k9-55-oppocnm632",
+  "name": "OPPO K9 55 (OPPOCNM632)",
+  "source": "cleanyourtv examples/oppo-k9-55-oppocnm632 at b9538048",
+  "community": true,
+  "brand": "OPPO",
+  "os": "Android 9 (ColorOS TV)",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.heytap.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Factory and AT packages are disabled here and never launched."
+  ],
+  "theme": {}
+}

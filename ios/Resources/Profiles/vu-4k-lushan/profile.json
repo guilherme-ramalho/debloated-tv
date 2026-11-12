@@ -1,0 +1,35 @@
+{
+  "id": "vu-4k-lushan",
+  "name": "Vu 4K (HVCL, lushan, MediaTek), India",
+  "source": "cleanyourtv examples/vu-4k-lushan at b9538048",
+  "community": true,
+  "brand": "Vu",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "lushan"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do NOT disable com.vt.tv.smartsense, com.vt.tv.smartsense.ui or com.vt.tv.aiot: on the Hisense with the same stack, disabling them sent the TV to Android Recovery on the next boot."
+  ],
+  "theme": {}
+}

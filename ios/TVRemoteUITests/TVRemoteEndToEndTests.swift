@@ -20,8 +20,11 @@ final class TVRemoteEndToEndTests: XCTestCase {
     private let listed = ["com.google.android.feedback", "com.google.android.partnersetup", "com.google.android.tvrecommendations",
                           "com.google.android.marvin.talkback", "com.google.android.play.games"]
     private let kept = "com.google.android.marvin.talkback"   // installed on the emulator image (Play Games is not)
-    private let checklist = ["Home opens the new Home screen", "The remote's app buttons and volume work",
-                             "An HDMI input shows a picture", "Settings opens from Home", "The TV is still online (open an app)"]
+    /// The test step's checks; the first depends on whether this run installed the new Home screen.
+    private func checklist(newHome: Bool) -> [String] {
+        [newHome ? "Home opens the new Home screen" : "The Home button opens the TV's Home screen", "The remote's app buttons and volume work",
+         "An HDMI input shows a picture", "Settings opens from Home", "The TV is still online (open an app)"]
+    }
     /// Whether the TV's remote control channel (6466) came up after pairing. The Android TV emulator image on hand
     /// (android-tv, API 31) pairs but closes every control connection at the TLS hello (it has no remote input
     /// bridge), so the remote and editor cases run only where the channel works; the run says which it was.
@@ -38,7 +41,8 @@ final class TVRemoteEndToEndTests: XCTestCase {
         adbAddress = env["E2E_ADB_ADDRESS"] ?? adbAddress
         _ = try tv.call("ping")
         app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]   // the assertions read English text
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US",   // the assertions read English text
+                               "-e2eNoDiscovery"]   // never touch a real TV on this network (the TCL's 6466, 1 Nov)
     }
 
     override func tearDown() {
@@ -57,6 +61,87 @@ final class TVRemoteEndToEndTests: XCTestCase {
         try edit()
         try undo()
         try secondRunAndTurnDebuggingOff()
+    }
+
+    /// A TV with no profile tested by Purio TV, as most TVs are: setup offers cleanyourtv's lists. Runs on a fresh
+    /// emulator and app (scripts/e2e.sh runs it on its own), with the development community lists in place of the
+    /// emulator's tested profile (-e2eCommunity): its own list, debloat only, and another model's "closest" list.
+    func testCommunityListSetupAndUndo() throws {
+        let modelList = "Emulator community list (development only)"
+        let closestList = "Another Google TV box (development only)"
+        let listed = ["com.google.android.feedback", "com.google.android.partnersetup", "com.google.android.tvrecommendations"]
+        app.launchArguments.append("-e2eCommunity")
+        app.launch()
+        try step("SET-25: setup on a TV without a tested profile shows the list picker, its own list first") {
+            app.tabBars.buttons["Settings"].tap()
+            XCTAssertTrue(app.staticTexts["Debloat & new Home"].waitForExistence(timeout: 10))
+            app.staticTexts["Debloat & new Home"].tap()
+            app.switches["I understand the risks"].tap()
+            XCTAssertTrue(waitUntil(3) { self.app.buttons["Continue"].isEnabled })
+            app.buttons["Continue"].tap()
+            try connectSetup()
+            XCTAssertTrue(app.staticTexts["Allow this iPhone on the TV"].waitForExistence(timeout: 30), "the TV should ask to allow this iPhone")
+            _ = try tv.call("approve-debugging", ["timeout": "60"])
+            XCTAssertTrue(app.staticTexts["Choose your TV's list"].waitForExistence(timeout: 90), "no list picker: \(visibleErrors())")
+            XCTAssertTrue(app.staticTexts[modelList].exists, "the emulator's own list should be offered")
+            let first = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Made for this model'")).firstMatch
+            XCTAssertTrue(first.exists, "its own list is marked as made for this model")
+        }
+        try step("SET-29: a list made for another model asks first; Cancel keeps the picker") {
+            if !app.staticTexts[closestList].exists {
+                app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Show '")).firstMatch.tap()
+            }
+            XCTAssertTrue(app.staticTexts[closestList].waitForExistence(timeout: 5), "the closest list should be offered")
+            app.staticTexts[closestList].tap()
+            XCTAssertTrue(app.buttons["Use this list"].waitForExistence(timeout: 5), "the confirmation should ask first")
+            // iOS 26 shows this confirmation without a Cancel button: tapping outside it dismisses it, as a person would.
+            if app.buttons["Cancel"].exists { app.buttons["Cancel"].tap() } else { app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.12)).tap() }
+            XCTAssertTrue(waitUntil(5) { !self.app.buttons["Use this list"].exists }, "the confirmation should close")
+            XCTAssertTrue(app.staticTexts["Choose your TV's list"].waitForExistence(timeout: 5))
+            XCTAssertFalse(app.staticTexts["Choose what stays"].exists, "Cancel must not pick the list")
+        }
+        try step("SET-27: the model's own list; its testers' notes; the TV keeps its own Home") {
+            app.staticTexts[modelList].tap()
+            XCTAssertTrue(app.staticTexts["Choose what stays"].waitForExistence(timeout: 30), visibleErrors())
+            XCTAssertTrue(app.staticTexts["From the list's testers"].exists, "a community list shows its testers' notes")
+            app.buttons["Review changes"].tap()
+            let summary = app.staticTexts.matching(NSPredicate(format: "label MATCHES '[0-9]+ apps will be disabled'")).firstMatch
+            XCTAssertTrue(summary.waitForExistence(timeout: 60), visibleErrors())
+            app.switches["I reviewed these changes"].tap()
+            app.buttons["Continue"].tap()
+            XCTAssertTrue(app.staticTexts["The TV keeps its own Home screen"].waitForExistence(timeout: 5))
+            XCTAssertFalse(installSwitch.exists, "no Home install offered for a debloat-only list")
+        }
+        try step("DBL-11/DBL-18: apply, restart, and Home is still the TV's own") {
+            _ = try tv.call("auto-approve", ["seconds": "600", "reset": "1"])
+            _ = try tv.call("watch-reboot", ["seconds": "600", "reset": "1"])
+            app.buttons["Apply to TV"].tap()
+            XCTAssertTrue(app.staticTexts["Test on the TV"].waitForExistence(timeout: 600), visibleErrors())
+            XCTAssertEqual(try tv.call("reboots")["count"] as? Int, 1)
+            XCTAssertTrue(app.staticTexts["Restarted and checked: Home works."].waitForExistence(timeout: 5), visibleErrors())
+            XCTAssertTrue(try tv.home().hasPrefix(stockLauncher + "/"))
+            let disabled = try tv.disabled(), installed = try tv.installed()
+            for package in listed where installed.contains(package) { XCTAssertTrue(disabled.contains(package), "\(package) should be off") }
+            notePrompts("community apply")
+            for item in checklist(newHome: false) { app.switches[item].tap() }
+            app.buttons["Everything works"].tap()
+            XCTAssertTrue(app.staticTexts["Secure the TV"].waitForExistence(timeout: 5))
+            app.buttons["Done"].tap()
+        }
+        try step("UND-07/UND-11: undo from Settings with this TV's record, checked") {
+            XCTAssertTrue(app.staticTexts["Undo TV setup"].waitForExistence(timeout: 10))
+            app.staticTexts["Undo TV setup"].tap()
+            let record = app.staticTexts["dev-community-model"]
+            XCTAssertTrue(record.waitForExistence(timeout: 5), "one record for this TV, named after the list")
+            record.tap()
+            replace(app.textFields.firstMatch, with: adbAddress)
+            _ = try tv.call("auto-approve", ["seconds": "120", "reset": "1"])
+            app.buttons["Restore this TV"].tap()
+            XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Restored and checked'")).firstMatch.waitForExistence(timeout: 120), visibleErrors())
+            let disabled = try tv.disabled()
+            for package in listed { XCTAssertFalse(disabled.contains(package), "\(package) should be on again") }
+            XCTAssertTrue(try tv.home().hasPrefix(stockLauncher + "/"))
+        }
     }
 
     // MARK: CON
@@ -173,8 +258,19 @@ final class TVRemoteEndToEndTests: XCTestCase {
             app.buttons["Continue"].tap()
             XCTAssertTrue(app.staticTexts["Choose Home"].waitForExistence(timeout: 5))
             XCTAssertEqual(installSwitch.value as? String, "1", "the Home install is on by default")
+            // DBL-18: apply ends with a restart. The emulator asks to allow this iPhone again after it (it can't keep
+            // "Always allow"), and its port forwards go with the reboot: the helper answers the one and restores the other.
+            _ = try tv.call("auto-approve", ["seconds": "600", "reset": "1"])
+            _ = try tv.call("watch-reboot", ["seconds": "600", "reset": "1"])
             app.buttons["Apply to TV"].tap()
-            XCTAssertTrue(app.staticTexts["Test on the TV"].waitForExistence(timeout: 300), "apply and the Home install should finish: \(visibleErrors())")
+            XCTAssertTrue(app.staticTexts["Test on the TV"].waitForExistence(timeout: 600), "apply, the Home install and the restart should finish: \(visibleErrors())")
+        }
+        try step("DBL-18: the TV restarted once and the app checked Home after it") {
+            let reboots = try tv.call("reboots")
+            XCTAssertEqual(reboots["count"] as? Int, 1, "one restart, seen by the helper: \(reboots)")
+            XCTAssertTrue(app.staticTexts["Restarted and checked: Home works."].waitForExistence(timeout: 5),
+                          "the app should have reconnected and found the new Home: \(visibleErrors())")
+            notePrompts("DBL-18 restart")
         }
         try step("LCH-01/LCH-02/LCH-11: the new Home owns Home, the stock one is off, the chosen apps are disabled") {
             XCTAssertEqual(try tv.home(), launcher + "/.MainActivity")
@@ -191,7 +287,7 @@ final class TVRemoteEndToEndTests: XCTestCase {
         }
         try step("DBL-15: every check ticked before 'Everything works'") {
             XCTAssertFalse(app.buttons["Everything works"].isEnabled)
-            for item in checklist { app.switches[item].tap() }
+            for item in checklist(newHome: true) { app.switches[item].tap() }
             XCTAssertTrue(waitUntil(3) { self.app.buttons["Everything works"].isEnabled })
             app.buttons["Everything works"].tap()
             XCTAssertTrue(app.staticTexts["Secure the TV"].waitForExistence(timeout: 5))
@@ -292,7 +388,7 @@ final class TVRemoteEndToEndTests: XCTestCase {
             // time, so the helper answers any prompt and the run records how many there were.
             _ = try tv.call("auto-approve", ["seconds": "120", "reset": "1"])
             app.buttons["Restore this TV"].tap()
-            XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Restored.'")).firstMatch.waitForExistence(timeout: 120), visibleErrors())
+            XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Restored and checked'")).firstMatch.waitForExistence(timeout: 120), visibleErrors())
             notePrompts("UND-01 restore")
             XCTAssertTrue(try tv.home().hasPrefix(stockLauncher + "/"), "the stock launcher should own Home again")
             let disabled = try tv.disabled()
@@ -327,7 +423,7 @@ final class TVRemoteEndToEndTests: XCTestCase {
             installSwitch.tap()
             app.buttons["Apply to TV"].tap()
             XCTAssertTrue(app.staticTexts["Test on the TV"].waitForExistence(timeout: 60), visibleErrors())
-            for item in checklist { app.switches[item].tap() }
+            for item in checklist(newHome: false) { app.switches[item].tap() }
             app.buttons["Everything works"].tap()
             XCTAssertTrue(app.staticTexts["Secure the TV"].waitForExistence(timeout: 5))
         }
@@ -357,13 +453,49 @@ final class TVRemoteEndToEndTests: XCTestCase {
     private func notePrompts(_ phase: String) {
         let count = (try? tv.call("approvals")["count"] as? Int) ?? -1
         note("\(phase): debugging prompts answered by the helper: \(count) (a TV that kept 'Always allow' shows none)")
+        progress("note", "\(phase): \(count) debugging prompts answered")
     }
 
     /// The toggle's label carries its description too, so it's matched by its first line.
     private var installSwitch: XCUIElement { app.switches.matching(NSPredicate(format: "label BEGINSWITH 'Install the clean Home screen'")).firstMatch }
 
+    /// Runs one named case and reports it live to scripts/e2e.sh through the helper (▶ start, ✓ / ✗ with the time).
+    /// An assertion failure doesn't throw, so the step compares the run's failure count before and after.
     private func step(_ name: String, _ block: () throws -> Void) throws {
-        try XCTContext.runActivity(named: name) { _ in try block() }
+        let failuresBefore = testRun?.totalFailureCount ?? 0
+        let started = Date()
+        currentStep = (name, started)
+        defer { currentStep = nil }
+        progress("start", name)
+        do {
+            try XCTContext.runActivity(named: name) { _ in try block() }
+        } catch {
+            if currentStep != nil { progress(error is XCTSkip ? "skip" : "fail", name, seconds: Date().timeIntervalSince(started), detail: error.localizedDescription) }
+            throw error
+        }
+        let failed = (testRun?.totalFailureCount ?? 0) > failuresBefore
+        if currentStep != nil { progress(failed ? "fail" : "pass", name, seconds: Date().timeIntervalSince(started)) }   // else record(_:) sent ✗
+    }
+
+    /// Every failure, live, with its message (the step's own ✗ follows when it ends).
+    /// With continueAfterFailure off the first failure ends the test inside its step, so the step's ✗ is sent here.
+    override func record(_ issue: XCTIssue) {
+        progress("issue", issue.compactDescription)
+        if let (name, started) = currentStep, !continueAfterFailure {
+            progress("fail", name, seconds: Date().timeIntervalSince(started))
+            currentStep = nil
+        }
+        super.record(issue)
+    }
+    private var currentStep: (name: String, started: Date)?
+
+    /// Best effort: a helper that doesn't answer never fails or slows the run.
+    private func progress(_ kind: String, _ name: String, seconds: TimeInterval? = nil, detail: String? = nil) {
+        guard let tv else { return }
+        var query = ["kind": kind, "name": name]
+        if let seconds { query["seconds"] = String(Int(seconds.rounded())) }
+        if let detail { query["detail"] = detail }
+        _ = try? tv.call("event", query, timeout: 2)
     }
 
     /// A note kept in the result bundle even when the run passes (attachments are dropped on success by default).
@@ -453,5 +585,6 @@ final class E2EHelper {
     }
     func home() throws -> String { try call("home")["home"] as? String ?? "" }
     func disabled() throws -> Set<String> { Set(try call("disabled")["packages"] as? [String] ?? []) }
+    func installed() throws -> Set<String> { Set(try call("installed")["packages"] as? [String] ?? []) }
     func launcherConfig() throws -> [String: Any]? { try call("launcher-config")["config"] as? [String: Any] }
 }

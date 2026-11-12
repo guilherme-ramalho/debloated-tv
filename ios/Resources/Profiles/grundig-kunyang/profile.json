@@ -1,0 +1,38 @@
+{
+  "id": "grundig-kunyang",
+  "name": "Grundig Android UHD TV (Arçelik, GxGrNM, kunyang, MediaTek), Turkey",
+  "source": "cleanyourtv examples/grundig-kunyang at b9538048",
+  "community": true,
+  "brand": "Grundig",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "kunyang"
+    ],
+    "product": [
+      "GxGrNM"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Reboot-checked: pm list packages -d identical before and after; nothing is re-enabled at boot."
+  ],
+  "theme": {}
+}

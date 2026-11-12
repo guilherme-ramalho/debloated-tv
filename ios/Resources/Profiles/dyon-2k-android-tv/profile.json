@@ -1,0 +1,33 @@
+{
+  "id": "dyon-2k-android-tv",
+  "name": "DYON 2K Android TV (MTC, komagome, MediaTek m5621), Germany",
+  "source": "cleanyourtv examples/dyon-2k-android-tv at b9538048",
+  "community": true,
+  "brand": "DYON",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "komagome"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

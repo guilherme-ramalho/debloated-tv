@@ -1,0 +1,39 @@
+{
+  "id": "skyworth-swtv-24ae-4k-nf",
+  "name": "Skyworth SWTV-24AE-4K NF (eleonas, MediaTek mt5896), South Africa/Global",
+  "source": "cleanyourtv examples/skyworth-swtv-24ae-4k-nf at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "eleonas"
+    ],
+    "product": [
+      "SW10_NA_NF"
+    ],
+    "model": [
+      "SWTV-24AE-4K"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

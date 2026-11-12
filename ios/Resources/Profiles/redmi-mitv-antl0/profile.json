@@ -1,0 +1,33 @@
+{
+  "id": "redmi-mitv-antl0",
+  "name": "Redmi TV (MiTV-ANTL0, starwars)",
+  "source": "cleanyourtv examples/redmi-mitv-antl0 at b9538048",
+  "community": true,
+  "brand": "Redmi",
+  "os": "Android 5.1.1 (not Android TV)",
+  "match": {},
+  "names": {
+    "device": [
+      "starwars",
+      "2026-10-19"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

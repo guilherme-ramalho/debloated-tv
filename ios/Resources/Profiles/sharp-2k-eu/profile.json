@@ -1,0 +1,38 @@
+{
+  "id": "sharp-2k-eu",
+  "name": "SHARP 2K EU Android TV (Expressluck martin, MediaTek mt5867), EU",
+  "source": "cleanyourtv examples/sharp-2k-eu at b9538048",
+  "community": true,
+  "brand": "SHARP",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "martin"
+    ],
+    "product": [
+      "SHARP_2K_ATV2"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.cltv.fast",
+    "com.android.vending",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

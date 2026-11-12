@@ -1,0 +1,40 @@
+{
+  "id": "acer-ar3-r3",
+  "name": "Acer R3 (SCBC device R3, Realtek rtd2841a), India",
+  "source": "cleanyourtv examples/acer-ar3-r3 at b9538048",
+  "community": true,
+  "brand": "Acer",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "R3"
+    ],
+    "product": [
+      "ACER"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "live_tv_package": "com.apps.livetv",
+    "tile_menu": true,
+    "key_filter": false
+  }
+}

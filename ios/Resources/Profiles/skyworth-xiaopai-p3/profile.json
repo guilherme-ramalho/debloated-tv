@@ -1,0 +1,35 @@
+{
+  "id": "skyworth-xiaopai-p3",
+  "name": "Skyworth Xiaopai P3 (Q5001, cupid-p2), streaming box",
+  "source": "cleanyourtv examples/skyworth-xiaopai-p3 at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Android 10",
+  "match": {},
+  "names": {
+    "device": [
+      "cupid-p2"
+    ]
+  },
+  "stockLauncher": "com.skyworthdigital.sky2dlauncherv4",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "BOOT_COMPLETED never reaches a sideloaded app, and neither does a foreground-service self-restart."
+  ],
+  "theme": {}
+}

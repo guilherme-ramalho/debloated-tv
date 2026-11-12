@@ -1,0 +1,37 @@
+{
+  "id": "nokia-streaming-box-8000",
+  "name": "Nokia Streaming Box 8000 (Sagemcom/NES, SEI600NK4, HND, Amlogic)",
+  "source": "cleanyourtv examples/nokia-streaming-box-8000 at b9538048",
+  "community": true,
+  "brand": "Nokia",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "HND"
+    ],
+    "product": [
+      "SEI600NK4"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

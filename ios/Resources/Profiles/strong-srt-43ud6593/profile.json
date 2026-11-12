@@ -1,0 +1,47 @@
+{
+  "id": "strong-srt-43ud6593",
+  "name": "STRONG SRT 43UD6593 (Changhong, reports AI PONT, dundas, MediaTek m7332)",
+  "source": "cleanyourtv examples/strong-srt-43ud6593 at b9538048",
+  "community": true,
+  "brand": "STRONG",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "dundas"
+    ],
+    "product": [
+      "DVB94ST"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.android.vending",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter"
+    ],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "columns": 4,
+    "rows_below_dock": 0,
+    "reduced_motion": false,
+    "background_color": "#000000",
+    "wallpaper": false
+  }
+}

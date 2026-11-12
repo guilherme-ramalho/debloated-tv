@@ -1,0 +1,34 @@
+{
+  "id": "ktc-4k-smart-tv-hongkong",
+  "name": "KTC 4K Smart TV (device hongkong, MediaTek), Taiwan",
+  "source": "cleanyourtv examples/ktc-4k-smart-tv-hongkong at b9538048",
+  "community": true,
+  "brand": "KTC",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "hongkong"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do NOT disable com.google.android.katniss — it's Google Assistant/voice search; the remote's mic button and in-app voice search stop working without it."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,35 @@
+{
+  "id": "sony-bravia-8-ii",
+  "name": "Sony BRAVIA 8 II (K-55XR8M2, BRAVIA_AE2), UK/EU",
+  "source": "cleanyourtv examples/sony-bravia-8-ii at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_AE2"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never start mediatek.factorymenu.ui."
+  ],
+  "theme": {}
+}

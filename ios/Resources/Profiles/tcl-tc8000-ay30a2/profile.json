@@ -1,0 +1,34 @@
+{
+  "id": "tcl-tc8000-ay30a2",
+  "name": "TCL tc8000_ay30a2 (China, Amlogic ohm, TC8000, 3.8 GB)",
+  "source": "cleanyourtv examples/tcl-tc8000-ay30a2 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.tcl.cyberui",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "special",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "stock_home_redirect": "com.tcl.cyberui",
+    "source_panel_service": "com.tcl.settings/.ShowWindowService",
+    "source_panel_action": "com.tcl.insrc.SHOW_WINDOW"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "sony-bravia-4k-vh21-us",
+  "name": "Sony BRAVIA 4K VH21 (XR-65A95K, XR-55A95K, 2022, BRAVIA_VH21, MediaTek), US",
+  "source": "cleanyourtv examples/sony-bravia-4k-vh21-us at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_VH21"
+    ],
+    "product": [
+      "BRAVIA_VH21_M_UC"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "One incident, not the debloat: on 20 Oct the Widevine L1 HAL died mid-stream and would not re-initialize (GetProvisioningMethod failed, usage table status 340), so DRM-protected apps crashed on launch or would not play."
+  ],
+  "theme": {}
+}

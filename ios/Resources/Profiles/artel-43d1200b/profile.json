@@ -1,0 +1,39 @@
+{
+  "id": "artel-43d1200b",
+  "name": "Artel 43D1200B (Yandex TV / YaOS, CVTE, MediaTek m5621), Uzbekistan",
+  "source": "cleanyourtv examples/artel-43d1200b at b9538048",
+  "community": true,
+  "brand": "Artel",
+  "os": "Android 9",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.yandex.tv.home",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.yandex.tv.ytplayer",
+    "ru.kinopoisk.yandex.tv",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Factory and test packages (com.ctv.newfactorytest, mediatek.factorymenu.ui, com.cultraview.factory.debug, com.ctv.autotest.helper): never touched, never started."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.yandex.tv.home"
+    ],
+    "input_uri_scheme": "live-tv",
+    "reduced_motion": true
+  }
+}

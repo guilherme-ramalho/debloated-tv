@@ -1,0 +1,45 @@
+{
+  "id": "sony-bravia-4k-vh21",
+  "name": "Sony BRAVIA 4K VH21 (KD-65X85K, 2022, BRAVIA_VH21, MediaTek MT5895), Australia & India",
+  "source": "cleanyourtv examples/sony-bravia-4k-vh21 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_VH21"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.sony.dtv.tvx"
+    ],
+    "live_tv_package": "com.sony.dtv.tvx",
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx",
+    "app_keys": [
+      "scan:646:settings",
+      "scan:485:com.google.android.youtube.tv",
+      "scan:490:com.amazon.amazonvideo.livingroom"
+    ]
+  }
+}

@@ -1,8 +1,9 @@
 {
   "id": "tcl-43c645",
   "name": "TCL Smart TV Pro (G03, BeyondTV4, Android TV 11)",
-  "source": "cleanyourtv examples/tcl-43c645 at 8ae8df83; theme and key helper from the TCL 50C635 owner's setup",
-  "match": { "ro.product.device": ["BeyondTV4"], "ro.build.version.sdk": ["30"] },
+  "source": "cleanyourtv examples/tcl-43c645 at b9538048 (com.tcl.keyhelp kept, see the list); theme and key helper from the TCL 50C635 owner's setup",
+  "match": { "ro.product.device": ["BeyondTV4"], "ro.product.name": ["G03_4K_GB"], "ro.build.version.incremental": ["AR11"],
+             "ro.build.version.sdk": ["30"] },
   "stockLauncher": "com.google.android.apps.tv.launcherx",
   "launcher": { "homeKeyService": true, "inputKeyService": false, "restoreKeyServices": false },
   "dockCandidates": ["com.netflix.ninja", "com.google.android.youtube.tv", "com.amazon.amazonvideo.livingroom",

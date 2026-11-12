@@ -1,0 +1,36 @@
+{
+  "id": "hitachi-65qledsm20",
+  "name": "Hitachi 65QLEDSM20 (MTC, bangbae, MediaTek m7322), Australia",
+  "source": "cleanyourtv examples/hitachi-65qledsm20 at b9538048",
+  "community": true,
+  "brand": "Hitachi",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "bangbae"
+    ],
+    "product": [
+      "MTCMSD6886EU_Hitachi"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

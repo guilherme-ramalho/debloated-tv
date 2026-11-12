@@ -1,0 +1,35 @@
+{
+  "id": "hisense-fire-tv-aftcibfbd1",
+  "name": "Hisense Fire TV (AFTCIBFBD1, coyote, MediaTek), US",
+  "source": "cleanyourtv examples/hisense-fire-tv-aftcibfbd1 at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Fire OS 8.0 / Android 11",
+  "match": {},
+  "names": {
+    "device": [
+      "coyote"
+    ]
+  },
+  "stockLauncher": "com.amazon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "fireOS",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "A third-party screensaver set through screensaver_components never shows."
+  ],
+  "theme": {}
+}

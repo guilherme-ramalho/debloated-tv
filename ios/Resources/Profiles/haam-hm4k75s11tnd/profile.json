@@ -1,0 +1,30 @@
+{
+  "id": "haam-hm4k75s11tnd",
+  "name": "HAAM HM4K75S11TND (SCBC R4)",
+  "source": "cleanyourtv examples/haam-hm4k75s11tnd at b9538048",
+  "community": true,
+  "brand": "HAAM",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Disabled, never uninstalled."
+  ],
+  "theme": {}
+}

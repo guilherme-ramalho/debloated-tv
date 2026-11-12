@@ -1,0 +1,48 @@
+{
+  "id": "rca-rc50a21s-4ksm",
+  "name": "RCA RC50A21S-4KSM, Zeasn home (Toptech firmware RTK2851P, Realtek RTD2851P, board mac6p)",
+  "source": "cleanyourtv examples/rca-rc50a21s-4ksm at b9538048",
+  "community": true,
+  "brand": "RCA",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "RealtekATV"
+    ],
+    "product": [
+      "RealtekATV"
+    ]
+  },
+  "stockLauncher": "com.zeasn.rca.toptech",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": true,
+    "restoreKeyServices": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.android.vending",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Leave alone: com.toptech.* (tvmenu = input panel and TV player, tv.service, keyboard_seven, setupwizard, systemupdate, tvfactory, factorytools), com.realtek.* (dtv, tv.atv, tv.passthrough = HDMI/AV/ VGA/YPbPr inputs, providers.tv), com.hikeen.actiontest.",
+    "Do not launch the factory packages."
+  ],
+  "theme": {
+    "live_tv_package": "",
+    "source_panel_service": "com.toptech.tvmenu/.input.InputActivity",
+    "source_panel_action": "com.toptech.tv.action.INPUT_ACTIVITY",
+    "columns": 4,
+    "rows_below_dock": 0,
+    "background_color": "#000000",
+    "wallpaper": false
+  }
+}

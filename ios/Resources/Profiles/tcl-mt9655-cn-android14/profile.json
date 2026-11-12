@@ -1,0 +1,36 @@
+{
+  "id": "tcl-mt9655-cn-android14",
+  "name": "TCL / FFalcon China (tcl9655_cn, MediaTek MT9655 \"merak\", UTT2.250416.001 AU01)",
+  "source": "cleanyourtv examples/tcl-mt9655-cn-android14 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android 14",
+  "match": {},
+  "names": {
+    "device": [
+      "tcl9655_cn"
+    ],
+    "product": [
+      "MT9655_4K_CN"
+    ]
+  },
+  "stockLauncher": "com.tcl.cyberui",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

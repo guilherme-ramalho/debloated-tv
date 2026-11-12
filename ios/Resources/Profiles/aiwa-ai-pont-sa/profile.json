@@ -1,0 +1,46 @@
+{
+  "id": "aiwa-ai-pont-sa",
+  "name": "AIWA AI PONT SA (Changhong, osaka, ISDB86AW)",
+  "source": "cleanyourtv examples/aiwa-ai-pont-sa at b9538048",
+  "community": true,
+  "brand": "AIWA",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "osaka"
+    ],
+    "product": [
+      "ISDB86AW"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.mediatek.wwtv.tvcenter",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.globo.globotv",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "columns": 4,
+    "rows_below_dock": 0,
+    "reduced_motion": false,
+    "background_color": "#000000",
+    "wallpaper": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "tcl-g10-google-tv",
+  "name": "TCL 55\" 4K Google TV, 2023 (G10, G10_4K_US_NF); also TCL 55P6K, Spain and TCL 43P69K, Netherlands (G10_4K_GB_NF_32BIT); and TCL 55Q651G, US (G10_4K_US_NF); and TCL 55Q6CS, India (G10_4K_GB); and TCL 55C6KS, Italy (G10_4K_GB); and TCL 55C69B, France (G10_4K_GB)",
+  "source": "cleanyourtv examples/tcl-g10-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "G10"
+    ],
+    "product": [
+      "G10_4K_US_NF"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "On Home or an HDMI input they do nothing, because the RU region config has Enable_ChannelUpDownSwitchSource=false and the TV does not switch to TCL Live on a channel key.",
+    "Some TCL Live channels show \"no signal\" even with working internet: the streams are region/content limited."
+  ],
+  "theme": {}
+}

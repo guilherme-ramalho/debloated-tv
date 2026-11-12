@@ -1,0 +1,36 @@
+{
+  "id": "toshiba-fire-tv-aftha004",
+  "name": "Toshiba Fire TV (AFTHA004, hazel)",
+  "source": "cleanyourtv examples/toshiba-fire-tv-aftha004 at b9538048",
+  "community": true,
+  "brand": "Toshiba",
+  "os": "Fire OS 7 / Android 9",
+  "match": {},
+  "names": {
+    "device": [
+      "hazel"
+    ]
+  },
+  "stockLauncher": "com.amazon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "fireOS",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Two packages tried on this set would not disable (protected): com.amazon.device.metrics and com.amazon.ftvads.deeplinking.",
+    "They are left out; the Insignia list mentions the same two."
+  ],
+  "theme": {}
+}

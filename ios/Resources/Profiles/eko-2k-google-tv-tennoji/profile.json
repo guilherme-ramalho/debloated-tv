@@ -1,0 +1,36 @@
+{
+  "id": "eko-2k-google-tv-tennoji",
+  "name": "EKO 2K Google TV (MTC-built, tennoji, MediaTek mt5867 / T56)",
+  "source": "cleanyourtv examples/eko-2k-google-tv-tennoji at b9538048",
+  "community": true,
+  "brand": "EKO",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "tennoji"
+    ],
+    "product": [
+      "MTK9216PA_EKO"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

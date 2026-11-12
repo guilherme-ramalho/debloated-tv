@@ -1,0 +1,42 @@
+{
+  "id": "tcl-43s5k",
+  "name": "TCL 43S5K / 32V5C (G13, G13_2K_GB, MediaTek MT9221/MT5867, 1 GB), India; also a G13 unit from Brazil, a 40\" V5C on AU13, a 32V51C from Indonesia (AU13), a second AU10 unit and a 50S5K from Colombia (AU11)",
+  "source": "cleanyourtv examples/tcl-43s5k at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "G13"
+    ],
+    "product": [
+      "G13_2K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The launcher half now works on the AU13 unit too, confirming it was never an AU13-specific regression: the first two attempts skipped Batch 3 (setupwraith stayed enabled) and both landed on its RecoveryActivity, exactly as this list's own Batch 3 note predicts.",
+    "Volume keys never reach any accessibility service's onKeyEvent on this unit, so no app-side remap or synthesized repeat can restore ramping without root.",
+    "Keep it enabled: a related MediaTek build repeatedly crashed the service after that provider was removed (#2138).",
+    "Earlier 43S5K, AU07 and AU13 reports disabled it without a reported crash; those historical runs do not establish that removing this provider is safe on every G13 build after a reboot.  com.tcl.ttvs on this firmware is BOTH TCL's analytics (bi.core.BIService, identifier, trackdata) AND TCL's firmware/app updater (versionUpdateApp.core.SystemUpdateService).",
+    "The two Brazilian partner apps at the end were disabled too; they stay commented here because the Indian units do not ship them."
+  ],
+  "theme": {}
+}

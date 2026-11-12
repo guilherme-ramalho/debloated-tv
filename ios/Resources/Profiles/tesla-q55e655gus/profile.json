@@ -1,0 +1,39 @@
+{
+  "id": "tesla-q55e655gus",
+  "name": "Tesla Smart TV Q55E655GUS (Expressluck, sepolia, mt5896)",
+  "source": "cleanyourtv examples/tesla-q55e655gus at b9538048",
+  "community": true,
+  "brand": "Tesla",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "sepolia"
+    ],
+    "product": [
+      "Tesla_4K_ATV5"
+    ],
+    "model": [
+      "MT9676"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

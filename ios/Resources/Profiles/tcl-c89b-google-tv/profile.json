@@ -1,0 +1,53 @@
+{
+  "id": "tcl-c89b-google-tv",
+  "name": "TCL C89B 85\", 2024, a local variant of the C855; also TCL 65C89K, France (G08, G08_4K_GB, MediaTek tcl9618)",
+  "source": "cleanyourtv examples/tcl-c89b-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "G08"
+    ],
+    "product": [
+      "G08_4K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Info, TV and LIST are Live TV keys and do nothing on Home."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.tcl.tv"
+    ],
+    "live_tv_package": "com.tcl.tv",
+    "settings_key_keycodes": [
+      83
+    ],
+    "settings_key_panel": true,
+    "app_keys": [
+      "4062:com.netflix.ninja",
+      "4099:com.amazon.amazonvideo.livingroom",
+      "190:com.google.android.youtube.tv"
+    ]
+  }
+}

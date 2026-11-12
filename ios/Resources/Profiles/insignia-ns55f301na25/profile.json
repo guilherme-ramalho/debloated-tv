@@ -1,0 +1,38 @@
+{
+  "id": "insignia-ns55f301na25",
+  "name": "Insignia 55\" F30 4K Fire TV (NS-55F301NA25, AFTDCT31, duckie)",
+  "source": "cleanyourtv examples/insignia-ns55f301na25 at b9538048",
+  "community": true,
+  "brand": "Insignia Fire TV",
+  "os": "Fire OS 7 / Android 9",
+  "match": {},
+  "names": {
+    "device": [
+      "duckie"
+    ],
+    "model": [
+      "AFTDCT31"
+    ]
+  },
+  "stockLauncher": "com.amazon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "fireOS",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Keep enabled: com.amazon.tv.livetv, com.amazon.tv.quicksettings and com.amazon.tv.settings.v2 (HDMI/tuner inputs and the Picture/Sound/System settings), com.apple.airplay.amazon.airplay if you use AirPlay/HomeKit."
+  ],
+  "theme": {}
+}

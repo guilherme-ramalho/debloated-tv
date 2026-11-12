@@ -1,0 +1,51 @@
+{
+  "id": "chihi-hx-p30",
+  "name": "Chihi HX P30 projector (Allwinner H713, h713m_tuna_p3, 1 GB)",
+  "source": "cleanyourtv examples/chihi-hx-p30 at b9538048",
+  "community": true,
+  "brand": "Chihi",
+  "os": "Android 11",
+  "match": {},
+  "names": {
+    "product": [
+      "identity"
+    ],
+    "model": [
+      "P30_H713_V1.1_CHIHI"
+    ]
+  },
+  "stockLauncher": "com.chihihx.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "uz.telecom.telecomtv",
+    "uz.yangi.yangitvsmart",
+    "uz.i_tv.player.tv",
+    "ru.kinopoisk.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Stock Home is com.chihihx.launcher; leave it enabled (projector/Wi-Fi UI), take Home with set-home-activity on launcher/.",
+    "Never start the factory packages below."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.softwinner.tv.factorymenu",
+      "com.hx.projectortest",
+      "com.hxdevicetest"
+    ],
+    "reduced_motion": true,
+    "focus_overshoot": false
+  }
+}

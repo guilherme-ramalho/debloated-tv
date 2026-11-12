@@ -1,0 +1,38 @@
+{
+  "id": "xgimi-horizon-s-pro",
+  "name": "XGIMI Horizon S Pro / Halo+ / Horizon Pro projector (XK03H, xgimigalileo, MediaTek)",
+  "source": "cleanyourtv examples/xgimi-horizon-s-pro at b9538048",
+  "community": true,
+  "brand": "XGIMI",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "xgimigalileo",
+      "name",
+      "Preferences"
+    ],
+    "model": [
+      "XK03H"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

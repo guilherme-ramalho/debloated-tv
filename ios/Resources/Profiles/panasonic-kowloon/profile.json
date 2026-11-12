@@ -1,0 +1,36 @@
+{
+  "id": "panasonic-kowloon",
+  "name": "Panasonic Google TV LCD (OZUM_Panasonic, kowloon, MediaTek)",
+  "source": "cleanyourtv examples/panasonic-kowloon at b9538048",
+  "community": true,
+  "brand": "Panasonic",
+  "os": "Android 14",
+  "match": {},
+  "names": {
+    "device": [
+      "kowloon"
+    ],
+    "product": [
+      "OZUM_Panasonic"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

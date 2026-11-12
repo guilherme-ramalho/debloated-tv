@@ -1,0 +1,38 @@
+{
+  "id": "tcl-43p615",
+  "name": "TCL 43P615 (Europe, BeyondTV, Realtek RTD2851, AR06)",
+  "source": "cleanyourtv examples/tcl-43p615 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "BeyondTV"
+    ],
+    "product": [
+      "BeyondTV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Tuner and HDMI: com.tcl.tvinput (never disable either). 2 HDMI ports and AV through the TV input framework, TvInputManager lists them normally (with the input labels the owner set in Settings), so the launcher's Inputs menu needs no source_panel_service."
+  ],
+  "theme": {}
+}

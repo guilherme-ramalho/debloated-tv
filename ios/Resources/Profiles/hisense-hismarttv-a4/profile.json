@@ -1,0 +1,36 @@
+{
+  "id": "hisense-hismarttv-a4",
+  "name": "Hisense HiSmartTV A4 (xiaoyushan, MStar m7322), India",
+  "source": "cleanyourtv examples/hisense-hismarttv-a4 at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "xiaoyushan"
+    ],
+    "product": [
+      "xiaoyushan-em"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

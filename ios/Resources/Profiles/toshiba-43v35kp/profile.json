@@ -1,0 +1,43 @@
+{
+  "id": "toshiba-43v35kp",
+  "name": "Toshiba 43V35KP (hayward, huashan_emT; Hisense/CVTE board, MediaTek mt5867), EU",
+  "source": "cleanyourtv examples/toshiba-43v35kp at b9538048",
+  "community": true,
+  "brand": "Toshiba",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "hayward"
+    ],
+    "product": [
+      "huashan_emT"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "NEVER disable this or any com.mediatek.* package.",
+    "Keep enabled:     com.mediatek.tvinput, com.mediatek.tv.service, com.mediatek.wwtv.tvcenter, com.airoha.android.btd (Bluetooth remote pairing), com.cvte.autobacklight (keep), com.cvte.hotkey.receiver (if present — remote shortcut keys).",
+    "NEVER open (even to look): com.cvte.tv.fac.*, com.cvte.tv.hisensefac, com.cvte.tv.at, com.at.factory.*, mediatek.factorymenu.ui — on CVTE/Hisense boards, launching any factory app can flip a persistent factory-mode flag the shell cannot undo.  setupwraith: com.google.android.tungsten.setupwraith is disabled in this list.",
+    "Disabling setupwraith gives Home back but costs Chromecast built-in (casting); keep it enabled if you cast.  com.at.factory.factorymanager: disabled and confirmed safe on this unit.",
+    "Leave it enabled if you are unsure, or if those packages come back after a reboot.  com.google.android.tvrecommendations: also confirmed stable across a full cold boot here.",
+    "If recommendations rows reappear after a reboot, re-enable it and leave it in; on other hayward firmware variants com.at.factory.factorymanager re-enables it at boot automatically."
+  ],
+  "theme": {}
+}

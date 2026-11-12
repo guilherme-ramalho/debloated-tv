@@ -1,0 +1,43 @@
+{
+  "id": "tcl-65c7l-google-tv",
+  "name": "TCL 65C7L (Smart TV Pro, G08, G08_4K_GB, MediaTek tcl9618), 2025, Australia",
+  "source": "cleanyourtv examples/tcl-65c7l-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "G08"
+    ],
+    "product": [
+      "G08_4K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.plexapp.android",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "All 27 packages stayed disabled after a reboot; nothing is re-enabled at boot on this firmware."
+  ],
+  "theme": {
+    "columns": 4,
+    "live_tv_package": "com.tcl.tv",
+    "hidden_apps": []
+  }
+}

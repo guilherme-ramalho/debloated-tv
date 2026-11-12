@@ -1,0 +1,47 @@
+{
+  "id": "skyworth-swtv-20sa-pro",
+  "name": "Skyworth SWTV-20SA-PRO (SW4H_FF, MediaTek m7332)",
+  "source": "cleanyourtv examples/skyworth-swtv-20sa-pro at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Android TV 10",
+  "match": {},
+  "names": {
+    "device": [
+      "SW4H_FF"
+    ],
+    "product": [
+      "SW4H_FF_B"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never disable a com.mediatek.* package.",
+    "Do not launch com.smartdevice.factory."
+  ],
+  "theme": {
+    "live_tv_package": "com.smartdevice.livetv",
+    "hidden_apps": [
+      "com.smartdevice.livetv"
+    ],
+    "app_keys": [
+      "390:home"
+    ]
+  }
+}

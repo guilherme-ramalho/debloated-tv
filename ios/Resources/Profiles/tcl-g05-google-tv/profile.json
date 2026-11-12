@@ -1,0 +1,36 @@
+{
+  "id": "tcl-g05-google-tv",
+  "name": "TCL Smart TV Pro (G05, G05_4K_US, MediaTek MT5889); also TCL 55Q750G",
+  "source": "cleanyourtv examples/tcl-g05-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "G05"
+    ],
+    "product": [
+      "G05_4K_US"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

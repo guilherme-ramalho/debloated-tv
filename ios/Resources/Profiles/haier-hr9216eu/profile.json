@@ -1,0 +1,38 @@
+{
+  "id": "haier-hr9216eu",
+  "name": "Haier MatrixTV GE (HR9216EU, haeundae, MediaTek), EU",
+  "source": "cleanyourtv examples/haier-hr9216eu at b9538048",
+  "community": true,
+  "brand": "Haier",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "haeundae"
+    ],
+    "product": [
+      "HR9216EU"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "columns": 4
+  }
+}

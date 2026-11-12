@@ -1,0 +1,36 @@
+{
+  "id": "philips-50puf7099-t3",
+  "name": "Philips 50PUF7099/T3 (TPV EBONY_V560, Hisilicon), China",
+  "source": "cleanyourtv examples/philips-50puf7099-t3 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "EBONY_V560"
+    ],
+    "model": [
+      "V560V2_CPFC1_0"
+    ]
+  },
+  "stockLauncher": "com.bestv.ott",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

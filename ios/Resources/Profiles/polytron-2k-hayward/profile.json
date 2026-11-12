@@ -1,0 +1,32 @@
+{
+  "id": "polytron-2k-hayward",
+  "name": "Polytron 2K (WLTV POLYTRON2K, hayward; Hisense/CVTE board, MediaTek mt5867), Indonesia",
+  "source": "cleanyourtv examples/polytron-2k-hayward at b9538048",
+  "community": true,
+  "brand": "Polytron",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "hayward"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

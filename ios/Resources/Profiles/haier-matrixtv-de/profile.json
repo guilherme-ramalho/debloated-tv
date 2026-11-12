@@ -1,0 +1,39 @@
+{
+  "id": "haier-matrixtv-de",
+  "name": "Haier MatrixTV DE (HR9676EUF, omonia, MediaTek)",
+  "source": "cleanyourtv examples/haier-matrixtv-de at b9538048",
+  "community": true,
+  "brand": "Haier",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "omonia"
+    ],
+    "product": [
+      "HR9676EUF"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "live_tv_package": "com.mediatek.tv.oneworld.tvcenter",
+    "animations": false
+  }
+}

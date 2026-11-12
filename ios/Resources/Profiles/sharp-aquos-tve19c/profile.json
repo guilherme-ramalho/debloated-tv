@@ -1,0 +1,37 @@
+{
+  "id": "sharp-aquos-tve19c",
+  "name": "Sharp AQUOS-TVE19C and TVE19A (sindang, CVTE/MStar)",
+  "source": "cleanyourtv examples/sharp-aquos-tve19c at b9538048",
+  "community": true,
+  "brand": "SHARP",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "sindang"
+    ],
+    "product": [
+      "tcbrae_a"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The setup wizard (com.google.android.tungsten.setupwraith) is present but never took Home here, so it is not in this list."
+  ],
+  "theme": {}
+}

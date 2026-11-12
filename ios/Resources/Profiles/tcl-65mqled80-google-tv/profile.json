@@ -1,0 +1,50 @@
+{
+  "id": "tcl-65mqled80-google-tv",
+  "name": "TCL 65MQLED80 (Smart TV Pro, G08, MediaTek tcl9618), Norway",
+  "source": "cleanyourtv examples/tcl-65mqled80-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "G08"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.wbd.stream",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Applied 2026-10-30 on a real unit in seven batches with screenshots between them, then reboot-checked twice: all 32 packages the owner disabled stayed off (23 active here, the owner's 9 commented out), nothing is re-enabled at boot, and power-on lands on the new Home (not Live TV)."
+  ],
+  "theme": {
+    "columns": 5,
+    "dock_glass": true,
+    "live_tv_package": "com.tcl.tv",
+    "hidden_apps": [
+      "com.tcl.tv"
+    ],
+    "settings_key_keycodes": [
+      83
+    ],
+    "app_keys": [
+      "190:com.google.android.youtube.tv",
+      "4062:com.netflix.ninja",
+      "4099:com.amazon.amazonvideo.livingroom"
+    ]
+  }
+}

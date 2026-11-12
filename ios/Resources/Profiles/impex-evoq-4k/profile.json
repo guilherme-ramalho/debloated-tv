@@ -1,0 +1,35 @@
+{
+  "id": "impex-evoq-4k",
+  "name": "Impex evoQ 4K (Changhong, GTVU64IP, board alimos, MediaTek mt5896), India",
+  "source": "cleanyourtv examples/impex-evoq-4k at b9538048",
+  "community": true,
+  "brand": "Impex",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "product": [
+      "GTVU64IP"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "After a reboot with the whole list and the launcher: the disabled list is identical (no package re-enabled at boot), Home is com.gathin.tvhome at power-on (no Live TV autostart, so neither power_on_home nor boot_to_live_tv), the crash buffer is empty."
+  ],
+  "theme": {}
+}

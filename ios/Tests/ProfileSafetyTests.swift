@@ -30,10 +30,16 @@ final class ProfileSafetyTests: XCTestCase {
 
     func testManifestsAreComplete() throws {
         for profile in DebloatProfile.loadAll(root, includeDevelopment: true) {
-            XCTAssertFalse(profile.manifest.match.isEmpty, "\(profile.id): an empty match would claim every TV")
-            XCTAssertTrue(profile.manifest.match.values.allSatisfy { !$0.isEmpty }, profile.id)
-            if let stock = profile.manifest.stockLauncher {
-                XCTAssertTrue(DebloatRules.stockLaunchers.contains(stock), "\(profile.id): unknown stock launcher \(stock)")
+            if profile.isCommunity {
+                // Chosen by ProfileMatcher; an exact match would let it claim TVs without the person choosing it.
+                XCTAssertTrue(profile.manifest.match.isEmpty, "\(profile.id): a community list has no exact match")
+                if let stock = profile.manifest.stockLauncher { XCTAssertTrue(Pattern.isPackage(stock), profile.id) }
+            } else {
+                XCTAssertFalse(profile.manifest.match.isEmpty, "\(profile.id): an empty match would claim every TV")
+                XCTAssertTrue(profile.manifest.match.values.allSatisfy { !$0.isEmpty }, profile.id)
+                if let stock = profile.manifest.stockLauncher {
+                    XCTAssertTrue(DebloatRules.stockLaunchers.contains(stock), "\(profile.id): unknown stock launcher \(stock)")
+                }
             }
             XCTAssertTrue(profile.manifest.dockCandidates.allSatisfy(Pattern.isPackage), profile.id)
             let config = try XCTUnwrap(JSONSerialization.jsonObject(with: profile.themeConfig(dock: [])) as? [String: Any], profile.id)
@@ -44,7 +50,7 @@ final class ProfileSafetyTests: XCTestCase {
 
     func testNoTwoProfilesClaimTheSameTV() throws {
         let all = DebloatProfile.loadAll(root, includeDevelopment: true)
-        for a in all {
+        for a in all where !a.isCommunity {
             // A TV reporting exactly a's first listed values must not also match another profile.
             let props = a.manifest.match.mapValues { $0[0] }
             let matching = all.filter { $0.matches(props) }.map(\.id)

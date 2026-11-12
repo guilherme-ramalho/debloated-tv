@@ -1,0 +1,39 @@
+{
+  "id": "magcubic-hy300-pro",
+  "name": "Magcubic HY300 Pro projector (rk3566_rgo, device adt3, Askey)",
+  "source": "cleanyourtv examples/magcubic-hy300-pro at b9538048",
+  "community": true,
+  "brand": "Magcubic",
+  "os": "Android 11",
+  "match": {},
+  "names": {
+    "device": [
+      "adt3"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "org.smarttube.beta",
+    "com.google.android.youtube.tv",
+    "com.nuvio.app",
+    "org.videolan.vlc",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [],
+    "columns": 4,
+    "wallpaper": false
+  }
+}

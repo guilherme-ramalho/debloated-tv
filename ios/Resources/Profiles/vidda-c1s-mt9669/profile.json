@@ -1,0 +1,56 @@
+{
+  "id": "vidda-c1s-mt9669",
+  "name": "Vidda C1S and C1 4K laser projectors (VIDAA_TV, device MT9669, board m7642), China JuUI",
+  "source": "cleanyourtv examples/vidda-c1s-mt9669 at b9538048",
+  "community": true,
+  "brand": "Vidda",
+  "os": "Android 9",
+  "match": {},
+  "names": {
+    "device": [
+      "MT9669"
+    ]
+  },
+  "stockLauncher": "com.jamdeo.tv.vod",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Home key: third-party accessibility services receive window changes for ordinary apps but NONE for com.jamdeo.tv.vod — Aerial's unpatched Home Guard never sees 聚好看 come to the front (the binding is not deaf: events for other apps arrive; only the launcher is shielded).",
+    "Keep the stock launcher enabled — it stays the system Home, plays its content from Aerial's grid, and gives the Home key somewhere to land that the guard can see. 聚好看 renders normally with both ad sidecars below disabled (screenshot-checked).  ⚠ com.hisense.tv.tiletransition is NOT in this list on purpose: it hosts TileAnimationService, which the source panel binds to before switching inputs.",
+    "Two packages the C1S notes do not name were found and disabled (cloudfalcon, fusion.android.tv.demo, marked C1 below); the owner's own picks are the commented block at the end."
+  ],
+  "theme": {
+    "live_tv_package": "",
+    "source_panel_service": "com.hisense.tv.inputs/com.hisense.tv.InputsUIService",
+    "source_panel_action": "com.hisense.tv.start_inputs",
+    "app_library": true,
+    "power_on_home_always": true,
+    "hidden_apps": [
+      "com.android.calendar",
+      "com.android.camera2",
+      "com.android.contacts",
+      "com.android.music",
+      "com.android.deskclock",
+      "com.android.settings",
+      "com.hisense.tv.catlog",
+      "com.hisense.systeminfo",
+      "com.hisense.hitv.hicloud.account",
+      "com.hispeech.ai.area"
+    ]
+  }
+}

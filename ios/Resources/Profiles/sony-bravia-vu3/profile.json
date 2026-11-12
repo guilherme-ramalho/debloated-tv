@@ -1,0 +1,54 @@
+{
+  "id": "sony-bravia-vu3",
+  "name": "Sony BRAVIA KD-55X75K (BRAVIA_VU3_4K, Realtek rtd2885m)",
+  "source": "cleanyourtv examples/sony-bravia-vu3 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "product": [
+      "BRAVIA_VU3"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": true,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.google.android.youtube.tv",
+    "in.startv.hotstar",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Second unit (same product and build, India, 25 October 2026): with launcherx disabled the remote's Netflix, YouTube, Prime Video and YouTube Music buttons do nothing, because Realtek's GlobalKeyReceiver hands them to launcherx.",
+    "Once launcherx is off, the remote's Netflix, YouTube, YouTube Music and Prime Video buttons do nothing; Input, the settings button, the mic and Home keep working without a helper."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.android.tv",
+      "com.sony.dtv.ecodashboard",
+      "com.sony.dtv.m2.seeds.iot",
+      "com.sony.dtv.timers",
+      "com.google.android.videos"
+    ],
+    "live_tv_package": "com.android.tv",
+    "columns": 4,
+    "app_keys": [
+      "scan:758:com.netflix.ninja",
+      "scan:569:com.google.android.youtube.tv",
+      "scan:653:com.google.android.youtube.tvmusic",
+      "scan:652:com.amazon.amazonvideo.livingroom"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "asus-m1g",
+  "name": "ASUS M1G Google TV (MOKA, dahu, Realtek RTD2851F), US",
+  "source": "cleanyourtv examples/asus-m1g at b9538048",
+  "community": true,
+  "brand": "ASUS",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "dahu"
+    ],
+    "model": [
+      "M1G"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,41 @@
+{
+  "id": "xiaomi-mitv-astp1",
+  "name": "Xiaomi MiTV-ASTP1 (maverick), China firmware 2.40.641.0514.cn, 1 GB RAM, 720p",
+  "source": "cleanyourtv examples/xiaomi-mitv-astp1 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 9 (CN build)",
+  "match": {},
+  "names": {
+    "device": [
+      "maverick"
+    ]
+  },
+  "stockLauncher": "com.mitv.tvhome",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The list below keeps them all except NewTV. - Network ADB (port 5555) closes on every reboot; re-enable it in Settings -> Account & Security -> ADB debugging after each power cycle. - mitv.service is the core MiTV service: do not touch it."
+  ],
+  "theme": {
+    "input_action": "com.xiaomi.mitv.tvplayer.EXTSRC_PLAY",
+    "input_sources": [
+      "HW5=23",
+      "HW6=24"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "skyworth-65a3f",
+  "name": "Skyworth 65A3F (7T641_A3F, MediaTek MT9633), China",
+  "source": "cleanyourtv examples/skyworth-65a3f at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Android 13 (CCOS 10.01.250328)",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Recovery was a factory reset from Recovery (power off, hold the hidden touch button under the logo while plugging the set back in, wipe data/factory reset).",
+    "Kept on purpose: com.coocaa.aigc.home, com.skyworth.setting, com.tianci.system, com.coocaa.os.* (including com.coocaa.os.control and com.coocaa.os.softsettings), com.coocaa.safelauncher, com.tianci.movieplatform, input methods, voice/mic, casting and audio/PQ packages. com.overseas.store.appstore is absent after a factory reset; the line is harmless there."
+  ],
+  "theme": {}
+}

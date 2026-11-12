@@ -1,0 +1,33 @@
+{
+  "id": "hisense-hismarttv-a4-android11",
+  "name": "Hisense HiSmartTV A4 (xiaoyushan, MStar m7322), Android 11 firmware RTT2.221108.001",
+  "source": "cleanyourtv examples/hisense-hismarttv-a4-android11 at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "xiaoyushan"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

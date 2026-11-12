@@ -1,0 +1,51 @@
+{
+  "id": "rca-ai-pont",
+  "name": "RCA AI PONT SA (Changhong, redwood, ISDB92RC; also sold as realme 40-inch, AIWA AW32B4SMG, CHiQ AI PONT DVB92CQ and ERGO DVB92YC)",
+  "source": "cleanyourtv examples/rca-ai-pont at b9538048",
+  "community": true,
+  "brand": "RCA",
+  "os": "Android 14",
+  "match": {},
+  "names": {
+    "device": [
+      "redwood"
+    ],
+    "product": [
+      "ISDB92RC",
+      "ISDB92AW",
+      "DVB92YC"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.android.vending",
+    "com.netflix.ninja",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter",
+      "com.android.tv.settings",
+      "com.cltv.fast"
+    ],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "columns": 4,
+    "rows_below_dock": 0,
+    "reduced_motion": false,
+    "background_color": "#000000",
+    "wallpaper": false
+  }
+}

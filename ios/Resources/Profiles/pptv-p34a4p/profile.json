@@ -1,0 +1,29 @@
+{
+  "id": "pptv-p34a4p",
+  "name": "PPTV p34a4p (Suning PPTV, Amlogic board), China",
+  "source": "cleanyourtv examples/pptv-p34a4p at b9538048",
+  "community": true,
+  "brand": "PPTV",
+  "os": "Android 5.1.1",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.pptv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,36 @@
+{
+  "id": "google-tv-streamer-4k-kirkwood",
+  "name": "Google TV Streamer 4K (kirkwood, GZRNL)",
+  "source": "cleanyourtv examples/google-tv-streamer-4k-kirkwood at b9538048",
+  "community": true,
+  "brand": "Google",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "kirkwood"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Don't add them to a restore list either. - Disabling dreamx leaves screensaver_components pointing at it."
+  ],
+  "theme": {}
+}

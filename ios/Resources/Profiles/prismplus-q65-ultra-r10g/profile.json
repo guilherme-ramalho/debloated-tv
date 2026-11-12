@@ -1,0 +1,36 @@
+{
+  "id": "prismplus-q65-ultra-r10g",
+  "name": "PRISM+ Q65 Ultra 2026 QLED 4K AI Google TV (R10G, PRISMPLUS_FFM, MOKA, Realtek RTD2875 SoC, RTD6748 platform)",
+  "source": "cleanyourtv examples/prismplus-q65-ultra-r10g at b9538048",
+  "community": true,
+  "brand": "PRISM+",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "R10G"
+    ],
+    "product": [
+      "PRISMPLUS_FFM"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

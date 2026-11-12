@@ -1,0 +1,42 @@
+{
+  "id": "hy320",
+  "name": "HY320 projector (t950s_be311, Google-certified Android TV)",
+  "source": "cleanyourtv examples/hy320 at b9538048",
+  "community": true,
+  "brand": "HY320",
+  "os": "Android 13",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.htc.htclauncherhighenglishd08",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.mediaclient",
+    "com.google.android.youtube.tv",
+    "com.smartwave.wave_iptv",
+    "com.mxtech.videoplayer.ad",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [],
+    "live_tv_package": "",
+    "app_library": true,
+    "library_apps": [
+      "com.netflix.mediaclient"
+    ],
+    "columns": 4,
+    "wallpaper": false
+  }
+}

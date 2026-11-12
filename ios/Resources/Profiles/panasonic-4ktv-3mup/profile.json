@@ -1,0 +1,47 @@
+{
+  "id": "panasonic-4ktv-3mup",
+  "name": "Panasonic 4KTV-3MUP / TH-65MX660DX (MOKA R4_GTV, Realtek rtd2851m), Taiwan and India",
+  "source": "cleanyourtv examples/panasonic-4ktv-3mup at b9538048",
+  "community": true,
+  "brand": "Panasonic",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "hami.androidtv",
+    "tw.com.gamer.android.animad",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never disable launcherx or setupwraith here (setupwraith also owns Wi-Fi).",
+    "Never started: com.apps.factory.ui, com.realtek.factorytools."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.realtek.tv",
+      "com.apps.function.audiolink",
+      "com.apps.ota",
+      "com.google.android.play.games",
+      "com.google.android.videos",
+      "com.amazon.amazonvideo.livingroom",
+      "com.google.android.youtube.tvmusic"
+    ],
+    "live_tv_package": "com.realtek.tv",
+    "columns": 4,
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx"
+  }
+}

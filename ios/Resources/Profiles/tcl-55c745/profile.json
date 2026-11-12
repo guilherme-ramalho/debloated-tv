@@ -1,0 +1,47 @@
+{
+  "id": "tcl-55c745",
+  "name": "TCL 55C745, 2023 (G08, G08_4K_GB, MediaTek tcl9618)",
+  "source": "cleanyourtv examples/tcl-55c745 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "G08"
+    ],
+    "product": [
+      "G08_4K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.stremio.one",
+    "org.smarttube.stable",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Not touched because what they do is unclear: com.tvos, com.tpa.kb (system-level agent: RECOVERY, MASTER_CLEAR, CHANGE_COMPONENT_ENABLED_STATE permissions - do not disable), tv.mopa.ginga (broadcast interactive-TV middleware), com.tcl.gallery (also TCL's screensavers), com.tcl.partnercustomizer, com.tcl.interactive, com.tcl.ttvs."
+  ],
+  "theme": {
+    "fill_dock": false,
+    "hidden_apps": [
+      "com.tcl.tv",
+      "com.tcl.gallery"
+    ],
+    "live_tv_package": "com.tcl.tv"
+  }
+}

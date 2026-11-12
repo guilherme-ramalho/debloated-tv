@@ -1,0 +1,26 @@
+{
+  "id": "dev-community-model",
+  "name": "Emulator community list (development only)",
+  "source": "Hand-written for scripts/e2e.sh (TVRemoteEndToEndTests.testCommunityListSetupAndUndo); loaded only with -e2eCommunity.",
+  "developmentOnly": true,
+  "community": true,
+  "brand": "Google",
+  "os": "Android TV 12",
+  "match": {},
+  "launcher": {},
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [],
+  "theme": {},
+  "names": {
+    "device": [
+      "emulator64_arm64"
+    ],
+    "product": [
+      "sdk_google_atv64_arm64"
+    ]
+  },
+  "warnings": [
+    "Development only: rehearses a community list on the emulator. Keep the remote service on."
+  ]
+}

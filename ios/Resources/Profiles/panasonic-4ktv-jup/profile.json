@@ -1,0 +1,31 @@
+{
+  "id": "panasonic-4ktv-jup",
+  "name": "Panasonic 4KTV-JUP (Jupiter_PA, MediaTek)",
+  "source": "cleanyourtv examples/panasonic-4ktv-jup at b9538048",
+  "community": true,
+  "brand": "Panasonic",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Stock launcher:  com.google.android.tvlauncher Live TV app:     com.mediatek.wwtv.tvcenter  (Panasonic's TV UI; keep it, the Inputs menu opens it) Never disable any com.mediatek.* package: they are the tuner, input and HDMI stack."
+  ],
+  "theme": {}
+}

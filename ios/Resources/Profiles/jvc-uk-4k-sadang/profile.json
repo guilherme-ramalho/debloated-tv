@@ -1,0 +1,39 @@
+{
+  "id": "jvc-uk-4k-sadang",
+  "name": "JVC LT-58CA810 (UK 4K Android TV, MTC, MTCMSD6886UK, sadang, MediaTek m7322), UK",
+  "source": "cleanyourtv examples/jvc-uk-4k-sadang at b9538048",
+  "community": true,
+  "brand": "JVC",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "sadang"
+    ],
+    "product": [
+      "MTCMSD6886UK",
+      "MTCMSD6886UK_LOGIK"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Don't press OK there while exploring. - Location can only be turned on together with Google Location Accuracy."
+  ],
+  "theme": {}
+}

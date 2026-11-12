@@ -1,0 +1,31 @@
+{
+  "id": "sony-xbr-55x850d",
+  "name": "Sony BRAVIA XBR-55X850D (Android model \"BRAVIA 4K 2015\"), firmware 6.827",
+  "source": "cleanyourtv examples/sony-xbr-55x850d at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 8.0.0",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Live TV AND HDMI playback app: com.sony.dtv.tvx — KEEP IT ENABLED."
+  ],
+  "theme": {}
+}

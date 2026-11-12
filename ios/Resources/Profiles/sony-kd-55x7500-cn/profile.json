@@ -1,0 +1,36 @@
+{
+  "id": "sony-kd-55x7500-cn",
+  "name": "Sony KD-55X7500 (BRAVIA 4K GB ATV3, BRAVIA_ATV3_4K_CN), China",
+  "source": "cleanyourtv examples/sony-kd-55x7500-cn at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "product": [
+      "BRAVIA_ATV3_4K_CN"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Live TV and HDMI: com.sony.dtv.tvx -- keep it and its input services enabled.",
+    "China firmware differs from the EU/US ATV3 lists: do not apply those blindly."
+  ],
+  "theme": {}
+}

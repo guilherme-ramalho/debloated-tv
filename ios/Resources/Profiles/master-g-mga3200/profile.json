@@ -1,0 +1,37 @@
+{
+  "id": "master-g-mga3200",
+  "name": "Master-G MGA3200 (SCBC R1, Realtek; Android reports model `ATV R1`), Chile",
+  "source": "cleanyourtv examples/master-g-mga3200 at b9538048",
+  "community": true,
+  "brand": "Master-G",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "R1",
+      "strings"
+    ],
+    "product": [
+      "MASTER-G"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

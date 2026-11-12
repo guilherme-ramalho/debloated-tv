@@ -1,0 +1,17 @@
+{
+  "id": "dev-community-closest",
+  "name": "Another Google TV box (development only)",
+  "source": "Hand-written for scripts/e2e.sh (TVRemoteEndToEndTests.testCommunityListSetupAndUndo); loaded only with -e2eCommunity.",
+  "developmentOnly": true,
+  "community": true,
+  "brand": "Google",
+  "os": "Android TV 12",
+  "match": {},
+  "launcher": {},
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [],
+  "theme": {},
+  "names": {},
+  "warnings": []
+}

@@ -1,0 +1,35 @@
+{
+  "id": "ffalcon-65s585c-pro",
+  "name": "FFalcon (雷鸟) 鹤6 PRO 65S585C Pro (China, tcl_mt5879_cn, MediaTek MT9653)",
+  "source": "cleanyourtv examples/ffalcon-65s585c-pro at b9538048",
+  "community": true,
+  "brand": "FFalcon",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "tcl_mt5879_cn"
+    ]
+  },
+  "stockLauncher": "com.tcl.cyberui",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "DO NOT DISABLE: com.tcl.cyberui, com.tcl.tv, com.tcl.settings, com.tcl.systemserver, com.tcl.ttvs, com.tcl.TFDS.service (persistent factory service), com.sohu.inputmethod.sogou.tv (only keyboard), com.tcl.appmarket2, com.tcl.guard, com.tcl.ui_mediaCenter, com.tcl.autopair (remote pairing), com.tcl.tcl_bt_rcu_service, com.tcl.providers.config, com.tcl.initsetup, com.tvos."
+  ],
+  "theme": {}
+}

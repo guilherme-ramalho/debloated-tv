@@ -1,0 +1,38 @@
+{
+  "id": "tcl-q10g-pro",
+  "name": "TCL 55Q10G Pro (China, tcl_mt5879_cn, MediaTek MT9952)",
+  "source": "cleanyourtv examples/tcl-q10g-pro at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "tcl_mt5879_cn"
+    ],
+    "product": [
+      "tcl_mt5879_cn_db"
+    ]
+  },
+  "stockLauncher": "com.tcl.cyberui",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Stock launcher: com.tcl.cyberui — the only activity that resolves MAIN+HOME, so never disable it (no HOME handler means a black screen on boot)."
+  ],
+  "theme": {}
+}

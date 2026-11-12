@@ -1,0 +1,42 @@
+{
+  "id": "oneplus-tv-cebu",
+  "name": "OnePlus TV (C00, Cebu, MediaTek m7632), India",
+  "source": "cleanyourtv examples/oneplus-tv-cebu at b9538048",
+  "community": true,
+  "brand": "OnePlus",
+  "os": "Android TV 10 and 11",
+  "match": {},
+  "names": {
+    "device": [
+      "Cebu"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "in.startv.hotstar",
+    "com.sonyliv",
+    "com.graymatrix.did",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Left alone and never launched: the factory apps (com.heytap.optvfactory, com.oneplus.tv.factory). setupwraith does not claim HOME here.",
+    "With it disabled, dumpsys hdmi_control still detects the connected device (e.g. a PlayStation 5 on HDMI 3), but com.heytap.tv.livetv leaves mainSessionToken null and times out after 3 seconds with \"No Signal, please check the connection of input source.\" (#321)."
+  ],
+  "theme": {
+    "live_tv_package": "com.heytap.tv.livetv",
+    "columns": 6
+  }
+}

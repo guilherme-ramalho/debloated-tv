@@ -1,0 +1,29 @@
+{
+  "id": "xiaomi-mi-box-4s-pro-frozen",
+  "name": "Xiaomi Mi Box 4S Pro (MiTV-AZFP0, frozen), China",
+  "source": "cleanyourtv examples/xiaomi-mi-box-4s-pro-frozen at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android 9",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.mitv.tvhome",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

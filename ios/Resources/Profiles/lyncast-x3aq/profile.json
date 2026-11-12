@@ -1,0 +1,35 @@
+{
+  "id": "lyncast-x3aq",
+  "name": "LYNCAST X3AQ (H726 Focus)",
+  "source": "cleanyourtv examples/lyncast-x3aq at b9538048",
+  "community": true,
+  "brand": "LYNCAST",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "model": [
+      "rk3562_projector"
+    ]
+  },
+  "stockLauncher": "com.htc.luminaos",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "WARNING: Do NOT disable com.htc.luminaos completely!"
+  ],
+  "theme": {}
+}

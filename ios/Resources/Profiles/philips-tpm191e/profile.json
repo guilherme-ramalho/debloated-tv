@@ -1,0 +1,38 @@
+{
+  "id": "philips-tpm191e",
+  "name": "Philips TPM191E / 50PUS8505 / 55OLED854 / 65OLED804 / 50PUS7354 / 43PUS7304 / 65PUS8204 / 65PUS7354 / 70PUS8545 / 58PUS8505 (TP Vision, PH9M_EA_5599, MediaTek MT5887), Europe",
+  "source": "cleanyourtv examples/philips-tpm191e at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Android TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "PH9M_EA_5599"
+    ],
+    "product": [
+      "PH9M_EA_5599"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Confirmed here too: injected keys over ADB do not dismiss it; a real remote key does."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,36 @@
+{
+  "id": "karbonn-swtv-20ae",
+  "name": "Karbonn / Motorola SWTV-20AE (Skyworth OEM, SW4H, MediaTek), India",
+  "source": "cleanyourtv examples/karbonn-swtv-20ae at b9538048",
+  "community": true,
+  "brand": "Karbonn",
+  "os": "Android TV 10",
+  "match": {},
+  "names": {
+    "device": [
+      "SW4H"
+    ],
+    "product": [
+      "SW4_TG"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

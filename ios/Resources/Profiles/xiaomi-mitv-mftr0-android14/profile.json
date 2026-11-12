@@ -1,0 +1,31 @@
+{
+  "id": "xiaomi-mitv-mftr0-android14",
+  "name": "Xiaomi MiTV-MFTR0 (freeguy, MediaTek mt9653), China firmware OS3.0.101.0.UFTMATV (HyperOS TV 3)",
+  "source": "cleanyourtv examples/xiaomi-mitv-mftr0-android14 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android 14 (HyperOS TV 3, CN build)",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.mitv.tvhome",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "customBuild",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do NOT add it here. - Keep com.xiaomi.mitv.tvmanager if the owner uses XiaoAI's \"open <app>\": app-opening runs through its provider (MFFU0 note)."
+  ],
+  "theme": {}
+}

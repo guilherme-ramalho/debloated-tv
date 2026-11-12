@@ -1,0 +1,32 @@
+{
+  "id": "coocaa-k3-pro-90p3d-max",
+  "name": "Skyworth Coocaa K3 Pro 90P3D Max (8R145_P3DM, Realtek RTD2885N), China market",
+  "source": "cleanyourtv examples/coocaa-k3-pro-90p3d-max at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Android 11 (Coocaa OS)",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Comment out any line you want to keep.  ⚠ CRITICAL: NEVER disable com.tianci.movieplatform (the Coocaa launcher).",
+    "The 8R145 boot flow hard-depends on it: disabling it hangs the TV on the COOCAA logo, the remote becomes unresponsive, and the only recovery is a factory reset from recovery mode (verified the hard way).",
+    "The firmware never broadcasts standard boot events (BOOT_COMPLETED, QUICKBOOT_POWERON) to third-party apps, so auto-start on boot is not possible without root. 5. \"Boot source\" is also hard-coded: \"Signal source\" on boot launches com.skyworth.tv (TV app) via firmware logic - there is no app-selection option."
+  ],
+  "theme": {}
+}

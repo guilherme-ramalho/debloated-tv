@@ -1,0 +1,47 @@
+{
+  "id": "kodak-55ca0909",
+  "name": "Kodak 55CA0909 (SPPL-built, Skyworth SW3_ATV, MediaTek MT5886), India",
+  "source": "cleanyourtv examples/kodak-55ca0909 at b9538048",
+  "community": true,
+  "brand": "Kodak",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "SW3_ATV"
+    ],
+    "product": [
+      "SW3_ATV_T"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.google.android.youtube.tv",
+    "in.startv.hotstar",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Connecting: Developer options has USB debugging only (no Network debugging, no Wireless debugging), and USB debugging alone never opened 5555.",
+    "Re-enable it before a factory reset.",
+    "Live TV app: com.smartdevice.livetv (also serves AndroidTvSupportTvinputService; keep it enabled).",
+    "Kept on purpose: the input packages above, com.mediatek.tunerservice, com.mediatek.wwtv.setupwizard, com.mediatek.network, mtktvapi.agent, com.smartdevice.factory and com.smartdevice.dtv.factorywritekey (factory packages, never launched), com.google.android.inputmethod.latin, Play Store, Play Services."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.smartdevice.livetv"
+    ],
+    "live_tv_package": "com.smartdevice.livetv"
+  }
+}

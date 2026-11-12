@@ -1,0 +1,35 @@
+{
+  "id": "bell-fibe-tv-vip7802",
+  "name": "Bell Fibe TV (ARRIS VIP7802)",
+  "source": "cleanyourtv examples/bell-fibe-tv-vip7802 at b9538048",
+  "community": true,
+  "brand": "Bell Canada",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "vip7802_bell"
+    ]
+  },
+  "stockLauncher": "com.custom.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "This box does not carry much ARRIS/CommScope bloat once content apps are left alone: the default list below is 12 packages - telemetry, two stub apps with no logic at all, and five Google TV services most owners would not miss (Play Games, Play Movies & TV, YouTube Music, Android TV's own feedback reporter, and the stock recommendation-row service, which this box's own launcher doesn't even read)."
+  ],
+  "theme": {}
+}

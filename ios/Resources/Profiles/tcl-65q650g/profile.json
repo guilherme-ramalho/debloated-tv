@@ -1,0 +1,31 @@
+{
+  "id": "tcl-65q650g",
+  "name": "TCL 65Q650G (US Q6 2023, BeyondTV4, Realtek RTD2851 / R51MT08, V8-R51MT08-LF1V095, 2 GB)",
+  "source": "cleanyourtv examples/tcl-65q650g at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV launcher on Android TV 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never disable: com.tcl.providers.config com.tcl.initsetup com.tcl.factory.view com.tcl.system.server com.tcl.tcl_bt_rcu_service com.tcl.autopair com.tcl.tvinput com.tcl.tv com.tcl.settings com.tcl.suspension (Input panel) com.tcl.xian.StartandroidService com.tvos 1."
+  ],
+  "theme": {}
+}

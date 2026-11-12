@@ -1,0 +1,36 @@
+{
+  "id": "sony-kd-43x80l",
+  "name": "Sony BRAVIA KD-43X80L / KD-55X80L (2023, BRAVIA_VH22, MediaTek MT5895), EU",
+  "source": "cleanyourtv examples/sony-kd-43x80l at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_VH22"
+    ],
+    "product": [
+      "BRAVIA_VH22_M_EU"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

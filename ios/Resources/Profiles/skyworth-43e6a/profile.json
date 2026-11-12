@@ -1,0 +1,29 @@
+{
+  "id": "skyworth-43e6a",
+  "name": "Skyworth 43E6A (open_fhd, MediaTek MT5886)",
+  "source": "cleanyourtv examples/skyworth-43e6a at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Android TV 8.0",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

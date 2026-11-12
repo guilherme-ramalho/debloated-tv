@@ -1,0 +1,45 @@
+{
+  "id": "nvidia-shield-tv-2019",
+  "name": "NVIDIA SHIELD TV 2019 tube (P3430, sif)",
+  "source": "cleanyourtv examples/nvidia-shield-tv-2019 at b9538048",
+  "community": true,
+  "brand": "NVIDIA Shield",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "sif"
+    ],
+    "model": [
+      "P3430"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.plexapp.android",
+    "com.oumi.utility.media.hub",
+    "hami.androidtv",
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.android.tv.settings"
+    ],
+    "live_tv_package": "com.google.android.tv",
+    "columns": 4
+  }
+}

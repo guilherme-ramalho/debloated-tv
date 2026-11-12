@@ -1,0 +1,36 @@
+{
+  "id": "artel-cvte-mt5863",
+  "name": "Artel smart TV (CVTE TP.MT5510S.PB782, cvt_mt5863_eu, SMART_TV), Uzbekistan",
+  "source": "cleanyourtv examples/artel-cvte-mt5863 at b9538048",
+  "community": true,
+  "brand": "Artel",
+  "os": "Android 7.0",
+  "match": {},
+  "names": {
+    "product": [
+      "cvt_mt5863_eu"
+    ]
+  },
+  "stockLauncher": "com.cvte.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "DO NOT DISABLE com.talents.huanclientauth.",
+    "With it disabled the boot never completes."
+  ],
+  "theme": {}
+}

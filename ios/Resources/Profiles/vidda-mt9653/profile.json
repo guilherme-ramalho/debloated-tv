@@ -1,0 +1,36 @@
+{
+  "id": "vidda-mt9653",
+  "name": "Vidda VIDAA_TV (Hisense sub-brand; device MT9653, board mt5879), China JuUI",
+  "source": "cleanyourtv examples/vidda-mt9653 at b9538048",
+  "community": true,
+  "brand": "Vidda",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "MT9653"
+    ]
+  },
+  "stockLauncher": "com.jamdeo.tv.vod",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Close the port when you are done, or keep the TV on a trusted network only.  ⚠ com.hisense.tv.tiletransition is NOT in this list on purpose.",
+    "This is the \"package names often don't say what a package does\" warning in PROMPT.md, made concrete."
+  ],
+  "theme": {}
+}

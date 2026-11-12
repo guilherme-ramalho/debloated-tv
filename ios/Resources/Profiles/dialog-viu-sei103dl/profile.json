@@ -1,0 +1,36 @@
+{
+  "id": "dialog-viu-sei103dl",
+  "name": "Dialog ViU (SEI Robotics SEI103DL, Amlogic, NES middleware), Sri Lanka",
+  "source": "cleanyourtv examples/dialog-viu-sei103dl at b9538048",
+  "community": true,
+  "brand": "Dialog",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "SEI103"
+    ]
+  },
+  "stockLauncher": "com.dialog.tv",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Home claimants: com.dialog.tv and FallbackHome only; setupwraith and leanbacklauncher do not claim Home here, and the saved Wi-Fi network belongs to the system uid, so both are left alone."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,39 @@
+{
+  "id": "thomson-t32rtl6000",
+  "name": "Thomson T32RTL6000 (SCBC, Realtek; Android reports model `ATV R1`)",
+  "source": "cleanyourtv examples/thomson-t32rtl6000 at b9538048",
+  "community": true,
+  "brand": "Thomson",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "R1",
+      "strings"
+    ],
+    "product": [
+      "THOMSON"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Kept on purpose: GMS / Play / WebView / keyboard, the tuner stack above, remote/Bluetooth (com.apps.smartkey, bluetoothremote, fivekey, virtualkey, autopair), com.creative.fastscreen.tv (FastCast Miracast receiver on this family — NOT a FastScreen ad app, do not disable it as one), and streaming apps left to taste. --- Telemetry, analytics, recommendation rows ---"
+  ],
+  "theme": {}
+}

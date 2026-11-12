@@ -1,0 +1,33 @@
+{
+  "id": "sharp-55gp6260e",
+  "name": "SHARP 55GP6260E (Sharp Google TV, kaitak, MediaTek MTK9612), EU",
+  "source": "cleanyourtv examples/sharp-55gp6260e at b9538048",
+  "community": true,
+  "brand": "SHARP",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "kaitak"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

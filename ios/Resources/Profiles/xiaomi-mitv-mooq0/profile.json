@@ -1,0 +1,36 @@
+{
+  "id": "xiaomi-mitv-mooq0",
+  "name": "Xiaomi Mi TV (MiTV-MOOQ0, croods; includes P1 43\" EU variant)",
+  "source": "cleanyourtv examples/xiaomi-mitv-mooq0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 10 and 11",
+  "match": {},
+  "names": {
+    "device": [
+      "croods"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "NetflixObserver is inside the core com.mediatek.tv.service APK; keep that service enabled.",
+    "With PatchWall and katniss off the PatchWall button and the mic do nothing; the Okko, ivi and KinoPoisk app buttons work, and held volume still repeats with no key helper enabled.",
+    "Notes from a second set on the same firmware (mirhnaz, PR #81): - Live TV (com.mediatek.wwtv.tvcenter) can't be disabled even if you never use the tuner: its TurnkeyUiMainActivity is also the HDMI/AV window."
+  ],
+  "theme": {}
+}

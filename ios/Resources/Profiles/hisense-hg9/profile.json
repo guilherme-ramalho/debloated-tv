@@ -1,0 +1,35 @@
+{
+  "id": "hisense-hg9",
+  "name": "Hisense HG9 (HiSmart 4K A4FFM)",
+  "source": "cleanyourtv examples/hisense-hg9 at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "laohushan"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Second and third units (two more sets, same product, same build PTMR.190127.037 and 2021-02-05 patch, MStar MSD6886, 1.8 GB RAM, US; one on Wi-Fi, one on Ethernet), both with launcher/ as Home for several days, October 2026: - Developer options > USB debugging alone opened port 5555 on both, within seconds and without a reboot; the Network debugging toggle was never touched."
+  ],
+  "theme": {}
+}
