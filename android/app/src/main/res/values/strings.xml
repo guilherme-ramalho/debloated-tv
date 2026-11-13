@@ -1,29 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- English. Wording follows the iPhone app (ios/Resources/Localizable.xcstrings); scripts/android-strings.py
+     writes the other five languages from the iPhone's translations. -->
 <resources>
     <string name="app_name">Purio TV</string>
 
-    <string name="find_title">Choose your TV</string>
-    <string name="find_searching">Looking for TVs on this Wi-Fi…</string>
-    <string name="find_none">No TV found yet. Check the TV is on and on the same Wi-Fi, or type its address.</string>
-    <string name="find_resolving">Finding address…</string>
-    <string name="address_label">TV address (for example 192.168.0.13)</string>
-    <string name="address_use">Use this address</string>
-    <string name="pair_title">Pair with %1$s</string>
-    <string name="pair_starting">Asking the TV for a code…</string>
-    <string name="pair_hint">Type the six-character code shown on the TV.</string>
-    <string name="pair_code">Code</string>
-    <string name="pair_submit">Pair</string>
+    <string name="tab_remote">Remote</string>
+    <string name="tab_tv">TV</string>
+    <string name="tab_actions">Actions</string>
+    <string name="tab_settings">Settings</string>
+    <string name="soon_tv">Your TV Home screen (apps, wallpaper, look, weather, sleep timer) and TV setup are coming to Purio TV for Android. Until then, use the iPhone app for them.</string>
+    <string name="soon_actions">Actions, widgets and quick settings are coming to Purio TV for Android.</string>
+
+    <string name="connect_title">Connect your TV</string>
+    <string name="connect_hint">Make sure the TV is on and on the same Wi-Fi as this phone. Then pick it below.</string>
+    <string name="tvs_on_network">TVs on your network</string>
+    <string name="still_looking">Still looking…</string>
+    <string name="finding_address">Finding its address…</string>
+    <string name="not_listed">My TV isn\'t listed: enter its address</string>
+    <string name="connect_footer">Works with Android TV and Google TV. Next, your TV shows a 6-character code to confirm it\'s you.</string>
+    <string name="connect_none_title">No TV found yet</string>
+    <string name="connect_none_hint">Still looking. These usually fix it:</string>
+    <string name="tip_on">Turn the TV on</string>
+    <string name="tip_on_detail">Fully on, not in standby, the first time.</string>
+    <string name="tip_network">Same network</string>
+    <string name="tip_network_detail">This phone on the TV\'s Wi-Fi, not a guest network or mobile data.</string>
+    <string name="tip_system">An Android TV or Google TV</string>
+    <string name="tip_system_detail">Other systems (Samsung, LG webOS, Roku) aren\'t supported.</string>
+    <string name="search_again">Search again</string>
+    <string name="enter_address_instead">Enter the TV\'s address instead</string>
+    <string name="address_title">TV address</string>
+    <string name="address_hint">Find it on the TV in Settings › Network &amp; Internet, under the Wi-Fi network.</string>
+    <string name="address_label">IP address</string>
+    <string name="address_connect">Connect</string>
+
+    <string name="pair_title">Pair your TV</string>
+    <string name="pair_asking">Asking %1$s to show a code…</string>
+    <string name="pair_keep_on">Keep the TV on and on the same Wi-Fi as this phone.</string>
+    <string name="pair_no_answer">%1$s didn\'t answer.</string>
+    <string name="pair_enter_code">Enter the code on your TV</string>
+    <string name="pair_showing_code">%1$s is showing a 6-character code.</string>
+    <string name="pair_code_label">Pairing code</string>
+    <string name="pair_no_code">The TV shows no code: try again</string>
+    <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="retry">Try again</string>
-    <string name="forget_tv">Choose another TV</string>
-    <string name="connecting">Connecting to %1$s…</string>
-    <string name="connected">Connected</string>
-    <string name="tv_off">TV is in standby</string>
-    <string name="now_on">%1$s on TV</string>
-    <string name="volume">Volume %1$d of %2$d</string>
+
+    <string name="chip_offline">Offline · Retry</string>
+    <string name="chip_standby">Standby · Wake</string>
+    <string name="volume_title">Volume</string>
+    <string name="volume">Volume %1$d</string>
+    <string name="volume_of">Volume %1$d/%2$d</string>
     <string name="muted">Muted</string>
+    <string name="open_app">Open %1$s</string>
+
+    <string name="connection">Connection</string>
+    <string name="connection_detail">Paired TV · local network</string>
+    <string name="status_not_paired">Pair your TV to get started</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_standby">Standby</string>
+    <string name="status_offline">TV unavailable</string>
+    <string name="no_tv">No TV</string>
+    <string name="reconnect">Reconnect</string>
+    <string name="reconnect_hint">Reconnecting uses the saved authorization. A code is not needed.</string>
+    <string name="pair_again">Pair again</string>
+    <string name="pair_again_hint">Only needed if the TV has forgotten this phone or its pairing was reset. An offline TV does not normally need re-pairing.</string>
+    <string name="pair_again_title">Pair this phone again?</string>
+    <string name="pair_again_message">Keep the TV on. Your saved pairing is replaced only after a new code is accepted.</string>
+    <string name="show_code">Show code on TV</string>
+    <string name="forget_tv">Connect another TV</string>
+    <string name="forget_title">Forget %1$s?</string>
+    <string name="forget_message">This phone forgets the TV. To use it again, pair with a new code.</string>
+    <string name="forget_confirm">Forget</string>
+    <string name="about">About</string>
+    <string name="about_detail">Purio TV %1$s · Android TV Remote &amp; Control</string>
 
     <string name="key_power">Power</string>
+    <string name="key_wake">Wake TV</string>
     <string name="key_home">Home</string>
     <string name="key_back">Back</string>
     <string name="key_up">Up</string>
@@ -35,6 +88,9 @@
     <string name="key_volume_down">Volume down</string>
     <string name="key_mute">Mute</string>
     <string name="key_play_pause">Play or pause</string>
+    <string name="key_rewind">Rewind</string>
+    <string name="key_fast_forward">Fast-forward</string>
+    <string name="key_captions">Subtitles</string>
     <string name="key_inputs">Inputs</string>
     <string name="key_settings">TV settings</string>
 
@@ -45,8 +101,8 @@
     <string name="problem_closed">TV connection closed.</string>
     <string name="problem_interrupted">TV connection was interrupted.</string>
     <string name="problem_not_ready">TV is not ready.</string>
-    <string name="problem_identity_changed">The TV’s identity changed, for example after a reset. Pair this TV again.</string>
-    <string name="problem_pairing_rejected_by_tv">The TV no longer accepts this phone’s pairing, for example after another app replaced it or the TV was reset. Pair this TV again.</string>
+    <string name="problem_identity_changed">The TV’s identity changed, for example after a reset. Pair this TV again in Settings › Connection.</string>
+    <string name="problem_pairing_rejected_by_tv">The TV no longer accepts this phone’s pairing, for example after another app replaced it or the TV was reset. Pair this TV again in Settings › Connection.</string>
     <string name="problem_pairing_refused">The TV rejected pairing. Start again and enter the current TV code.</string>
     <string name="problem_pairing_expired">Pairing expired. Start pairing again.</string>
     <string name="problem_handshake_incomplete">The TV did not complete the remote handshake.</string>
@@ -59,7 +115,7 @@
     <string name="problem_code_length">Enter the six-character code shown on the TV.</string>
     <string name="problem_code_characters">The code uses 0–9 and A–F.</string>
     <string name="problem_code_mismatch">That code does not match this TV. Check the code and try again.</string>
-    <string name="problem_identity_unavailable">Could not use this phone’s pairing identity.</string>
+    <string name="problem_identity_unavailable">Could not use pairing identity.</string>
     <string name="problem_editor">TV Home did not answer. Check that the TV launcher is up to date.</string>
     <string name="problem_other">Something went wrong. Try again.</string>
 </resources>

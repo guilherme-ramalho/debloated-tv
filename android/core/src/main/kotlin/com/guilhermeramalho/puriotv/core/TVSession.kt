@@ -29,7 +29,8 @@ class TVSession(
         data class Power(val on: Boolean) : Event
         data class Foreground(val packageName: String) : Event
         data class Volume(val level: Int, val maximum: Int, val muted: Boolean) : Event
-        data class Error(val problem: Problem) : Event
+        /** [detail] is for the log only (exception text), never shown. */
+        data class Error(val problem: Problem, val detail: String? = null) : Event
     }
 
     var onEvent: ((Event) -> Unit)? = null
@@ -73,21 +74,21 @@ class TVSession(
             try {
                 connection.open()
             } catch (e: RemoteFailure) {
-                if (token == generation) { disconnect(); emit(Event.Error(e.problem)) }
+                if (token == generation) { disconnect(); emit(Event.Error(e.problem, e.message)) }
                 return@launch
             }
             if (token != generation) { connection.close(); return@launch }
             connection.start(
                 onFrame = { inbox.trySend(it) },
                 onFailed = { failure ->
-                    scope.launch { if (token == generation) { disconnect(); emit(Event.Error(failure.problem)) } }
+                    scope.launch { if (token == generation) { disconnect(); emit(Event.Error(failure.problem, failure.message)) } }
                 },
             )
             if (pairing) sendPair(10, Wire.string(1, "atvremote") + Wire.string(2, clientName))
             for (frame in inbox) {
                 if (token != generation) break
                 lastInbound = clock()
-                try { receive(frame) } catch (e: RemoteFailure) { disconnect(); emit(Event.Error(e.problem)); break }
+                try { receive(frame) } catch (e: RemoteFailure) { disconnect(); emit(Event.Error(e.problem, e.message)); break }
             }
         }
         scope.launch {
@@ -106,7 +107,7 @@ class TVSession(
             val secret = ClientIdentity.secret(code, identity.publicKey, server)
             secretSent = true
             sendPair(40, Wire.bytes(1, secret))
-        } catch (e: RemoteFailure) { emit(Event.Error(e.problem)) }
+        } catch (e: RemoteFailure) { emit(Event.Error(e.problem, e.message)) }
     }
 
     /** direction: 1 press, 2 release, 3 short (press and release). */

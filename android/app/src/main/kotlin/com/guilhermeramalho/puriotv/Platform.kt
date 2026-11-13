@@ -56,15 +56,20 @@ class Store(context: Context) {
  * per subject), as on the iPhone.
  */
 object KeystoreIdentity {
-    private const val ALIAS = "PurioTV.Client.v2"
+    // v3: v2 keys allowed signing only, and TLS 1.3 (RSA-PSS) failed in the handshake on a real TV.
+    private const val ALIAS = "PurioTV.Client.v3"
+    private const val OLD_ALIAS = "PurioTV.Client.v2"
 
     fun loadOrCreate(clientName: String): ClientIdentity {
         val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
         (store.getEntry(ALIAS, null) as? KeyStore.PrivateKeyEntry)?.let {
             return ClientIdentity(it.privateKey, it.certificate as X509Certificate)
         }
+        if (store.containsAlias(OLD_ALIAS)) store.deleteEntry(OLD_ALIAS)
         val now = System.currentTimeMillis()
-        val spec = KeyGenParameterSpec.Builder(ALIAS, KeyProperties.PURPOSE_SIGN)
+        // Conscrypt signs with a Keystore key through a callback: PKCS#1 v1.5 (TLS 1.2) as NONEwithRSA, but RSA-PSS
+        // (TLS 1.3) as a raw private-key operation (RSA/ECB/NoPadding), which needs DECRYPT with no padding.
+        val spec = KeyGenParameterSpec.Builder(ALIAS, KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_DECRYPT)
             .setKeySize(2048)
             .setCertificateSubject(X500Principal("CN=" + RemoteClientName.uniqueCommonName(clientName).replace(",", " ")))
             .setCertificateSerialNumber(BigInteger.valueOf(now))
@@ -73,6 +78,8 @@ object KeystoreIdentity {
             // TLS 1.2 signs with PKCS#1 v1.5, TLS 1.3 with PSS; Conscrypt may hand over a raw digest (NONE).
             .setDigests(KeyProperties.DIGEST_NONE, KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA384, KeyProperties.DIGEST_SHA512)
             .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1, KeyProperties.SIGNATURE_PADDING_RSA_PSS)
+            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE, KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1)
+            .setRandomizedEncryptionRequired(false)
             .build()
         KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore").apply { initialize(spec) }.generateKeyPair()
         val entry = store.getEntry(ALIAS, null) as KeyStore.PrivateKeyEntry

@@ -66,9 +66,9 @@ class TVConnection(
         } catch (e: RemoteFailure) {
             plain.close(); throw e
         } catch (e: SocketTimeoutException) {
-            plain.close(); throw RemoteFailure(validationFailure ?: Problem.TIMED_OUT, e.message)
+            plain.close(); throw RemoteFailure(validationFailure ?: Problem.TIMED_OUT, describe(e))
         } catch (e: IOException) {
-            plain.close(); throw RemoteFailure(validationFailure ?: classify(e), e.message)
+            plain.close(); throw RemoteFailure(validationFailure ?: classify(e), describe(e))
         }
     }
 
@@ -164,6 +164,9 @@ class TVConnection(
     }
 
     companion object {
+        /** The exception and its causes in one line, for the log. */
+        fun describe(e: Throwable): String = generateSequence(e) { it.cause }.take(4).joinToString(" <- ") { it.toString() }
+
         /** The TV turned this phone's certificate away in the handshake: it no longer holds this pairing. */
         fun tvRejectedPairing(e: SSLException): Boolean {
             val text = generateSequence<Throwable>(e) { it.cause }.mapNotNull { it.message?.lowercase() }.joinToString(" ")

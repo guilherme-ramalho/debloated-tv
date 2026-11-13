@@ -1,0 +1,364 @@
+package com.guilhermeramalho.puriotv
+
+import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Input
+import androidx.compose.material.icons.automirrored.rounded.Undo
+import androidx.compose.material.icons.outlined.ClosedCaption
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Tv
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.FastForward
+import androidx.compose.material.icons.rounded.FastRewind
+import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.PowerSettingsNew
+import androidx.compose.material.icons.rounded.Remove
+import androidx.compose.material.icons.automirrored.outlined.VolumeOff
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.guilhermeramalho.puriotv.core.PadInteraction
+import com.guilhermeramalho.puriotv.core.TVKey
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.math.abs
+import kotlin.math.hypot
+
+/**
+ * The remote (RemoteView in TVRemoteApp.swift), same layout as the iPhone: power, the TV and what's on it, inputs;
+ * the round pad (tap, hold, or swipe anywhere on it); Back/Home/Play; media row; volume; app shortcuts.
+ */
+@Composable
+fun RemoteScreen(state: RemoteModel.State, model: RemoteModel) {
+    var details by rememberSaveable { mutableStateOf(false) }
+    val enabled = state.ready
+    Column(
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 30.dp).padding(top = 4.dp, bottom = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Header(state, model) { details = true }
+        DPad(enabled, model)
+        Row(horizontalArrangement = Arrangement.spacedBy(25.dp)) {
+            Command(Icons.AutoMirrored.Rounded.Undo, R.string.key_back, enabled) { model.tap(TVKey.BACK) }
+            Command(Icons.Rounded.Home, R.string.key_home, enabled) { model.tap(TVKey.HOME) }
+            Command(Icons.Rounded.PlayArrow, R.string.key_play_pause, enabled) { model.tap(TVKey.PLAY_PAUSE) }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            Command(Icons.Rounded.FastRewind, R.string.key_rewind, enabled) { model.tap(TVKey.REWIND) }
+            Command(Icons.Rounded.FastForward, R.string.key_fast_forward, enabled) { model.tap(TVKey.FAST_FORWARD) }
+            Command(Icons.Outlined.ClosedCaption, R.string.key_captions, enabled) { model.tap(TVKey.CAPTIONS) }
+            Command(Icons.Outlined.Settings, R.string.key_settings, enabled) { model.tap(TVKey.SETTINGS) }
+        }
+        Volume(state, model)
+        Apps(enabled, model)
+    }
+    if (details) ConnectionSheet(state, model) { details = false }
+}
+
+@Composable
+private fun Header(state: RemoteModel.State, model: RemoteModel, openDetails: () -> Unit) {
+    val powerAvailable = state.pairing == null && state.link != RemoteModel.Link.CONNECTING
+    Row(Modifier.fillMaxWidth().heightIn(min = 52.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        val powerLabel = stringResource(if (!state.ready || state.power == false) R.string.key_wake else R.string.key_power)
+        RoundKey(Icons.Rounded.PowerSettingsNew, powerLabel, 48.dp, Quiet.power.copy(alpha = 0.11f), Quiet.power.copy(alpha = 0.25f), powerAvailable) { model.power() }
+        ConnectionChip(state, model, openDetails, Modifier.weight(1f))
+        RoundKey(Icons.AutoMirrored.Outlined.Input, stringResource(R.string.key_inputs), 46.dp, Quiet.inputs, null, state.ready) { model.tap(TVKey.INPUTS) }
+    }
+}
+
+/** What the connection is doing, and the useful thing on tap (TVConnectionChip, block layout). */
+@Composable
+private fun ConnectionChip(state: RemoteModel.State, model: RemoteModel, openDetails: () -> Unit, modifier: Modifier) {
+    var retried by remember { mutableStateOf(false) }
+    LaunchedEffect(state.ready) { if (state.ready) retried = false }
+    val standby = state.ready && state.power == false
+    val busy = state.link == RemoteModel.Link.CONNECTING || state.link == RemoteModel.Link.IDLE
+    val offline = state.link == RemoteModel.Link.OFFLINE
+    val onTap = {
+        when {
+            standby -> model.power()
+            offline -> if (retried) openDetails() else { retried = true; model.connect() }
+            else -> openDetails()
+        }
+    }
+    Column(modifier.heightIn(min = 48.dp).clip(RoundedCornerShape(12.dp)).clickable(enabled = !busy, onClick = onTap).padding(vertical = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(3.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+            when {
+                busy -> { CircularProgressIndicator(Modifier.size(12.dp), strokeWidth = 1.5.dp, color = Quiet.muted); ChipText(state.tvName, Quiet.muted) }
+                offline -> { Dot(Quiet.amber); ChipText(stringResource(R.string.chip_offline), Quiet.amber) }
+                standby -> { Dot(Quiet.muted); ChipText(stringResource(R.string.chip_standby), Color.White) }
+                else -> { Dot(Quiet.green); ChipText(state.tvName, Color.White) }
+            }
+        }
+        val app = RemoteApps.nameOrNull(state.foreground)
+        if (state.ready && !standby && app != null) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                Icon(Icons.Outlined.Tv, null, tint = Quiet.muted, modifier = Modifier.size(13.dp))
+                Text(app, fontSize = 13.sp, color = Quiet.muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+        }
+    }
+}
+
+private object RemoteApps { fun nameOrNull(pkg: String?) = RemoteApp.nameOf(pkg) }
+
+@Composable
+private fun Dot(color: Color) = Box(Modifier.size(8.dp).background(color, CircleShape))
+
+@Composable
+private fun ChipText(text: String, color: Color) =
+    Text(text, color = color, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+
+@Composable
+private fun RoundKey(icon: ImageVector, label: String, size: Dp, fill: Color, stroke: Color?, enabled: Boolean, onClick: () -> Unit) {
+    val haptics = LocalHapticFeedback.current
+    Surface(
+        onClick = { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); onClick() }, enabled = enabled, shape = CircleShape, color = fill,
+        border = stroke?.let { androidx.compose.foundation.BorderStroke(1.dp, it) },
+        modifier = Modifier.size(size).alpha(if (enabled) 1f else 0.45f).semantics { contentDescription = label },
+    ) { Box(contentAlignment = Alignment.Center) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(22.dp)) } }
+}
+
+/** Back, Home, Play and the media row: 65 × 50 rounded keys. */
+@Composable
+private fun Command(icon: ImageVector, @StringRes label: Int, enabled: Boolean, onClick: () -> Unit) {
+    val haptics = LocalHapticFeedback.current
+    val text = stringResource(label)
+    Surface(
+        onClick = { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); onClick() }, enabled = enabled,
+        shape = RoundedCornerShape(21.dp), color = Quiet.ink, border = androidx.compose.foundation.BorderStroke(1.dp, Quiet.edge),
+        modifier = Modifier.width(65.dp).height(50.dp).alpha(if (enabled) 1f else 0.45f).semantics { contentDescription = text },
+    ) { Box(contentAlignment = Alignment.Center) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(25.dp)) } }
+}
+
+/**
+ * The round pad. Like the iPhone, the whole circle is one touch surface driven by [PadInteraction]: a tap on an
+ * arrow or OK sends it; holding it repeats (press, then release); a swipe anywhere sends that direction.
+ */
+@Composable
+private fun DPad(enabled: Boolean, model: RemoteModel) {
+    val haptics = LocalHapticFeedback.current
+    val scope = rememberCoroutineScope()
+    val pad = remember { PadInteraction() }
+    var highlighted by remember { mutableStateOf<TVKey?>(null) }
+    val density = LocalDensity.current
+    fun run(commands: List<PadInteraction.Command>) = commands.forEach { c ->
+        when (c) {
+            is PadInteraction.Command.Tap -> { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.tap(c.key) }
+            is PadInteraction.Command.Press -> { haptics.performHapticFeedback(HapticFeedbackType.LongPress); model.press(c.key) }
+            is PadInteraction.Command.Release -> model.release(c.key)
+        }
+    }
+    DisposableEffect(enabled) { onDispose { run(pad.cancel()); highlighted = null } }
+    val labels = mapOf(
+        TVKey.UP to stringResource(R.string.key_up), TVKey.DOWN to stringResource(R.string.key_down),
+        TVKey.LEFT to stringResource(R.string.key_left), TVKey.RIGHT to stringResource(R.string.key_right),
+        TVKey.SELECT to stringResource(R.string.key_select),
+    )
+    Box(
+        Modifier.size(284.dp).alpha(if (enabled) 1f else 0.45f)
+            .background(Quiet.ink, CircleShape).border(1.dp, Color.White.copy(alpha = 0.08f), CircleShape)
+            .pointerInput(enabled) {
+                if (!enabled) return@pointerInput
+                val radius = size.width / 2f
+                val center = Offset(radius, radius)
+                val okRadius = with(density) { 58.dp.toPx() }
+                awaitEachGesture {
+                    val down = awaitFirstDown()
+                    val key = keyAt(down.position - center, okRadius)
+                    run(pad.begin(key))
+                    highlighted = key
+                    var hold: Job? = scope.launch { delay(450); run(pad.hold()) }
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                        val d = change.position - down.position
+                        val dx = with(density) { d.x.toDp().value.toDouble() }
+                        val dy = with(density) { d.y.toDp().value.toDouble() }
+                        if (!change.pressed) {
+                            hold?.cancel(); hold = null
+                            run(pad.end(dx, dy)); highlighted = null
+                            break
+                        }
+                        run(pad.move(dx, dy))
+                        if (pad.isSwiping) { hold?.cancel(); hold = null; highlighted = TVKey.swipeDirection(dx, dy) }
+                        change.consume()
+                    }
+                    hold?.cancel()
+                    run(pad.cancel()); highlighted = null
+                }
+            },
+        contentAlignment = Alignment.Center,
+    ) {
+        PadKey(Icons.Rounded.KeyboardArrowUp, highlighted == TVKey.UP, Modifier.offset(y = (-103).dp).size(100.dp, 66.dp), labels[TVKey.UP]!!) { model.tap(TVKey.UP) }
+        PadKey(Icons.Rounded.KeyboardArrowDown, highlighted == TVKey.DOWN, Modifier.offset(y = 103.dp).size(100.dp, 66.dp), labels[TVKey.DOWN]!!) { model.tap(TVKey.DOWN) }
+        PadKey(Icons.Rounded.KeyboardArrowLeft, highlighted == TVKey.LEFT, Modifier.offset(x = (-103).dp).size(66.dp, 100.dp), labels[TVKey.LEFT]!!) { model.tap(TVKey.LEFT) }
+        PadKey(Icons.Rounded.KeyboardArrowRight, highlighted == TVKey.RIGHT, Modifier.offset(x = 103.dp).size(66.dp, 100.dp), labels[TVKey.RIGHT]!!) { model.tap(TVKey.RIGHT) }
+        Box(
+            Modifier.size(116.dp).background(Color.White.copy(alpha = if (highlighted == TVKey.SELECT) 0.18f else 0.09f), CircleShape)
+                .border(1.dp, Color.White.copy(alpha = if (highlighted == TVKey.SELECT) 0.55f else 0.12f), CircleShape)
+                .semantics { contentDescription = labels[TVKey.SELECT]!!; role = Role.Button; onClick { model.tap(TVKey.SELECT); true } },
+            contentAlignment = Alignment.Center,
+        ) { Text(labels[TVKey.SELECT]!!, fontSize = 26.sp, fontWeight = FontWeight.SemiBold) }
+    }
+}
+
+/** OK in the middle; otherwise the arrow whose quarter of the circle the touch is in. */
+private fun keyAt(p: Offset, okRadius: Float): TVKey? = when {
+    hypot(p.x, p.y) <= okRadius -> TVKey.SELECT
+    abs(p.x) > abs(p.y) -> if (p.x > 0) TVKey.RIGHT else TVKey.LEFT
+    else -> if (p.y > 0) TVKey.DOWN else TVKey.UP
+}
+
+@Composable
+private fun PadKey(icon: ImageVector, highlighted: Boolean, modifier: Modifier, label: String, onAccessibilityClick: () -> Unit) {
+    Box(
+        modifier.background(Color.White.copy(alpha = if (highlighted) 0.18f else 0f), RoundedCornerShape(24.dp))
+            .border(1.dp, Color.White.copy(alpha = if (highlighted) 0.55f else 0f), RoundedCornerShape(24.dp))
+            .semantics { contentDescription = label; role = Role.Button; onClick { onAccessibilityClick(); true } },
+        contentAlignment = Alignment.Center,
+    ) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(34.dp)) }
+}
+
+/** Volume: hold − or + to keep changing it, the TV's level in the middle, mute on the right. */
+@Composable
+private fun Volume(state: RemoteModel.State, model: RemoteModel) {
+    val enabled = state.ready
+    Row(Modifier.fillMaxWidth().alpha(if (enabled) 1f else 0.45f).background(Quiet.ink, CircleShape).border(1.dp, Quiet.edge, CircleShape),
+        verticalAlignment = Alignment.CenterVertically) {
+        HoldKey(Icons.Rounded.Remove, stringResource(R.string.key_volume_down), TVKey.VOLUME_DOWN, enabled, model)
+        val v = state.volume
+        Text(
+            when { v == null -> stringResource(R.string.volume_title); v.muted -> stringResource(R.string.muted)
+                v.maximum == 100 -> stringResource(R.string.volume, v.level); else -> stringResource(R.string.volume_of, v.level, v.maximum) },
+            fontSize = 15.sp, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f), textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+        )
+        HoldKey(Icons.Rounded.Add, stringResource(R.string.key_volume_up), TVKey.VOLUME_UP, enabled, model)
+        val haptics = LocalHapticFeedback.current
+        val mute = stringResource(R.string.key_mute)
+        Box(Modifier.size(48.dp, 56.dp).clip(CircleShape).clickable(enabled = enabled) { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.tap(TVKey.MUTE) }
+            .semantics { contentDescription = mute }, contentAlignment = Alignment.Center) {
+            Icon(Icons.AutoMirrored.Outlined.VolumeOff, null, tint = Color.White, modifier = Modifier.size(21.dp))
+        }
+    }
+}
+
+/** A key that stays pressed on the TV while the finger is down (HoldKey). */
+@Composable
+private fun HoldKey(icon: ImageVector, label: String, key: TVKey, enabled: Boolean, model: RemoteModel) {
+    val haptics = LocalHapticFeedback.current
+    val source = remember { MutableInteractionSource() }
+    val pressed by source.collectIsPressedAsState()
+    var down by remember { mutableStateOf(false) }
+    DisposableEffect(Unit) { onDispose { if (down) model.release(key) } }
+    Box(
+        Modifier.size(64.dp, 56.dp).clip(CircleShape)
+            .background(Color.White.copy(alpha = if (down || pressed) 0.13f else 0f))
+            .semantics { contentDescription = label; role = Role.Button; onClick { model.tap(key); true } }
+            .pointerInput(enabled) {
+                if (!enabled) return@pointerInput
+                awaitEachGesture {
+                    awaitFirstDown()
+                    down = true; haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.press(key)
+                    do { val e = awaitPointerEvent() } while (e.changes.any { it.pressed })
+                    down = false; model.release(key)
+                }
+            },
+        contentAlignment = Alignment.Center,
+    ) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(24.dp)) }
+}
+
+/** App shortcuts: two columns of brand-coloured buttons with the logo, as on the iPhone. */
+@Composable
+private fun Apps(enabled: Boolean, model: RemoteModel) {
+    val haptics = LocalHapticFeedback.current
+    Column(Modifier.fillMaxWidth().padding(top = 4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        RemoteApp.known.chunked(2).forEach { pair ->
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                pair.forEach { app ->
+                    val open = stringResource(R.string.open_app, app.name)
+                    Surface(
+                        onClick = { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.launch(app.launchUrl) }, enabled = enabled,
+                        shape = RoundedCornerShape(17.dp), color = app.color, border = androidx.compose.foundation.BorderStroke(1.dp, Quiet.edge),
+                        modifier = Modifier.weight(1f).height(58.dp).alpha(if (enabled) 1f else 0.45f).semantics { contentDescription = open },
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            if (app.logo != null) {
+                                Image(painterResource(app.logo), null, colorFilter = ColorFilter.tint(Color.White),
+                                    modifier = Modifier.height(app.logoHeight.dp).widthIn(max = 108.dp))
+                            } else Text(app.name, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+                        }
+                    }
+                }
+                if (pair.size == 1) Box(Modifier.weight(1f))
+            }
+        }
+    }
+}
