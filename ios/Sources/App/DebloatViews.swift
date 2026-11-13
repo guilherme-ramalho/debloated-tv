@@ -195,10 +195,16 @@ struct DebloatSetupView: View {
     }
 
     static func matchDetail(_ match: ProfileMatch) -> String {
+        // One app gets its own sentence: the catalog has no plural variants for these.
+        let one = match.present == 1
+        let names = match.named.joined(separator: ", ")
         switch match.kind {
-        case .tested: return String(localized: "Tested with Purio TV on this TV. \(match.present) apps to review.")
-        case .model: return String(localized: "Made for this model (\(match.named.joined(separator: ", "))). \(match.present) of its apps are on this TV.")
-        case .closest: return String(localized: "Made for another model, the closest match. \(match.present) of its apps are on this TV.")
+        case .tested: return one ? String(localized: "Tested with Purio TV on this TV. 1 app to review.")
+                                 : String(localized: "Tested with Purio TV on this TV. \(match.present) apps to review.")
+        case .model: return one ? String(localized: "Made for this model (\(names)). 1 of its apps is on this TV.")
+                                : String(localized: "Made for this model (\(names)). \(match.present) of its apps are on this TV.")
+        case .closest: return one ? String(localized: "Made for another model, the closest match. 1 of its apps is on this TV.")
+                                  : String(localized: "Made for another model, the closest match. \(match.present) of its apps are on this TV.")
         }
     }
 

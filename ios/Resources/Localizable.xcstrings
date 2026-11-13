@@ -5252,6 +5252,40 @@
         }
       }
     },
+    "Made for another model, the closest match. 1 of its apps is on this TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für ein anderes Modell erstellt, die nächstbeste Übereinstimmung. 1 ihrer Apps ist auf diesem Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecha para otro modelo, la más parecida. 1 de sus apps está en esta TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faite pour un autre modèle, la plus proche. 1 de ses apps est sur cette TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creata per un altro modello, la più simile. 1 delle sue app è su questa TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feita para outro modelo, a mais parecida. 1 dos apps dela está nesta TV."
+          }
+        }
+      }
+    },
     "Made for this model (%@). %lld of its apps are on this TV." : {
       "localizations" : {
         "de" : {
@@ -5282,6 +5316,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Feita para este modelo (%@). %lld dos apps dela estão nesta TV."
+          }
+        }
+      }
+    },
+    "Made for this model (%@). 1 of its apps is on this TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für dieses Modell erstellt (%@). 1 ihrer Apps ist auf diesem Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecha para este modelo (%@). 1 de sus apps está en esta TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faite pour ce modèle (%@). 1 de ses apps est sur cette TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creata per questo modello (%@). 1 delle sue app è su questa TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feita para este modelo (%@). 1 dos apps dela está nesta TV."
           }
         }
       }
@@ -15300,6 +15368,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Testada com o Purio TV nesta TV. %lld apps para revisar."
+          }
+        }
+      }
+    },
+    "Tested with Purio TV on this TV. 1 app to review." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit Purio TV auf diesem Fernseher getestet. 1 App zu prüfen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probada con Purio TV en esta TV. 1 app para revisar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testée avec Purio TV sur cette TV. 1 app à vérifier."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testata con Purio TV su questa TV. 1 app da controllare."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testada com o Purio TV nesta TV. 1 app para revisar."
           }
         }
       }
