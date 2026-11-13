@@ -1,0 +1,29 @@
+{
+  "id": "sony-xbr-x900e",
+  "name": "Sony BRAVIA XBR-65X900E (2017, BRAVIA_ATV2)",
+  "source": "cleanyourtv examples/sony-xbr-x900e at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

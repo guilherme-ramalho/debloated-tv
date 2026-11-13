@@ -1,0 +1,36 @@
+{
+  "id": "xiaomi-mitv-moor2",
+  "name": "Xiaomi MiTV-MOOR2 / MOOR4 / MOOR6 (venom, MediaTek)",
+  "source": "cleanyourtv examples/xiaomi-mitv-moor2 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "venom"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The packages under DO NOT DISABLE were ruled out by reading dumpsys, not by disabling them and seeing what broke."
+  ],
+  "theme": {}
+}

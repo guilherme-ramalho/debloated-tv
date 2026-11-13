@@ -1,0 +1,36 @@
+{
+  "id": "redmi-mitv-mftp0",
+  "name": "Redmi TV (MiTV-MFTP0, alita), China firmware 23.2.10.6129",
+  "source": "cleanyourtv examples/redmi-mitv-mftp0 at b9538048",
+  "community": true,
+  "brand": "Redmi",
+  "os": "Android TV 9 (CN build)",
+  "match": {},
+  "names": {
+    "device": [
+      "alita"
+    ]
+  },
+  "stockLauncher": "com.mitv.tvhome",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "customBuild",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Stock launcher: com.mitv.tvhome 3.49.1601 (HOME activity .MainActivityUserMode) - KEEP IT ENABLED, see \"Home\" below.",
+    "After a full reboot (not standby) the owner reported the replacement launcher still Home and no startup ad; ADB closes at reboot, so package states were not read again after it."
+  ],
+  "theme": {}
+}

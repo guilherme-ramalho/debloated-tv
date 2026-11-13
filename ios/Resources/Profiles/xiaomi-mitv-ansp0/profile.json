@@ -1,0 +1,38 @@
+{
+  "id": "xiaomi-mitv-ansp0",
+  "name": "Xiaomi MiTV-ANSP0 (小米电视5 Pro 65\", jobs, Amlogic), China firmware 23.6.5.3226, 4 GB RAM",
+  "source": "cleanyourtv examples/xiaomi-mitv-ansp0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 9 (CN build)",
+  "match": {},
+  "names": {
+    "device": [
+      "jobs"
+    ]
+  },
+  "stockLauncher": "com.mitv.tvhome",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Stock launcher: com.mitv.tvhome (PatchWall, HOME activity .MainActivityUserMode) - KEEP IT ENABLED, see \"Home\" below.",
+    "Notes from this firmware: - Home: disabling com.mitv.tvhome drops HOME to com.android.tv.settings/.system.FallbackHome (priority -1000 in the manifest, but it still wins once nothing else is left), which shows a black screen.",
+    "Keeping PatchWall enabled and setting the new launcher as the preferred home works, and survives a reboot; PatchWall is then never shown."
+  ],
+  "theme": {}
+}

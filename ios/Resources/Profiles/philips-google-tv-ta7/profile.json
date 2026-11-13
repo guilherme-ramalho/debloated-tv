@@ -1,0 +1,38 @@
+{
+  "id": "philips-google-tv-ta7",
+  "name": "Philips Google TV TA7 (TPV, PH3M_AL_T32, MediaTek), Brazil; 55PUD7908/77, Latin America; 50PUD7408/77, Argentina; 55PUG7908/78, Brazil",
+  "source": "cleanyourtv examples/philips-google-tv-ta7 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "PH3M_AL_T32"
+    ],
+    "product": [
+      "PH3M_LT_T32"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Applied in batches on 2026-10-25 with a screenshot after each, launcher installed, rebooted once (nothing re-enabled itself, boots to the new Home); Live TV, HDMI input list and YouTube playback checked, Input and app buttons pressed on the real remote."
+  ],
+  "theme": {}
+}

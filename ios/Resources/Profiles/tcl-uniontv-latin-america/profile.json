@@ -1,0 +1,36 @@
+{
+  "id": "tcl-uniontv-latin-america",
+  "name": "TCL UnionTV, Latin America (TCL-built like Thomson 32HE5800, Realtek RT2841); also confirmed on a TCL 32S6500S and L40S6500 (persist.tcl.client_type TCL-LA-RT41KB-S1) and a TCL-CA-RT41KA-S1 unit",
+  "source": "cleanyourtv examples/tcl-uniontv-latin-america at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "UnionTV"
+    ],
+    "product": [
+      "UnionTV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

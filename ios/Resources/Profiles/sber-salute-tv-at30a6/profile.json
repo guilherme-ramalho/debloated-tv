@@ -1,0 +1,54 @@
+{
+  "id": "sber-salute-tv-at30a6",
+  "name": "Sber Salute TV 43\" (CVTE TP.T962D4.PC756, Amlogic T962D4, at30a6, 2 GB), Russia",
+  "source": "cleanyourtv examples/sber-salute-tv-at30a6 at b9538048",
+  "community": true,
+  "brand": "Sber",
+  "os": "StarOS 1.101 / Android 13",
+  "match": {},
+  "names": {
+    "device": [
+      "at30a6"
+    ]
+  },
+  "stockLauncher": "ru.sberdevices.starlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not uninstall anything here."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.cvte.fac.menu",
+      "com.stb.factorymenu",
+      "ru.sberdevices.webview",
+      "ru.sberdevices.starcleaner",
+      "ru.sberdevices.starprofile",
+      "ru.sberdevices.parentcontrol",
+      "ru.sberdevices.starkidsroom.prod",
+      "com.sberbank.settings",
+      "com.android.tv.settings"
+    ],
+    "live_tv_package": "",
+    "app_library": true,
+    "app_labels": [
+      "ru.sberdevices.starlauncher=Салют ТВ",
+      "ru.sberdevices.starmarket=Каталог Сбера",
+      "ru.sberdevices.settings=Центр управления"
+    ]
+  }
+}

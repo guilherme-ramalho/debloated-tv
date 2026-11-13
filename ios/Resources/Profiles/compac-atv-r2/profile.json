@@ -1,0 +1,32 @@
+{
+  "id": "compac-atv-r2",
+  "name": "Compac ATV R2 (SCBC R2, Realtek RTD285O)",
+  "source": "cleanyourtv examples/compac-atv-r2 at b9538048",
+  "community": true,
+  "brand": "Compac",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "R2"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

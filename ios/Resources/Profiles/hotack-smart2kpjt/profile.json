@@ -1,0 +1,33 @@
+{
+  "id": "hotack-smart2kpjt",
+  "name": "HOTACK SMART2KPJT projector, \"Whale TV 95C8\" (Amlogic am30b8, WhaleOS S8E, Zeasn firmware)",
+  "source": "cleanyourtv examples/hotack-smart2kpjt at b9538048",
+  "community": true,
+  "brand": "HOTACK",
+  "os": "Android 13",
+  "match": {},
+  "names": {
+    "model": [
+      "SMART2KPJT"
+    ]
+  },
+  "stockLauncher": "com.zeasn.whaleos.launcher3",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

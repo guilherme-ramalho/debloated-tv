@@ -1,0 +1,36 @@
+{
+  "id": "xgimi-mogo-3-pro",
+  "name": "XGIMI MoGo 3 Pro projector (G0035, altai, MediaTek)",
+  "source": "cleanyourtv examples/xgimi-mogo-3-pro at b9538048",
+  "community": true,
+  "brand": "XGIMI",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "altai"
+    ],
+    "model": [
+      "G0035"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

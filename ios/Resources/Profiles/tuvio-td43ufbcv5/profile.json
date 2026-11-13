@@ -1,0 +1,51 @@
+{
+  "id": "tuvio-td43ufbcv5",
+  "name": "Tuvio TD43UFBCV5 / TD50UFBCV5 (Changhong AI PONT, DVB96, MediaTek m7632), Russia",
+  "source": "cleanyourtv examples/tuvio-td43ufbcv5 at b9538048",
+  "community": true,
+  "brand": "Tuvio",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "product": [
+      "DVB96"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "ru.yourok.num",
+    "studio.scillarium.ottnavigator",
+    "xyz.anilabx.app",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "With setupwraith disabled, RecoveryActivity never started (logcat) and Home has no delay. - com.mediatek.android.leanbacklauncher.partnercustomizer comes back by itself: it lives in /vendor/odm and is enabled=0 (default) again after every reboot.",
+    "Never LAUNCH them. - com.homwee.dynamicbacklight, com.homwee.lightsensorservice: picture and auto brightness. - com.homwee.upgrade, com.homwee.dmt.upgrade: firmware updates. - com.dolby.android.audio.service, Play Store / Services / GSF, Gboard, WebView."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter"
+    ],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "columns": 4,
+    "rows_below_dock": 0,
+    "library_button": true,
+    "show_library_pill": false,
+    "app_library": true,
+    "background_color": "#000000",
+    "wallpaper": false
+  }
+}

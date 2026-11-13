@@ -1,0 +1,35 @@
+{
+  "id": "panasonic-atv-r2",
+  "name": "Panasonic ATV R2 (SCBC R2, Realtek RTD285O)",
+  "source": "cleanyourtv examples/panasonic-atv-r2 at b9538048",
+  "community": true,
+  "brand": "Panasonic",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "R2"
+    ],
+    "product": [
+      "PANASONIC"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

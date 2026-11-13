@@ -1,0 +1,36 @@
+{
+  "id": "tcl-85rm7l-google-tv",
+  "name": "TCL 85RM7L (G08, G08_4K_GB, MediaTek tcl9618)",
+  "source": "cleanyourtv examples/tcl-85rm7l-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "G08"
+    ],
+    "product": [
+      "G08_4K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

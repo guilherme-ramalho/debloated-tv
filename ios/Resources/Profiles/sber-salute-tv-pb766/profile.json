@@ -1,0 +1,62 @@
+{
+  "id": "sber-salute-tv-pb766",
+  "name": "Sber Salute TV 32\" (CVTE TPD.MT9216.PB766, MediaTek MT9256, 1 GB), Russia",
+  "source": "cleanyourtv examples/sber-salute-tv-pb766 at b9538048",
+  "community": true,
+  "brand": "Sber",
+  "os": "StarOS 1.103 / Android 11",
+  "match": {},
+  "names": {
+    "model": [
+      "MD_CVTE_OVERSEA_MT9256_11_0_1GB_STARKOS"
+    ]
+  },
+  "stockLauncher": "ru.sberdevices.starlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "ru.kinopoisk.tv",
+    "ru.rt.video.app.tv",
+    "com.vk.tv",
+    "ru.rutube.app",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.cvte.fac.menu",
+      "com.cvte.factory.at",
+      "com.cvte.license.at",
+      "com.cvte.tv.tools",
+      "ru.sberdevices.TvFactoryHelper",
+      "ru.sberdevices.webview",
+      "com.sberbank.settings",
+      "com.android.tv.settings",
+      "ru.more.play",
+      "ru.sberdevices.subscriptions",
+      "ru.sberdevices.smarthome.promo",
+      "ru.sberdevices.tv",
+      "ru.sberdevices.rcfupdater",
+      "ru.sberdevices.openbeta",
+      "ru.sberdevices.starkidsroom.prod"
+    ],
+    "live_tv_package": "",
+    "app_labels": [
+      "ru.sberdevices.starlauncher=Салют ТВ",
+      "ru.sberdevices.starmarket=Каталог Сбера",
+      "ru.sberdevices.settings=Центр управления"
+    ]
+  }
+}

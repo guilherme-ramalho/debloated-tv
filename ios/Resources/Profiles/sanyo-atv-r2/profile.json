@@ -1,0 +1,35 @@
+{
+  "id": "sanyo-atv-r2",
+  "name": "SANYO ATV R2 (SCBC, Realtek RTD285O)",
+  "source": "cleanyourtv examples/sanyo-atv-r2 at b9538048",
+  "community": true,
+  "brand": "SANYO",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "R2"
+    ],
+    "product": [
+      "SANYO"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

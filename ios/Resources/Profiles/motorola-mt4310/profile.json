@@ -1,0 +1,37 @@
+{
+  "id": "motorola-mt4310",
+  "name": "Motorola MT4310 (Newsan; Hisense board, hayward, MediaTek), Argentina",
+  "source": "cleanyourtv examples/motorola-mt4310 at b9538048",
+  "community": true,
+  "brand": "Motorola",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "hayward"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Without them MemAvailable after boot would be ~349 MB instead of ~315 MB. com.google.android.marvin.talkback also comes back enabled after a reboot but never runs.",
+    "Do NOT disable: com.mediatek.* (wwtv.tvcenter is Live TV, HDMI and the Input key's own input panel; tv.service dispatches the YouTube/Prime keys; tvinput is the HDMI/tuner inputs), com.cvte.hotkey.receiver (Disney+ key), com.cvte.tv.infoprovider (device serial), com.cvte.autobacklight, com.airoha.android.btd (Bluetooth).",
+    "Never open com.cvte.tv.fac.*, com.cvte.tv.hisensefac, com.cvte.tv.at, com.at.factory.* or mediatek.factorymenu.ui, even to look: on Hisense/CVTE boards that flips a factory-mode flag."
+  ],
+  "theme": {}
+}

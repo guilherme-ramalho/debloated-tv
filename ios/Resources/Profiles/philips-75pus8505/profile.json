@@ -1,0 +1,39 @@
+{
+  "id": "philips-75pus8505",
+  "name": "Philips 75PUS8505/12 / 58PUS8555/12 (TP Vision TPM191E, PH9M_EA_5599, MediaTek MT5887), Europe",
+  "source": "cleanyourtv examples/philips-75pus8505 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Android TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "PH9M_EA_5599"
+    ],
+    "product": [
+      "PH9M_EA_5599"
+    ],
+    "model": [
+      "TPM191E"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

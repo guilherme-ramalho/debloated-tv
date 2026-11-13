@@ -1,0 +1,44 @@
+{
+  "id": "philips-55pos9002",
+  "name": "Philips 55POS9002/12 OLED (TP Vision TPM171E, PH7M_EU_5596, MediaTek MT5891), Europe",
+  "source": "cleanyourtv examples/philips-55pos9002 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Android TV 8.0",
+  "match": {},
+  "names": {
+    "device": [
+      "PH7M_EU_5596"
+    ],
+    "product": [
+      "PH7M_EU_5596"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Packages that are not installed on this set were left out of the list (no nettvapp* web apps, no Gameloft or TED preloads)."
+  ],
+  "theme": {
+    "live_tv_package": "org.droidtv.playtv",
+    "hidden_apps": [
+      "org.droidtv.playtv",
+      "org.droidtv.eum"
+    ]
+  }
+}

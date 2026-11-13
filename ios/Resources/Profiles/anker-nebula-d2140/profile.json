@@ -1,0 +1,36 @@
+{
+  "id": "anker-nebula-d2140",
+  "name": "Anker Nebula Cosmos projector D2140 (D2140-Cosmos, SDMC/Amlogic, 2 GB), Vietnam",
+  "source": "cleanyourtv examples/anker-nebula-d2140 at b9538048",
+  "community": true,
+  "brand": "Anker Nebula",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "D2140-Cosmos"
+    ],
+    "model": [
+      "D2140"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

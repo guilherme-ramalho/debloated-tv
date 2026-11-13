@@ -37,9 +37,25 @@ cleanly and the phone retries. The phone checks the remote link is fresh (recent
   The recovery record uses upstream's `recovery.py` v1 format, so records from either side are interchangeable.
 - **Profiles = upstream data + a small manifest**: `debloat.txt` and `tv.json` stay byte-for-byte upstream (MIT);
   `profile.json` adds how to recognise the TV over ADB, the stock launcher, launcher options and a starting theme.
-  Only models with a tested list are offered; unknown TVs get a clear "not supported yet", never a guess.
+  Every list upstream has is bundled (`scripts/import-tv-lists.py`, Nov 2026). A hand-written profile tested with
+  Purio TV on the exact firmware is used directly; otherwise the person picks from the lists `ProfileMatcher`
+  ranks: "made for this model" only when the list names the TV's own product or model (or a board name no other list
+  uses), "closest" from the brand's own apps, behind a confirmation. A TV no list resembles gets "not supported yet".
+  Each list's defaults are kept as its testers made them (streaming apps, assistant, casting included): the person
+  switches on what they use.
+- **Lists' install notes are honoured, never guessed**: keep the stock launcher where the tester did
+  (`STOCK_LAUNCHER=none`, "keep launcherx enabled"), no new Home where the tester needed a custom build, a CVTE
+  procedure or a device note, helpers only from the tester's install command, with the cases where that and the
+  theme disagree settled by hand in `scripts/tv-list-overrides.json`.
 - **Apply in groups with checks in between**, stopping if the TV stops answering; the recovery record is saved
-  before the first change and keeps the original state across retries.
+  when the person applies, before the first change, one per TV (keyed by `android_id`), and every later run only
+  extends it, so Undo always goes back to the state before the very first setup, whatever lists were used. It also
+  keeps the TV's identity (Undo refuses another TV's record) and the accessibility settings the new Home's helpers
+  change. Undo reads the TV back and says what didn't come back.
+- **One restart at the end of apply**, while debugging is still on: wait 20 s (Android writes package state and
+  the Home choice about 10 s after a change; `sync` alone isn't enough), `sync`, reboot, reconnect, check Home and that
+  the disabled apps stayed off (some firmware re-enables apps at boot, or brings the setup wizard back with a black
+  Home). A minute or two once per setup, nothing in the background.
 - **Launcher install mirrors upstream's `build-and-install.sh`**: push and checksum, install, start it, and only then
   disable the stock launcher and hand Home over; if Home doesn't end up on the new launcher, roll back.
 - **The launcher APK is bundled in the app** (not downloaded), so the app and the launcher it installs always match

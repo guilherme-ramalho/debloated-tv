@@ -11,7 +11,22 @@ public struct DebloatProfile: Identifiable, Equatable {
         public var stockLauncher: String?
         public var launcher: LauncherOptions
         public var dockCandidates: [String]
+        /// A list from cleanyourtv brought in by scripts/import-tv-lists.py: chosen by ProfileMatcher, not `match`.
+        public var community: Bool?
+        public var brand: String?
+        public var os: String?
+        /// Whether setup may offer the new Home screen with this list (the importer's rules).
+        public var homeScreen: Bool?
+        /// Why not: fireOS, debloatOnly, cvte or noConfig.
+        public var homeScreenNote: String?
+        /// Sentences from the list's header that warn or say what to keep, shown on the review screen.
+        public var warnings: [String]?
+        /// How the list identifies its own unit: "device", "product", "model" (the importer's reading of its header).
+        public var names: [String: [String]]?
     }
+    public var isCommunity: Bool { manifest.community == true }
+    /// Hand-written profiles always may; a community list only when the importer allowed it.
+    public var offersHomeScreen: Bool { !isCommunity || manifest.homeScreen == true }
     public var id: String { manifest.id }
     public let manifest: Manifest
     public let list: DebloatList

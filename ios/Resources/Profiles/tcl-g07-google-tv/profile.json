@@ -1,0 +1,36 @@
+{
+  "id": "tcl-g07-google-tv",
+  "name": "TCL Smart TV (G07, G07_4K_GB_NF, Realtek RTD2851A, 2 GB)",
+  "source": "cleanyourtv examples/tcl-g07-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "G07"
+    ],
+    "product": [
+      "G07_4K_GB_NF"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

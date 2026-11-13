@@ -1,0 +1,51 @@
+{
+  "id": "tcl-65qm8l-google-tv",
+  "name": "TCL 65QM8L (Smart TV Pro, G17, G17_4K_US, MediaTek tcl9655), 2025, US",
+  "source": "cleanyourtv examples/tcl-65qm8l-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "G17"
+    ],
+    "product": [
+      "G17_4K_US"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": true,
+    "restoreKeyServices": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.hulu.livingroomplus",
+    "com.wbd.stream",
+    "com.apple.atve.androidtv.appletv",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "columns": 4,
+    "live_tv_package": "com.tcl.tv",
+    "hidden_apps": [],
+    "power_on_home": true,
+    "restore_key_services": true,
+    "app_keys": [
+      "83:com.android.tv.settings",
+      "4001:com.tcl.tv",
+      "4062:com.netflix.ninja",
+      "4099:com.amazon.amazonvideo.livingroom",
+      "190:com.google.android.youtube.tv"
+    ]
+  }
+}

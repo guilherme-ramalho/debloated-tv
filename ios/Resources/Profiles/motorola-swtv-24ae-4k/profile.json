@@ -1,0 +1,36 @@
+{
+  "id": "motorola-swtv-24ae-4k",
+  "name": "Motorola SWTV-24AE-4K (Skyworth OEM, eleonas, MediaTek), India",
+  "source": "cleanyourtv examples/motorola-swtv-24ae-4k at b9538048",
+  "community": true,
+  "brand": "Motorola",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "eleonas"
+    ],
+    "product": [
+      "SW10_TG"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

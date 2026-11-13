@@ -1,0 +1,33 @@
+{
+  "id": "sony-kdl-55w800c",
+  "name": "Sony BRAVIA KDL-55W800C (2015, \"BRAVIA 2015\", SVP-DTV15, MediaTek), Taiwan firmware",
+  "source": "cleanyourtv examples/sony-kdl-55w800c at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 7.0",
+  "match": {},
+  "names": {
+    "device": [
+      "SVP-DTV15"
+    ]
+  },
+  "stockLauncher": "com.google.android.leanbacklauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

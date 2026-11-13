@@ -1,0 +1,44 @@
+{
+  "id": "xiaomi-mitv-astp0",
+  "name": "Xiaomi MiTV-ASTP0 (mulan, sold as L55M7-EA), China firmware 22.12.2.1630, 1.5 GB RAM",
+  "source": "cleanyourtv examples/xiaomi-mitv-astp0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 9 (CN build)",
+  "match": {},
+  "names": {
+    "device": [
+      "mulan"
+    ]
+  },
+  "stockLauncher": "com.mitv.tvhome",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "customBuild",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Wi-Fi also sleeps in standby, so the TV drops off the network until it is woken. - mitv.service is the core MiTV service: do not touch it."
+  ],
+  "theme": {
+    "input_action": "com.xiaomi.mitv.tvplayer.EXTSRC_PLAY",
+    "input_sources": [
+      "HW5=23",
+      "HW6=24",
+      "HW7=25",
+      "HW1=2"
+    ]
+  }
+}

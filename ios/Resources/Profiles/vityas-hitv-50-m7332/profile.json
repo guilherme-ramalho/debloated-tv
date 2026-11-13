@@ -1,0 +1,39 @@
+{
+  "id": "vityas-hitv-50-m7332",
+  "name": "Vityas Hi TV 50 (KTC/KGZN build, board m7332)",
+  "source": "cleanyourtv examples/vityas-hitv-50-m7332 at b9538048",
+  "community": true,
+  "brand": "Vityas",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "on"
+    ]
+  },
+  "stockLauncher": "com.kgzn.mslauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.android.vending",
+    "com.spotify.tv.android",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Disable it if you do not use the vendor assistant.",
+    "The three factory packages are disabled, never launched: opening a factory menu on some boards flips a factory-mode flag the shell cannot undo. telemetry and ad/store bridges"
+  ],
+  "theme": {
+    "columns": 4
+  }
+}

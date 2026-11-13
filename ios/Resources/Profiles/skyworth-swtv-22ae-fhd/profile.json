@@ -1,0 +1,36 @@
+{
+  "id": "skyworth-swtv-22ae-fhd",
+  "name": "Skyworth SWTV-22AE-FHD (umeda, MediaTek), Vietnam/Global",
+  "source": "cleanyourtv examples/skyworth-swtv-22ae-fhd at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "umeda"
+    ],
+    "model": [
+      "SWTV-22AE-FHD"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

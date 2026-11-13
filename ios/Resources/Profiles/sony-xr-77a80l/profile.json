@@ -1,0 +1,35 @@
+{
+  "id": "sony-xr-77a80l",
+  "name": "Sony XR-77A80L (77-inch OLED, 2023, BRAVIA_VH22, MediaTek), North America",
+  "source": "cleanyourtv examples/sony-xr-77a80l at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_VH22"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Seven of those 43 are commented out below as app choices rather than clutter, so this list disables 36 by default; uncomment them if you don't want those apps either."
+  ],
+  "theme": {}
+}

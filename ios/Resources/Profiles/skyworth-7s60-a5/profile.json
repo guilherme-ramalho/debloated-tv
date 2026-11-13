@@ -1,0 +1,36 @@
+{
+  "id": "skyworth-7s60-a5",
+  "name": "Skyworth 7S60_A5 (sky8S34, 1.9 GB), China market",
+  "source": "cleanyourtv examples/skyworth-7s60-a5 at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Coocaa OS / Android 8",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.tianci.movieplatform",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "customBuild",
+  "dockCandidates": [
+    "com.xiaodianshi.tv.yst",
+    "com.cibn.tv",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "source_panel_service": "com.coocaa.os.ccosservice/com.coocaa.os.centerintegration.service.CenterService",
+    "source_panel_action": "com.coocaa.intent.action.CONTROL_CENTER",
+    "source_panel_extra": "control_center_command=100",
+    "coocaa_sources": true
+  }
+}

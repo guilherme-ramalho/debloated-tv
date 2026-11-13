@@ -543,6 +543,40 @@
         }
       }
     },
+    "About this list" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Über diese Liste"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre esta lista"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À propos de cette liste"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info su questa lista"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre esta lista"
+          }
+        }
+      }
+    },
     "Action" : {
       "localizations" : {
         "de" : {
@@ -777,6 +811,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajustar enquadramento"
+          }
+        }
+      }
+    },
+    "After restarting, Home went to %@ instead of a working Home screen. Restore the TV now, while this phone can still reach it." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach dem Neustart ging der Startbildschirm zu %@ statt zu einem funktionierenden Startbildschirm. Stelle den Fernseher jetzt wieder her, solange dieses Telefon ihn noch erreicht."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tras reiniciar, la pantalla de inicio fue a %@ en lugar de a una que funcione. Restaura la TV ahora, mientras este teléfono aún puede conectarse."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Après le redémarrage, l'accueil est allé vers %@ au lieu d'un écran d'accueil qui fonctionne. Restaurez la TV maintenant, tant que ce téléphone peut encore la joindre."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dopo il riavvio la Home è andata su %@ invece che su una schermata Home funzionante. Ripristina la TV ora, finché questo telefono può ancora raggiungerla."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depois de reiniciar, a tela inicial foi para %@ em vez de uma que funcione. Restaure a TV agora, enquanto este telefone ainda consegue alcançá-la."
           }
         }
       }
@@ -1052,6 +1120,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Um app ou entrada"
+          }
+        }
+      }
+    },
+    "An HDMI input shows a picture" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein HDMI-Eingang zeigt ein Bild"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una entrada HDMI muestra imagen"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une entrée HDMI affiche une image"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un ingresso HDMI mostra un'immagine"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma entrada HDMI mostra imagem"
           }
         }
       }
@@ -1499,36 +1601,36 @@
         }
       }
     },
-    "Apps are disabled, never uninstalled, and only from lists tested on your TV model. Still, a feature can stop working, and in rare cases recovery may need a factory reset. You use this at your own risk." : {
+    "Apps are disabled, never uninstalled, and only from cleanyourtv's lists, tested by its community on real TVs. Still, a feature can stop working, and in rare cases recovery may need a factory reset. You use this at your own risk." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apps werden deaktiviert, nie deinstalliert, und nur nach Listen, die auf deinem Fernsehermodell getestet wurden. Trotzdem kann eine Funktion ausfallen, und in seltenen Fällen ist zur Wiederherstellung ein Zurücksetzen auf Werkseinstellungen nötig. Die Nutzung erfolgt auf eigenes Risiko."
+            "value" : "Apps werden deaktiviert, nie deinstalliert, und nur nach den Listen von cleanyourtv, die seine Community auf echten Fernsehern getestet hat. Trotzdem kann eine Funktion ausfallen, und in seltenen Fällen ist zur Wiederherstellung ein Zurücksetzen auf Werkseinstellungen nötig. Die Nutzung erfolgt auf eigenes Risiko."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las apps se desactivan, nunca se desinstalan, y solo según listas probadas en tu modelo de TV. Aun así, alguna función puede dejar de funcionar y, en casos raros, recuperarla puede requerir un restablecimiento de fábrica. Lo usas bajo tu propia responsabilidad."
+            "value" : "Las apps se desactivan, nunca se desinstalan, y solo según las listas de cleanyourtv, probadas por su comunidad en TVs reales. Aun así, alguna función puede dejar de funcionar y, en casos raros, recuperarla puede requerir un restablecimiento de fábrica. Lo usas bajo tu propia responsabilidad."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les apps sont désactivées, jamais désinstallées, et uniquement selon des listes testées sur votre modèle de TV. Une fonction peut toutefois cesser de marcher et, dans de rares cas, la récupération peut nécessiter une réinitialisation d'usine. Vous l'utilisez à vos risques."
+            "value" : "Les apps sont désactivées, jamais désinstallées, et uniquement selon les listes de cleanyourtv, testées par sa communauté sur de vraies TV. Une fonction peut toutefois cesser de marcher et, dans de rares cas, la récupération peut nécessiter une réinitialisation d'usine. Vous l'utilisez à vos risques."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le app vengono disattivate, mai disinstallate, e solo secondo liste testate sul tuo modello di TV. Una funzione potrebbe comunque smettere di funzionare e, in rari casi, il ripristino può richiedere un reset di fabbrica. L'uso è a tuo rischio."
+            "value" : "Le app vengono disattivate, mai disinstallate, e solo secondo le liste di cleanyourtv, testate dalla sua community su TV reali. Una funzione potrebbe comunque smettere di funzionare e, in rari casi, il ripristino può richiedere un reset di fabbrica. L'uso è a tuo rischio."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Os apps são desativados, nunca desinstalados, e só a partir de listas testadas no seu modelo de TV. Mesmo assim, algum recurso pode parar de funcionar e, em casos raros, a recuperação pode exigir restaurar a TV de fábrica. O uso é por sua conta e risco."
+            "value" : "Os apps são desativados, nunca desinstalados, e só a partir das listas do cleanyourtv, testadas pela comunidade em TVs reais. Ainda assim, algum recurso pode parar de funcionar e, em casos raros, a recuperação pode exigir uma redefinição de fábrica. O uso é por sua conta e risco."
           }
         }
       }
@@ -1633,6 +1735,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pedindo à TV em %@ que mostre um código…"
+          }
+        }
+      }
+    },
+    "At the end the TV restarts once, so this phone can check that Home and your changes hold before debugging goes off." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Am Ende startet der Fernseher einmal neu, damit dieses Telefon prüfen kann, ob der Startbildschirm und deine Änderungen bestehen bleiben, bevor das Debugging ausgeschaltet wird."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al final la TV se reinicia una vez, para que este teléfono compruebe que la pantalla de inicio y tus cambios se mantienen antes de desactivar la depuración."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À la fin, la TV redémarre une fois, pour que ce téléphone vérifie que l'écran d'accueil et vos changements tiennent avant de couper le débogage."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alla fine la TV si riavvia una volta, così questo telefono può verificare che la schermata Home e le tue modifiche reggano prima di disattivare il debug."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No fim a TV reinicia uma vez, para este telefone verificar que a tela inicial e suas alterações se mantêm antes de desligar a depuração."
           }
         }
       }
@@ -2521,6 +2657,40 @@
         }
       }
     },
+    "Choose the list for this TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle die Liste für diesen Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige la lista para esta TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez la liste pour cette TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegli la lista per questa TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha a lista para esta TV."
+          }
+        }
+      }
+    },
     "Choose what stays" : {
       "localizations" : {
         "de" : {
@@ -2551,6 +2721,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Escolha o que fica"
+          }
+        }
+      }
+    },
+    "Choose your TV's list" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle die Liste deines Fernsehers"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige la lista de tu TV"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez la liste de votre TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegli la lista della tua TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha a lista da sua TV"
           }
         }
       }
@@ -4742,6 +4946,108 @@
         }
       }
     },
+    "Fire TV doesn't let another Home screen take over, so this setup only disables apps." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fire TV lässt keinen anderen Startbildschirm übernehmen, daher deaktiviert diese Einrichtung nur Apps."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fire TV no deja que otra pantalla de inicio tome el control, así que esta configuración solo desactiva apps."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fire TV ne laisse pas un autre écran d'accueil prendre le relais, cette configuration ne fait donc que désactiver des apps."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fire TV non permette a un'altra schermata Home di subentrare, quindi questa configurazione disattiva solo app."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A Fire TV não deixa outra tela inicial assumir, então esta configuração só desativa apps."
+          }
+        }
+      }
+    },
+    "From the list's testers" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von den Testern der Liste"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De quienes probaron la lista"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Des testeurs de la liste"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da chi ha testato la lista"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De quem testou a lista"
+          }
+        }
+      }
+    },
+    "Home opens the new Home screen" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home öffnet den neuen Startbildschirm"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicio abre la nueva pantalla de inicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accueil ouvre le nouvel écran d'accueil"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home apre la nuova schermata Home"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Início abre a nova tela inicial"
+          }
+        }
+      }
+    },
     "Home screen update" : {
       "localizations" : {
         "de" : {
@@ -4806,6 +5112,448 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tela inicial atualizada"
+          }
+        }
+      }
+    },
+    "Home stayed on %@ instead of the new Home screen. The stock one was never turned off, so the TV works as before." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Startbildschirm blieb bei %@ statt beim neuen. Der ursprüngliche wurde nie ausgeschaltet, der Fernseher funktioniert also wie vorher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La pantalla de inicio se quedó en %@ en lugar de la nueva. La original nunca se desactivó, así que la TV funciona como antes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'accueil est resté sur %@ au lieu du nouvel écran. L'original n'a jamais été désactivé, la TV fonctionne donc comme avant."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La Home è rimasta su %@ invece della nuova. Quella originale non è mai stata disattivata, quindi la TV funziona come prima."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A tela inicial ficou em %@ em vez da nova. A original nunca foi desligada, então a TV funciona como antes."
+          }
+        }
+      }
+    },
+    "If a password is wrong, the TV drops off Wi-Fi. You'd then have to join the network again with the TV's own remote, in Settings › Network & Internet." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ist ein Passwort falsch, verliert der Fernseher das WLAN. Dann musst du dich mit der Fernbedienung des Fernsehers unter Einstellungen › Netzwerk & Internet wieder verbinden."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si una contraseña es incorrecta, la TV se queda sin Wi-Fi. Tendrías que volver a conectarla con su propio mando, en Ajustes › Red e Internet."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si un mot de passe est faux, la TV perd le Wi-Fi. Il faudrait alors la reconnecter avec sa propre télécommande, dans Paramètres › Réseau et Internet."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se una password è sbagliata, la TV perde il Wi-Fi. Dovresti poi ricollegarla con il suo telecomando, in Impostazioni › Rete e Internet."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se uma senha estiver errada, a TV perde o Wi-Fi. Aí você teria que reconectá-la com o próprio controle, em Configurações › Rede e Internet."
+          }
+        }
+      }
+    },
+    "List from cleanyourtv, tested by its community on this model, not by Purio TV. Switch on anything you want to keep; the rest is disabled." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste von cleanyourtv, von seiner Community auf diesem Modell getestet, nicht von Purio TV. Schalte ein, was du behalten willst; der Rest wird deaktiviert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de cleanyourtv, probada por su comunidad en este modelo, no por Purio TV. Activa lo que quieras conservar; el resto se desactiva."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste de cleanyourtv, testée par sa communauté sur ce modèle, pas par Purio TV. Activez ce que vous voulez garder ; le reste est désactivé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista di cleanyourtv, testata dalla sua community su questo modello, non da Purio TV. Attiva ciò che vuoi tenere; il resto viene disattivato."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista do cleanyourtv, testada pela comunidade neste modelo, não pelo Purio TV. Ligue o que quiser manter; o resto é desativado."
+          }
+        }
+      }
+    },
+    "Made for another model, the closest match. %lld of its apps are on this TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für ein anderes Modell erstellt, die nächstbeste Übereinstimmung. %lld ihrer Apps sind auf diesem Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecha para otro modelo, la más parecida. %lld de sus apps están en esta TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faite pour un autre modèle, la plus proche. %lld de ses apps sont sur cette TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creata per un altro modello, la più simile. %lld delle sue app sono su questa TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feita para outro modelo, a mais parecida. %lld dos apps dela estão nesta TV."
+          }
+        }
+      }
+    },
+    "Made for another model, the closest match. 1 of its apps is on this TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für ein anderes Modell erstellt, die nächstbeste Übereinstimmung. 1 ihrer Apps ist auf diesem Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecha para otro modelo, la más parecida. 1 de sus apps está en esta TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faite pour un autre modèle, la plus proche. 1 de ses apps est sur cette TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creata per un altro modello, la più simile. 1 delle sue app è su questa TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feita para outro modelo, a mais parecida. 1 dos apps dela está nesta TV."
+          }
+        }
+      }
+    },
+    "Made for this model (%@). %lld of its apps are on this TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für dieses Modell erstellt (%@). %lld ihrer Apps sind auf diesem Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecha para este modelo (%@). %lld de sus apps están en esta TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faite pour ce modèle (%@). %lld de ses apps sont sur cette TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creata per questo modello (%@). %lld delle sue app sono su questa TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feita para este modelo (%@). %lld dos apps dela estão nesta TV."
+          }
+        }
+      }
+    },
+    "Made for this model (%@). 1 of its apps is on this TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für dieses Modell erstellt (%@). 1 ihrer Apps ist auf diesem Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecha para este modelo (%@). 1 de sus apps está en esta TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faite pour ce modèle (%@). 1 de ses apps est sur cette TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creata per questo modello (%@). 1 delle sue app è su questa TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feita para este modelo (%@). 1 dos apps dela está nesta TV."
+          }
+        }
+      }
+    },
+    "No list for this TV yet." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Liste für diesen Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay una lista para esta TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas encore de liste pour cette TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ancora nessuna lista per questa TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ainda não há uma lista para esta TV."
+          }
+        }
+      }
+    },
+    "Nobody has set up the new Home screen on this model with cleanyourtv yet, so this setup only disables apps." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch niemand hat den neuen Startbildschirm auf diesem Modell mit cleanyourtv eingerichtet, daher deaktiviert diese Einrichtung nur Apps."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadie ha configurado aún la nueva pantalla de inicio en este modelo con cleanyourtv, así que esta configuración solo desactiva apps."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personne n'a encore installé le nouvel écran d'accueil sur ce modèle avec cleanyourtv, cette configuration ne fait donc que désactiver des apps."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuno ha ancora configurato la nuova schermata Home su questo modello con cleanyourtv, quindi questa configurazione disattiva solo app."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguém configurou ainda a nova tela inicial neste modelo com o cleanyourtv, então esta configuração só desativa apps."
+          }
+        }
+      }
+    },
+    "Nobody has tested it on your TV. Only apps found on your TV are offered and the safety checks still run, but an app your TV needs can look like one to remove. Check every app before you apply." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niemand hat sie auf deinem Fernseher getestet. Es werden nur Apps angeboten, die auf deinem Fernseher sind, und die Sicherheitsprüfungen laufen weiterhin, aber eine App, die dein Fernseher braucht, kann wie eine zum Entfernen aussehen. Prüfe jede App, bevor du anwendest."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadie la ha probado en tu TV. Solo se ofrecen apps que están en tu TV y las comprobaciones de seguridad siguen activas, pero una app que tu TV necesita puede parecer prescindible. Revisa cada app antes de aplicar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personne ne l'a testée sur votre TV. Seules les apps présentes sur votre TV sont proposées et les contrôles de sécurité s'appliquent toujours, mais une app dont votre TV a besoin peut sembler superflue. Vérifiez chaque app avant d'appliquer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuno l'ha testata sulla tua TV. Sono proposte solo le app presenti sulla tua TV e i controlli di sicurezza restano attivi, ma un'app di cui la TV ha bisogno può sembrare da rimuovere. Controlla ogni app prima di applicare."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguém a testou na sua TV. Só aparecem apps que estão na sua TV e as verificações de segurança continuam valendo, mas um app de que a TV precisa pode parecer dispensável. Confira cada app antes de aplicar."
+          }
+        }
+      }
+    },
+    "None of cleanyourtv's lists fits this TV, so nothing was changed. Guessing which apps are safe to disable can leave inputs black or the TV unable to start." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine der Listen von cleanyourtv passt zu diesem Fernseher, daher wurde nichts geändert. Zu raten, welche Apps sich gefahrlos deaktivieren lassen, kann Eingänge schwarz lassen oder den Fernseher am Starten hindern."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguna lista de cleanyourtv encaja con esta TV, así que no se ha cambiado nada. Adivinar qué apps se pueden desactivar sin riesgo puede dejar las entradas en negro o impedir que la TV arranque."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune liste de cleanyourtv ne correspond à cette TV, rien n'a donc été modifié. Deviner quelles apps peuvent être désactivées sans risque peut laisser les entrées noires ou empêcher la TV de démarrer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna lista di cleanyourtv corrisponde a questa TV, quindi non è stato modificato nulla. Indovinare quali app si possono disattivare senza rischi può lasciare gli ingressi neri o impedire alla TV di avviarsi."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma lista do cleanyourtv serve para esta TV, então nada foi alterado. Adivinhar quais apps podem ser desativados com segurança pode deixar as entradas pretas ou impedir a TV de ligar."
+          }
+        }
+      }
+    },
+    "Nothing changes on the TV until you review and apply. Every change can be undone." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Am Fernseher ändert sich nichts, bis du prüfst und anwendest. Jede Änderung lässt sich rückgängig machen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nada cambia en la TV hasta que revises y apliques. Cada cambio se puede deshacer."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rien ne change sur la TV tant que vous n'avez pas vérifié et appliqué. Chaque modification peut être annulée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sulla TV non cambia nulla finché non controlli e applichi. Ogni modifica si può annullare."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nada muda na TV até você revisar e aplicar. Toda alteração pode ser desfeita."
+          }
+        }
+      }
+    },
+    "On the TV, open Settings › Network & Internet, forget the network and join it again. The setup wizard no longer owns it then, and nothing needs typing here. Then review again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffne am Fernseher Einstellungen › Netzwerk & Internet, entferne das Netzwerk und verbinde dich erneut. Dann gehört es nicht mehr dem Einrichtungsassistenten, und hier muss nichts eingegeben werden. Prüfe danach erneut."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En la TV, abre Ajustes › Red e Internet, olvida la red y vuelve a conectarte. Así deja de pertenecer al asistente de configuración y aquí no hay que escribir nada. Después, revisa otra vez."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sur la TV, ouvrez Paramètres › Réseau et Internet, oubliez le réseau et reconnectez-vous. Il n'appartient alors plus à l'assistant de configuration et rien n'est à saisir ici. Puis vérifiez à nouveau."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sulla TV apri Impostazioni › Rete e Internet, elimina la rete e ricollegati. Così non appartiene più alla procedura guidata e qui non serve digitare nulla. Poi controlla di nuovo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na TV, abra Configurações › Rede e Internet, esqueça a rede e conecte de novo. Assim ela deixa de pertencer ao assistente de configuração e não é preciso digitar nada aqui. Depois revise de novo."
           }
         }
       }
@@ -8965,40 +9713,6 @@
         }
       }
     },
-    "No tested profile for this TV yet." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Noch kein getestetes Profil für diesen Fernseher."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aún no hay un perfil probado para esta TV."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pas encore de profil testé pour cette TV."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ancora nessun profilo testato per questa TV."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ainda não há perfil testado para esta TV."
-          }
-        }
-      }
-    },
     "No TV found yet" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -11422,36 +12136,36 @@
         }
       }
     },
-    "Recognised %@. Recovery record saved." : {
+    "Recognised %@." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ erkannt. Wiederherstellungsdatei gespeichert."
+            "value" : "%@ erkannt."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ reconocida. Registro de recuperación guardado."
+            "value" : "%@ reconocida."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ reconnue. Fichier de restauration enregistré."
+            "value" : "%@ reconnue."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ riconosciuta. Registro di ripristino salvato."
+            "value" : "%@ riconosciuta."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ reconhecida. Registro de recuperação salvo."
+            "value" : "%@ reconhecida."
           }
         }
       }
@@ -11588,6 +12302,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reconectando…"
+          }
+        }
+      }
+    },
+    "Recovery record saved." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederherstellungsdatei gespeichert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registro de recuperación guardado."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fichier de récupération enregistré."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File di ripristino salvato."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registro de recuperação salvo."
           }
         }
       }
@@ -11898,6 +12646,74 @@
         }
       }
     },
+    "Restarted and checked: Home works." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu gestartet und geprüft: Der Startbildschirm funktioniert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciada y comprobada: la pantalla de inicio funciona."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redémarrée et vérifiée : l'accueil fonctionne."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riavviata e verificata: la Home funziona."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciada e verificada: a tela inicial funciona."
+          }
+        }
+      }
+    },
+    "Restarting the TV to check that everything holds. This takes a minute or two." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher startet neu, um zu prüfen, ob alles hält. Das dauert ein bis zwei Minuten."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciando la TV para comprobar que todo se mantiene. Tarda uno o dos minutos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redémarrage de la TV pour vérifier que tout tient. Cela prend une ou deux minutes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riavvio della TV per verificare che tutto regga. Ci vogliono uno o due minuti."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciando a TV para verificar que tudo se mantém. Leva um ou dois minutos."
+          }
+        }
+      }
+    },
     "Restore draft" : {
       "localizations" : {
         "de" : {
@@ -12068,70 +12884,104 @@
         }
       }
     },
-    "Restored. %lld apps remain disabled because they were off before setup." : {
+    "Restored and checked: everything that was on before setup is on again. %lld apps stay disabled because they were already off before setup." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wiederhergestellt. %lld Apps bleiben deaktiviert, weil sie schon vor der Einrichtung aus waren."
+            "value" : "Wiederhergestellt und geprüft: Alles, was vor der Einrichtung an war, ist wieder an. %lld Apps bleiben deaktiviert, weil sie schon vor der Einrichtung aus waren."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restaurado. %lld apps siguen desactivadas porque ya lo estaban antes de la configuración."
+            "value" : "Restaurado y comprobado: todo lo que estaba activo antes de la configuración vuelve a estarlo. %lld apps siguen desactivadas porque ya lo estaban antes."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restauré. %lld apps restent désactivées car elles l'étaient avant la configuration."
+            "value" : "Restauré et vérifié : tout ce qui était actif avant la configuration l'est de nouveau. %lld apps restent désactivées car elles l'étaient déjà avant."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ripristinato. %lld app restano disattivate perché lo erano già prima della configurazione."
+            "value" : "Ripristinato e verificato: tutto ciò che era attivo prima della configurazione lo è di nuovo. %lld app restano disattivate perché lo erano già prima."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restaurado. %lld apps continuam desativados porque já estavam antes da configuração."
+            "value" : "Restaurado e verificado: tudo o que estava ligado antes da configuração está ligado de novo. %lld apps continuam desativados porque já estavam antes."
           }
         }
       }
     },
-    "Restored. %lld apps stay disabled because they were already off before setup." : {
+    "Restored, but %lld apps didn't come back on: %@. Run the restore again; if they stay off, turn them on in the TV's Settings › Apps." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wiederhergestellt. %lld Apps bleiben deaktiviert, weil sie schon vor der Einrichtung aus waren."
+            "value" : "Wiederhergestellt, aber %lld Apps sind nicht wieder an: %@. Starte die Wiederherstellung erneut; bleiben sie aus, schalte sie in den Einstellungen des Fernsehers unter Apps ein."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restaurado. %lld apps siguen desactivadas porque ya lo estaban antes de la configuración."
+            "value" : "Restaurado, pero %lld apps no se volvieron a activar: %@. Repite la restauración; si siguen desactivadas, actívalas en Ajustes › Apps de la TV."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restauré. %lld apps restent désactivées car elles l'étaient déjà avant la configuration."
+            "value" : "Restauré, mais %lld apps ne se sont pas réactivées : %@. Relancez la restauration ; si elles restent désactivées, activez-les dans Paramètres › Apps de la TV."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ripristinato. %lld app restano disattivate perché lo erano già prima della configurazione."
+            "value" : "Ripristinato, ma %lld app non si sono riattivate: %@. Ripeti il ripristino; se restano disattivate, attivale in Impostazioni › App della TV."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restaurado. %lld apps continuam desativados porque já estavam antes da configuração."
+            "value" : "Restaurado, mas %lld apps não voltaram a ser ativados: %@. Rode a restauração de novo; se continuarem desligados, ative-os em Configurações › Apps da TV."
+          }
+        }
+      }
+    },
+    "Restored, but Home is now %@ instead of %@. Run the restore again, or choose a Home app on the TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederhergestellt, aber der Startbildschirm ist jetzt %@ statt %@. Starte die Wiederherstellung erneut oder wähle am Fernseher eine Startbildschirm-App."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurado, pero la pantalla de inicio es ahora %@ en lugar de %@. Repite la restauración o elige una app de inicio en la TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restauré, mais l'accueil est maintenant %@ au lieu de %@. Relancez la restauration ou choisissez une app d'accueil sur la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ripristinato, ma la Home ora è %@ invece di %@. Ripeti il ripristino o scegli un'app Home sulla TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurado, mas a tela inicial agora é %@ em vez de %@. Rode a restauração de novo ou escolha um app de tela inicial na TV."
           }
         }
       }
@@ -12234,6 +13084,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Revisar"
+          }
+        }
+      }
+    },
+    "Review again" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erneut prüfen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar otra vez"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vérifier à nouveau"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controlla di nuovo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar de novo"
           }
         }
       }
@@ -12438,6 +13322,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fazendo as verificações de segurança…"
+          }
+        }
+      }
+    },
+    "Safer: do it on the TV" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sicherer: am Fernseher erledigen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más seguro: hazlo en la TV"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus sûr : le faire sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Più sicuro: fallo sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mais seguro: faça na TV"
           }
         }
       }
@@ -13226,6 +14144,40 @@
         }
       }
     },
+    "Settings opens from Home" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Einstellungen öffnen sich vom Startbildschirm"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los ajustes se abren desde la pantalla de inicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les paramètres s'ouvrent depuis l'accueil"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le impostazioni si aprono dalla Home"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As configurações abrem pela tela inicial"
+          }
+        }
+      }
+    },
     "Setup reads the model before changing anything" : {
       "localizations" : {
         "de" : {
@@ -13324,6 +14276,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartilhar os detalhes deste modelo"
+          }
+        }
+      }
+    },
+    "Show %lld more" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld weitere anzeigen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar %lld más"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher %lld de plus"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra altre %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar mais %lld"
           }
         }
       }
@@ -14352,6 +15338,74 @@
         }
       }
     },
+    "Tested with Purio TV on this TV. %lld apps to review." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit Purio TV auf diesem Fernseher getestet. %lld Apps zu prüfen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probada con Purio TV en esta TV. %lld apps para revisar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testée avec Purio TV sur cette TV. %lld apps à vérifier."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testata con Purio TV su questa TV. %lld app da controllare."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testada com o Purio TV nesta TV. %lld apps para revisar."
+          }
+        }
+      }
+    },
+    "Tested with Purio TV on this TV. 1 app to review." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit Purio TV auf diesem Fernseher getestet. 1 App zu prüfen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probada con Purio TV en esta TV. 1 app para revisar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testée avec Purio TV sur cette TV. 1 app à vérifier."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testata con Purio TV su questa TV. 1 app da controllare."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testada com o Purio TV nesta TV. 1 app para revisar."
+          }
+        }
+      }
+    },
     "That code does not match this TV. Check the code and try again." : {
       "localizations" : {
         "de" : {
@@ -14484,6 +15538,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A porta de depuração ainda aceita conexões."
+          }
+        }
+      }
+    },
+    "The Home button opens the TV's Home screen" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Home-Taste öffnet den Startbildschirm des Fernsehers"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El botón Inicio abre la pantalla de inicio de la TV"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le bouton Accueil ouvre l'écran d'accueil de la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il tasto Home apre la schermata Home della TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O botão Início abre a tela inicial da TV"
           }
         }
       }
@@ -14654,6 +15742,108 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "O controle e a edição do TV Home não precisam de depuração. Só outra configuração ou uma restauração precisam."
+          }
+        }
+      }
+    },
+    "The remote's app buttons and volume work" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Tasten und Lautstärke der Fernbedienung funktionieren"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los botones de apps y el volumen del mando funcionan"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les boutons d'apps et le volume de la télécommande marchent"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I tasti delle app e il volume del telecomando funzionano"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os botões de apps e o volume do controle funcionam"
+          }
+        }
+      }
+    },
+    "The restore ran, but the TV didn't say which apps are on now, so it couldn't be checked. Run it again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Wiederherstellung lief, aber der Fernseher hat nicht gemeldet, welche Apps jetzt an sind, daher konnte sie nicht geprüft werden. Starte sie erneut."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La restauración se ejecutó, pero la TV no indicó qué apps están activas ahora, así que no se pudo comprobar. Vuelve a ejecutarla."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La restauration a tourné, mais la TV n'a pas indiqué quelles apps sont actives, elle n'a donc pas pu être vérifiée. Relancez-la."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il ripristino è stato eseguito, ma la TV non ha indicato quali app sono attive, quindi non è stato verificato. Ripetilo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A restauração rodou, mas a TV não informou quais apps estão ligados agora, então não pôde ser verificada. Rode de novo."
+          }
+        }
+      }
+    },
+    "The same password again" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dasselbe Passwort noch einmal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La misma contraseña otra vez"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le même mot de passe à nouveau"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La stessa password di nuovo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A mesma senha de novo"
           }
         }
       }
@@ -14999,6 +16189,74 @@
         }
       }
     },
+    "The TV didn't let this phone back in after restarting, so it couldn't be checked. Look at the TV: if Home opens and the checks below pass, all is well. If not, turn network debugging on again and use Undo TV setup." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat dieses Telefon nach dem Neustart nicht wieder verbunden, daher konnte nichts geprüft werden. Sieh auf den Fernseher: Öffnet sich der Startbildschirm und bestehen die Prüfungen unten, ist alles gut. Wenn nicht, schalte das Netzwerk-Debugging wieder ein und nutze „Einrichtung rückgängig machen“."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV no dejó volver a conectar a este teléfono tras reiniciarse, así que no se pudo comprobar. Mira la TV: si la pantalla de inicio abre y las comprobaciones de abajo pasan, todo está bien. Si no, vuelve a activar la depuración de red y usa Deshacer la configuración."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'a pas laissé ce téléphone se reconnecter après le redémarrage, la vérification n'a donc pas pu se faire. Regardez la TV : si l'accueil s'ouvre et que les vérifications ci-dessous passent, tout va bien. Sinon, réactivez le débogage réseau et utilisez Annuler la configuration."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dopo il riavvio la TV non ha fatto ricollegare questo telefono, quindi non è stato possibile verificare. Guarda la TV: se la Home si apre e i controlli qui sotto passano, va tutto bene. Altrimenti riattiva il debug di rete e usa Annulla configurazione."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não deixou este telefone reconectar depois de reiniciar, então não foi possível verificar. Olhe a TV: se a tela inicial abre e as verificações abaixo passam, está tudo bem. Se não, ligue a depuração de rede de novo e use Desfazer configuração."
+          }
+        }
+      }
+    },
+    "The TV didn't say which apps are on, so this step couldn't be checked. Reconnect and review again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat nicht gemeldet, welche Apps an sind, daher konnte dieser Schritt nicht geprüft werden. Verbinde dich neu und prüfe erneut."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV no indicó qué apps están activas, así que este paso no se pudo comprobar. Vuelve a conectar y revisa otra vez."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'a pas indiqué quelles apps sont actives, cette étape n'a donc pas pu être vérifiée. Reconnectez-vous et vérifiez à nouveau."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non ha indicato quali app sono attive, quindi questo passaggio non è stato verificato. Ricollegati e controlla di nuovo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não informou quais apps estão ligados, então esta etapa não pôde ser verificada. Reconecte e revise de novo."
+          }
+        }
+      }
+    },
     "The TV didn't say which Home it shows. Try again with the TV on." : {
       "localizations" : {
         "de" : {
@@ -15165,6 +16423,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A TV não está mais conectada. Desative a depuração nos menus da TV."
+          }
+        }
+      }
+    },
+    "The TV is still online (open an app)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher ist noch online (öffne eine App)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV sigue conectada (abre una app)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV est toujours en ligne (ouvrez une app)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV è ancora online (apri un'app)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV continua online (abra um app)"
+          }
+        }
+      }
+    },
+    "The TV keeps its own Home screen" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher behält seinen eigenen Startbildschirm"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV conserva su propia pantalla de inicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV garde son propre écran d'accueil"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV mantiene la sua schermata Home"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV mantém a própria tela inicial"
           }
         }
       }
@@ -15884,6 +17210,40 @@
         }
       }
     },
+    "The TV turned %lld apps back on by itself when it restarted (its firmware does this at every start): %@." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat beim Neustart %lld Apps von selbst wieder eingeschaltet (seine Firmware macht das bei jedem Start): %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV volvió a activar %lld apps por sí sola al reiniciarse (su firmware lo hace en cada arranque): %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV a réactivé %lld apps d'elle-même au redémarrage (son firmware le fait à chaque démarrage) : %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV ha riattivato da sola %lld app al riavvio (il suo firmware lo fa a ogni avvio): %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV reativou %lld apps sozinha ao reiniciar (o firmware dela faz isso a cada início): %@."
+          }
+        }
+      }
+    },
     "The TV will ask for confirmation. Nothing is removed until you approve there." : {
       "localizations" : {
         "de" : {
@@ -15914,6 +17274,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A TV vai pedir confirmação. Nada é removido até você aprovar lá."
+          }
+        }
+      }
+    },
+    "The TV's Home is its own Home screen again, so there's nothing to update. Run setup to bring the new one back. Nothing was changed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher nutzt wieder seinen eigenen Startbildschirm, es gibt also nichts zu aktualisieren. Führe die Einrichtung aus, um den neuen zurückzuholen. Nichts wurde geändert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV vuelve a usar su propia pantalla de inicio, así que no hay nada que actualizar. Ejecuta la configuración para recuperar la nueva. No se ha cambiado nada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV utilise de nouveau son propre écran d'accueil, il n'y a donc rien à mettre à jour. Lancez la configuration pour retrouver le nouveau. Rien n'a été modifié."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV usa di nuovo la sua schermata Home, quindi non c'è nulla da aggiornare. Avvia la configurazione per riavere quella nuova. Non è stato modificato nulla."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV voltou a usar a própria tela inicial, então não há nada para atualizar. Rode a configuração para trazer a nova de volta. Nada foi alterado."
           }
         }
       }
@@ -16022,70 +17416,36 @@
         }
       }
     },
-    "There's no tested profile for this TV, so its Home screen can't be updated from here. Nothing was changed." : {
+    "The two passwords don't match." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Für diesen Fernseher gibt es kein getestetes Profil, daher lässt sich sein Startbildschirm hier nicht aktualisieren. Nichts wurde geändert."
+            "value" : "Die beiden Passwörter stimmen nicht überein."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No hay un perfil probado para esta TV, así que su pantalla de inicio no se puede actualizar desde aquí. No se cambió nada."
+            "value" : "Las dos contraseñas no coinciden."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il n'y a pas de profil testé pour cette TV : son écran d'accueil ne peut pas être mis à jour d'ici. Rien n'a été modifié."
+            "value" : "Les deux mots de passe ne correspondent pas."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Non c'è un profilo testato per questa TV, quindi la sua schermata Home non si può aggiornare da qui. Non è stato cambiato nulla."
+            "value" : "Le due password non coincidono."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não há um perfil testado para esta TV, então a tela inicial dela não pode ser atualizada daqui. Nada foi alterado."
-          }
-        }
-      }
-    },
-    "There’s no list tested on this model, so nothing was changed. Guessing which apps are safe to disable can leave inputs black or the TV unable to start." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Für dieses Modell gibt es keine getestete Liste, daher wurde nichts geändert. Raten, welche Apps sicher deaktiviert werden können, kann Eingänge schwarz lassen oder den Fernseher am Start hindern."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No hay una lista probada en este modelo, así que no se cambió nada. Adivinar qué apps es seguro desactivar puede dejar las entradas en negro o la TV sin arrancar."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il n'existe pas de liste testée sur ce modèle, rien n'a donc été modifié. Deviner quelles apps désactiver peut laisser les entrées noires ou empêcher la TV de démarrer."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non c'è un elenco testato su questo modello, quindi non è stato cambiato nulla. Indovinare quali app disattivare può lasciare neri gli ingressi o impedire alla TV di avviarsi."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não há lista testada neste modelo, então nada foi alterado. Adivinhar quais apps é seguro desativar pode deixar as entradas pretas ou a TV sem ligar."
+            "value" : "As duas senhas não coincidem."
           }
         }
       }
@@ -16295,6 +17655,108 @@
         }
       }
     },
+    "This list was made for another model. Only apps installed on this TV are shown: check each one, and switch on anything you want to keep; the rest is disabled." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Liste wurde für ein anderes Modell erstellt. Es werden nur Apps gezeigt, die auf diesem Fernseher installiert sind: Prüfe jede und schalte ein, was du behalten willst; der Rest wird deaktiviert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta lista se hizo para otro modelo. Solo se muestran las apps instaladas en esta TV: revisa cada una y activa lo que quieras conservar; el resto se desactiva."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette liste a été faite pour un autre modèle. Seules les apps installées sur cette TV sont affichées : vérifiez chacune et activez ce que vous voulez garder ; le reste est désactivé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa lista è stata creata per un altro modello. Sono mostrate solo le app installate su questa TV: controllale una per una e attiva ciò che vuoi tenere; il resto viene disattivato."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta lista foi feita para outro modelo. Só aparecem os apps instalados nesta TV: confira cada um e ligue o que quiser manter; o resto é desativado."
+          }
+        }
+      }
+    },
+    "This list's testers only disabled apps on this TV, so this setup does the same." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Tester dieser Liste haben auf diesem Fernseher nur Apps deaktiviert, daher macht diese Einrichtung dasselbe."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quienes probaron esta lista solo desactivaron apps en esta TV, así que esta configuración hace lo mismo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les testeurs de cette liste n'ont fait que désactiver des apps sur cette TV, cette configuration fait donc de même."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chi ha testato questa lista ha solo disattivato app su questa TV, quindi questa configurazione fa lo stesso."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quem testou esta lista só desativou apps nesta TV, então esta configuração faz o mesmo."
+          }
+        }
+      }
+    },
+    "This phone didn't set up this TV's Home screen, so it can't update it from here. Nothing was changed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Telefon hat den Startbildschirm dieses Fernsehers nicht eingerichtet und kann ihn daher nicht von hier aktualisieren. Nichts wurde geändert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este teléfono no configuró la pantalla de inicio de esta TV, así que no puede actualizarla desde aquí. No se ha cambiado nada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce téléphone n'a pas configuré l'écran d'accueil de cette TV, il ne peut donc pas le mettre à jour d'ici. Rien n'a été modifié."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo telefono non ha configurato la schermata Home di questa TV, quindi non può aggiornarla da qui. Non è stato modificato nulla."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este telefone não configurou a tela inicial desta TV, então não pode atualizá-la daqui. Nada foi alterado."
+          }
+        }
+      }
+    },
     "This photo can't be used as a TV wallpaper" : {
       "localizations" : {
         "de" : {
@@ -16359,6 +17821,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta ação rápida não existe mais"
+          }
+        }
+      }
+    },
+    "This recovery record belongs to another TV (%@), so nothing was changed. Pick the record made on this TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Wiederherstellungsdatei gehört zu einem anderen Fernseher (%@), daher wurde nichts geändert. Wähle die Datei, die auf diesem Fernseher erstellt wurde."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este registro de recuperación es de otra TV (%@), así que no se ha cambiado nada. Elige el registro hecho en esta TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce fichier de récupération appartient à une autre TV (%@), rien n'a donc été modifié. Choisissez celui créé sur cette TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo file di ripristino appartiene a un'altra TV (%@), quindi non è stato modificato nulla. Scegli quello creato su questa TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este registro de recuperação é de outra TV (%@), então nada foi alterado. Escolha o registro feito nesta TV."
           }
         }
       }
@@ -16499,6 +17995,74 @@
         }
       }
     },
+    "This TV only accepts a Home screen built especially for it, which Purio TV doesn't carry, so this setup only disables apps." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieser Fernseher akzeptiert nur einen eigens für ihn gebauten Startbildschirm, den Purio TV nicht mitbringt, daher deaktiviert diese Einrichtung nur Apps."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta TV solo acepta una pantalla de inicio compilada especialmente para ella, que Purio TV no incluye, así que esta configuración solo desactiva apps."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette TV n'accepte qu'un écran d'accueil compilé spécialement pour elle, que Purio TV n'inclut pas, cette configuration ne fait donc que désactiver des apps."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa TV accetta solo una schermata Home compilata apposta per lei, che Purio TV non include, quindi questa configurazione disattiva solo app."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta TV só aceita uma tela inicial feita especialmente para ela, que o Purio TV não traz, então esta configuração só desativa apps."
+          }
+        }
+      }
+    },
+    "This TV reports %@ (%@). These lists come from cleanyourtv, each tested by its community on the TV it names. The best match is first." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieser Fernseher meldet sich als %@ (%@). Diese Listen stammen von cleanyourtv, jede von seiner Community auf dem genannten Fernseher getestet. Die beste Übereinstimmung steht oben."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta TV se identifica como %@ (%@). Estas listas vienen de cleanyourtv, cada una probada por su comunidad en la TV que nombra. La que mejor encaja va primero."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette TV se présente comme %@ (%@). Ces listes viennent de cleanyourtv, chacune testée par sa communauté sur la TV qu'elle nomme. La meilleure correspondance est en premier."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa TV si identifica come %@ (%@). Queste liste vengono da cleanyourtv, ognuna testata dalla sua community sulla TV che indica. La più adatta è in cima."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta TV se identifica como %@ (%@). Estas listas vêm do cleanyourtv, cada uma testada pela comunidade na TV que ela cita. A mais compatível vem primeiro."
+          }
+        }
+      }
+    },
     "This TV runs Android SDK %lld; the new Home screen needs Android 8.0 (SDK 26) or newer. Nothing was changed." : {
       "localizations" : {
         "de" : {
@@ -16563,6 +18127,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta TV ainda tem a tela inicial original, então ainda não foi configurada."
+          }
+        }
+      }
+    },
+    "This TV's board needs a special Home screen procedure that Purio TV doesn't do yet, so this setup only disables apps." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Platine dieses Fernsehers braucht ein besonderes Verfahren für den Startbildschirm, das Purio TV noch nicht beherrscht, daher deaktiviert diese Einrichtung nur Apps."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La placa de esta TV necesita un procedimiento especial para la pantalla de inicio que Purio TV aún no hace, así que esta configuración solo desactiva apps."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La carte de cette TV demande une procédure spéciale pour l'écran d'accueil que Purio TV ne fait pas encore, cette configuration ne fait donc que désactiver des apps."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La scheda di questa TV richiede una procedura speciale per la schermata Home che Purio TV non fa ancora, quindi questa configurazione disattiva solo app."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A placa desta TV precisa de um procedimento especial para a tela inicial que o Purio TV ainda não faz, então esta configuração só desativa apps."
           }
         }
       }
@@ -18609,6 +20207,40 @@
         }
       }
     },
+    "Use a list made for another model?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine Liste für ein anderes Modell verwenden?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Usar una lista hecha para otro modelo?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utiliser une liste faite pour un autre modèle ?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usare una lista creata per un altro modello?"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar uma lista feita para outro modelo?"
+          }
+        }
+      }
+    },
     "Use Edit to reorder. Hiding changes the Home layout only; uninstalling requires a connected TV and confirmation on its screen." : {
       "localizations" : {
         "de" : {
@@ -18707,6 +20339,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Use a mesma rede local da TV. Um teste de conexão não distingue todo problema de roteador, de permissão de Rede Local ou de espera da TV."
+          }
+        }
+      }
+    },
+    "Use this list" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Liste verwenden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar esta lista"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utiliser cette liste"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa questa lista"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar esta lista"
           }
         }
       }
@@ -19327,6 +20993,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Onde encontrar"
+          }
+        }
+      }
+    },
+    "Wi-Fi password for %@, again" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WLAN-Passwort für %@, noch einmal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña de Wi-Fi de %@, otra vez"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mot de passe Wi-Fi de %@, à nouveau"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password Wi-Fi di %@, di nuovo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha do Wi-Fi %@, de novo"
           }
         }
       }

@@ -1,0 +1,38 @@
+{
+  "id": "benq-qs02",
+  "name": "BenQ QS02 Android TV stick for BenQ projectors (SDMC, YUL, Amlogic S905Y4, 2 GB)",
+  "source": "cleanyourtv examples/benq-qs02 at b9538048",
+  "community": true,
+  "brand": "BenQ",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "YUL"
+    ],
+    "product": [
+      "QS02"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never launch them, not even to look."
+  ],
+  "theme": {}
+}

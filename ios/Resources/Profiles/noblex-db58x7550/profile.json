@@ -1,0 +1,43 @@
+{
+  "id": "noblex-db58x7550",
+  "name": "Noblex DB58X7550 (Changhong AI PONT, ISDB93CH, sindorim, MediaTek m7322), Argentina",
+  "source": "cleanyourtv examples/noblex-db58x7550 at b9538048",
+  "community": true,
+  "brand": "Noblex",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "sindorim"
+    ],
+    "product": [
+      "ISDB93CH"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.mediatek.wwtv.tvcenter",
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "power_on_home": false,
+    "power_on_home_always": true,
+    "key_filter": false,
+    "consume_volume_keys": false
+  }
+}

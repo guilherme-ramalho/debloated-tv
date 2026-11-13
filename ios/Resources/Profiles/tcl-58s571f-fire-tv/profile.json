@@ -1,0 +1,33 @@
+{
+  "id": "tcl-58s571f-fire-tv",
+  "name": "TCL 58S571F (TCL Fire TV, AFTDEC012E, ginza, MediaTek mt5896), US",
+  "source": "cleanyourtv examples/tcl-58s571f-fire-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Fire OS 8 / Android 11",
+  "match": {},
+  "names": {
+    "device": [
+      "ginza"
+    ]
+  },
+  "stockLauncher": "com.amazon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "fireOS",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,36 @@
+{
+  "id": "xiaomi-mitv-axfr1",
+  "name": "Xiaomi MiTV-AXFR1 (rango, Amlogic, 1 GB), India",
+  "source": "cleanyourtv examples/xiaomi-mitv-axfr1 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "rango"
+    ],
+    "product": [
+      "dune"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

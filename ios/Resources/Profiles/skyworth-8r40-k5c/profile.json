@@ -1,0 +1,36 @@
+{
+  "id": "skyworth-8r40-k5c",
+  "name": "Skyworth / Coocaa 8R40_K5C (Realtek rtd285x, 1 GB, 32-bit), China domestic firmware",
+  "source": "cleanyourtv examples/skyworth-8r40-k5c at b9538048",
+  "community": true,
+  "brand": "Skyworth",
+  "os": "Android 8.0 (not Google TV)",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.tianci.movieplatform",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Stock launcher: com.tianci.movieplatform (hardcoded in /system/pcfg, DO NOT DISABLE).",
+    "Live TV / System UI: com.skyworth.tv (DO NOT DISABLE).",
+    "That page crashes if any of these are disabled: com.tianci.de com.skyworthdigital.stb.dataprovider com.coocaa.sky.ccapi A crashed About page means ADB can never be re-enabled: factory reset is the only way out.",
+    "DO NOT DISABLE com.tianci.movieplatform (stock launcher) or any other current launcher.",
+    "HOME is hardcoded in read-only /system/pcfg and no package declares category HOME, so disabling the launcher gives a black screen on boot (sys.boot_completed never set). 3.",
+    "Do not touch persist.service.homepage.* props."
+  ],
+  "theme": {}
+}

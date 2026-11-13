@@ -1,0 +1,48 @@
+{
+  "id": "tcl-g06-us-google-tv",
+  "name": "TCL Smart TV (G06, G06_2K_US, MediaTek MT9221 / T221, AR2101, V8-T221T04-LF1V122), US firmware",
+  "source": "cleanyourtv examples/tcl-g06-us-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "G06"
+    ],
+    "product": [
+      "G06_2K_US"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.plexapp.android",
+    "com.google.android.youtube.tv",
+    "com.collegehumor.chdropout",
+    "com.spotify.tv.android",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.tcl.tv"
+    ],
+    "live_tv_package": "",
+    "columns": 4,
+    "rows_below_dock": 0,
+    "reduced_motion": true,
+    "key_filter": false,
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx"
+  }
+}

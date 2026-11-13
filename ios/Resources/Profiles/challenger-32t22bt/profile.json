@@ -1,0 +1,33 @@
+{
+  "id": "challenger-32t22bt",
+  "name": "Challenger 32T22 BT (cvt_mt5863_col, board TP.MT5510.PB781, MediaTek MT5659, 1 GB RAM), Colombia",
+  "source": "cleanyourtv examples/challenger-32t22bt at b9538048",
+  "community": true,
+  "brand": "Challenger",
+  "os": "Android 7.0",
+  "match": {},
+  "names": {
+    "device": [
+      "cvt_mt5863_col"
+    ]
+  },
+  "stockLauncher": "com.cvte.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

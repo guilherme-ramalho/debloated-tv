@@ -1,0 +1,35 @@
+{
+  "id": "sony-bravia-4k-ur2",
+  "name": "Sony BRAVIA 4K UR2 (BRAVIA_UR2_4K, MediaTek)",
+  "source": "cleanyourtv examples/sony-bravia-4k-ur2 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 10",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_UR2_4K"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Nothing re-enabled itself after a reboot. tracking / ads / recommendations"
+  ],
+  "theme": {}
+}

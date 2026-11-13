@@ -1,0 +1,36 @@
+{
+  "id": "sony-bravia-bf1",
+  "name": "Sony BRAVIA BF1 (BRAVIA 2 II class, BRAVIA_BF1_4K_A, MediaTek)",
+  "source": "cleanyourtv examples/sony-bravia-bf1 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_BF1_4K_A"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "A factory reset re-enables every package, so nothing needs undoing before one."
+  ],
+  "theme": {}
+}

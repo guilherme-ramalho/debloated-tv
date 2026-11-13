@@ -1,0 +1,33 @@
+{
+  "id": "rocktek-gx1",
+  "name": "RockTek GX1 (HPR3A1325_4K)",
+  "source": "cleanyourtv examples/rocktek-gx1 at b9538048",
+  "community": true,
+  "brand": "RockTek",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "settings_key_keycodes": [
+      83
+    ]
+  }
+}

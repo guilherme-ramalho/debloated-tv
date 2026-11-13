@@ -1,0 +1,43 @@
+{
+  "id": "hisense-smarttv-4k-ffm",
+  "name": "Hisense SmartTV 4K FFM (huangshan, MediaTek), Latin America; also the US Hisense U9DG",
+  "source": "cleanyourtv examples/hisense-smarttv-4k-ffm at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Android TV 10",
+  "match": {},
+  "names": {
+    "device": [
+      "huangshan"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Which of the three was the cause is not confirmed, so all three are left out below.",
+    "Never pick \"Factory data reset\" on that screen before trying \"Try again\"."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter",
+      "com.hisense.tv.protector"
+    ],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "handle_view_inputs": true
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "amazon-fire-tv-stick-4k-max-2023",
+  "name": "Amazon Fire TV Stick 4K Max, 2nd gen 2023 (AFTKRT, karat), Indonesia",
+  "source": "cleanyourtv examples/amazon-fire-tv-stick-4k-max-2023 at b9538048",
+  "community": true,
+  "brand": "Amazon Fire TV",
+  "os": "Fire OS 8.1.8.5 / Android 11",
+  "match": {},
+  "names": {
+    "device": [
+      "karat"
+    ]
+  },
+  "stockLauncher": "com.amazon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "fireOS",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

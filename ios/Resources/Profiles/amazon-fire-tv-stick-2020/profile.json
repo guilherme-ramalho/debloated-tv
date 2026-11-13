@@ -1,0 +1,31 @@
+{
+  "id": "amazon-fire-tv-stick-2020",
+  "name": "Amazon Fire TV Stick, 3rd gen 2020 (AFTSSS, sheldonp), India",
+  "source": "cleanyourtv examples/amazon-fire-tv-stick-2020 at b9538048",
+  "community": true,
+  "brand": "Amazon Fire TV",
+  "os": "Fire OS 7.7.1.7 / Android 9",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.amazon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "fireOS",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Protected on Fire OS 7 per the Stick Lite and other Fire TV lists (not retried here), so left out: com.amazon.minerva.client.api, com.amazon.device.logmanager, com.amazon.device.crashmanager, com.amazon.diode, com.fireos.usagestats.proxy, com.amazon.ftvads.deeplinking, com.amazon.device.metrics, com.amazon.tv.csapp."
+  ],
+  "theme": {}
+}

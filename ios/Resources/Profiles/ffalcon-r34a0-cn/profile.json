@@ -1,0 +1,30 @@
+{
+  "id": "ffalcon-r34a0-cn",
+  "name": "FFalcon (雷鸟) r34a0, China (V8-A920T01-LF1V147, Amlogic T920), 1 GB",
+  "source": "cleanyourtv examples/ffalcon-r34a0-cn at b9538048",
+  "community": true,
+  "brand": "FFalcon",
+  "os": "Android 5.1.1",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Any APK declaring android.intent.category.HOME is refused with INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES even for a never-installed package name — the launcher signature gate, disguised as a cert error (same gate as tcl-ak30a5/Q10G Pro)."
+  ],
+  "theme": {}
+}

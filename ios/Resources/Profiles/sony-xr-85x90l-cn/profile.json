@@ -1,0 +1,33 @@
+{
+  "id": "sony-xr-85x90l-cn",
+  "name": "Sony BRAVIA XR-85X90L (2023, BRAVIA_VH22, MediaTek), China",
+  "source": "cleanyourtv examples/sony-xr-85x90l-cn at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_VH22"
+    ]
+  },
+  "stockLauncher": "com.dangbei.TVHomeLauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

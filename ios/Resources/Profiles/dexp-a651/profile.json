@@ -1,0 +1,33 @@
+{
+  "id": "dexp-a651",
+  "name": "DEXP A651 (Changhong AI PONT, longshan); also Hyundai AI PONT",
+  "source": "cleanyourtv examples/dexp-a651 at b9538048",
+  "community": true,
+  "brand": "DEXP",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "longshan"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

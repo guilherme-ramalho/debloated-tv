@@ -1,0 +1,36 @@
+{
+  "id": "xiaomi-mitv-astr0",
+  "name": "Xiaomi Redmi Smart TV A Pro 55\" 2025 Energy-saving (MiTV-ASTR0, blueplanet, Amlogic), China firmware OS3.0.106.0.USTAATV, 3 GB RAM",
+  "source": "cleanyourtv examples/xiaomi-mitv-astr0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android 14 (HyperOS 3, CN build)",
+  "match": {},
+  "names": {
+    "device": [
+      "doc"
+    ]
+  },
+  "stockLauncher": "com.mitv.tvhome",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Notes from this firmware: - The standby/screensaver ads come from com.xiaomi.mitv.hyper.screensaver: a plain Activity with its own downloaded carousel, not a DreamService, so screensaver_enabled=0 does not touch it. com.mitv.screensaver / com.xiaomi.mitv.advertise do not exist here. - Keep com.xiaomi.mitv.smartpanel enabled (Menu-button panel: source switcher + wireless tiles).",
+    "Do NOT add it here; disabling it kills the Menu key. - ADB over TCP closes on every boot: Settings -> 账号与安全 -> ADB 调试. - No idle clock screensaver is possible: the idle timeout path is a hard panel-off (suspend), the AOSP dream never renders."
+  ],
+  "theme": {}
+}

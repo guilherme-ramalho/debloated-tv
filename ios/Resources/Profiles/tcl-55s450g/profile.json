@@ -1,0 +1,40 @@
+{
+  "id": "tcl-55s450g",
+  "name": "TCL 55S450G (G03_4K_US_NF_DB, BeyondTV4, AR24), US",
+  "source": "cleanyourtv examples/tcl-55s450g at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "BeyondTV4"
+    ],
+    "product": [
+      "G03_4K_US_NF_DB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not copy those lists: this AR24 build is not GTV93.",
+    "Re-enable setupwraith before a factory reset.",
+    "DO NOT DISABLE: com.tcl.tv, com.tcl.tvinput, com.tcl.suspension, com.tcl.settings, com.tcl.system.server, com.tcl.providers.config, com.android.tv.settings. ---- TCL and Google telemetry ----"
+  ],
+  "theme": {}
+}

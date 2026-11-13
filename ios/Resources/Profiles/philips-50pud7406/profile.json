@@ -1,0 +1,43 @@
+{
+  "id": "philips-50pud7406",
+  "name": "Philips 50PUD7406/43 (TPV, PH0M_EA_T32, MStar/MediaTek), Chile; 55PUS7906/12, Lithuania; 50PUS7906/12, Germany; 43PUS7406/12, Italy; 50PUD7406/77, Latin America; 50PUS8107/12, EU; 65PUS7956, EU",
+  "source": "cleanyourtv examples/philips-50pud7406 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Android TV 11 and 14",
+  "match": {},
+  "names": {
+    "device": [
+      "PH0M_EA_T32"
+    ],
+    "product": [
+      "PH0M_LT_T32",
+      "PH0M_EA_T32_2G",
+      "PH0M_EA_T32"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not open com.mediatek.tv.factory or mediatek.factorymenu.ui to see what they do (see PROMPT.md); they are left alone. 5.",
+    "After a full reboot, Home comes up and about 0.2 s later system_server sends android.mtk.intent.action.ACTION_REQUEST_TOP_RESUME to com.mediatek.wwtv.tvcenter/.nav.TurnkeyUiMainActivity, so the TV lands in Live TV.",
+    "After one reboot the disabled list matched what was applied (nothing re-enabled itself).",
+    "Private DNS (dns.adguard-dns.com): YouTube and Disney+ would not sign in with it on, and both signed in once it was back to the default."
+  ],
+  "theme": {}
+}

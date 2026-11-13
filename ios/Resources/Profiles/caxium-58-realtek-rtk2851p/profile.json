@@ -1,0 +1,29 @@
+{
+  "id": "caxium-58-realtek-rtk2851p",
+  "name": "Caxium 58\" 147 cm UHD Smart TV (Realtek RTD285O, RTK2851P, TopTech + Zeasn), Colombia",
+  "source": "cleanyourtv examples/caxium-58-realtek-rtk2851p at b9538048",
+  "community": true,
+  "brand": "Caxium",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {},
+  "stockLauncher": "cn.zeasn.launcher.vstoresubclient.toptech",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

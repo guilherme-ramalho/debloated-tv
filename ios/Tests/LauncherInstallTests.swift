@@ -46,6 +46,25 @@ final class LauncherInstallTests: XCTestCase {
         XCTAssertFalse(tv.sent.contains { $0.contains("InputKeyService") })
     }
 
+    /// LCH-21: a list installed with STOCK_LAUNCHER=none keeps the stock launcher on, starts the new one without
+    /// claiming Home first (#1274), and still makes it Home; a failed handover has nothing to roll back.
+    func testKeepStockLauncherDisablesNothing() async throws {
+        let options = LauncherOptions(keepStockLauncher: true)
+        let tv = FakeDevice(answers: answers)
+        let home = try await LauncherInstaller(tv: tv).install(apk: apk, options: options, listedStock: "com.google.android.apps.tv.launcherx")
+        XCTAssertEqual(home, "com.gathin.tvhome/.MainActivity")
+        XCTAssertFalse(tv.sent.contains { $0.hasPrefix("pm disable-user") })
+        XCTAssertTrue(tv.sent.contains("am start -W -n com.gathin.tvhome/.MainActivity"))
+        XCTAssertTrue(tv.sent.contains("cmd package set-home-activity --user 0 com.gathin.tvhome/.MainActivity"))
+        let failed = FakeDevice(answers: answers, homeAfterHandover: "com.google.android.apps.tv.launcherx/.home.HomeActivity")
+        do { _ = try await LauncherInstaller(tv: failed).install(apk: apk, options: options); XCTFail("Home must be checked") }
+        catch { XCTAssertTrue(error.localizedDescription.contains("never turned off"), error.localizedDescription) }
+        XCTAssertFalse(failed.sent.contains { $0.hasPrefix("pm enable") || $0.hasPrefix("pm disable-user") })
+        // Older profile.json files without the key still load.
+        let decoded = try JSONDecoder().decode(LauncherOptions.self, from: Data(#"{"homeKeyService": true}"#.utf8))
+        XCTAssertEqual(decoded, LauncherOptions(homeKeyService: true))
+    }
+
     func testSecureSettingsFollowTheProfile() async throws {
         // Upstream #2458: an install that doesn't ask for WRITE_SECURE_SETTINGS takes back one an earlier install left.
         let revoke = FakeDevice(answers: answers)

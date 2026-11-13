@@ -1,0 +1,38 @@
+{
+  "id": "sony-bravia-tl2",
+  "name": "Sony BRAVIA TL2 (OD0M_EA_T32, TPV-built, MediaTek), Europe",
+  "source": "cleanyourtv examples/sony-bravia-tl2 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "OD0M_EA_T32"
+    ],
+    "product": [
+      "BRAVIA_TL2"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Keep: org.droidtv*, com.tpv_soem.*, com.mediatek.* (tuner, HDMI, inputs), katniss + tts (Assistant/voice), mediashell (Chromecast), tv.remote.service (phone remote) and anything update-related. org.droidtv.eum (e-manual) was only hidden from the launcher grid, never disabled; on the Philips firmware disabling it breaks the sources drawer."
+  ],
+  "theme": {}
+}

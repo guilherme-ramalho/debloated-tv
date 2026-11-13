@@ -1,0 +1,38 @@
+{
+  "id": "cecotec-shandao",
+  "name": "Cecotec VQU10065S 65\" QLED (Vestel-built, shandao, MediaTek), Spain",
+  "source": "cleanyourtv examples/cecotec-shandao at b9538048",
+  "community": true,
+  "brand": "Cecotec",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "shandao"
+    ],
+    "product": [
+      "no"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "It is useless on a managed network that isolates clients, though, because mDNS never reaches the other devices."
+  ],
+  "theme": {}
+}

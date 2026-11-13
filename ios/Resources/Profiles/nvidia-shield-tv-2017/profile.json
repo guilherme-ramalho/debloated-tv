@@ -1,0 +1,32 @@
+{
+  "id": "nvidia-shield-tv-2017",
+  "name": "NVIDIA SHIELD TV 2017 (darcy)",
+  "source": "cleanyourtv examples/nvidia-shield-tv-2017 at b9538048",
+  "community": true,
+  "brand": "NVIDIA Shield",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "darcy"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

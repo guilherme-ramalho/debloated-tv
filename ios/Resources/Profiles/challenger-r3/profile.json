@@ -1,0 +1,32 @@
+{
+  "id": "challenger-r3",
+  "name": "Challenger R3 (SCBC R3, Realtek rtd2841a, 1.5 GB RAM), Colombia",
+  "source": "cleanyourtv examples/challenger-r3 at b9538048",
+  "community": true,
+  "brand": "Challenger",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "R3"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

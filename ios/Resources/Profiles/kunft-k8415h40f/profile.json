@@ -1,0 +1,43 @@
+{
+  "id": "kunft-k8415h40f",
+  "name": "KUNFT K8415H40F (Changhong AI PONT, redwood, DVB92KT)",
+  "source": "cleanyourtv examples/kunft-k8415h40f at b9538048",
+  "community": true,
+  "brand": "KUNFT",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "redwood"
+    ],
+    "product": [
+      "DVB92KT"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.stremio.one",
+    "com.google.android.youtube.tv",
+    "com.spotify.tv.android",
+    "pt.sporttv.app.androidtv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "columns": 4,
+    "power_on_home": false,
+    "power_on_home_always": true,
+    "key_filter": false
+  }
+}

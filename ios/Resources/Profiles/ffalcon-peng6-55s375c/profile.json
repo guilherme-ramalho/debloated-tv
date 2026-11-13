@@ -1,0 +1,37 @@
+{
+  "id": "ffalcon-peng6-55s375c",
+  "name": "FFalcon (雷鸟) 鹏6 55S375C (China, 55\" 4K, tc8000_ay30a2, Amlogic ohm TC8000, 3 GB)",
+  "source": "cleanyourtv examples/ffalcon-peng6-55s375c at b9538048",
+  "community": true,
+  "brand": "FFalcon",
+  "os": "Android 11",
+  "match": {},
+  "names": {
+    "device": [
+      "tc8000_ay30a2"
+    ]
+  },
+  "stockLauncher": "com.tcl.cyberui",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never disable it: with it gone the boot animation never finishes and the Home key does nothing.",
+    "DO NOT DISABLE: com.tcl.cyberui, com.tcl.tv, com.tcl.settings, com.tcl.systemserver, com.tcl.ttvs, com.sohu.inputmethod.sogou.tv (the only keyboard), com.tcl.autopair (remote pairing), com.tcl.tcl_bt_rcu_service (remote), com.tcl.walleve (小T voice), com.tcl.miracast (casting), com.tcl.MultiScreenInteraction_TV (phone push), com.tcl.versionUpdateApp, com.snm.upgrade (firmware updates).",
+    "Tested on a real 鹏6 from 2026-10-30 to 2026-11-06: the three packages below went in as one batch, survived two full reboots, and the crash buffer stayed empty."
+  ],
+  "theme": {}
+}

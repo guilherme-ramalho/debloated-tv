@@ -1,0 +1,35 @@
+{
+  "id": "noblex-shinjuku",
+  "name": "Noblex NoblexTV (Skyworth-built, shinjuku, MediaTek m5621), Argentina",
+  "source": "cleanyourtv examples/noblex-shinjuku at b9538048",
+  "community": true,
+  "brand": "Noblex",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "shinjuku"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Stock launcher:  com.google.android.tvlauncher Live TV app:     com.mediatek.wwtv.tvcenter  (Live TV and the input panel; keep it) Never disable any com.mediatek.* package except testpq: they are the tuner, input and HDMI stack."
+  ],
+  "theme": {}
+}

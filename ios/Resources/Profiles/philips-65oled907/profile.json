@@ -1,0 +1,35 @@
+{
+  "id": "philips-65oled907",
+  "name": "Philips 65OLED907/12 and 55OLED907/12 (TP Vision, PH1M_EA_9970A, MediaTek MT5895), UK and France",
+  "source": "cleanyourtv examples/philips-65oled907 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "PH1M_EA_9970A"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "This TV is on Wi-Fi, and the 55OLED707 file says to keep it on a Wi-Fi set."
+  ],
+  "theme": {}
+}

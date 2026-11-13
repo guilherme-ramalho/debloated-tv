@@ -1,0 +1,39 @@
+{
+  "id": "sankey-smart2ktvse",
+  "name": "Sankey SMART2KTVSE (Whale OS, SiliconPlayer am30bm)",
+  "source": "cleanyourtv examples/sankey-smart2ktvse at b9538048",
+  "community": true,
+  "brand": "Sankey",
+  "os": "Android TV 13",
+  "match": {},
+  "names": {
+    "device": [
+      "am30bm"
+    ],
+    "product": [
+      "WhaleTV"
+    ],
+    "model": [
+      "SMART2KTVSE"
+    ]
+  },
+  "stockLauncher": "com.whaletv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

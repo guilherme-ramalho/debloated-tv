@@ -1,0 +1,33 @@
+{
+  "id": "tim-timvision-box-dwt765ti",
+  "name": "TIM TIMVISION Box (Technicolor DWT765TI, Marvell Berlin), Italy",
+  "source": "cleanyourtv examples/tim-timvision-box-dwt765ti at b9538048",
+  "community": true,
+  "brand": "TIM",
+  "os": "Android TV 8.0",
+  "match": {},
+  "names": {
+    "device": [
+      "dwt765ti"
+    ]
+  },
+  "stockLauncher": "timvision.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,39 @@
+{
+  "id": "toshiba-cosmos-android-tv",
+  "name": "Toshiba (Vestel Cosmos170, yeoksam, MediaTek), Spain",
+  "source": "cleanyourtv examples/toshiba-cosmos-android-tv at b9538048",
+  "community": true,
+  "brand": "Toshiba",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "yeoksam"
+    ],
+    "product": [
+      "Cosmos170"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Live TV app:    com.mediatek.wwtv.tvcenter (.nav.TurnkeyUiMainActivity) — NEVER disable it.",
+    "With their apps disabled the buttons simply do nothing; no launcher key service can remap them. - Volume keys do reach Android (KEY_VOLUMEUP/DOWN on event0), but the firmware changes the volume before the accessibility filter and never passes them on, so no app (InputKeyService included) can replace the system volume slider. - The TV closes Wi-Fi (and ADB with it) in standby."
+  ],
+  "theme": {}
+}

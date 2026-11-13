@@ -1,0 +1,30 @@
+{
+  "id": "sony-kd-55x9500g-cn",
+  "name": "Sony BRAVIA KD-55X9500G (BRAVIA_UR2_4K_CN), China",
+  "source": "cleanyourtv examples/sony-kd-55x9500g-cn at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 10",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.dangbei.TVHomeLauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

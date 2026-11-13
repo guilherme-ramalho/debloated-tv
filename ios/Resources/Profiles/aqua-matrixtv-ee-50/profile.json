@@ -1,0 +1,46 @@
+{
+  "id": "aqua-matrixtv-ee-50",
+  "name": "AQUA MatrixTV EE 50\" 4K (Haier, AQ9676EU, omonia, MediaTek), Indonesia",
+  "source": "cleanyourtv examples/aqua-matrixtv-ee-50 at b9538048",
+  "community": true,
+  "brand": "AQUA",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "omonia"
+    ],
+    "product": [
+      "AQ9676EU"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.vidio.android.tv",
+    "com.spotify.tv.android",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not use scancode 240: the YouTube Music (0x0c00cb) and Prime Video (0x0c00a6) buttons share it."
+  ],
+  "theme": {
+    "columns": 6,
+    "live_tv_package": "com.cltv.hybrid",
+    "settings_key_keycodes": [
+      83
+    ],
+    "settings_key_panel": true
+  }
+}

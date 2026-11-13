@@ -1,0 +1,50 @@
+{
+  "id": "hisense-65d62qh",
+  "name": "Hisense 65D62QH (VIDAA_TV, MediaTek MT9653), China",
+  "source": "cleanyourtv examples/hisense-65d62qh at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "MT9653"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Packages those lists name that are NOT installed here are left out rather than copied over.",
+    "Applied on the real set on 2026-10-22: five batches, each followed by a cold reboot, with the input panel switching HDMI, the remote, Wi-Fi, Bluetooth pairing and the IME checked after every one. 26 packages stick. com.android.calendar / .deskclock / .music do not: the firmware re-enables them at every boot (see BATCH 5)."
+  ],
+  "theme": {
+    "key_filter": false,
+    "app_library": true,
+    "live_tv_package": "com.jamdeo.tv.livetv",
+    "source_panel_service": "com.hisense.tv.inputs/com.hisense.tv.InputsUIService",
+    "source_panel_action": "com.hisense.tv.start_inputs",
+    "hidden_apps": [
+      "com.jamdeo.tv.vod",
+      "com.jamdeo.tv.livetv",
+      "com.hisense.tv.inputs",
+      "com.keylab.speech.view.vidaa",
+      "com.hisense.tv.globalui",
+      "com.hisense.uifac",
+      "com.hisense.tv.mirror"
+    ]
+  }
+}

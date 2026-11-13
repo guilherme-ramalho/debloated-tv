@@ -1,0 +1,65 @@
+{
+  "_about": "Hand-reviewed per list, where the importer can't tell from the install command alone (read the list and README upstream before changing). launcher: flags that replace the detected ones. homeScreenNote: the list needs a Home procedure the app doesn't have.",
+  "acer-ar32hdigu2841at": {
+    "launcher": {
+      "homeKeyService": true
+    },
+    "why": "ran with HOME_KEY_SERVICE (HomeKeyService) per its notes; its theme relies on it"
+  },
+  "formovie-xming-page-one-tianshan": {
+    "launcher": {
+      "homeKeyService": true
+    },
+    "why": "ran with HOME_KEY_SERVICE (HomeKeyService) per its notes; its theme relies on it"
+  },
+  "rocktek-gb1": {
+    "launcher": {
+      "homeKeyService": true
+    },
+    "why": "ran with HOME_KEY_SERVICE (HomeKeyService) per its notes; its theme relies on it"
+  },
+  "rocktek-gx1": {
+    "launcher": {
+      "homeKeyService": true
+    },
+    "why": "ran with HOME_KEY_SERVICE (HomeKeyService) per its notes; its theme relies on it"
+  },
+  "sony-bravia-4k-vh21": {
+    "launcher": {
+      "homeKeyService": true
+    },
+    "why": "ran with HOME_KEY_SERVICE (HomeKeyService) per its notes; its theme relies on it"
+  },
+  "strong-leap-s3": {
+    "launcher": {
+      "homeKeyService": true
+    },
+    "why": "ran with HOME_KEY_SERVICE (HomeKeyService) per its notes; its theme relies on it"
+  },
+  "tcl-65c735": {
+    "launcher": {
+      "homeKeyService": true
+    },
+    "why": "ran with HOME_KEY_SERVICE (HomeKeyService) per its notes; its theme relies on it"
+  },
+  "tcl-c845x2-google-tv": {
+    "launcher": {
+      "homeKeyService": true
+    },
+    "why": "ran with HOME_KEY_SERVICE (HomeKeyService) per its notes; its theme relies on it"
+  },
+  "thomson-sppl-4k-sw6h": {
+    "launcher": {
+      "homeKeyService": true
+    },
+    "why": "ran with HOME_KEY_SERVICE (HomeKeyService) per its notes; its theme relies on it"
+  },
+  "tcl-tc8000-ay30a2": {
+    "homeScreenNote": "special",
+    "why": "'do not disable cyberui': a cold boot still starts it first, and disabling it leaves boot with no Home (docs/devices/tcl-tc8000-ay30a2.md upstream)"
+  },
+  "tim-timvision-box-uzw4010tim": {
+    "launcher": {},
+    "why": "restore_key_services without RESTORE_KEY_SERVICES only means the launcher can't re-enable helpers after a force stop; the install (STOCK_LAUNCHER=timvision.launcher) needs no helper"
+  }
+}

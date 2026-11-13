@@ -1,0 +1,51 @@
+{
+  "id": "tcl-65c7k-google-tv",
+  "name": "TCL 65C7K (Smart TV Pro, G08, G08_4K_GB, MediaTek mt5896), Brazil and Australia",
+  "source": "cleanyourtv examples/tcl-65c7k-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "G08"
+    ],
+    "product": [
+      "G08_4K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.plexapp.android",
+    "au.net.abc.iview",
+    "au.com.ninenow.ctv",
+    "com.swm.live",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Remote on the AU unit: Netflix 4062, Prime Video 4099, YouTube 190 (KEYCODE_BUTTON_3), gear 83, all scancode 240 and sent to launcherx, so they do nothing once it is disabled."
+  ],
+  "theme": {
+    "columns": 7,
+    "live_tv_package": "com.tcl.tv",
+    "hidden_apps": [
+      "com.tcl.tv",
+      "com.tcl.suspension",
+      "com.tcl.dashboard",
+      "com.tcl.t_solo"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "vu-premium-fhd-43-hamamatsucho",
+  "name": "Vu Premium FHD 43-inch (Smart 2K ATV4, hamamatsucho), India",
+  "source": "cleanyourtv examples/vu-premium-fhd-43-hamamatsucho at b9538048",
+  "community": true,
+  "brand": "Vu",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "hamamatsucho"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

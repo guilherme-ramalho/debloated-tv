@@ -1,0 +1,35 @@
+{
+  "id": "sony-kd-49x8000g-hk",
+  "name": "Sony BRAVIA KD-49X8000G (2019, BRAVIA_ATV3_4K, MediaTek), Hong Kong",
+  "source": "cleanyourtv examples/sony-kd-49x8000g-hk at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_ATV3_4K"
+    ],
+    "product": [
+      "BRAVIA"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

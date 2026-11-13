@@ -1,0 +1,31 @@
+{
+  "id": "tcl-beyondtv-jp",
+  "name": "TCL 50P8S (BeyondTV), Japan (Realtek RTD2851, V8-R851T03-LF1V153)",
+  "source": "cleanyourtv examples/tcl-beyondtv-jp at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Other HOME claimants are fallbacks only (com.tcl.keycustomfunctionservice and com.android.tv.settings FallbackHome). setupwraith owns the Wi-Fi network saved at first setup and does not claim HOME: leave it enabled."
+  ],
+  "theme": {}
+}

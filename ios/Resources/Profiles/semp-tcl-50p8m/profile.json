@@ -1,0 +1,38 @@
+{
+  "id": "semp-tcl-50p8m",
+  "name": "SEMP TCL 50P8M (Chassis R851T02, Realtek RTD2851)",
+  "source": "cleanyourtv examples/semp-tcl-50p8m at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "BeyondTV"
+    ],
+    "product": [
+      "BeyondTV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "DO NOT DISABLE (load-bearing on this firmware): com.tcl.tv com.tcl.tvinput com.tcl.tvpassthrough  # Live TV, tuner, HDMI."
+  ],
+  "theme": {}
+}

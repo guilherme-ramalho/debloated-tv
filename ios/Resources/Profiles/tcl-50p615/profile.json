@@ -1,0 +1,38 @@
+{
+  "id": "tcl-50p615",
+  "name": "TCL 50P615 (Greece and Türkiye, BeyondTV, Realtek RTD2851 / rtd285o, AR05)",
+  "source": "cleanyourtv examples/tcl-50p615 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "BeyondTV"
+    ],
+    "product": [
+      "BeyondTV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Tuner and HDMI: com.tcl.tvinput (never disable either)."
+  ],
+  "theme": {}
+}

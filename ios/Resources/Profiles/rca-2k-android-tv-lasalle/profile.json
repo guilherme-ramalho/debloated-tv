@@ -1,0 +1,36 @@
+{
+  "id": "rca-2k-android-tv-lasalle",
+  "name": "RCA 2K Android TV (KONKA, device lasalle, Realtek RTD2841A, ISDB)",
+  "source": "cleanyourtv examples/rca-2k-android-tv-lasalle at b9538048",
+  "community": true,
+  "brand": "RCA",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "lasalle"
+    ],
+    "product": [
+      "KKRTK2841ISDB_RCA"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

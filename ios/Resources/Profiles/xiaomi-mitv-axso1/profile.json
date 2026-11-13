@@ -1,0 +1,39 @@
+{
+  "id": "xiaomi-mitv-axso1",
+  "name": "Xiaomi MiTV-AXSO1 (dangalFHD, India)",
+  "source": "cleanyourtv examples/xiaomi-mitv-axso1 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "dangalFHD"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "in.startv.hotstar",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "live_tv_package": "com.android.tv",
+    "hidden_apps": [
+      "com.android.tv"
+    ]
+  }
+}

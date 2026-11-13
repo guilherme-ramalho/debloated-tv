@@ -1,0 +1,33 @@
+{
+  "id": "philco-smart-tv-sunnyvale",
+  "name": "Philco Smart TV (Skyworth-built, sunnyvale, MediaTek; also sold as the Britania Smart TV), Brazil",
+  "source": "cleanyourtv examples/philco-smart-tv-sunnyvale at b9538048",
+  "community": true,
+  "brand": "Philco",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "sunnyvale"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

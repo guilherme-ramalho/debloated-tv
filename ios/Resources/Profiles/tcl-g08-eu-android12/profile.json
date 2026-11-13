@@ -1,0 +1,39 @@
+{
+  "id": "tcl-g08-eu-android12",
+  "name": "TCL Smart TV Pro (G08, G08_4K_GB, MediaTek), Europe/UK firmware",
+  "source": "cleanyourtv examples/tcl-g08-eu-android12 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "G08"
+    ],
+    "product": [
+      "G08_4K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": true,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Left enabled on purpose: com.tcl.tv, com.tcl.tvinput, com.tcl.globalkeyoverlay, com.tcl.tv.tclhome_passive, com.google.android.katniss (voice), Play Services, com.dolby.*; the three packages marked DO NOT DISABLE below are load-bearing, see comments."
+  ],
+  "theme": {}
+}

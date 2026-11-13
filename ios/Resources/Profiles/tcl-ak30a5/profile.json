@@ -1,0 +1,36 @@
+{
+  "id": "tcl-ak30a5",
+  "name": "TCL ak30a5 (China, Amlogic)",
+  "source": "cleanyourtv examples/tcl-ak30a5 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "ak30a5"
+    ],
+    "product": [
+      "ak30a5"
+    ]
+  },
+  "stockLauncher": "com.tcl.cyberui",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

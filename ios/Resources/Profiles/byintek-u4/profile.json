@@ -1,0 +1,38 @@
+{
+  "id": "byintek-u4",
+  "name": "BYINTEK Love U4 projector, 1080P (Skyworth RG_HS352, HiSilicon Hi3751V350, 1 GB), Brazil",
+  "source": "cleanyourtv examples/byintek-u4 at b9538048",
+  "community": true,
+  "brand": "BYINTEK",
+  "os": "Android 9",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.zeasn.whale.saas",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.mediaclient",
+    "com.globo.globotv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.netflix.ninja",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.sdt.app.skysettings"
+    ],
+    "source_panel_service": "com.sdt.app.skysettings/.entry.activity.QuickSourceActivity",
+    "columns": 4,
+    "rows_below_dock": 0
+  }
+}

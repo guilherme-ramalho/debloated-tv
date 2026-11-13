@@ -1,0 +1,36 @@
+{
+  "id": "xiaomi-mi-box-3",
+  "name": "Xiaomi Mi Box 3 (MIBOX3, once), streaming box",
+  "source": "cleanyourtv examples/xiaomi-mi-box-3 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "once"
+    ],
+    "model": [
+      "MIBOX3"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

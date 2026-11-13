@@ -1,0 +1,39 @@
+{
+  "id": "philips-55oled820",
+  "name": "Philips 55OLED820/12 (TPV, PH1M_WW_9972, MediaTek), Czech Republic",
+  "source": "cleanyourtv examples/philips-55oled820 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "PH1M_WW_9972"
+    ],
+    "product": [
+      "PH1M_WW_9972"
+    ],
+    "model": [
+      "Philips_Google_TV_TA5"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,39 @@
+{
+  "id": "kalley-43g200",
+  "name": "Kalley 43G200 (device R3_GTV, MOKA, Realtek RTD2841A), Latin America",
+  "source": "cleanyourtv examples/kalley-43g200 at b9538048",
+  "community": true,
+  "brand": "Kalley",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "R3_GTV"
+    ],
+    "product": [
+      "KALLEY"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not disable launcherx or com.google.android.tungsten.setupwraith on this TV."
+  ],
+  "theme": {}
+}

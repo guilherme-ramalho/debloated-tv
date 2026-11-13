@@ -1,0 +1,34 @@
+{
+  "id": "vision-2024vision43stv",
+  "name": "Vision 2024VISION43STV (CVTE TP.T950D4T.PB751, Amlogic T950D4, 1 GB), Europe",
+  "source": "cleanyourtv examples/vision-2024vision43stv at b9538048",
+  "community": true,
+  "brand": "Vision",
+  "os": "Android 13",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.cvte.tv.launcher.space",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Build fingerprint is spoofed (google/shamu/...), so don't use it to match your set; match the board name instead.",
+    "Don't touch SHIPPING INIT / BOARD INIT (factory reset), AGING MODE, PANEL SETTING, EMC SETTING or SW UPGRADE.",
+    "With the stock launcher disabled and a non-direct-boot-aware Home, boot never completes: black screen, LED on, remote and power key dead, no Wi-Fi (sys.boot_completed empty, dumpsys user shows State: BOOTING, \"No home screen found for Intent { act=MAIN cat=[HOME,COMMON_HOME] }\").",
+    "Without toActivity, CH+/- do nothing."
+  ],
+  "theme": {}
+}

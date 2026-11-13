@@ -1,0 +1,39 @@
+{
+  "id": "xiaomi-mitv-moeu0",
+  "name": "Xiaomi TV S Mini LED 75 2025 (MiTV-MOEU0, ladybird, MediaTek)",
+  "source": "cleanyourtv examples/xiaomi-mitv-moeu0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "ladybird"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Held volume: with HomeKeyService and InputKeyService bound and key_filter true, holding Volume Up or Down on the real remote stepped once per press (as on the MiTV-MOSR4, #944). key_filter false in config.xml brought the ramp back with both services still bound, at the cost of the Settings (176), YouTube (190) and TV+ (192) buttons, which then do nothing; their tiles and the Settings pill remain.",
+    "The list applied as is after a factory reset, in this order: the saved Wi-Fi network belonged to setupwraith again (first-run wizard), so it was forgotten and joined again first; setupwraith was disabled while launcherx was still enabled; then the installer took Home.",
+    "Do NOT re-enable setupwraith while launcherx is disabled, not even for a minute: on this unit Home resolved to setupwraith/.RecoveryActivity, and the reboot after it never finished.",
+    "Wi-Fi and ADB never came up, Android's \"Cannot load Android system\" rescue screen followed, \"Try again\" failed three times and only a factory reset brought the TV back.",
+    "Still running with Xiaomi's tracking SDK inside (api.ad.xiaomi.com, tracking.miui.com in the dex), and needed: mitv.service, com.mitv.livetv, com.mi.bluetooth, com.xiaomi.tvqs.overseas.y24 (see DO NOT DISABLE above)."
+  ],
+  "theme": {}
+}

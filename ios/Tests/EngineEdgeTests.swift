@@ -101,6 +101,15 @@ final class DebloatEdgeTests: XCTestCase {
         let noShell = try await Debloater(tv: old).plan(list.entries.map(\.package), list: list, inventory: inv)
         XCTAssertEqual(noShell.disable, ["com.tcl.bi"])
         XCTAssertTrue(noShell.skipped.contains { $0.package == wizard && $0.reason.contains("join it again") })
+
+        // DBL-10d: a wizard network the parser can't read (an SSID printed as hex, no quotes) keeps the wizard,
+        // as upstream's raw `grep -o 'cname=[^ ]*'` would.
+        let hex = Self.wizardWifi.replacingOccurrences(of: #"SSID: "Casa 'Ramalho'""#, with: "SSID: 4361736120f0")
+        XCTAssertEqual(DebloatRules.wizardOwnerCount(hex), 1)
+        let odd = ScriptedTV(); odd.prefixes = [("dumpsys wifi", hex), ("cmd wifi help", "connect-network\nforget-network\n"), claims]
+        let unparsed = try await Debloater(tv: odd).plan(list.entries.map(\.package), list: list, inventory: inv)
+        XCTAssertEqual(unparsed.disable, ["com.tcl.bi"])
+        XCTAssertTrue(unparsed.wifiToResave.isEmpty)
     }
 
     func testWifiParsingAndTheResaveCommand() {
@@ -186,7 +195,7 @@ final class LauncherInstallEdgeTests: XCTestCase {
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources/Profiles")
         let profiles = DebloatProfile.loadAll(root, includeDevelopment: false)
         XCTAssertNil(DebloatProfile.match(banner, in: profiles), "the banner alone isn't enough")
-        let tv = ScriptedTV(); tv.exact["getprop ro.build.version.sdk"] = "30"
+        let tv = ScriptedTV(); tv.exact["getprop ro.build.version.sdk"] = "30"; tv.exact["getprop ro.build.version.incremental"] = "AR11"
         let props = try await Debloater(tv: tv).profileProperties(banner)
         XCTAssertEqual(DebloatProfile.match(props, in: profiles)?.id, "tcl-43c645")
         XCTAssertFalse(tv.sent.contains("getprop ro.product.device"), "banner values aren't read again")
@@ -211,6 +220,23 @@ final class LauncherInstallEdgeTests: XCTestCase {
                        (DebloatRules.claimQuery, "com.google.android.tvlauncher/.MainActivity\ncom.android.tv.settings/.system.FallbackHome")]
         let stock = try await LauncherInstaller(tv: tv).stockLauncher()
         XCTAssertEqual(stock, "com.google.android.tvlauncher")
+    }
+
+    /// LCH-19: a vendor launcher the TV's list names as its stock Home is the one to disable; nothing else unknown is.
+    func testListedVendorLauncherIsTreatedAsStock() async throws {
+        let tv = ScriptedTV()
+        tv.prefixes = [(DebloatRules.homeQuery, "com.xgimi.home/.MainActivity")]
+        let stock = try await LauncherInstaller(tv: tv).stockLauncher(listed: "com.xgimi.home")
+        XCTAssertEqual(stock, "com.xgimi.home")
+        do { _ = try await LauncherInstaller(tv: tv).stockLauncher(listed: "com.other.home"); XCTFail("unknown Home must stop setup") }
+        catch { XCTAssertTrue(error.localizedDescription.contains("com.xgimi.home")) }
+        do { _ = try await LauncherInstaller(tv: tv).stockLauncher(listed: "not a package; reboot"); XCTFail() }
+        catch { XCTAssertTrue(error.localizedDescription.contains("isn't a stock launcher")) }
+        let chooser = ScriptedTV()
+        chooser.prefixes = [(DebloatRules.homeQuery, "android/com.android.internal.app.ResolverActivity"),
+                            (DebloatRules.claimQuery, "com.xgimi.home/.MainActivity\ncom.android.tv.settings/.system.FallbackHome")]
+        let chosen = try await LauncherInstaller(tv: chooser).stockLauncher(listed: "com.xgimi.home")
+        XCTAssertEqual(chosen, "com.xgimi.home")
     }
 
     func testSetupWizardOwningHomeStopsBeforeAnyChange() async {

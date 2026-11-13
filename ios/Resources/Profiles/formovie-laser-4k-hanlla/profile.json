@@ -1,0 +1,36 @@
+{
+  "id": "formovie-laser-4k-hanlla",
+  "name": "Formovie Laser 4K projector / Formovie Theater (hanlla, MediaTek T31 / m7632, 1.8 GB)",
+  "source": "cleanyourtv examples/formovie-laser-4k-hanlla at b9538048",
+  "community": true,
+  "brand": "Formovie",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "hanlla"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never launch mediatek.factorymenu.ui.",
+    "ADB on port 5555 is back about two minutes after boot. - wm size reports a 1920x1080 override on the 3840x2160 panel out of the box; leave it alone."
+  ],
+  "theme": {}
+}

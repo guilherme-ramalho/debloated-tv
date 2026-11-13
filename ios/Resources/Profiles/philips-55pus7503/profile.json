@@ -1,0 +1,39 @@
+{
+  "id": "philips-55pus7503",
+  "name": "Philips 55PUS7503/12 and 50PUS7303/12 (TP Vision TPM171E, PH7M_EU_5596, MediaTek MT5891), Europe",
+  "source": "cleanyourtv examples/philips-55pus7503 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Android TV 8.0",
+  "match": {},
+  "names": {
+    "device": [
+      "PH7M_EU_5596"
+    ],
+    "product": [
+      "PH7M_EU_5596"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Match the device, board and firmware before applying the list; package names shared across Philips generations do not imply that every package has the same dependencies.",
+    "In particular, do not disable org.droidtv.GlobalKey, org.droidtv.playtv, org.droidtv.xtv, com.mediatek.tvinput, com.mediatek.tunerservice, org.droidtv.tvsystemui or org.droidtv.settings."
+  ],
+  "theme": {}
+}

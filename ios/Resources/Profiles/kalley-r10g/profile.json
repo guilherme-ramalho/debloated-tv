@@ -1,0 +1,46 @@
+{
+  "id": "kalley-r10g",
+  "name": "Kalley R10G (device R10G, product ACER_FFM, MOKA, Realtek RTD2875P), Latin America",
+  "source": "cleanyourtv examples/kalley-r10g at b9538048",
+  "community": true,
+  "brand": "Kalley",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "R10G"
+    ],
+    "product": [
+      "KALLEY_FFM",
+      "ACER_FFM"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": true,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.disney.disneyplus",
+    "com.amazon.amazonvideo.livingroom",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Second unit (#1807), Colombia: same device and firmware, but product KALLEY_FFM (fingerprint KALLEY/KALLEY_FFM/R10G:14/UKR1.260612.001); the boot loop and re-enable notes below are from it.",
+    "KEEP launcherx AND setupwraith ENABLED on this set (#1807)."
+  ],
+  "theme": {
+    "columns": 4,
+    "dock_glass": true,
+    "live_tv_package": "com.realtek.tv",
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx"
+  }
+}

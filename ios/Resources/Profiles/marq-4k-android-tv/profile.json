@@ -1,0 +1,36 @@
+{
+  "id": "marq-4k-android-tv",
+  "name": "MarQ 4K Android TV (bangbae, MTC / MediaTek)",
+  "source": "cleanyourtv examples/marq-4k-android-tv at b9538048",
+  "community": true,
+  "brand": "MarQ",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "bangbae"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The only other HOME claimant is com.android.tv.settings/.system.FallbackHome, so even a failed launcher takeover lands on a settings home rather than a black screen; setupwraith does NOT claim HOME here.",
+    "Do NOT open or disable the factory menus (com.mediatek.mtc.factory, com.mediatek.testpq, mediatek.factorymenu.ui): leave them be."
+  ],
+  "theme": {}
+}

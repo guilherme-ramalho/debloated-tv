@@ -1,0 +1,35 @@
+{
+  "id": "formovie-theater-koroli",
+  "name": "Formovie Theater (L206FGN-X2, koroli, MediaTek m7632)",
+  "source": "cleanyourtv examples/formovie-theater-koroli at b9538048",
+  "community": true,
+  "brand": "Formovie",
+  "os": "Android TV 11 (Google TV home)",
+  "match": {},
+  "names": {
+    "device": [
+      "koroli"
+    ],
+    "model": [
+      "L206FGN-X2"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,38 @@
+{
+  "id": "jio-stb-c200a",
+  "name": "Jio STB C200A (Jio, 4KOTTSTB, MSTB, Amlogic)",
+  "source": "cleanyourtv examples/jio-stb-c200a at b9538048",
+  "community": true,
+  "brand": "Jio",
+  "os": "Android 11 (AOSP, no Google services)",
+  "match": {},
+  "names": {
+    "device": [
+      "MSTB"
+    ],
+    "product": [
+      "4KOTTSTB"
+    ]
+  },
+  "stockLauncher": "com.iwedia.ui.rjio.launcher.reliance",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The box also advertises _adb._tcp over mDNS, the quickest way to find it when DHCP moves it. - Jio enables ADB through its TR-069 server, not Developer options alone, and a factory reset closes it again."
+  ],
+  "theme": {}
+}

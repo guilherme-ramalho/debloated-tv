@@ -1,0 +1,38 @@
+{
+  "id": "philips-65oled807",
+  "name": "Philips 65OLED807/12 (TP Vision, PH1M_EA_9970A, MediaTek MT5895), Germany",
+  "source": "cleanyourtv examples/philips-65oled807 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "PH1M_EA_9970A"
+    ],
+    "product": [
+      "PH1M_EA_9970A"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Read the 50PUS8517 quirks and its DO NOT DISABLE block first: nothing from that block is disabled below (xtv, eum, aurora, playtv, GlobalKey, nettvbrowser...)."
+  ],
+  "theme": {}
+}

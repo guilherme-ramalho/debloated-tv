@@ -1,0 +1,33 @@
+{
+  "id": "tivo-stream-4k",
+  "name": "TiVo Stream 4K (SEI Robotics IPA1104HDW, SEI400TV, Amlogic S905Y2, NES)",
+  "source": "cleanyourtv examples/tivo-stream-4k at b9538048",
+  "community": true,
+  "brand": "TiVo",
+  "os": "Android TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "SEI400TV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

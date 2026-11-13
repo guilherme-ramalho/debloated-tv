@@ -1,0 +1,33 @@
+{
+  "id": "gadnic-proj100w",
+  "name": "Gadnic PROJ100W projector (built-in Google TV stick: SkyworthDigital YYT, Amlogic HP46B), Argentina",
+  "source": "cleanyourtv examples/gadnic-proj100w at b9538048",
+  "community": true,
+  "brand": "Gadnic",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "YYT"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

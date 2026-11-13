@@ -1,0 +1,43 @@
+{
+  "id": "peaq-ptv43aqu-5023c",
+  "name": "PEAQ PTV 43AQU-5023C (Changhong, reports OK. AI PONT, dundas, MediaTek m7332)",
+  "source": "cleanyourtv examples/peaq-ptv43aqu-5023c at b9538048",
+  "community": true,
+  "brand": "PEAQ",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "dundas"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.spotify.tv.android",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter"
+    ],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "columns": 4,
+    "rows_below_dock": 0,
+    "reduced_motion": false,
+    "background_color": "#000000",
+    "wallpaper": false
+  }
+}

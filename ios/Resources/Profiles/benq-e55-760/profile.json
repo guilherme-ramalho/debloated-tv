@@ -1,0 +1,37 @@
+{
+  "id": "benq-e55-760",
+  "name": "BenQ E55-760 (Changhong AI PONT, GTVU64BQ, board alimos)",
+  "source": "cleanyourtv examples/benq-e55-760 at b9538048",
+  "community": true,
+  "brand": "BenQ",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "product": [
+      "GTVU64BQ",
+      "differs"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": true,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Quirks on this firmware, all checked on the TV: - There is NO Wireless debugging toggle while the set is on Ethernet, and USB debugging alone never opens port 5555 (it answers \"Connection refused\" even after a reboot)."
+  ],
+  "theme": {}
+}

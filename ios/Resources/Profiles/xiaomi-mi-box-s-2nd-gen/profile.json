@@ -1,0 +1,38 @@
+{
+  "id": "xiaomi-mi-box-s-2nd-gen",
+  "name": "Xiaomi Mi Box S 2nd gen (MiTV-AFKR0, jaws), streaming box",
+  "source": "cleanyourtv examples/xiaomi-mi-box-s-2nd-gen at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "jaws"
+    ],
+    "model": [
+      "MiTV-AFKR0"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "On 737, display is 1920x1080 UI with Settings > Tela e som > Resolução = 4k 60Hz (video 4K, HDR none on Philco 2016 EDID). - The remote's shortcut buttons (Netflix, YouTube, Prime Video, Xiaomi TV+, Apps) all do nothing once launcherx is disabled."
+  ],
+  "theme": {}
+}

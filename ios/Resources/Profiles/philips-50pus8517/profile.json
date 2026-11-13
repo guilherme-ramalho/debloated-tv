@@ -1,0 +1,43 @@
+{
+  "id": "philips-50pus8517",
+  "name": "Philips 50PUS8517/12 (TP Vision, PH1M_EA_9970A, MediaTek MT5895), Europe",
+  "source": "cleanyourtv examples/philips-50pus8517 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "PH1M_EA_9970A"
+    ],
+    "product": [
+      "PH1M_EA_9970A"
+    ],
+    "model": [
+      "2021_22_Philips_UHD_Android_TV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Neither is in the list above now; both are in the DO NOT DISABLE block below.  org.droidtv.eum -- bound via CONTEXTUALHELP.",
+    "It is log noise plus a retry that can never succeed.",
+    "And do not grep for a string you already know -- that is how I missed the second loop for a day after fixing the first."
+  ],
+  "theme": {}
+}

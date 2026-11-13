@@ -1,0 +1,51 @@
+{
+  "id": "epson-ls800",
+  "name": "Epson LS800 laser projector (Askey HA90 module, sti6202d101, Amlogic)",
+  "source": "cleanyourtv examples/epson-ls800 at b9538048",
+  "community": true,
+  "brand": "Epson",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "sti6202d101"
+    ],
+    "product": [
+      "sti6202d101"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.plexapp.android",
+    "com.google.android.youtube.tv",
+    "com.crunchyroll.crunchyroid",
+    "com.ionitech.airscreen",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android"
+  ],
+  "warnings": [
+    "Inputs lists HDMI 1-3 (droidlogic HW5-HW7, HDMI 1 also as a CEC device); HDMI opens in com.droidlogic.android.tv, so keep that enabled and only hide its tile.",
+    "It runs in interceptKeyBeforeQueueing, so app_keys cannot remap it; keep YouTube Music enabled.",
+    "Left out on purpose: com.google.android.tvrecommendations.",
+    "It only feeds the stock launcher's rows, so with that launcher gone it is harmless; don't keep disabling it."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.droidlogic.android.tv",
+      "com.droidlogic.updater"
+    ],
+    "live_tv_package": "",
+    "columns": 4,
+    "rows_below_dock": 0
+  }
+}

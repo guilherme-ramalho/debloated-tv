@@ -1,0 +1,10 @@
+# Android TV emulator (device emulator64_arm64, product sdk_google_atv64_arm64): development only. The end-to-end
+# suite's community-list scenario: a list "made for this model" that only disables apps, like most of cleanyourtv's.
+# Never disable: com.google.android.tv.remote.service com.google.android.gms com.android.vending
+
+# 1. Feedback and partner setup
+com.google.android.feedback
+com.google.android.partnersetup
+
+# 2. Recommendations
+com.google.android.tvrecommendations

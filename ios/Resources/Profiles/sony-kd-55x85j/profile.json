@@ -1,0 +1,33 @@
+{
+  "id": "sony-kd-55x85j",
+  "name": "Sony BRAVIA KD-55X85J (2021, BRAVIA_VH2, MediaTek MT5895), South America",
+  "source": "cleanyourtv examples/sony-kd-55x85j at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_VH2"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

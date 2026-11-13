@@ -1,0 +1,40 @@
+{
+  "id": "nokia-r4",
+  "name": "Nokia R4 smart TV (Realtek, R4)",
+  "source": "cleanyourtv examples/nokia-r4 at b9538048",
+  "community": true,
+  "brand": "Nokia",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "R4"
+    ],
+    "product": [
+      "NOKIA",
+      "R4"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The com.apps middleware suite: virtualkey, smartkey, fivekey and bluetoothremote are the remote and its key handling - never disable those. smartmenu is the TV's own picture/sound/screen menu (SoundAdjust, WideMode, TunerMode), passthrough the HDMI input path, puresound/audiolink audio - all kept.",
+    "Factory tools below were never opened during discovery (enabled only by dumpsys)."
+  ],
+  "theme": {}
+}

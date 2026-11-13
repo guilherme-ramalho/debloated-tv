@@ -1,0 +1,29 @@
+{
+  "id": "jvc-4k-smart-tv-elliniko",
+  "name": "JVC 4K Smart TV (KTC, MediaTek merak / mt5896, elliniko, KTC_JVC_4K_24GV1)",
+  "source": "cleanyourtv examples/jvc-4k-smart-tv-elliniko at b9538048",
+  "community": true,
+  "brand": "JVC",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,31 @@
+{
+  "id": "candy-android-tv-dvb",
+  "name": "CANDY Android TV DVB (Haier, MediaTek m7332)",
+  "source": "cleanyourtv examples/candy-android-tv-dvb at b9538048",
+  "community": true,
+  "brand": "Haier",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never open these either (see the DVB2K list). - Live TV and inputs: com.mediatek.wwtv.tvcenter, com.mediatek.tvinput, com.mediatek.tv.service. - com.google.android.katniss (voice search), com.google.android.backdrop (screensaver). - com.cltv.fast, com.mediatek.androidbox: Free My TV protects both on a CVTE/MediaTek sibling (Multilaser), with the remote keys, live TV and the media player."
+  ],
+  "theme": {}
+}

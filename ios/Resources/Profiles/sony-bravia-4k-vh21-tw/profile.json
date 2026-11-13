@@ -1,0 +1,33 @@
+{
+  "id": "sony-bravia-4k-vh21-tw",
+  "name": "Sony BRAVIA 4K VH21 (XRM-65X95K, 2022, BRAVIA_VH21, MediaTek MT5895), Taiwan",
+  "source": "cleanyourtv examples/sony-bravia-4k-vh21-tw at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_VH21"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

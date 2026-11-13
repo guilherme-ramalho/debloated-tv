@@ -1,0 +1,41 @@
+{
+  "id": "sankey-smart-tv-hi3751v350",
+  "name": "Sankey SMART_TV (CVTE, HiSilicon Hi3751V350, 1 GB)",
+  "source": "cleanyourtv examples/sankey-smart-tv-hi3751v350 at b9538048",
+  "community": true,
+  "brand": "Sankey",
+  "os": "Android 12",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.cvte.tv.launcher.space",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.android.chrome",
+    "com.android.vending",
+    "com.maxhub.screenshare.server.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Keep it ENABLED: it is the only HOME, there is no FallbackHome."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.android.traceur"
+    ],
+    "live_tv_package": "",
+    "source_panel_service": "com.cvte.tv.globalui/.InputSourceActivity"
+  }
+}

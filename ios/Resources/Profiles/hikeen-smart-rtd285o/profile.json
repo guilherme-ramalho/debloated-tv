@@ -1,0 +1,44 @@
+{
+  "id": "hikeen-smart-rtd285o",
+  "name": "Hikeen smart TV (\"Smart\"/SmartTV, Realtek RTD285O, Zeasn)",
+  "source": "cleanyourtv examples/hikeen-smart-rtd285o at b9538048",
+  "community": true,
+  "brand": "Hikeen",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "10839"
+    ]
+  },
+  "stockLauncher": "com.zeasn.oriontv.open.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.android.tv",
+    "com.hikeen.mediabrowser",
+    "com.hikeen.settings",
+    "com.android.vending",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [],
+    "library_apps": [
+      "com.hikeen.settings"
+    ],
+    "live_tv_package": "com.android.tv",
+    "columns": 4
+  }
+}

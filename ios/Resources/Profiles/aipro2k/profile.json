@@ -1,0 +1,31 @@
+{
+  "id": "aipro2k",
+  "name": "AiPro2K (Expressluck, dongnae; Changhong AI PONT family)",
+  "source": "cleanyourtv examples/aipro2k at b9538048",
+  "community": true,
+  "brand": "AiPro2K",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Already disabled from the factory (do not re-enable them on restore): com.cltv.hybrid, com.google.android.marvin.talkback."
+  ],
+  "theme": {}
+}

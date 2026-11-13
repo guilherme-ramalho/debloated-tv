@@ -1,0 +1,44 @@
+{
+  "id": "hisense-u7-wutaishan",
+  "name": "Hisense U7 / 55U7SG (wutaishan, MediaTek MT9690), US",
+  "source": "cleanyourtv examples/hisense-u7-wutaishan at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "wutaishan"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.vt.tv.tvcenter",
+      "com.android.tv.settings",
+      "com.vt.tv.singlelisten",
+      "com.vt.tv.mediacenter"
+    ],
+    "live_tv_package": "com.vt.tv.tvcenter",
+    "handle_view_inputs": false,
+    "settings_key_panel": true,
+    "key_filter": false
+  }
+}

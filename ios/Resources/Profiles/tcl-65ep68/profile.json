@@ -1,0 +1,46 @@
+{
+  "id": "tcl-65ep68",
+  "name": "TCL 65EP68 (Europe, BeyondTV, Realtek RTD2851 / rtd285o, V8-R851T02-LF1V722)",
+  "source": "cleanyourtv examples/tcl-65ep68 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "BeyondTV"
+    ],
+    "product": [
+      "BeyondTV"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "no.nrk.tv",
+    "no.tv2.sumo",
+    "no.get.play.tv",
+    "com.android.tv.settings",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.tcl.tv"
+    ],
+    "live_tv_package": "com.tcl.tv",
+    "wallpaper_true_color": true
+  }
+}

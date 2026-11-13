@@ -1,0 +1,39 @@
+{
+  "id": "wanbo-x5-pro",
+  "name": "Wanbo X5 Pro projector (built-in Google TV stick: SkyworthDigital YYT, Amlogic), Australia",
+  "source": "cleanyourtv examples/wanbo-x5-pro at b9538048",
+  "community": true,
+  "brand": "Wanbo",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "YYT"
+    ],
+    "product": [
+      "HP4609-Skyworth"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Nothing re-enabled itself after reboot.",
+    "Kept by choice here (safe to add if you don't use them; all tested for five days on the second unit): com.google.android.apps.mediashell (Chromecast), com.sdt.ota and com.sdt.upgrade (firmware updates), com.google.android.apps.tv.dreamx (Ambient screensaver, can be replaced with ClockDream)."
+  ],
+  "theme": {}
+}

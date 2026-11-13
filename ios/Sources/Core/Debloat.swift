@@ -109,6 +109,8 @@ public enum DebloatRules {
     // Same as upstream CORE_RE (tools/disable.sh, at f5c37c36): location.fused boot-looped a TCL 43S5400A (#2803).
     static let core = "^(android|android\\.ext\\.(services|shared)|com\\.android\\.sdksandbox|com\\.android\\.location\\.fused|com\\.android\\.systemui|com\\.android\\.shell|com\\.android\\.phone|com\\.android\\.settings|com\\.android\\.tv\\.settings|com\\.(google\\.)?android\\.(permissioncontroller|packageinstaller|ext\\.services|ext\\.shared|modulemetadata)|com\\.google\\.android\\.overlay\\.modules.*|com\\.android\\.providers\\..*|com\\.cltv\\.mal|com\\.mediatek\\.(tis|tv\\.service|tv\\.agent))$"
     static let coreOK = "^com\\.android\\.providers\\.(calendar|contacts|userdictionary|blockednumber)$"
+    /// A CVTE board's stock launcher: kept unless the list was made for that exact board (PROMPT.md, #741).
+    public static func isCVTELauncher(_ p: String) -> Bool { p.hasPrefix("com.cvte.tv.launcher") }
     public static func isCore(_ p: String) -> Bool { Pattern.matches(core, p) && !Pattern.matches(coreOK, p) }
     public static let setupwraith = "com.google.android.tungsten.setupwraith"
     public static let customLauncher = "com.gathin.tvhome"
@@ -116,6 +118,7 @@ public enum DebloatRules {
                                         "com.google.android.leanbacklauncher", "com.mitv.tvhome"]
     static let notLaunchers: Set<String> = [setupwraith, "com.android.tv.settings", "com.android.settings", "com.android.provision"]
     public static let animationSettings = ["window_animation_scale", "transition_animation_scale", "animator_duration_scale"]
+    public static let accessibilitySettings = ["enabled_accessibility_services", "accessibility_enabled"]
     static let homeQuery = "cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME"
     static let claimQuery = "cmd package query-activities --brief -a android.intent.action.MAIN -c android.intent.category.HOME"
 
@@ -161,6 +164,12 @@ public enum DebloatRules {
         }
         close()
         return found.filter { $0.networkId >= 0 }
+    }
+
+    /// How many "cname=" owners in the dump are the setup wizard, read the way upstream's disable.sh does
+    /// (`grep -o 'cname=[^ ]*'`), whatever the network lines around them look like.
+    public static func wizardOwnerCount(_ dump: String) -> Int {
+        dump.components(separatedBy: "cname=").dropFirst().filter { $0.prefix(while: { !$0.isWhitespace }).contains("setupwraith") }.count
     }
 
     /// Saves a network again as the shell's, so disabling the setup wizard keeps it: forget the wizard's copy, then
@@ -253,6 +262,82 @@ public struct RecoveryRecord: Codable, Equatable {
     public var home: String?
     public var settings: [String: String]
     public var packages: [String: String]   // "enabled" | "disabled" | "absent", before cleanup
+    // Purio TV additions; upstream's recovery.py ignores them, and records from before them still load.
+    /// The TV this record belongs to: a restore on another TV is refused.
+    public var tv: TVIdentity?
+    /// Every list applied on this TV, first one first (the record keeps the state before the first).
+    public var lists: [String]?
+    /// enabled_accessibility_services and accessibility_enabled before the new Home's remote helpers were added.
+    public var accessibility: [String: String]?
+
+    /// The list applied last (what an update of the Home screen follows).
+    public var lastList: String { lists?.last ?? list }
+
+    /// Folds in an older record of the same TV (upstream's extend_record): the oldest state of each package wins, and
+    /// Home, settings and helpers come from the oldest record that has them.
+    public func merged(withOlder older: RecoveryRecord) -> RecoveryRecord {
+        var out = older
+        for (p, state) in packages where out.packages[p] == nil { out.packages[p] = state }
+        out.home = older.home ?? home
+        out.tv = older.tv ?? tv
+        out.accessibility = older.accessibility ?? accessibility
+        out.lists = Array(NSOrderedSet(array: (older.lists ?? [older.list]) + (lists ?? [list]))) as? [String]
+        out.host = host
+        return out
+    }
+}
+
+/// Who a TV is, as far as the shell can tell. android_id is per device (and per user); many MediaTek/Realtek boards
+/// share a dummy serial, so the serial only counts when it looks real.
+public struct TVIdentity: Codable, Equatable {
+    public var androidId: String
+    public var serial: String
+    public var model: String
+    public var device: String
+    public init(androidId: String, serial: String, model: String, device: String) {
+        self.androidId = androidId; self.serial = serial; self.model = model; self.device = device
+    }
+    static let dummySerials: Set<String> = ["", "unknown", "0123456789abcdef", "0123456789", "123456789", "0000000000000000", "null"]
+    public var realSerial: String? { Self.dummySerials.contains(serial.lowercased()) ? nil : serial }
+    public var validAndroidId: String? { Pattern.matches("^[0-9a-fA-F]{8,32}$", androidId) ? androidId.lowercased() : nil }
+    /// A key for this TV's record file, nil when nothing identifies it.
+    public var key: String? { validAndroidId.map { "id-" + $0 } ?? realSerial.map { "sn-" + $0 } }
+
+    /// false: certainly another TV. true: the same one, or nothing to tell them apart (a record from before identities).
+    public func sameTV(as other: TVIdentity) -> Bool {
+        if let a = validAndroidId, let b = other.validAndroidId { return a == b }
+        if let a = realSerial, let b = other.realSerial { return a == b }
+        return model == other.model && device == other.device
+    }
+}
+
+/// The TV after the restart that ends a setup (PROMPT.md: reboot once, then compare).
+public struct RestartCheck: Equatable {
+    public var home: String
+    /// Disabled by this setup and on again after the restart: the firmware turns them back on at every boot.
+    public var reEnabled: [String]
+    public var homeOK: Bool
+
+    /// `expectedHome`: the new Home screen's package when setup installed it; otherwise any real Home will do, but not
+    /// the setup wizard's RecoveryActivity, FallbackHome or nothing (a black Home, docs/devices/acer-r4g.md upstream).
+    public static func judge(home: String, enabled: Set<String>, disabledBySetup: [String], expectedHome: String?) -> RestartCheck {
+        let broken = home.isEmpty || home.contains("setupwraith") || home.hasSuffix("FallbackHome") || home.contains("RecoveryActivity")
+        let ok = !broken && (expectedHome.map { home.hasPrefix($0 + "/") } ?? true)
+        return RestartCheck(home: home, reEnabled: disabledBySetup.filter(enabled.contains).sorted(), homeOK: ok)
+    }
+}
+
+/// What a restore did, read back from the TV.
+public struct RestoreReport: Equatable {
+    /// Recorded as enabled before setup, installed, and still disabled after the restore.
+    public var notBack: [String]
+    /// Disabled now because they were already off before setup.
+    public var keptOff: [String]
+    /// Where Home resolves now, and the package it should (nil: the record didn't say, so not checked).
+    public var home: String
+    public var expectedHome: String?
+    public var homeOK: Bool { expectedHome.map { home.hasPrefix($0 + "/") } ?? true }
+    public var complete: Bool { notBack.isEmpty && homeOK }
 }
 
 public struct ApplyResult: Equatable {
@@ -271,7 +356,7 @@ public struct Debloater: Sendable {
     public func profileProperties(_ banner: [String: String] = [:]) async throws -> [String: String] {
         var props = banner
         for key in ["ro.product.model", "ro.product.device", "ro.product.name", "ro.product.manufacturer", "ro.build.id",
-                    "ro.build.display.id", "ro.build.version.sdk", "ro.build.version.release"] where props[key] == nil {
+                    "ro.build.display.id", "ro.build.version.incremental", "ro.build.version.sdk", "ro.build.version.release"] where props[key] == nil {
             props[key] = try await tv.run("getprop " + key).trimmingCharacters(in: .whitespacesAndNewlines)
         }
         return props
@@ -312,9 +397,13 @@ public struct Debloater: Sendable {
         // (wifiToResave), which needs the shell's connect-network; one that can't be (enterprise) keeps the wizard.
         var wifiToResave: [WifiNetwork] = []
         if pkgs.contains(DebloatRules.setupwraith) {
-            if let saved = DebloatRules.wifiNetworks((try? await tv.run("dumpsys wifi")) ?? "") {
+            let dump = (try? await tv.run("dumpsys wifi")) ?? ""
+            if let saved = DebloatRules.wifiNetworks(dump) {
                 let wizard = saved.filter { $0.owner.contains("setupwraith") }
-                if wizard.contains(where: { $0.security.isEmpty }) {
+                if DebloatRules.wizardOwnerCount(dump) > wizard.count {
+                    // Upstream's raw check (grep -o 'cname=[^ ]*') sees a wizard network the parser didn't: fail closed.
+                    drop(DebloatRules.setupwraith, String(localized: "Couldn't read the TV's saved Wi-Fi networks, so the setup wizard stays: disabling it could delete them. Restart the TV and review again."))
+                } else if wizard.contains(where: { $0.security.isEmpty }) {
                     drop(DebloatRules.setupwraith, String(localized: "A Wi-Fi network on the TV belongs to the setup wizard and uses a sign-in this phone can't save again. On the TV, forget it and join it again in Settings › Network & Internet, then review again."))
                 } else if !wizard.isEmpty {
                     let help = (try? await tv.run("cmd wifi help 2>&1")) ?? ""
@@ -420,12 +509,35 @@ public struct Debloater: Sendable {
     }
 
     /// The record of how things were before the first run (recovery.py save). An existing record is extended, never overwritten.
-    public func record(_ list: DebloatList, listName: String, host: String, inventory: TVInventory, existing: RecoveryRecord?) -> RecoveryRecord {
+    public func identity() async throws -> TVIdentity {
+        func get(_ command: String) async throws -> String {
+            let out = try await tv.run(command).trimmingCharacters(in: .whitespacesAndNewlines)
+            return out.contains("\n") || out.lowercased().contains("error") ? "" : out
+        }
+        return TVIdentity(androidId: try await get("settings get secure android_id"), serial: try await get("getprop ro.serialno"),
+                          model: try await get("getprop ro.product.model"), device: try await get("getprop ro.product.device"))
+    }
+
+    /// The accessibility settings the new Home's helpers change, as they are now.
+    public func accessibilitySettings() async throws -> [String: String] {
+        var out = [String: String]()
+        for key in DebloatRules.accessibilitySettings { out[key] = try await tv.run("settings get secure " + key).trimmingCharacters(in: .whitespacesAndNewlines) }
+        return out
+    }
+
+    public func record(_ list: DebloatList, listName: String, host: String, inventory: TVInventory, existing: RecoveryRecord?,
+                       tv identity: TVIdentity? = nil, accessibility: [String: String]? = nil) -> RecoveryRecord {
         func state(_ p: String) -> String { !inventory.installed.contains(p) ? "absent" : inventory.disabled.contains(p) ? "disabled" : "enabled" }
         let names = list.entries.map(\.package)
         if var record = existing {
             for p in names where record.packages[p] == nil { record.packages[p] = state(p) }
             for p in names where record.packages[p] == "absent" && state(p) == "enabled" { record.packages[p] = "enabled" }
+            if let hp = inventory.home.map({ String($0.split(separator: "/").first ?? "") }), record.packages[hp] == nil,
+               !DebloatRules.isChooser(inventory.home), hp != DebloatRules.customLauncher { record.packages[hp] = state(hp) }
+            record.lists = Array(NSOrderedSet(array: (record.lists ?? [record.list]) + [listName])) as? [String]
+            record.tv = record.tv ?? identity
+            record.accessibility = record.accessibility ?? accessibility
+            record.host = host
             return record
         }
         var home = inventory.home
@@ -437,7 +549,8 @@ public struct Debloater: Sendable {
         if DebloatRules.notALauncher(home) { home = nil }
         let formatter = ISO8601DateFormatter()
         return RecoveryRecord(created: formatter.string(from: Date()), host: host, list: listName, home: home,
-                              settings: inventory.animationScales, packages: Dictionary(uniqueKeysWithValues: targets.map { ($0, state($0)) }))
+                              settings: inventory.animationScales, packages: Dictionary(uniqueKeysWithValues: targets.map { ($0, state($0)) }),
+                              tv: identity, lists: [listName], accessibility: accessibility)
     }
 
     /// Disables the plan's packages one by one, then reads the TV back instead of trusting silence (#1376).
@@ -449,6 +562,10 @@ public struct Debloater: Sendable {
             progress?(i + 1, plan.disable.count)
         }
         let enabled = Pattern.packageNames(try await tv.run("pm list packages -e --user 0"))
+        // An empty answer is a check that didn't run, not proof that everything went off (disable.sh does the same).
+        guard !enabled.isEmpty || plan.disable.isEmpty else {
+            throw RemoteFailure.message(String(localized: "The TV didn't say which apps are on, so this step couldn't be checked. Reconnect and review again."))
+        }
         let still = plan.disable.filter { enabled.contains($0) }
         return ApplyResult(disabled: plan.disable.filter { !enabled.contains($0) }, stillEnabled: still, stoppedEarly: stoppedEarly)
     }
@@ -459,6 +576,7 @@ public struct Debloater: Sendable {
     public static func restoreCommands(_ record: RecoveryRecord, stock: String = "com.google.android.tvlauncher") -> [String] {
         var record = record
         if let home = record.home, !Pattern.matches("^[A-Za-z_][A-Za-z0-9_.]*/[A-Za-z0-9_.]+$", home) { record.home = nil }
+        let stock = Pattern.isPackage(stock) ? stock : "com.google.android.tvlauncher"
         var commands = record.packages.filter { $0.value == "enabled" && Pattern.isPackage($0.key) }.keys.sorted().map { "pm enable \($0)" }
         let fallbackState = record.packages[stock]
         let resolve = "cmd package set-home-activity --user 0 $(\(DebloatRules.homeQuery) \(stock) | tail -n 1)"
@@ -476,11 +594,42 @@ public struct Debloater: Sendable {
             if value == "null" { commands.append("settings delete global \(key)") }
             else if Pattern.matches("^-?[0-9]+(\\.[0-9]+)?$", value) { commands.append("settings put global \(key) \(value)") }
         }
+        // The new Home's remote helpers: the accessibility list goes back to what it was before setup, and the launcher
+        // loses the permission to turn them on again by itself. The launcher stays installed (as upstream's restore).
+        if let saved = record.accessibility, record.home.map({ !$0.hasPrefix(DebloatRules.customLauncher + "/") }) ?? true {
+            let services = (saved["enabled_accessibility_services"] ?? "").trimmingCharacters(in: .whitespaces)
+            if services == "null" || services.isEmpty { commands.append("settings delete secure enabled_accessibility_services") }
+            else if Pattern.matches("^[A-Za-z0-9_.$/:]+$", services) { commands.append("settings put secure enabled_accessibility_services \(services)") }
+            let on = (saved["accessibility_enabled"] ?? "").trimmingCharacters(in: .whitespaces)
+            if on == "null" || on.isEmpty { commands.append("settings delete secure accessibility_enabled") }
+            else if Pattern.matches("^[01]$", on) { commands.append("settings put secure accessibility_enabled \(on)") }
+            commands.append("pm revoke \(DebloatRules.customLauncher) android.permission.WRITE_SECURE_SETTINGS 2>/dev/null; true")
+        }
         return commands
     }
 
-    public func restore(_ record: RecoveryRecord, stock: String = "com.google.android.tvlauncher") async throws -> [String] {
+    /// Restores a record, refusing one made on another TV, then reads the TV back (restore.sh's check, upstream
+    /// 956d7334): every app that was on before setup is on again, and Home is where it was.
+    public func restore(_ record: RecoveryRecord, stock: String = "com.google.android.tvlauncher") async throws -> RestoreReport {
+        if let saved = record.tv {
+            let now = try await identity()
+            guard saved.sameTV(as: now) else {
+                throw RemoteFailure.message(String(localized: "This recovery record belongs to another TV (\(saved.model)), so nothing was changed. Pick the record made on this TV."))
+            }
+        }
         for command in Self.restoreCommands(record, stock: stock) { _ = try await tv.shell(command, timeout: 60) }
-        return Array(Pattern.packageNames(try await tv.run("pm list packages -d --user 0"))).sorted()
+        let installed = Pattern.packageNames(try await tv.run("pm list packages --user 0"))
+        let enabled = Pattern.packageNames(try await tv.run("pm list packages -e --user 0"))
+        guard !installed.isEmpty, !enabled.isEmpty else {
+            throw RemoteFailure.message(String(localized: "The restore ran, but the TV didn't say which apps are on now, so it couldn't be checked. Run it again."))
+        }
+        let notBack = record.packages.filter { $0.value == "enabled" && installed.contains($0.key) && !enabled.contains($0.key) }.keys.sorted()
+        let keptOff = record.packages.filter { $0.value == "disabled" && !enabled.contains($0.key) }.keys.sorted()
+        let home = (try await tv.run(DebloatRules.homeQuery)).split(separator: "\n").last.map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
+        let recorded = record.home.map { String($0.split(separator: "/").first ?? "") }
+        let validStock = Pattern.isPackage(stock) ? stock : "com.google.android.tvlauncher"
+        let expected = recorded.flatMap { $0 == DebloatRules.customLauncher ? nil : $0 }
+            ?? (record.packages[validStock] == "enabled" ? validStock : nil)
+        return RestoreReport(notBack: notBack, keptOff: keptOff, home: home, expectedHome: expected)
     }
 }

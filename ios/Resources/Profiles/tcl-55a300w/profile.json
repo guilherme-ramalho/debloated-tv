@@ -1,0 +1,47 @@
+{
+  "id": "tcl-55a300w",
+  "name": "TCL 55A300W picture-frame TV (2023, G08, G08_4K_US_NF, MediaTek MT9653), US",
+  "source": "cleanyourtv examples/tcl-55a300w at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "G08"
+    ],
+    "product": [
+      "G08_4K_US_NF"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "live_tv_package": "com.tcl.tv",
+    "hidden_apps": [
+      "com.tcl.tv"
+    ],
+    "app_keys": [
+      "4062:com.netflix.ninja",
+      "4065:com.google.android.youtube.tv",
+      "4001:guide:com.tcl.tv",
+      "83:settings"
+    ]
+  }
+}

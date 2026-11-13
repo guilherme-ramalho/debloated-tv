@@ -1,0 +1,37 @@
+{
+  "id": "nvidia-shield-tv-pro-2019",
+  "name": "NVIDIA SHIELD TV Pro 2019 (P2897, mdarcy)",
+  "source": "cleanyourtv examples/nvidia-shield-tv-pro-2019 at b9538048",
+  "community": true,
+  "brand": "NVIDIA Shield",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "mdarcy"
+    ],
+    "model": [
+      "P2897"
+    ]
+  },
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "People report soft-bricked units after doing so."
+  ],
+  "theme": {}
+}

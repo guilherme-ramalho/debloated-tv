@@ -27,6 +27,8 @@ public struct DiscoveredTV: Identifiable, Equatable {
     public func start() {
         stop()
         searching = true; blocked = false; tvs = []
+        // The end-to-end suite works on an emulator only: it must never open a connection to a real TV on the network.
+        if ProcessInfo.processInfo.arguments.contains("-e2eNoDiscovery") { searching = false; return }
         let browser = NWBrowser(for: .bonjour(type: Self.service, domain: nil), using: .tcp)
         browser.stateUpdateHandler = { [weak self] state in
             Task { @MainActor in

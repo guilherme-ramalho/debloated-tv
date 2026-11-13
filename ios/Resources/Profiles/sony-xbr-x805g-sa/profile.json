@@ -1,0 +1,44 @@
+{
+  "id": "sony-xbr-x805g-sa",
+  "name": "Sony BRAVIA XBR-x805G (BRAVIA_ATV3_4K, MediaTek MT5891), Latin America",
+  "source": "cleanyourtv examples/sony-xbr-x805g-sa at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "product": [
+      "BRAVIA_ATV3_4K_SA"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.spotify.tv.android",
+    "com.stremio.one",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.sony.dtv.tvx",
+      "com.sony.dtv.tvxlauncher.programguide",
+      "com.ndcsolution.androidtv.leankeykeyboard"
+    ],
+    "live_tv_package": "com.sony.dtv.tvx",
+    "columns": 5,
+    "launcher_settings_button": true,
+    "inputs_connected_only": true
+  }
+}

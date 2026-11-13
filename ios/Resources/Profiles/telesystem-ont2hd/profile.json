@@ -1,0 +1,29 @@
+{
+  "id": "telesystem-ont2hd",
+  "name": "Tele System TS ON T2/HD (ONT2HD, SDMC, Amlogic), Italy",
+  "source": "cleanyourtv examples/telesystem-ont2hd at b9538048",
+  "community": true,
+  "brand": "Tele System",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

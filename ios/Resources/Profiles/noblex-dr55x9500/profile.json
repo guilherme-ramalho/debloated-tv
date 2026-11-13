@@ -1,0 +1,44 @@
+{
+  "id": "noblex-dr55x9500",
+  "name": "Noblex DR55X9500 (Skyworth SW6H, MediaTek m7332, same board and firmware as `prismplus-p4ka-sw6h/`), Argentina",
+  "source": "cleanyourtv examples/noblex-dr55x9500 at b9538048",
+  "community": true,
+  "brand": "Noblex",
+  "os": "Android TV 11 (Google TV home)",
+  "match": {},
+  "names": {
+    "device": [
+      "SW6H"
+    ],
+    "product": [
+      "SW6H_Noblex_NF"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.smartdevice.livetv"
+    ],
+    "live_tv_package": "com.smartdevice.livetv",
+    "settings_key_keycodes": [
+      83
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "tcl-32es570f",
+  "name": "TCL 32ES570F (C06, C06_2K_GB, MStar mt5867, 939 MB), Italy",
+  "source": "cleanyourtv examples/tcl-32es570f at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "C06"
+    ],
+    "product": [
+      "C06_2K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "They are left out of the list on purpose; hide them in the launcher's hidden_apps instead. - com.tcl.guard disables, but its process keeps running (persistent, system uid, about 80 MB). - Disabling com.tcl.dashboard (TCL Home), com.tcl.suspension (Quick Panel) and com.tcl.t_solo left the remote, source picker and settings working; the 32S5K list keeps the first two."
+  ],
+  "theme": {}
+}

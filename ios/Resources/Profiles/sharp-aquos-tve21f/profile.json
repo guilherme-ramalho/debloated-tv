@@ -1,0 +1,36 @@
+{
+  "id": "sharp-aquos-tve21f",
+  "name": "SHARP AQUOS TVE21F (AQUOS-TVE21F, banqiao, CVTE/MediaTek), UK",
+  "source": "cleanyourtv examples/sharp-aquos-tve21f at b9538048",
+  "community": true,
+  "brand": "SHARP",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "banqiao"
+    ],
+    "product": [
+      "tcpreue_b"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

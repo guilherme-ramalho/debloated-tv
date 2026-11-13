@@ -1,0 +1,34 @@
+{
+  "id": "byintek-t5-max",
+  "name": "BYINTEK T5 Max projector (built-in Google TV stick: SkyworthDigital YYT, Amlogic), Brazil",
+  "source": "cleanyourtv examples/byintek-t5-max at b9538048",
+  "community": true,
+  "brand": "BYINTEK",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "YYT",
+      "differs"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

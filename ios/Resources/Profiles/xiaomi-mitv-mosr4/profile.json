@@ -1,0 +1,40 @@
+{
+  "id": "xiaomi-mitv-mosr4",
+  "name": "Xiaomi MiTV-MOSR4 (irobot, MediaTek)",
+  "source": "cleanyourtv examples/xiaomi-mitv-mosr4 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "irobot"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "live_tv_package": "com.mitv.livetv",
+    "app_keys": [
+      "190:com.google.android.youtube.tv",
+      "193:com.netflix.ninja",
+      "194:com.amazon.amazonvideo.livingroom"
+    ]
+  }
+}

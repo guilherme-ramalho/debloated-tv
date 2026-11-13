@@ -1,0 +1,48 @@
+{
+  "id": "jvc-lt-43km348",
+  "name": "JVC LT-43KM348 (KTC-built, KTC_JVC_2K_25GV1, jagalchi, MediaTek mt5867 / T56)",
+  "source": "cleanyourtv examples/jvc-lt-43km348 at b9538048",
+  "community": true,
+  "brand": "JVC",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "jagalchi"
+    ],
+    "product": [
+      "KTC_JVC_2K_25GV1"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.spotify.tv.android",
+    "tv.pluto.android",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter"
+    ],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "live_tv_action": "android.mtk.intent.action.ACTION_REQUEST_TOP_RESUME",
+    "app_keys": [
+      "190:com.google.android.youtube.tv",
+      "191:com.netflix.ninja"
+    ],
+    "columns": 4
+  }
+}

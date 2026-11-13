@@ -1,0 +1,45 @@
+{
+  "id": "tcl-c845x2-google-tv",
+  "name": "TCL 55C845X2 / 75C845X2, UK/Europe (G08_4K_GB, MediaTek tcl9618)",
+  "source": "cleanyourtv examples/tcl-c845x2-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "G08"
+    ],
+    "product": [
+      "G08_4K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "settings_key_keycodes": [
+      83
+    ],
+    "app_keys": [
+      "4062:com.netflix.ninja",
+      "4099:com.amazon.amazonvideo.livingroom",
+      "190:com.google.android.youtube.tv"
+    ]
+  }
+}

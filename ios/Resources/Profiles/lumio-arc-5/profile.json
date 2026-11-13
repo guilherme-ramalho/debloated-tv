@@ -1,0 +1,31 @@
+{
+  "id": "lumio-arc-5",
+  "name": "Lumio Arc 5 Projector (MediaTek)",
+  "source": "cleanyourtv examples/lumio-arc-5 at b9538048",
+  "community": true,
+  "brand": "Lumio",
+  "os": "Google TV",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Hardware & Projector Safeguards: DO NOT DISABLE projector hardware packages, ToF autofocus, STR8 auto-keystone correction, obstacle avoidance, screen fit, or optical/picture settings.",
+    "USB Storage & Media Playback: Keep all USB storage, OTG, and media indexing packages enabled (com.android.externalstorage, com.android.documentsui, com.android.providers.media, com.android.providers.downloads, and MediaTek/OEM USB or file managers) so external flash drives function for video playback."
+  ],
+  "theme": {}
+}

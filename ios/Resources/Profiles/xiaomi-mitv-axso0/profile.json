@@ -1,0 +1,33 @@
+{
+  "id": "xiaomi-mitv-axso0",
+  "name": "Xiaomi MiTV-AXSO0 (dangal; Mi TV 4C Pro 2019 / 4A Pro)",
+  "source": "cleanyourtv examples/xiaomi-mitv-axso0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "dangal"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

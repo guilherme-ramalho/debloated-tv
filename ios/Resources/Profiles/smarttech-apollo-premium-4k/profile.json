@@ -1,0 +1,36 @@
+{
+  "id": "smarttech-apollo-premium-4k",
+  "name": "Smarttech Apollo Premium 4K (Expressluck marina, MediaTek m7332, 2 GB)",
+  "source": "cleanyourtv examples/smarttech-apollo-premium-4k at b9538048",
+  "community": true,
+  "brand": "Smarttech",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "marina"
+    ],
+    "product": [
+      "SMARTTECH_4K_ATV3"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

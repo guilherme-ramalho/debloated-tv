@@ -1,0 +1,36 @@
+{
+  "id": "sony-bravia-4k-gb",
+  "name": "Sony BRAVIA 4K GB (KD-75XE8596, KD-55XE9005, KD-65XD7505, XBR-49X705D; BRAVIA_ATV2_EU, BRAVIA_ATV2_BR)",
+  "source": "cleanyourtv examples/sony-bravia-4k-gb at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_ATV2_EU"
+    ],
+    "product": [
+      "BRAVIA_ATV2"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

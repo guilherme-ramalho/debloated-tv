@@ -1,0 +1,34 @@
+{
+  "id": "haier-hra962x2",
+  "name": "Haier HRA962X2 (HRA962X2_2G_ALI6G_A)",
+  "source": "cleanyourtv examples/haier-hra962x2 at b9538048",
+  "community": true,
+  "brand": "Haier",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.hrtvbic.usb.mm",
+    "com.xiaobaifile.tv",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "columns": 4,
+    "app_library": true,
+    "lunar_date": true
+  }
+}

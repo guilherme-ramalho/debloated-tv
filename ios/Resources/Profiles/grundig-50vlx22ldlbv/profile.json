@@ -1,0 +1,35 @@
+{
+  "id": "grundig-50vlx22ldlbv",
+  "name": "Grundig 50VLX22LDLBV (Arçelik, CO3Plus, sinchon, MediaTek), Netherlands",
+  "source": "cleanyourtv examples/grundig-50vlx22ldlbv at b9538048",
+  "community": true,
+  "brand": "Grundig",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "sinchon"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Reboot-checked: pm list packages -d identical before and after; nothing is re-enabled at boot."
+  ],
+  "theme": {}
+}

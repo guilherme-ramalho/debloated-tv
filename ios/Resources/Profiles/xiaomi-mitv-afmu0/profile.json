@@ -1,0 +1,43 @@
+{
+  "id": "xiaomi-mitv-afmu0",
+  "name": "Xiaomi TV Box S 3rd gen (MiTV-AFMU0, twilight, Amlogic), streaming box",
+  "source": "cleanyourtv examples/xiaomi-mitv-afmu0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "twilight"
+    ],
+    "product": [
+      "twilight"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": true,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.android.vending",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "app_keys": [
+      "KEYCODE_BUTTON_3:com.google.android.youtube.tv",
+      "KEYCODE_BUTTON_7:com.amazon.amazonvideo.livingroom",
+      "KEYCODE_ALL_APPS:home"
+    ]
+  }
+}

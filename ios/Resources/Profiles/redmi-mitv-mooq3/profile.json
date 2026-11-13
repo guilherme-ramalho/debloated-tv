@@ -1,0 +1,41 @@
+{
+  "id": "redmi-mitv-mooq3",
+  "name": "Redmi TV 43\" (MiTV-MOOQ3, tarzan)",
+  "source": "cleanyourtv examples/redmi-mitv-mooq3 at b9538048",
+  "community": true,
+  "brand": "Redmi",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "tarzan"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "in.startv.hotstar",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter",
+      "com.mitv.dream"
+    ],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "columns": 4
+  }
+}

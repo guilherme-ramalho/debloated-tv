@@ -1,0 +1,37 @@
+{
+  "id": "stellamore-t950s",
+  "name": "Stellamore T950S projector (Droidlogic be30a3, Amlogic txhd2)",
+  "source": "cleanyourtv examples/stellamore-t950s at b9538048",
+  "community": true,
+  "brand": "Stellamore",
+  "os": "Android 13",
+  "match": {},
+  "names": {
+    "device": [
+      "r34a1",
+      "type"
+    ],
+    "product": [
+      "r34a1"
+    ]
+  },
+  "stockLauncher": "com.zeasn.whale.saas",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

@@ -1,0 +1,35 @@
+{
+  "id": "hisense-fire-tv-55qd6qf",
+  "name": "Hisense 55QD6QF Fire TV (AFTOLCBC82, ginza), Canada",
+  "source": "cleanyourtv examples/hisense-fire-tv-55qd6qf at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Fire OS 8.1.8.0 / Android 11",
+  "match": {},
+  "names": {
+    "device": [
+      "ginza"
+    ]
+  },
+  "stockLauncher": "com.amazon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "fireOS",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Re-run the list after a reboot if you don't use Alexa. - Third-party apps preinstalled by the retailer or Hisense (Bell Fibe TV / Crave, VIDAA, a YouTube player, Twitch) came back ENABLED after a reboot when disabled."
+  ],
+  "theme": {}
+}

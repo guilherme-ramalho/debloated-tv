@@ -1,0 +1,33 @@
+{
+  "id": "hisense-amlogict963-android9",
+  "name": "Hisense VIDAA_TV (AMLOGICT963), China; retail model unconfirmed",
+  "source": "cleanyourtv examples/hisense-amlogict963-android9 at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Android 9",
+  "match": {},
+  "names": {
+    "device": [
+      "AMLOGICT963"
+    ]
+  },
+  "stockLauncher": "com.jamdeo.tv.vod",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

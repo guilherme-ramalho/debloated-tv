@@ -1,0 +1,51 @@
+{
+  "id": "xvision-50xyu765",
+  "name": "X.Vision 50XYU765 (XYU Series, MAADIRAN; CVTE TP.MT9632.PC752, MediaTek m7332, 1.5 GB), Iran",
+  "source": "cleanyourtv examples/xvision-50xyu765 at b9538048",
+  "community": true,
+  "brand": "X.Vision",
+  "os": "Android 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.cvte.tv.launcher.space",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Keep it ENABLED: it is the only HOME, there is no FallbackHome."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.android.traceur"
+    ],
+    "live_tv_package": "",
+    "source_panel_service": "com.cvte.tv.globalui/.InputSourceActivity",
+    "stock_home_redirect": "com.cvte.tv.launcher.space",
+    "key_filter": false,
+    "library_apps": [
+      "com.cvte.tv.setting",
+      "com.android.documentsui"
+    ],
+    "app_labels": [
+      "com.cvte.tv.setting=TV",
+      "com.android.documentsui=Files"
+    ],
+    "app_banners": [
+      "com.cvte.tv.setting=banner_tv"
+    ]
+  }
+}

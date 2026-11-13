@@ -1,0 +1,28 @@
+{
+  "id": "telekom-tv-sdmc-dv8519b",
+  "name": "Magyar Telekom TV box (SDMC DV8519B, Amlogic, 2 GB), Hungary",
+  "source": "cleanyourtv examples/telekom-tv-sdmc-dv8519b at b9538048",
+  "community": true,
+  "brand": "Magyar Telekom",
+  "os": "Android TV 12",
+  "match": {},
+  "names": {},
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

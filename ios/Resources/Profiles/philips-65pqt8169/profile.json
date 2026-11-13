@@ -1,0 +1,38 @@
+{
+  "id": "philips-65pqt8169",
+  "name": "Philips 65PQT8169/56 (KTC, KTC_PHILIPS_4K_DVB_22GV1, hongkong, MediaTek m7632), UAE",
+  "source": "cleanyourtv examples/philips-65pqt8169 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "hongkong"
+    ],
+    "product": [
+      "KTC_PHILIPS_4K_DVB_22GV1"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Factory tools: com.ktc.serialport, com.ktc.tv.factory and mediatek.factorymenu.ui were only disabled, never launched. ktc.factorymenu.ui stays enabled: on this firmware it carries the MediaTek HotKeyService, VolService and two GLOBAL_BUTTON receivers."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,39 @@
+{
+  "id": "hisense-smarttv-4k-ffm-android11",
+  "name": "Hisense SmartTV 4K FFM (songshan, MediaTek m7632); also the US Hisense 50A6H4 and 65U6G",
+  "source": "cleanyourtv examples/hisense-smarttv-4k-ffm-android11 at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Android 11 (SDK 30)",
+  "match": {},
+  "names": {
+    "device": [
+      "songshan"
+    ],
+    "product": [
+      "songshan_emH_FFM"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "WARNING, shared with the huangshan FFM list: never disable com.hisense.tv.smartsense, com.vt.tv.smartsense.ui or com.vt.tv.aiot."
+  ],
+  "theme": {}
+}

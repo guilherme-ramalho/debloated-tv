@@ -1,0 +1,29 @@
+{
+  "id": "sony-xr-65x90j-cn",
+  "name": "Sony XR-65X90J (2021, BRAVIA_VH2, MediaTek MT5895), China",
+  "source": "cleanyourtv examples/sony-xr-65x90j-cn at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 10",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.dangbei.TVHomeLauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

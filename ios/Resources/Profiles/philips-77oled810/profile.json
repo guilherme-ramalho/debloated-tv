@@ -1,0 +1,37 @@
+{
+  "id": "philips-77oled810",
+  "name": "Philips 77OLED810/12 (TPV, PH1M_WW_9972, MediaTek), Germany",
+  "source": "cleanyourtv examples/philips-77oled810 at b9538048",
+  "community": true,
+  "brand": "Philips",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "PH1M_WW_9972"
+    ],
+    "product": [
+      "PH1M_WW_9972_20"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

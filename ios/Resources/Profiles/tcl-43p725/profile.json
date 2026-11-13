@@ -1,0 +1,38 @@
+{
+  "id": "tcl-43p725",
+  "name": "TCL 43P725 (Smart TV Pro, BeyondTV4, Realtek rtd288o), Italy",
+  "source": "cleanyourtv examples/tcl-43p725 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "BeyondTV4"
+    ],
+    "product": [
+      "BeyondTV6"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "TvInputManager lists them normally; keep both enabled so HDMI and antenna work."
+  ],
+  "theme": {}
+}

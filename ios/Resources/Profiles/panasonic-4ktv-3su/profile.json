@@ -1,0 +1,44 @@
+{
+  "id": "panasonic-4ktv-3su",
+  "name": "Panasonic 4KTV-3SU (Skyworth-built SW6H, MediaTek, same board as `thomson-sppl-4k-sw6h/`), ~1.9 GB",
+  "source": "cleanyourtv examples/panasonic-4ktv-3su at b9538048",
+  "community": true,
+  "brand": "Panasonic",
+  "os": "Android TV 14 (Google TV home)",
+  "match": {},
+  "names": {
+    "device": [
+      "SW6H"
+    ],
+    "product": [
+      "SW6H_PANATV_NF"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "in.startv.hotstar",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.smartdevice.livetv"
+    ],
+    "live_tv_package": "com.smartdevice.livetv",
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx"
+  }
+}

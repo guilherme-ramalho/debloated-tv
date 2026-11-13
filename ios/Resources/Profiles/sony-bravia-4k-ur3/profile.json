@@ -1,0 +1,32 @@
+{
+  "id": "sony-bravia-4k-ur3",
+  "name": "Sony BRAVIA 4K UR3 / KD-55X8000H / KD-65A8 / XBR-55A8H / KD-43XH8196 (BRAVIA_UR3, MediaTek mt5893), EU, TW and US",
+  "source": "cleanyourtv examples/sony-bravia-4k-ur3 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 10",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The only other HOME claimant is com.android.tv.settings/.system.FallbackHome, so even a failed launcher takeover still lands on a settings home rather than a black screen.",
+    "Already disabled at the factory: com.sony.dtv.b2b.vendorprotocol, com.sony.dtv.b2b.softap, screnmirroring.com (that typo'd name is exactly what Sony ships — do not \"fix\" it)."
+  ],
+  "theme": {}
+}

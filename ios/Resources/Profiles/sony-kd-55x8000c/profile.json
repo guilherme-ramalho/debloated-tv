@@ -1,0 +1,35 @@
+{
+  "id": "sony-kd-55x8000c",
+  "name": "Sony BRAVIA KD-55X8000C (2015, \"BRAVIA 4K 2015\", SVP-DTV15, MediaTek), China firmware",
+  "source": "cleanyourtv examples/sony-kd-55x8000c at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 7.0",
+  "match": {},
+  "names": {
+    "device": [
+      "SVP-DTV15"
+    ]
+  },
+  "stockLauncher": "com.google.android.leanbacklauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The Google packages in the EU 2015 Sony lists do not exist here."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,29 @@
+{
+  "id": "tcl-65c6k-google-tv",
+  "name": "TCL 65C6K (Smart TV Pro, G08, G08_4K_GB, MediaTek tcl9618 / mt5896, SoC MT9689), Latin America; also TCL 55C6K, Vietnam & India",
+  "source": "cleanyourtv examples/tcl-65c6k-google-tv at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

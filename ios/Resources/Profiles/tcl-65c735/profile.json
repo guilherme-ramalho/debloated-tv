@@ -1,0 +1,53 @@
+{
+  "id": "tcl-65c735",
+  "name": "TCL 65C735 (Smart TV Pro, G05, MediaTek), France; also TCL 55C728, Turkey, TCL 65C935, France, and TCL 65C745, France",
+  "source": "cleanyourtv examples/tcl-65c735 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "G05"
+    ],
+    "product": [
+      "G05_4K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The TCL Channel button never reaches the accessibility helpers, so it cannot be mapped.",
+    "USB debugging and USB devices: a USB Ethernet adapter kept working when debugging was switched on, but after a reboot with debugging on the port came up in gadget mode (sys.usb.config=adb, Mstar-udc) and the adapter never appeared as a network interface (LED blinking, no eth1).",
+    "With launcherx disabled these buttons do nothing; an accessibility service that catches those keycodes and starts the app fixes it (verified with the real remote)."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.tcl.tv"
+    ],
+    "live_tv_package": "com.tcl.tv",
+    "settings_key_keycodes": [
+      4077
+    ],
+    "app_keys": [
+      "4062:com.netflix.ninja",
+      "4065:com.google.android.youtube.tv",
+      "4099:com.amazon.amazonvideo.livingroom"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "ok-ai-pont-ikebukuro",
+  "name": "OK. AI PONT (Changhong, ikebukuro, MediaTek), Italy; also Nikkei DVB91NK; also Saba SA40S67A9",
+  "source": "cleanyourtv examples/ok-ai-pont-ikebukuro at b9538048",
+  "community": true,
+  "brand": "OK.",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "ikebukuro"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "it.rainet.androidtv",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter"
+    ],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "columns": 4,
+    "rows_below_dock": 0,
+    "reduced_motion": false,
+    "background_color": "#000000",
+    "wallpaper": false
+  }
+}

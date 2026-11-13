@@ -1,0 +1,35 @@
+{
+  "id": "xiaomi-mitv-mssp0",
+  "name": "Xiaomi MiTV-MSSP0 / Xiaomi Mi TV 4A 32 (amelie), firmware PI.5926",
+  "source": "cleanyourtv examples/xiaomi-mitv-mssp0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "device": [
+      "amelie"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The initial setup passed a reboot and rollback/reapply check on 2026-10-19; Gallery and the media browser were disabled later that day. - The input picker opened an HDMI session, but no connected source was available to test A/V. - This is not the MiTV-MOOQ1 / tarzan or MiTV-MSSP3 / machuca firmware; do not merge their lists."
+  ],
+  "theme": {}
+}

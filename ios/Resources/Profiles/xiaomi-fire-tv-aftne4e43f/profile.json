@@ -1,0 +1,35 @@
+{
+  "id": "xiaomi-fire-tv-aftne4e43f",
+  "name": "Xiaomi Fire TV (AFTNE4E43F, ginzaeu)",
+  "source": "cleanyourtv examples/xiaomi-fire-tv-aftne4e43f at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Fire OS 8.1.8.5 / Android 11",
+  "match": {},
+  "names": {
+    "device": [
+      "ginzaeu"
+    ]
+  },
+  "stockLauncher": "com.amazon.tv.launcher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "fireOS",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Status: applied 2026-11-02, then applied again the same day after a factory reset; 38 of 38 disabled both times, still disabled after two reboots."
+  ],
+  "theme": {}
+}

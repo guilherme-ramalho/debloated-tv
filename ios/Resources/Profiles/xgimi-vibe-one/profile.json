@@ -1,0 +1,60 @@
+{
+  "id": "xgimi-vibe-one",
+  "name": "XGIMI Vibe One projector (WM03H, altai, MediaTek m7332)",
+  "source": "cleanyourtv examples/xgimi-vibe-one at b9538048",
+  "community": true,
+  "brand": "XGIMI",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "altai"
+    ],
+    "product": [
+      "seal2"
+    ],
+    "model": [
+      "WM03H"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not disable it on this unit."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.mediatek.wwtv.tvcenter",
+      "com.mitv.gallery",
+      "com.android.tv.settings"
+    ],
+    "columns": 5,
+    "live_tv_package": "",
+    "rows_below_dock": 0,
+    "settings_key_keycodes": [
+      83
+    ],
+    "app_keys": [
+      "KEYCODE_F4:com.google.android.youtube.tv",
+      "KEYCODE_F9:com.netflix.ninja",
+      "KEYCODE_F8:com.amazon.amazonvideo.livingroom"
+    ],
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx"
+  }
+}

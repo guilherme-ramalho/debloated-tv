@@ -1,0 +1,39 @@
+{
+  "id": "google-chromecast-gtv-hd",
+  "name": "Google Chromecast with Google TV HD (boreal)",
+  "source": "cleanyourtv examples/google-chromecast-gtv-hd at b9538048",
+  "community": true,
+  "brand": "Google",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "boreal"
+    ],
+    "product": [
+      "boreal"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "debloatOnly",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The -foss APK from its GitHub releases, version 4.6.2, is what the second unit (2026-10-23) runs. - The \"type on your phone\" prompt that never works: default_input_method was com.google.android.tv.remote.service/.ImeBridgeService before anything here was changed.",
+    "Don't add them to a restore list. - AdGuard Private DNS (README) validated; Spotify loads and Tubi plays with it on."
+  ],
+  "theme": {}
+}

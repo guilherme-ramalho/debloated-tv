@@ -1,0 +1,42 @@
+{
+  "id": "xgimi-mogo-4-laser",
+  "name": "XGIMI MoGo 4 Laser projector (WK03K, altai, MediaTek)",
+  "source": "cleanyourtv examples/xgimi-mogo-4-laser at b9538048",
+  "community": true,
+  "brand": "XGIMI",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "altai"
+    ],
+    "model": [
+      "WK03K"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.disney.disneyplus",
+    "com.amazon.amazonvideo.livingroom",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "columns": 5,
+    "live_tv_package": "",
+    "rows_below_dock": 0,
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx",
+    "key_filter": false
+  }
+}

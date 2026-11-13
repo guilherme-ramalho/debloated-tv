@@ -1,0 +1,44 @@
+{
+  "id": "xiaomi-mitv-mteq0",
+  "name": "Xiaomi TV EA Pro 55\" (MiTV-MTEQ0, baymax, MediaTek), China firmware 23.6.26.4028",
+  "source": "cleanyourtv examples/xiaomi-mitv-mteq0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android TV 10 (CN build)",
+  "match": {},
+  "names": {
+    "device": [
+      "baymax"
+    ]
+  },
+  "stockLauncher": "com.mitv.tvhome",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "customBuild",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "With the standard com.gathin.tvhome ID, disabling com.mitv.tvhome leaves FallbackHome (a black screen). - Network ADB closes at every boot: com.xiaomi.mitv.settings writes adb_enabled=0 a few seconds after boot.",
+    "Android then drops any accessibility service of those apps, so do not rely on an accessibility helper on this set. - com.xiaomi.mitv.upgrade and com.mediatek.TimeMeasurementAgent are persistent: the firmware starts them at boot even when disabled."
+  ],
+  "theme": {
+    "input_action": "com.xiaomi.mitv.tvplayer.EXTSRC_PLAY",
+    "input_sources": [
+      "HW5=23",
+      "HW6=24",
+      "HW7=25",
+      "HW2=2"
+    ]
+  }
+}

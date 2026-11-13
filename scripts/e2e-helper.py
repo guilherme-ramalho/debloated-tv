@@ -5,7 +5,8 @@ A small HTTP server on this Mac that the UI test, running in the iOS Simulator, 
 TV emulator over adb: read the pairing code off its screen, accept the "Allow USB debugging?" prompt, see which app is
 in front, press keys, read the launcher's config. Listens on 127.0.0.1 only and exists only while a test run does.
 
-  scripts/e2e-helper.py serve [--port 17555] [--serial emulator-5554] [--forward 15555]
+  scripts/e2e-helper.py serve [--port 17555] [--serial emulator-5554] [--progress FILE]
+                                                               --progress: live lines for scripts/e2e.sh (steps, prompts, reboots)
   scripts/e2e-helper.py console "avd snapshot load clean"      an emulator console command (works with adbd stopped)
   scripts/e2e-helper.py approve [--timeout 120]                accept the next "Allow USB debugging?" prompt, then exit
   scripts/e2e-helper.py forward                                adbd in TCP mode and the port forwards (15555, 6466, 6467, 9764)
@@ -36,6 +37,18 @@ KEYCODE_RE = re.compile(r"^[A-Z0-9_]{1,40}$")
 
 class AdbError(Exception):
     pass
+
+
+PROGRESS = {"file": None, "start": time.time()}
+
+
+def progress(text):
+    """One live line for scripts/e2e.sh, which shows the file as it grows: [mm:ss] text."""
+    if not PROGRESS["file"]:
+        return
+    elapsed = int(time.time() - PROGRESS["start"])
+    with open(PROGRESS["file"], "a") as fh:
+        fh.write("[%02d:%02d] %s\n" % (elapsed // 60, elapsed % 60, text))
 
 
 def adb(*args, timeout=30):
@@ -165,6 +178,7 @@ def approver_loop():
                 if allow is not None:
                     tap(allow)
                     APPROVER["count"] += 1
+                    progress("      · TV: allowed this iPhone (\"Allow USB debugging?\")")
                     time.sleep(1.5)
                     continue
         except AdbError:
@@ -333,6 +347,85 @@ def ep_shell(q):
     return {"output": shell(q.get("cmd", "true"), timeout=int(q.get("timeout", 60)))}
 
 
+REBOOT_WATCH = {"until": 0.0, "count": 0, "thread": None, "error": ""}
+
+
+def forwards_present():
+    try:
+        listed = adb("forward", "--list", timeout=10)
+    except AdbError:
+        return False
+    return all(("tcp:%d tcp:%d" % (mac, tv)) in listed for mac, tv in FORWARDS.items())
+
+
+def reboot_watch_loop():
+    """The app restarts the TV at the end of apply (TESTING.md DBL-18). A reboot ends adb's transport and every
+    forward on it, and adbd comes back in USB mode: once Android has booted, put adbd back in TCP mode and the
+    forwards back, so the app can reconnect exactly as it would to a real TV on the network."""
+    while time.time() < REBOOT_WATCH["until"]:
+        if forwards_present():
+            time.sleep(2)
+            continue
+        progress("      · TV: link gone (a restart, or debugging switched off); waiting for it")
+        try:
+            adb("wait-for-device", timeout=240)
+            for _ in range(120):
+                try:
+                    if shell("getprop sys.boot_completed", timeout=8).strip() == "1":
+                        break
+                except AdbError:
+                    pass
+                time.sleep(2)
+            tcp_mode()
+            forward_all()
+            REBOOT_WATCH["count"] += 1
+            sys.stderr.write("reboot seen: adbd in TCP mode and forwards back\n")
+            progress("      · TV: answering again; network debugging and port forwards back")
+        except AdbError as e:
+            REBOOT_WATCH["error"] = str(e)
+            time.sleep(2)
+    REBOOT_WATCH["thread"] = None
+
+
+def ep_watch_reboot(q):
+    """Puts the forwards back after every reboot for the next `seconds`, in the background; /reboots counts them."""
+    import threading
+    REBOOT_WATCH["until"] = time.time() + float(q.get("seconds", 600))
+    if q.get("reset") == "1":
+        REBOOT_WATCH["count"] = 0; REBOOT_WATCH["error"] = ""
+    if REBOOT_WATCH["thread"] is None:
+        REBOOT_WATCH["thread"] = threading.Thread(target=reboot_watch_loop, daemon=True)
+        REBOOT_WATCH["thread"].start()
+    return {"count": REBOOT_WATCH["count"]}
+
+
+def ep_reboots(q):
+    return {"count": REBOOT_WATCH["count"], "active": REBOOT_WATCH["thread"] is not None, "error": REBOOT_WATCH["error"]}
+
+
+GREEN, RED, YELLOW, DIM, RESET = "\033[32m", "\033[31m", "\033[33m", "\033[2m", "\033[0m"
+
+
+def ep_event(q):
+    """A step of the UI test: start, pass, fail, skip, issue (an assertion failure, live) or note."""
+    kind, name = q.get("kind", "note"), q.get("name", "")
+    took = (" %ss" % q["seconds"]) if "seconds" in q else ""
+    detail = q.get("detail", "")
+    if kind == "start":
+        progress("▶ %s" % name)
+    elif kind == "pass":
+        progress("%s✓ %s%s%s" % (GREEN, name, DIM + took, RESET))
+    elif kind == "fail":
+        progress("%s✗ %s%s%s%s" % (RED, name, took, (": " + detail) if detail else "", RESET))
+    elif kind == "skip":
+        progress("%s– %s (skipped%s)%s" % (YELLOW, name, (": " + detail) if detail else "", RESET))
+    elif kind == "issue":
+        progress("%s      ! %s%s" % (RED, name, RESET))
+    else:
+        progress("%s      · %s%s" % (DIM, name, RESET))
+    return {}
+
+
 ENDPOINTS = {name[3:].replace("_", "-"): fn for name, fn in globals().items() if name.startswith("ep_")}
 
 
@@ -421,6 +514,8 @@ def main():
         reply = console(args[-1], port)
         print(reply.strip())
         sys.exit(0 if "OK" in reply else 1)
+    if "--progress" in args:
+        PROGRESS["file"] = args[args.index("--progress") + 1]
     port = 17555
     if "--port" in args:
         port = int(args[args.index("--port") + 1])

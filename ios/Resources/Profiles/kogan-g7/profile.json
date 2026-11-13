@@ -1,0 +1,33 @@
+{
+  "id": "kogan-g7",
+  "name": "Kogan G7 (Expressluck, cottongreen, Realtek), Australia",
+  "source": "cleanyourtv examples/kogan-g7 at b9538048",
+  "community": true,
+  "brand": "Kogan",
+  "os": "Google TV (Android 11)",
+  "match": {},
+  "names": {
+    "device": [
+      "cottongreen"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

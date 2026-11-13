@@ -1,0 +1,43 @@
+{
+  "id": "sampo-oled-55zw8212",
+  "name": "SAMPO OLED-55ZW8212 (SWTV-22TW-4K, Skyworth anaheim, MediaTek), Taiwan",
+  "source": "cleanyourtv examples/sampo-oled-55zw8212 at b9538048",
+  "community": true,
+  "brand": "SAMPO",
+  "os": "Google TV 11",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.google.android.youtube.tvmusic",
+    "com.xiaodianshi.tv.yst",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Cost: a held volume key steps once per press (the helper never sees the volume keys, so consume_volume_keys cannot bring the ramp back)."
+  ],
+  "theme": {
+    "show_greeting": false,
+    "settings_key_keycodes": [
+      83
+    ],
+    "app_keys": [
+      "172:com.mediatek.wwtv.tvcenter",
+      "front:172:home",
+      "288:screensaver"
+    ]
+  }
+}

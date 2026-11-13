@@ -1,0 +1,49 @@
+{
+  "id": "benq-gv32",
+  "name": "BenQ GV32 portable projector (SDMC, BenQ_GV01, himalaya, MediaTek m7332)",
+  "source": "cleanyourtv examples/benq-gv32 at b9538048",
+  "community": true,
+  "brand": "BenQ",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "himalaya"
+    ],
+    "product": [
+      "BenQ_GV01"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.plexapp.android",
+    "com.google.android.youtube.tv",
+    "com.crunchyroll.crunchyroid",
+    "com.collegehumor.chdropout",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android"
+  ],
+  "warnings": [],
+  "theme": {
+    "hidden_apps": [
+      "com.sdmc.implayer"
+    ],
+    "live_tv_package": "",
+    "columns": 4,
+    "rows_below_dock": 0,
+    "app_keys": [
+      "scan:189:com.android.tv.settings",
+      "scan:433:com.plexapp.android"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "xiaomi-mitv-mftr0",
+  "name": "Xiaomi MiTV-MFTR0 (freeguy, MediaTek mt9653), China firmware OS2.0.23.0.RFTMATV (HyperOS TV 2)",
+  "source": "cleanyourtv examples/xiaomi-mitv-mftr0 at b9538048",
+  "community": true,
+  "brand": "Xiaomi",
+  "os": "Android 11 (HyperOS TV 2, CN build)",
+  "match": {},
+  "names": {},
+  "stockLauncher": "com.mitv.tvhome",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Notes from this firmware: - The standby/screensaver ads come from com.xiaomi.mitv.hyper.screensaver, same as on OS3: a plain Activity with its own downloaded carousel; screensaver_enabled=0 does not touch it. com.mitv.screensaver / com.xiaomi.mitv.advertise don't exist. - Keep com.xiaomi.mitv.smartpanel enabled (it is the Menu-button panel: source switcher + wireless tiles)."
+  ],
+  "theme": {}
+}

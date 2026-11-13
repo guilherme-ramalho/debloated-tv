@@ -1,0 +1,33 @@
+{
+  "id": "sony-xbr-65x900f",
+  "name": "Sony BRAVIA XBR-65X900F (2018, BRAVIA_ATV3_4K, MediaTek MT5891), US/Canada",
+  "source": "cleanyourtv examples/sony-xbr-65x900f at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 9",
+  "match": {},
+  "names": {
+    "product": [
+      "BRAVIA_ATV3_4K_UC"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

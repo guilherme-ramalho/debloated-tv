@@ -1,0 +1,38 @@
+{
+  "id": "toshiba-shandao-atv11",
+  "name": "Toshiba Android TV (Vestel shandao, MediaTek), UK, build RTM6.230109.207",
+  "source": "cleanyourtv examples/toshiba-shandao-atv11 at b9538048",
+  "community": true,
+  "brand": "Toshiba",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "shandao"
+    ],
+    "product": [
+      "EMIR_Toshiba"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Keep enabled: every com.mediatek.* and com.vestel.* package (Live TV, HDMI inputs, tuner, picture settings), com.mediatek.autopair (remote pairing) and the Freeview Play apps (uk.co.freeview.*), which the owner's report shows disabled by the system rather than by the owner; this list does not touch them."
+  ],
+  "theme": {}
+}

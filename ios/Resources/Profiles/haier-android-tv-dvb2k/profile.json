@@ -1,0 +1,39 @@
+{
+  "id": "haier-android-tv-dvb2k",
+  "name": "Haier Android TV DVB2K (broadway, HaierATVT56DVB; also sold as the CANDY Android TV DVB2K, CANDYATVT56)",
+  "source": "cleanyourtv examples/haier-android-tv-dvb2k at b9538048",
+  "community": true,
+  "brand": "Haier",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "broadway"
+    ],
+    "product": [
+      "HaierATVT56DVB",
+      "CANDYATVT56"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Never launch these either, not just keep them enabled: on this Haier/CVTE board family, opening one is reported to flip a factory-mode flag and disable Play Services, Netflix and Chromecast on the next boot with no way back from the shell."
+  ],
+  "theme": {}
+}

@@ -1,0 +1,41 @@
+{
+  "id": "sony-bravia-vu1",
+  "name": "Sony BRAVIA VU1 (KD-43X7500H, KD-65X750H, BRAVIA_VU1_UC, Realtek)",
+  "source": "cleanyourtv examples/sony-bravia-vu1 at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "product": [
+      "BRAVIA_VU1_UC"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "The Help key goes to com.sony.dtv.smarthelp, so it does nothing once that line is applied. - HDMI rows in the launcher's Inputs menu open an \"Open with: TV / TV\" chooser: com.android.tv and com.realtek.tv.atv both answer the passthrough URI, and \"Always\" is never applied."
+  ],
+  "theme": {
+    "live_tv_package": "com.realtek.tv.atv",
+    "hidden_apps": [
+      "com.android.tv",
+      "com.realtek.tv.atv"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "sony-kd-65x82l",
+  "name": "Sony BRAVIA KD-55X82L / KD-65X82L / XR-65X90L / BRAVIA 4K VH22 (2023, BRAVIA_VH22, MediaTek), India, US and Australia",
+  "source": "cleanyourtv examples/sony-kd-65x82l at b9538048",
+  "community": true,
+  "brand": "Sony",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "BRAVIA_VH22",
+      "name"
+    ],
+    "product": [
+      "was",
+      "code"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

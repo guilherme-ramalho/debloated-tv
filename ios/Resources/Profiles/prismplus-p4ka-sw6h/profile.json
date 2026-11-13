@@ -1,0 +1,33 @@
+{
+  "id": "prismplus-p4ka-sw6h",
+  "name": "PRISM+ P4KA 4K AI TV (device SW6H, made by Skyworth/Coocaa)",
+  "source": "cleanyourtv examples/prismplus-p4ka-sw6h at b9538048",
+  "community": true,
+  "brand": "PRISM+",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "SW6H"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

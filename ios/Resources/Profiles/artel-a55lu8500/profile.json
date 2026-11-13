@@ -1,0 +1,52 @@
+{
+  "id": "artel-a55lu8500",
+  "name": "Artel A55LU8500 (device R3GS, MOKA, Realtek RTD2841A), Uzbekistan",
+  "source": "cleanyourtv examples/artel-a55lu8500 at b9538048",
+  "community": true,
+  "brand": "Artel",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "R3GS"
+    ],
+    "product": [
+      "ARTEL"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.google.android.youtube.tv",
+    "ru.kinopoisk.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Do not disable launcherx or com.google.android.tungsten.setupwraith on this TV."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.netflix.ninja",
+      "com.google.android.youtube.tvmusic",
+      "com.google.android.play.games",
+      "com.creative.fastscreen.tv",
+      "com.apps.biz.ds",
+      "com.apps.function.audiolink"
+    ],
+    "live_tv_package": "com.realtek.tv",
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx",
+    "key_filter": false
+  }
+}

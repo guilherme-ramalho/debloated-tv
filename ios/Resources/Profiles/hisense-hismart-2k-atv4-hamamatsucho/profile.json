@@ -1,0 +1,49 @@
+{
+  "id": "hisense-hismart-2k-atv4-hamamatsucho",
+  "name": "Hisense HiSmart 2K ATV4 (hamamatsucho), India",
+  "source": "cleanyourtv examples/hisense-hismart-2k-atv4-hamamatsucho at b9538048",
+  "community": true,
+  "brand": "Hisense",
+  "os": "Android TV 11",
+  "match": {},
+  "names": {
+    "device": [
+      "hamamatsucho"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": false,
+  "homeScreenNote": "cvte",
+  "dockCandidates": [
+    "com.mediatek.wwtv.tvcenter",
+    "com.google.android.youtube.tv",
+    "com.netflix.ninja",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Normal boot (~35 s) every time, nothing re-enabled at boot.",
+    "Keep the com.at.factory.*, com.cvte.*fac*, mediatek.factorymenu.ui and com.hisensefac.daemon packages, and never open them."
+  ],
+  "theme": {
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "hidden_apps": [],
+    "launch_actions": [
+      "com.mediatek.wwtv.tvcenter=input:com.mediatek.tvinput/.hdmi.HDMIInputService/HW6"
+    ],
+    "app_labels": [
+      "com.mediatek.wwtv.tvcenter=Set-top box"
+    ],
+    "app_banners": [
+      "com.mediatek.wwtv.tvcenter=banner_tv"
+    ]
+  }
+}

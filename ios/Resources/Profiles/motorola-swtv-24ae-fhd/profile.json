@@ -1,0 +1,37 @@
+{
+  "id": "motorola-swtv-24ae-fhd",
+  "name": "Motorola / Coocaa / Telefunken SWTV-24AE-FHD (24LP6000G, Skyworth OEM, beomil), India/SEA/Tunisia",
+  "source": "cleanyourtv examples/motorola-swtv-24ae-fhd at b9538048",
+  "community": true,
+  "brand": "Motorola",
+  "os": "Google TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "beomil"
+    ],
+    "product": [
+      "SW11_TG"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": false,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": false,
+  "homeScreenNote": "noConfig",
+  "dockCandidates": [
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {}
+}

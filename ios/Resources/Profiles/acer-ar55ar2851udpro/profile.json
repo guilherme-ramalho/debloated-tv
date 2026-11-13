@@ -1,0 +1,50 @@
+{
+  "id": "acer-ar55ar2851udpro",
+  "name": "Acer AR55AR2851UDPRO 55\" (SCBC R4, Realtek rtd2851m), India",
+  "source": "cleanyourtv examples/acer-ar55ar2851udpro at b9538048",
+  "community": true,
+  "brand": "Acer",
+  "os": "Android TV 14",
+  "match": {},
+  "names": {
+    "device": [
+      "R4"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false,
+    "keepStockLauncher": true
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.amazon.amazonvideo.livingroom",
+    "in.startv.hotstar",
+    "com.amazon.music.tv",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "No RecoveryActivity in logcat.  setupwraith owns the saved Wi-Fi network on this set (dumpsys wifi | grep -o 'cname=[^ ]*'): leave it enabled.",
+    "The remote's YouTube button never reaches Android: com.realtek.keyinterceptserver takes it (keycode 2030) and starts com.google.android.youtube.tv by package, so app_keys cannot remap it.",
+    "Not touched: com.apps.factory.ui and com.realtek.factorytools (never started), com.apps.biz.ds and com.apps.biz.mt (unclear), com.seraphic.hbbtv.app, com.apps.usbmediaplayer."
+  ],
+  "theme": {
+    "hidden_apps": [
+      "com.apps.livetv"
+    ],
+    "live_tv_package": "com.apps.livetv",
+    "columns": 6,
+    "stock_home_redirect": "com.google.android.tvlauncher",
+    "icon_only_buttons": true,
+    "wifi_label_width": 300,
+    "tile_menu": true
+  }
+}

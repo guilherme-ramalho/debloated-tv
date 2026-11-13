@@ -1,0 +1,61 @@
+{
+  "id": "tcl-g08-au-android12",
+  "name": "TCL Smart TV Pro (G08, G08_4K_GB, MediaTek), Australian firmware",
+  "source": "cleanyourtv examples/tcl-g08-au-android12 at b9538048",
+  "community": true,
+  "brand": "TCL",
+  "os": "Google TV 12",
+  "match": {},
+  "names": {
+    "device": [
+      "G08"
+    ],
+    "product": [
+      "G08_4K_GB"
+    ]
+  },
+  "stockLauncher": "com.google.android.apps.tv.launcherx",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.plexapp.android",
+    "org.smarttube.stable",
+    "com.android.vending",
+    "com.android.tv.settings",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [
+    "Left enabled on purpose: com.tcl.tv, com.tcl.tvinput, com.tcl.systemserver, com.tcl.ui_mediaCenter (USB media player), com.tcl.partnercustomizer (its TKeyFree \"TCL Channel\" tile shows up as an app once launcherx is off; hide it with hidden_apps instead), com.tcl.useragreement, tv.mopa.ginga, the keyboards, Play Store and Play Services, plus the DO NOT DISABLE lines below."
+  ],
+  "theme": {
+    "fill_dock": false,
+    "hidden_apps": [
+      "com.tcl.tv",
+      "com.tcl.suspension",
+      "com.tcl.partnercustomizer"
+    ],
+    "live_tv_package": "",
+    "columns": 4,
+    "rows_below_dock": 1,
+    "settings_key_keycodes": [
+      83
+    ],
+    "settings_key_panel": false,
+    "app_keys": [
+      "4001:input:com.tcl.tvinput/.TvPassThroughService/HW15",
+      "4065:org.smarttube.stable",
+      "4062:com.plexapp.android"
+    ]
+  }
+}

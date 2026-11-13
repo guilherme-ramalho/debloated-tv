@@ -1,0 +1,48 @@
+{
+  "id": "tdsystems-ch17f40s-redwood",
+  "name": "TD Systems (Changhong, redwood, DVB92TD, CH17F40S)",
+  "source": "cleanyourtv examples/tdsystems-ch17f40s-redwood at b9538048",
+  "community": true,
+  "brand": "TD Systems",
+  "os": "Android 14",
+  "match": {},
+  "names": {
+    "device": [
+      "redwood"
+    ],
+    "product": [
+      "DVB92TD"
+    ]
+  },
+  "stockLauncher": "com.google.android.tvlauncher",
+  "launcher": {
+    "homeKeyService": true,
+    "inputKeyService": false,
+    "restoreKeyServices": false
+  },
+  "homeScreen": true,
+  "homeScreenNote": null,
+  "dockCandidates": [
+    "com.mediatek.wwtv.tvcenter",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.android.vending",
+    "com.amazon.amazonvideo.livingroom",
+    "com.disney.disneyplus",
+    "com.wbd.stream",
+    "com.spotify.tv.android",
+    "com.crunchyroll.crunchyroid"
+  ],
+  "warnings": [],
+  "theme": {
+    "columns": 4,
+    "app_labels": [
+      "com.mediatek.wwtv.tvcenter=TDT"
+    ],
+    "hidden_apps": [
+      "com.mitv.gallery"
+    ],
+    "live_tv_package": "com.mediatek.wwtv.tvcenter",
+    "power_on_home": true
+  }
+}
