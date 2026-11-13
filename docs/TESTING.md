@@ -69,8 +69,10 @@ as they happen, and the TV side's events: prompts approved, restarts, forwards r
 script sets `E2E_HELPER`, so Xcode and CI never need the emulator. TV discovery is off during the run
 (`-e2eNoDiscovery`), so it never opens a connection to a real TV on the network.
 
-The script resets the emulator to its `clean` snapshot before and after (the run ends with debugging off on the
-TV, so the reset goes through the emulator console), reboots the guest when its clock is stale, builds the app
+The script resets the emulator to its `clean` snapshot before each scenario and, at the end (also after a failure
+or Ctrl+C), stops everything it used: the emulator (through its console, as the run ends with debugging off) and
+its leftover crash reporters, the simulator, the Simulator app when nothing else is open in it, the helper and any
+interrupted `xcodebuild`; `--keep` leaves the emulator and simulator running. It reboots the guest when its clock is stale, builds the app
 signed (an unsigned simulator build has no Keychain entitlement and can't create the pairing identity), and erases
 its own simulator ("Debloated TV E2E") so the app starts unpaired. Where the emulator differs from a TV: wake and
 standby don't exist, the TV is reached as 127.0.0.1, and after debugging is switched off the forwarded port still

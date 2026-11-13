@@ -154,7 +154,7 @@ final class TVRemoteEndToEndTests: XCTestCase {
             (listed.exists ? listed : app.buttons["Enter the TV's address instead"]).tap()
             let field = app.textFields["The TV's IP address"]
             XCTAssertTrue(field.waitForExistence(timeout: 5))
-            field.tap(); field.typeText(host)
+            replace(field, with: host)
             XCTAssertTrue(app.staticTexts["Looks right"].waitForExistence(timeout: 3))
             app.buttons["Connect"].tap()
         }
@@ -532,7 +532,11 @@ final class TVRemoteEndToEndTests: XCTestCase {
     }
 
     private func replace(_ field: XCUIElement, with text: String) {
-        field.tap()
+        // A freshly erased simulator can take a moment to give the field keyboard focus after the first tap.
+        for _ in 0..<3 {
+            field.tap()
+            if waitUntil(3, { (field.value(forKey: "hasKeyboardFocus") as? Bool) == true }) { break }
+        }
         let current = (field.value as? String) ?? ""
         if !current.isEmpty { field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: current.count + 2)) }
         field.typeText(text)

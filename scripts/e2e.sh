@@ -8,10 +8,10 @@
 #   main        pair, remote, setup with the emulator's tested profile and the new Home, editor, undo, debugging off
 #   community   a TV without a tested profile: the list picker, a "closest" list, a debloat-only list, undo
 #
-#   scripts/e2e.sh                     reset the emulator, run both scenarios, reset again
+#   scripts/e2e.sh                     reset the emulator, run both scenarios, then stop everything it used
 #   scripts/e2e.sh --only community    one scenario (main or community)
 #   scripts/e2e.sh --no-reset          keep the emulator as it is before the first scenario (faster while debugging)
-#   scripts/e2e.sh --keep              leave the emulator as the run left it (to look at it)
+#   scripts/e2e.sh --keep              leave the emulator and the simulator running as the run left them (to look at them)
 #   scripts/e2e.sh --device NAME       a simulator device type other than "iPhone 17 Pro"
 #
 # Needs: the emulator created once (scripts/tv-emulator.sh create/start/save), Xcode with an iOS simulator runtime,
@@ -47,9 +47,18 @@ LOG="$OUT/e2e-$STAMP.log"
 
 # --- the emulator ---------------------------------------------------------------------------------------------------
 booted() { [ "$("$ADB" -s $SERIAL shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = 1 ]; }
+# Started here: straight from the clean snapshot, saving nothing on exit. Stopping an emulator otherwise writes its
+# quick-boot state, and switching from that state to 'clean' after a cold start crashed the emulator's graphics
+# restore (12 Nov 2026). An emulator already running (yours, or a --keep run) is used and reset with the snapshot.
+STARTED_EMULATOR=0
 if ! "$ADB" devices | grep -q "^$SERIAL[[:space:]]*device"; then
-  say "Starting the Android TV emulator…"
-  "$ROOT/scripts/tv-emulator.sh" start
+  say "Starting the Android TV emulator from its clean snapshot…"
+  "$ANDROID_HOME/emulator/emulator" -avd DebloatedTV -port 5554 -no-boot-anim -snapshot clean -no-snapshot-save \
+    >"$OUT/emulator-$STAMP.log" 2>&1 &
+  disown $!
+  STARTED_EMULATOR=1
+  "$ADB" -s $SERIAL wait-for-device
+  until booted; do sleep 2; done
 fi
 for port in 15555 6466 6467 9764; do
   if lsof -nP -iTCP:$port -sTCP:LISTEN 2>/dev/null | grep -qv '^COMMAND\|adb'; then die "Port $port on this Mac is in use by something other than adb."; fi
@@ -86,14 +95,29 @@ prepare_tv() {
 PROGRESS="$OUT/progress-$STAMP.txt"; : >"$PROGRESS"; TAIL_PID=""
 python3 "$ROOT/scripts/e2e-helper.py" serve --port $HELPER_PORT --serial $SERIAL --progress "$PROGRESS" 2>"$OUT/helper-$STAMP.log" &
 HELPER_PID=$!; disown $HELPER_PID   # no "Terminated" line when it's stopped at the end
+# At the end, also after a failure or Ctrl+C: nothing the run started keeps running (unless --keep). The adb server
+# stays: Android Studio shares it.
 cleanup() {
   [ -n "$TAIL_PID" ] && kill $TAIL_PID 2>/dev/null || true
   kill $HELPER_PID 2>/dev/null || true
+  [ -n "${UDID:-}" ] && pkill -f "xcodebuild .*$UDID" 2>/dev/null || true   # an interrupted test run
   for port in 15555 6466 6467 9764; do "$ADB" -s $SERIAL forward --remove tcp:$port >/dev/null 2>&1 || true; done
-  if [ "$KEEP" = 0 ]; then
-    # The main scenario ends with debugging switched off on the TV, so this goes through the console, not adb.
-    python3 "$ROOT/scripts/e2e-helper.py" console "avd snapshot load clean" >/dev/null 2>&1 && echo "Emulator back on its clean snapshot." || echo "Couldn't reset the emulator; run scripts/tv-emulator.sh reset."
+  if [ "$KEEP" = 1 ]; then echo "Left the emulator and the simulator running (--keep)."; return; fi
+  # The emulator: shut down through its console (the main scenario ends with debugging off), then the crash
+  # reporters it leaves behind. Its next start comes from the clean snapshot anyway (prepare_tv).
+  if [ "$STARTED_EMULATOR" = 1 ]; then
+    # Started with -no-snapshot-save: a console kill writes nothing.
+    python3 "$ROOT/scripts/e2e-helper.py" console "kill" >/dev/null 2>&1 || true
+    for _ in $(seq 1 30); do pgrep -f "qemu-system.*-avd DebloatedTV" >/dev/null || break; sleep 1; done
   fi
+  # One that was already running would save its quick-boot state on a console kill: stop it without saving.
+  pkill -9 -f "qemu-system.*-avd DebloatedTV" 2>/dev/null || true
+  # Only orphans (parent gone): an emulator started from Android Studio keeps its own.
+  ps -eo pid=,ppid=,command= | awk '$2 == 1 && $3 ~ /Android\/sdk\/emulator\/(crashpad_handler|netsimd)/ {print $1}' | xargs kill 2>/dev/null || true
+  # The simulator, and the Simulator app if it's showing nothing else.
+  [ -n "${UDID:-}" ] && xcrun simctl shutdown "$UDID" >/dev/null 2>&1 || true
+  if [ "$(xcrun simctl list devices booted 2>/dev/null | grep -c Booted)" = 0 ]; then osascript -e 'quit app "Simulator"' >/dev/null 2>&1 || true; fi
+  echo "Stopped the emulator, the simulator and the helper."
 }
 trap cleanup EXIT
 for _ in $(seq 1 20); do curl -fs "http://127.0.0.1:$HELPER_PORT/ping" >/dev/null 2>&1 && break; sleep 0.5; done
@@ -129,17 +153,31 @@ scenario() {
   echo "[$1] ───────── preparing the TV and the iPhone ─────────" >>"$PROGRESS"
   prepare_tv "$3" >>"$OUT/prepare-$STAMP.log" 2>&1
   [ "$3" = 0 ] || fresh_simulator
-  set +e
-  TEST_RUNNER_E2E_HELPER="http://127.0.0.1:$HELPER_PORT" TEST_RUNNER_E2E_TV_HOST=127.0.0.1 TEST_RUNNER_E2E_ADB_ADDRESS=127.0.0.1:15555 \
-    xcodebuild test-without-building -project TVRemote.xcodeproj -scheme "Debloated TV Dev" \
-      -destination "platform=iOS Simulator,id=$UDID" -only-testing:"TVRemoteUITests/TVRemoteEndToEndTests/$2" \
-      -parallel-testing-enabled NO -resultBundlePath "$OUT/e2e-$STAMP-$1.xcresult" >>"$LOG" 2>&1
-  local status=$?
-  set -e
+  local status attempt
+  for attempt in 1 2; do
+    local before; before=$(wc -l <"$LOG")
+    rm -rf "$OUT/e2e-$STAMP-$1.xcresult"
+    set +e
+    TEST_RUNNER_E2E_HELPER="http://127.0.0.1:$HELPER_PORT" TEST_RUNNER_E2E_TV_HOST=127.0.0.1 TEST_RUNNER_E2E_ADB_ADDRESS=127.0.0.1:15555 \
+      xcodebuild test-without-building -project TVRemote.xcodeproj -scheme "Debloated TV Dev" \
+        -destination "platform=iOS Simulator,id=$UDID" -only-testing:"TVRemoteUITests/TVRemoteEndToEndTests/$2" \
+        -parallel-testing-enabled NO -resultBundlePath "$OUT/e2e-$STAMP-$1.xcresult" >>"$LOG" 2>&1
+    status=$?
+    set -e
+    # The simulator sometimes fails to install the test runner right after an erase ("Failed to locate promise"):
+    # nothing ran yet, so boot a fresh simulator and try once more.
+    if [ $status -ne 0 ] && [ $attempt = 1 ] && tail -n +"$before" "$LOG" | grep -q "Failed to install or launch the test runner"; then
+      echo "[$1] the simulator didn't install the test runner; trying again on a fresh one" >>"$PROGRESS"
+      fresh_simulator
+      continue
+    fi
+    break
+  done
   sleep 1
   if [ $status -ne 0 ]; then STATUS=$status; echo "[$1] FAILED (result bundle: $OUT/e2e-$STAMP-$1.xcresult)" >>"$PROGRESS"; fi
 }
 FIRST=$RESET
+[ "$STARTED_EMULATOR" = 1 ] && FIRST=0   # it already came up clean
 if [ -z "$ONLY" ] || [ "$ONLY" = main ]; then scenario main testPairSetUpEditUndoAndSecure "$FIRST"; FIRST=1; fi
 # The main scenario leaves debugging off and the app paired: the community one then starts from a clean emulator.
 if [ -z "$ONLY" ] || [ "$ONLY" = community ]; then scenario community testCommunityListSetupAndUndo "$FIRST"; fi
