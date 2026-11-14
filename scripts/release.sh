@@ -3,7 +3,7 @@
 #
 #   scripts/release.sh                 bundle the launcher, verify its key, run the tests, raise the build number, archive
 #   scripts/release.sh --build 17      use this build number instead of the next one
-#   scripts/release.sh --e2e           also run the live ADB test and the end-to-end suite (needs the emulator)
+#   scripts/release.sh --e2e           also run the live ADB test and the end-to-end suite (starts and stops the emulator itself)
 #   scripts/release.sh --skip-tests    only bundle, verify, bump and archive (for a rebuild of a tested commit)
 #   scripts/release.sh --no-archive    everything but the archive
 #
@@ -94,14 +94,30 @@ print(pick["udid"] if pick else "")')"
       -only-testing:TVRemoteUITests/TVRemoteUITests -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO >"$UI_LOG" 2>&1) || die "UI smoke tests failed. Log: $UI_LOG"
   ok "UI smoke tests pass ($(grep -ciE "Test case .*passed" "$UI_LOG") cases)."
   if [ "$E2E" = 1 ]; then
+    # This script owns the emulator: it boots it from the clean snapshot without saving (as scripts/e2e.sh does) for
+    # the live ADB test, then shuts it down so the end-to-end suite starts its own. An emulator started by hand boots
+    # from its quick-boot state, and switching that to the clean snapshot crashes the emulator (12 and 14 Nov 2026).
+    ADB="$ANDROID_HOME/platform-tools/adb"
+    if "$ADB" devices | grep -q '^emulator-5554[[:space:]]*device'; then
+      echo "  Shutting down the running emulator (the suite starts its own)…"
+      "$ADB" -s emulator-5554 emu kill >/dev/null 2>&1 || true
+      while "$ADB" devices | grep -q '^emulator-5554'; do sleep 1; done
+    fi
     echo "  Live ADB test (emulator)…"
-    bash "$ROOT/scripts/tv-emulator.sh" test >"$OUT/adb-live-$STAMP.log" 2>&1 || die "The live ADB test failed. Log: $OUT/adb-live-$STAMP.log"
+    "$ANDROID_HOME/emulator/emulator" -avd DebloatedTV -port 5554 -no-boot-anim -snapshot clean -no-snapshot-save \
+      >"$OUT/emulator-$STAMP.log" 2>&1 &
+    "$ADB" -s emulator-5554 wait-for-device
+    until [ "$("$ADB" -s emulator-5554 shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = 1 ]; do sleep 2; done
+    LIVE=0; bash "$ROOT/scripts/tv-emulator.sh" test >"$OUT/adb-live-$STAMP.log" 2>&1 || LIVE=1
+    "$ADB" -s emulator-5554 emu kill >/dev/null 2>&1 || true
+    while "$ADB" devices | grep -q '^emulator-5554'; do sleep 1; done
+    [ "$LIVE" = 0 ] || die "The live ADB test failed. Log: $OUT/adb-live-$STAMP.log"
     ok "Live ADB test passes."
     echo "  End-to-end suite (simulator + emulator, about 10 minutes)…"
     bash "$ROOT/scripts/e2e.sh" >"$OUT/e2e-$STAMP.log" 2>&1 || die "The end-to-end suite failed. Log: $OUT/e2e-$STAMP.log"
     ok "End-to-end suite passes."
   else
-    warn "Skipped the live ADB test and the end-to-end suite (pass --e2e with the emulator running)."
+    warn "Skipped the live ADB test and the end-to-end suite (pass --e2e; it starts the emulator itself)."
   fi
 else
   say "3/5  Tests skipped (--skip-tests)"
