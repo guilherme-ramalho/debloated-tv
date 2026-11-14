@@ -25,6 +25,12 @@
   reboot ends adb's transport, drops every forward and brings adbd back in USB mode. The helper's `watch-reboot`
   endpoint waits for the boot to finish, runs `adb tcpip 5555` again and re-adds the forwards, so the app reconnects
   as it would to a real TV.
+- **App updates restart the remote service.** About a minute after a boot from the clean snapshot (saved 31 Oct
+  2026) the Play Store updates itself and then Google Play services; Android force-stops everything bound to Play
+  services while it installs, the TV Remote Service included, which drops a pairing in progress (CON-02 failed this
+  way on 14 Nov 2026: "Force stopping com.google.android.gms … installPackageLI", then the remote service "has
+  died"). `scripts/e2e.sh` disables the Play Store (`pm disable-user com.android.vending`) as it prepares the TV;
+  loading the snapshot brings it back.
 - **Port 15555, not 5565.** adb scans ports 5555–5585 for emulators and would grab a forwarder there as a second
   device ("more than one device/emulator").
 - **The remote can pair but not control.** The Android TV Remote Service on the `android-tv` API 31 image accepts

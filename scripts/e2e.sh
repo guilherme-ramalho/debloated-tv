@@ -72,6 +72,10 @@ prepare_tv() {
     "$ADB" -s $SERIAL wait-for-device
     until booted; do sleep 2; done
   fi
+  # No app updates during the run: about a minute after a boot from the clean snapshot (31 Oct), the Play Store
+  # updates itself and then Google Play services, and Android force-stops everything bound to it, the TV's remote
+  # service included. That dropped the pairing session in CON-02 (14 Nov 2026). The snapshot load brings it back.
+  "$ADB" -s $SERIAL shell pm disable-user --user 0 com.android.vending >/dev/null 2>&1 || true
   # A loaded snapshot keeps the clock it was saved with, and the TV then refuses the phone's certificate as not yet
   # valid: pairing works but the control port hangs up. A guest reboot takes the time from the host again.
   local skew=$(( $(date +%s) - $("$ADB" -s $SERIAL shell date +%s | tr -d '\r') ))
