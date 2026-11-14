@@ -23309,6 +23309,210 @@
           }
         }
       }
+    },
+    "Unmute" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ton an"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar sonido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réactiver le son"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riattiva audio"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar som"
+          }
+        }
+      }
+    },
+    "Reverse swipe direction" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wischrichtung umkehren"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invertir el deslizamiento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inverser le balayage"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inverti lo scorrimento"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inverter o deslize"
+          }
+        }
+      }
+    },
+    "Swipe left to move right, and up to move down" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach links wischen bewegt nach rechts, nach oben wischen nach unten"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desliza a la izquierda para ir a la derecha y hacia arriba para bajar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Balayez vers la gauche pour aller à droite, vers le haut pour descendre"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scorri a sinistra per andare a destra e in alto per scendere"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deslize para a esquerda para ir à direita e para cima para descer"
+          }
+        }
+      }
+    },
+    "Keep switched on = stays enabled. 1 protected system app is never touched. %lld listed apps are already off or not installed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eingeschaltet = bleibt aktiv. 1 geschützte System-App wird nie angerührt. %lld gelistete Apps sind schon aus oder nicht installiert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activado = sigue activa. 1 app del sistema protegida nunca se toca. %lld apps de la lista ya están desactivadas o no instaladas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activé = reste actif. 1 app système protégée n’est jamais touchée. %lld apps de la liste sont déjà désactivées ou absentes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attivo = resta attiva. 1 app di sistema protetta non viene mai toccata. %lld app dell'elenco sono già spente o non installate."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ligado = continua ativo. 1 app de sistema protegido nunca é tocado. %lld apps da lista já estão desativados ou não instalados."
+          }
+        }
+      }
+    },
+    "Keep switched on = stays enabled. %lld protected system apps are never touched. 1 listed app is already off or not installed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eingeschaltet = bleibt aktiv. %lld geschützte System-Apps werden nie angerührt. 1 gelistete App ist schon aus oder nicht installiert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activado = sigue activa. %lld apps del sistema protegidas nunca se tocan. 1 app de la lista ya está desactivada o no instalada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activé = reste actif. %lld apps système protégées ne sont jamais touchées. 1 app de la liste est déjà désactivée ou absente."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attivo = resta attiva. %lld app di sistema protette non vengono mai toccate. 1 app dell'elenco è già spenta o non installata."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ligado = continua ativo. %lld apps de sistema protegidos nunca são tocados. 1 app da lista já está desativado ou não instalado."
+          }
+        }
+      }
+    },
+    "Keep switched on = stays enabled. 1 protected system app is never touched. 1 listed app is already off or not installed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eingeschaltet = bleibt aktiv. 1 geschützte System-App wird nie angerührt. 1 gelistete App ist schon aus oder nicht installiert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activado = sigue activa. 1 app del sistema protegida nunca se toca. 1 app de la lista ya está desactivada o no instalada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activé = reste actif. 1 app système protégée n’est jamais touchée. 1 app de la liste est déjà désactivée ou absente."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attivo = resta attiva. 1 app di sistema protetta non viene mai toccata. 1 app dell'elenco è già spenta o non installata."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ligado = continua ativo. 1 app de sistema protegido nunca é tocado. 1 app da lista já está desativado ou não instalado."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

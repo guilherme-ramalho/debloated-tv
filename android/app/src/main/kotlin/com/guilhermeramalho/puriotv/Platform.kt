@@ -169,4 +169,18 @@ fun Problem.message(): Int = when (this) {
     Problem.EDITOR_NO_ANSWER, Problem.EDITOR_OLD, Problem.EDITOR_CLOSED, Problem.EDITOR_INVALID, Problem.EDITOR_TIMEOUT,
     Problem.EDITOR_NOT_CONNECTED, Problem.EDITOR_REJECTED -> R.string.problem_editor
     Problem.INVALID_LAYOUT -> R.string.problem_other
+    Problem.INVALID_ACTION -> R.string.problem_invalid_action
+    Problem.INVALID_BACKUP -> R.string.problem_invalid_backup
+    Problem.INVALID_PREFERENCES -> R.string.problem_invalid_preferences
+    Problem.NOT_PAIRED -> R.string.problem_not_paired
+    Problem.ACTION_APP_UNAVAILABLE -> R.string.problem_action_app
+    Problem.ACTION_INPUT_UNASSIGNED -> R.string.problem_action_input
+    Problem.ACTION_MUTE_UNKNOWN -> R.string.problem_action_mute
+}
+
+/** Where the TV setup status lives (the iPhone keeps it in UserDefaults). */
+class PrefsSetupStore(context: Context) : com.guilhermeramalho.puriotv.core.SetupStatusStore {
+    private val prefs = context.getSharedPreferences("setup", Context.MODE_PRIVATE)
+    override fun load(): String? = prefs.getString("tvSetupStatus.v1", null)
+    override fun save(json: String) { prefs.edit().putString("tvSetupStatus.v1", json).apply() }
 }

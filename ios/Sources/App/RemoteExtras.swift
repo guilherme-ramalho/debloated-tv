@@ -13,14 +13,16 @@ struct KeyboardView: View {
     @State private var sent = ""
     @State private var stamp = 0
     @State private var sending = false
+    /// The field takes focus as the sheet opens, so the keyboard is up and typing can start at once.
+    @FocusState private var focused: Bool
     static let delay: Duration = .milliseconds(400)
     var body: some View {
         NavigationStack {
             Form {
                 Group {
                 Section {
-                    if secure { SecureField("Search or enter text", text: $text).onSubmit(flush) }
-                    else { TextField("Search or enter text", text: $text).onSubmit(flush) }
+                    if secure { SecureField("Search or enter text", text: $text).onSubmit(flush).focused($focused) }
+                    else { TextField("Search or enter text", text: $text).onSubmit(flush).focused($focused) }
                     Toggle("Hide text while typing", isOn: $secure)
                 } footer: { Text("First focus a search or password field on the TV. What you type appears there as you go. Text is sent over the paired encrypted connection and is never saved.") }
                 if !message.isEmpty { Text(message).font(.footnote).foregroundStyle(.secondary) }
@@ -29,6 +31,8 @@ struct KeyboardView: View {
 }.textInputAutocapitalization(.never).autocorrectionDisabled()
                 .navigationTitle("Type on TV").toolbar { Button("Done") { stamp += 1; Task { await push(); dismiss() } } }
                 .onChange(of: text) { _, _ in schedule() }
+                .onChange(of: secure) { _, _ in focused = true }
+                .task { try? await Task.sleep(for: .milliseconds(150)); focused = true }
         }.onDisappear { stamp += 1 }.presentationDetents([.medium, .large])
     }
     private func schedule() {
@@ -166,9 +170,10 @@ private struct InputForm: View {
     private var flashTask: Task<Void, Never>?
     private weak var model: RemoteModel?
 
-    func changed(_ value: DragGesture.Value, model: RemoteModel) {
+    func changed(_ value: DragGesture.Value, model: RemoteModel, reversed: Bool = false) {
         guard model.ready else { cancel(); return }
         if !tracking {
+            interaction.reversed = reversed
             generation += 1; flashTask?.cancel(); flashTask = nil
             self.model = model; tracking = true
             let key = key(at: value.startLocation)
@@ -183,7 +188,7 @@ private struct InputForm: View {
         send(interaction.move(dx: Double(value.translation.width), dy: Double(value.translation.height)))
         if interaction.isSwiping {
             holdTask?.cancel(); holdTask = nil
-            highlighted = TVKey.swipeDirection(dx: Double(value.translation.width), dy: Double(value.translation.height))
+            highlighted = TVKey.swipeDirection(dx: Double(value.translation.width), dy: Double(value.translation.height), reversed: interaction.reversed)
         }
     }
     func ended(_ value: DragGesture.Value) {

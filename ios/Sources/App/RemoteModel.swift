@@ -12,6 +12,8 @@ import Security
     @Published var showingPIN = false
     @Published var error = ""
     @Published var volume = "Volume"
+    /// The TV's mute state as it last reported it (the mute button shows what a tap would do).
+    @Published var muted = false
     @Published var powerOn: Bool?
     @Published var waking = false
     @Published var foregroundPackage = ""
@@ -145,6 +147,7 @@ import Security
             case .foreground(let package):
                 self.foregroundPackage = package
             case .volume(let current, let max, let muted):
+                self.muted = muted
                 self.volume = muted ? String(localized: "Muted") : (max == 100 ? String(localized: "Volume \(current)") : String(localized: "Volume \(current)/\(max)"))
             case .error(let message):
                 self.ready = false; self.pressed.removeAll(); self.error = message

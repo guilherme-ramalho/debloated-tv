@@ -44,11 +44,20 @@ class RemoteModel(application: Application) : AndroidViewModel(application) {
         val power: Boolean? = null,
         val foreground: String? = null,
         val volume: TVSession.Event.Volume? = null,
+        /** Counts new pairings, so the app can offer TV setup once right after one. */
+        val pairings: Int = 0,
     ) {
         val ready get() = link == Link.READY
     }
 
-    private val store = Store(application)
+    private val store = application.purio.store
+    val settings = application.purio.settings
+    /** TV Home editing (the TV tab and the sleep timer). */
+    val editor by lazy { HomeEditor(application, viewModelScope, this, settings) }
+    /** What the app knows about each TV's setup (TV tab cards, the offer after pairing). */
+    val setup = com.guilhermeramalho.puriotv.core.TVSetupStatus(PrefsSetupStore(application), viewModelScope)
+    /** Quick actions run from the Actions tab. */
+    val actions by lazy { ActionController(application, viewModelScope, this) }
     val discovery = TVDiscovery(application)
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state
@@ -56,6 +65,8 @@ class RemoteModel(application: Application) : AndroidViewModel(application) {
     private var session: TVSession? = null
     private var inForeground = false
     private val wake = WakeRequest()
+    private var retry: kotlinx.coroutines.Job? = null
+    private var attempt = 0
 
     init {
         store.tv?.let { tv -> _state.update { it.copy(paired = tv.pin != null, host = tv.host, tvName = tv.name) } }
@@ -74,8 +85,7 @@ class RemoteModel(application: Application) : AndroidViewModel(application) {
                 onError(Problem.IDENTITY_UNAVAILABLE)
                 return@launch
             }
-            val info = ClientInfo(Build.MODEL ?: "Android", getApplication<Application>().packageName, BuildInfo.versionName(getApplication()))
-            val s = TVSession(host, id, store.clientName, info, viewModelScope)
+            val s = TVSession(host, id, store.clientName, clientInfo(), viewModelScope)
             s.onEvent = ::handle
             session = s
             block(s)
@@ -108,10 +118,20 @@ class RemoteModel(application: Application) : AndroidViewModel(application) {
         if (saved?.pin != null) connect()
     }
 
+    /** Settings › Connection › Save and connect: a new address for the paired TV keeps its pairing only if it's the same TV. */
+    fun saveHost(address: String) {
+        val tv = store.tv ?: return
+        if (address == tv.host) return
+        store.tv = tv.copy(host = address)
+        _state.update { it.copy(host = address) }
+        connect()
+    }
+
     fun connect() {
         val tv = store.tv ?: return
         val pin = tv.pin ?: return
         if (!inForeground) return
+        retry?.cancel(); retry = null
         _state.update { it.copy(link = Link.CONNECTING, problem = null, tvName = tv.name, host = tv.host) }
         newSession(tv.host) { it.connect(pin) }
     }
@@ -144,6 +164,8 @@ class RemoteModel(application: Application) : AndroidViewModel(application) {
             if (_state.value.paired && _state.value.pairing == null) connect()
         } else {
             if (_state.value.pairing != null) cancelPairing()
+            retry?.cancel(); retry = null
+            editor.close(); actions.cancel()
             session?.disconnect(); session = null
             _state.update { it.copy(link = Link.IDLE) }
         }
@@ -156,10 +178,10 @@ class RemoteModel(application: Application) : AndroidViewModel(application) {
                 val tv = (pendingTV ?: return).copy(pin = event.pin)
                 store.tv = tv
                 pendingTV = null
-                _state.update { it.copy(paired = true, pairing = null, host = tv.host, tvName = tv.name) }
+                _state.update { it.copy(paired = true, pairing = null, host = tv.host, tvName = tv.name, pairings = it.pairings + 1) }
                 connect()
             }
-            TVSession.Event.Connected -> _state.update { it.copy(link = Link.READY, problem = null) }
+            TVSession.Event.Connected -> { attempt = 0; _state.update { it.copy(link = Link.READY, problem = null) } }
             is TVSession.Event.Power -> {
                 _state.update { it.copy(power = event.on) }
                 wake.consume(event.on)?.let { tap(it) }
@@ -189,7 +211,48 @@ class RemoteModel(application: Application) : AndroidViewModel(application) {
         }
         if (!inForeground) return
         _state.update { it.copy(link = Link.OFFLINE, problem = problem) }
+        scheduleReconnect()
     }
+
+    /** "Reconnect automatically": retries after 1, 2, 4, 8, then every 15 s, only while the app is in front. */
+    private fun scheduleReconnect() {
+        if (!inForeground || _state.value.pairing != null || !settings.current.autoReconnect) return
+        retry?.cancel()
+        val wait = minOf(15_000L, 1000L shl minOf(attempt, 4))
+        attempt++
+        retry = viewModelScope.launch { kotlinx.coroutines.delay(wait); retry = null; connect() }
+    }
+
+    /** Typing on the TV: the focused field gets [text] inserted at its cursor. */
+    suspend fun sendText(text: String) {
+        val s = session
+        if (!_state.value.ready || s == null) throw UserMessage(getApplication<Application>().getString(R.string.connect_before_text))
+        s.writeText(text)
+    }
+
+    /** Sends an app link through the paired connection and waits until it is written (TV Home editor key). */
+    suspend fun sendLink(url: String) {
+        val s = session
+        if (!_state.value.ready || s == null) throw UserMessage(getApplication<Application>().getString(R.string.connect_tv_first))
+        s.writeLaunch(url)
+    }
+
+    /** Connected and the TV spoke recently: after the phone sleeps a dead socket can still look connected. */
+    private val remoteLooksAlive get() = _state.value.ready && session?.let { System.currentTimeMillis() - it.lastInbound < 12_000 } == true
+
+    /** Reconnects the remote first if it went quiet (up to 10 s). False if it still isn't answering. */
+    suspend fun freshen(): Boolean {
+        if (remoteLooksAlive) return true
+        attempt = 0; connect()
+        repeat(40) { kotlinx.coroutines.delay(250); if (remoteLooksAlive) return true }
+        return false
+    }
+
+    /** The saved pairing for background runs (quick actions); null when there is none. */
+    val pin: ByteArray? get() = store.tv?.pin
+    suspend fun clientIdentity() = identity()
+    fun clientInfo() = ClientInfo(Build.MODEL ?: "Android", getApplication<Application>().packageName, BuildInfo.versionName(getApplication()))
+    val clientName get() = store.clientName
 
     override fun onCleared() { session?.disconnect(); discovery.stop() }
 

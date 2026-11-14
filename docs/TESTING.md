@@ -128,6 +128,9 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | REM-14 | Header (1.1): connected, standby, offline, then tap the TV name and the app line | Power, then the TV name with a green dot and the app on screen below it, then Keyboard and Inputs. Standby shows "Standby · Wake" (tap wakes), offline "Offline · Retry" (first tap retries, second opens connection settings); the name and app line open connection settings. Nothing clipped on a 4.7-inch iPhone | Manual; E2E reads "On TV: YouTube" |
 | REM-15 | Second row (1.1): Rewind and Fast-forward in Netflix and YouTube while playing; Subtitles in a show with subtitles; TV settings from Home and from inside an app | Skips back/forward once per tap; subtitles toggle or their menu opens where the app supports it; the TV's settings menu opens. Note on the TCL which ones the firmware ignores | Manual (TCL first) |
 | REM-16 | Type on TV: type "test", pause, type "ing"; then delete two letters, pause, type "ed" | The TV field reads "testing", then "testied" ("testi" after the two deletes, plus "ed"): only the change is sent each pause, never the whole text again | Auto `testTypingSendsOnlyTheChange` + Manual (TCL; 9 Nov 2026: was "testtesting") |
+| REM-17 | Mute icon (1.2): mute from the app, then unmute with the TV's own remote, then reconnect while muted | Sound on: crossed-out speaker ("Mute"). Muted: plain speaker ("Unmute") and "Muted" in the middle. The icon follows the TV's own mute changes and is right again after reconnecting. Play/pause keeps its combined icon (the remote protocol doesn't report playback) | Manual (iPhone + Android, TCL) |
+| REM-18 | Settings › Reverse swipe direction (1.2) on, then off | On: swipe left on the pad moves right, swipe up moves down; the highlight shows the direction sent; taps and holds on an arrow unchanged. Off: back to normal. Survives an app restart; settings saved by 1.1 still load | Auto `testReversedSwipesGoTheOtherWay` / `reversedSwipesGoTheOtherWay` + Manual |
+| REM-19 | Type on TV (1.2): open it from the remote's keyboard button | The text field is focused and the phone's keyboard is up without another tap; switching "Hide text while typing" keeps it focused (iPhone) | Manual (iPhone + Android) |
 
 ## 3. TV tab and setup entry (SET)
 
@@ -193,6 +196,7 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | DBL-17 | Export recovery record | Share sheet with the JSON | Manual (E2E checks the button is there) |
 | DBL-18 | End of apply | "The TV restarts once…" shown before Apply; TV syncs, restarts, the app reconnects (prompt if "Always allow" wasn't ticked), then the test step shows Home's state and any apps the firmware turned back on; a black Home (RecoveryActivity/FallbackHome) or the stock launcher taking Home back shows "Restore the TV now" | Auto: `testRestartCheckJudgesHomeAndReEnabledApps`; E2E (the helper restores the emulator's forwards after the reboot); Manual (real TV) |
 | DBL-19 | The TV doesn't let the phone back in after the restart (network ADB closes at boot on some firmware) | Test step says it couldn't check and what to look at; nothing else fails | Manual |
+| DBL-20 | "Choose what stays" footer with exactly 1 protected app or 1 already-off app (the emulator list has 1 already off) | Singular sentence ("1 listed app is already off or not installed"), in all six languages; other counts plural | Manual (emulator; iPhone + Android) |
 
 ## 5. New Home screen install (LCH) ⚠
 

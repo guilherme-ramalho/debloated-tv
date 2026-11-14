@@ -40,7 +40,12 @@ data class RemoteApp(
             RemoteApp("com.wbd.stream", "HBO Max", "https://play.max.com", "HBOMaxLogo"),
             RemoteApp("com.crunchyroll.crunchyroid", "Crunchyroll", "crunchyroll://", "CrunchyrollLogo"),
             RemoteApp("com.spotify.tv.android", "Spotify", "spotify:"),
+            RemoteApp("com.surfshark.vpnclient.android", "Surfshark", leanback("com.surfshark.vpnclient.android")),
+            RemoteApp("live.abplayer.brsilveira", "AB Player", leanback("live.abplayer.brsilveira")),
         )
+
+        private fun leanback(pkg: String) =
+            "intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LEANBACK_LAUNCHER;package=$pkg;end"
     }
 }
 

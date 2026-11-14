@@ -269,6 +269,13 @@ struct SettingsView: View {
                         }
                     }.toggleStyle(QuietToggleStyle()).padding(.horizontal, 13).padding(.vertical, 10)
                     Divider().overlay(QuietTheme.edge)
+                    Toggle(isOn: settings.binding(\.reversesSwipes)) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Reverse swipe direction").font(.system(size: 14, weight: .medium))
+                            Text("Swipe left to move right, and up to move down").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+                        }
+                    }.toggleStyle(QuietToggleStyle()).padding(.horizontal, 13).padding(.vertical, 10)
+                    Divider().overlay(QuietTheme.edge)
                     Toggle(isOn: settings.binding(\.autoReconnect)) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Reconnect automatically").font(.system(size: 14, weight: .medium))

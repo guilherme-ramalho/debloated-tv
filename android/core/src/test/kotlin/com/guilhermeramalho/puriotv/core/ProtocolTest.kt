@@ -147,6 +147,19 @@ class ProtocolTest {
         assertNull(TVKey.swipeDirection(Double.NaN, 100.0))
     }
 
+    @Test fun reversedSwipesGoTheOtherWay() {
+        assertEquals(TVKey.LEFT, TVKey.swipeDirection(40.0, 10.0, reversed = true))
+        assertEquals(TVKey.DOWN, TVKey.swipeDirection(5.0, -30.0, reversed = true))
+        assertNull(TVKey.swipeDirection(10.0, 27.0, reversed = true))
+        val pad = PadInteraction().apply { reversed = true }
+        pad.begin(TVKey.RIGHT)
+        assertTrue(pad.move(40.0, 0.0).isEmpty())
+        assertEquals(listOf(PadInteraction.Command.Tap(TVKey.LEFT)), pad.end(40.0, 0.0))
+        // A tap is still the button under the finger.
+        pad.begin(TVKey.RIGHT)
+        assertEquals(listOf(PadInteraction.Command.Tap(TVKey.RIGHT)), pad.end(3.0, 2.0))
+    }
+
     @Test fun swipeCancelsThePendingButton() {
         val pad = PadInteraction()
         pad.begin(TVKey.SELECT)

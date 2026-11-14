@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The remote widget: power, the arrows around OK, Back and Home. Each key sends one press over a short connection. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/widget_bg" android:orientation="vertical" android:padding="10dp" android:gravity="center">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+        <ImageButton android:id="@+id/w_power" style="@style/WidgetKey" android:background="@drawable/widget_power" android:src="@drawable/ic_w_power" android:contentDescription="@string/key_power"/>
+        <ImageButton android:id="@+id/w_up" style="@style/WidgetKey" android:src="@drawable/ic_w_up" android:contentDescription="@string/key_up"/>
+        <ImageButton android:id="@+id/w_home" style="@style/WidgetKey" android:src="@drawable/ic_w_home" android:contentDescription="@string/key_home"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+        <ImageButton android:id="@+id/w_left" style="@style/WidgetKey" android:src="@drawable/ic_w_left" android:contentDescription="@string/key_left"/>
+        <Button android:id="@+id/w_ok" style="@style/WidgetKey" android:background="@drawable/widget_ok" android:text="@string/key_select" android:textColor="#FFFFFF" android:textSize="18sp" android:textStyle="bold"/>
+        <ImageButton android:id="@+id/w_right" style="@style/WidgetKey" android:src="@drawable/ic_w_right" android:contentDescription="@string/key_right"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+        <ImageButton android:id="@+id/w_back" style="@style/WidgetKey" android:src="@drawable/ic_w_back" android:contentDescription="@string/key_back"/>
+        <ImageButton android:id="@+id/w_down" style="@style/WidgetKey" android:src="@drawable/ic_w_down" android:contentDescription="@string/key_down"/>
+        <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="4dp"/>
+    </LinearLayout>
+</LinearLayout>

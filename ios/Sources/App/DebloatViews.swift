@@ -194,6 +194,16 @@ struct DebloatSetupView: View {
         }
     }
 
+    /// One app gets its own sentence, as in matchDetail: the catalog has no plural variants.
+    static func chooseFooter(protected: Int, handled: Int) -> String {
+        switch (protected == 1, handled == 1) {
+        case (true, true): return String(localized: "Keep switched on = stays enabled. 1 protected system app is never touched. 1 listed app is already off or not installed.")
+        case (true, false): return String(localized: "Keep switched on = stays enabled. 1 protected system app is never touched. \(handled) listed apps are already off or not installed.")
+        case (false, true): return String(localized: "Keep switched on = stays enabled. \(protected) protected system apps are never touched. 1 listed app is already off or not installed.")
+        case (false, false): return String(localized: "Keep switched on = stays enabled. \(protected) protected system apps are never touched. \(handled) listed apps are already off or not installed.")
+        }
+    }
+
     static func matchDetail(_ match: ProfileMatch) -> String {
         // One app gets its own sentence: the catalog has no plural variants for these.
         let one = match.present == 1
@@ -231,7 +241,7 @@ struct DebloatSetupView: View {
                         }
                     }
                 }
-                QuietCaption(text: "Keep switched on = stays enabled. \(flow.protectedCount) protected system apps are never touched. \(flow.alreadyHandled) listed apps are already off or not installed.")
+                QuietCaption(text: Self.chooseFooter(protected: flow.protectedCount, handled: flow.alreadyHandled))
             }
             Button(flow.busy ? "Checking…" : "Review changes") { flow.review() }.buttonStyle(QuietPrimaryStyle()).disabled(flow.busy)
         }

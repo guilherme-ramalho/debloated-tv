@@ -34,7 +34,30 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = "17" }
-    buildFeatures { compose = true }
+    buildFeatures { compose = true; buildConfig = true }
+    // The iPhone app's TV lists, TV Home APK and licence, copied in at build time (see setupAssets below).
+    sourceSets["debug"].assets.srcDir(layout.buildDirectory.dir("setupAssets/debug"))
+    sourceSets["release"].assets.srcDir(layout.buildDirectory.dir("setupAssets/release"))
+}
+
+// One source of truth for TV setup: ios/Resources. Profiles/<id>/ (the dev-* test lists only in debug builds) and
+// Launcher/ (tvhome.apk + tvhome.json come from scripts/bundle-launcher.sh and aren't in git; without them the app
+// can't install the new Home, and says so).
+val resources = rootProject.file("../ios/Resources")
+for (variant in listOf("debug", "release")) {
+    val task = tasks.register<Sync>("setupAssets${variant.replaceFirstChar { it.uppercase() }}") {
+        into(layout.buildDirectory.dir("setupAssets/$variant"))
+        from(resources.resolve("Profiles")) {
+            into("Profiles")
+            if (variant == "release") exclude("dev-*/**")
+            exclude("README.md")
+        }
+        from(resources.resolve("Launcher")) {
+            into("Launcher")
+            include("tvhome.apk", "tvhome.json", "LICENSE-cleanyourtv.txt")
+        }
+    }
+    tasks.matching { it.name == "merge${variant.replaceFirstChar { c -> c.uppercase() }}Assets" }.configureEach { dependsOn(task) }
 }
 
 dependencies {

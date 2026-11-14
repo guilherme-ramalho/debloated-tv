@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The quick actions widget: the first four saved quick actions. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/widget_bg" android:orientation="vertical" android:padding="10dp">
+    <TextView android:id="@+id/w_empty" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center"
+        android:textColor="#AEB9CC" android:textSize="13sp" android:text="@string/widget_no_actions" android:visibility="gone"/>
+    <Button android:id="@+id/w_a0" style="@style/WidgetAction"/>
+    <Button android:id="@+id/w_a1" style="@style/WidgetAction"/>
+    <Button android:id="@+id/w_a2" style="@style/WidgetAction"/>
+    <Button android:id="@+id/w_a3" style="@style/WidgetAction"/>
+</LinearLayout>

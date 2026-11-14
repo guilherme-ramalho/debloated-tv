@@ -124,6 +124,9 @@ public struct RemotePreferences: Codable, Equatable {
     public var apps = RemoteApp.known
     public var tvInputs: [TVInput] = []
     public var editorHost: String?
+    /// Swipes on the pad move the other way (1.2). Optional so settings saved by older versions still load.
+    public var reverseSwipe: Bool?
+    public var reversesSwipes: Bool { get { reverseSwipe ?? false } set { reverseSwipe = newValue } }
     public init() { profileID = profiles.first?.id }
     public func validate() throws {
         guard version == 1, (1...12).contains(remoteCount), remoteOrder.count <= 200, Set(remoteOrder).count == remoteOrder.count,

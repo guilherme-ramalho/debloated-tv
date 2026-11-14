@@ -13,6 +13,18 @@ final class PreferencesTests: XCTestCase {
         XCTAssertNil(TVKey.swipeDirection(dx: .nan, dy: 20))
         XCTAssertNil(TVKey.swipeDirection(dx: .infinity, dy: 20))
     }
+    func testReversedSwipesGoTheOtherWay() {
+        XCTAssertEqual(TVKey.swipeDirection(dx: 100, dy: 8, reversed: true), .left)
+        XCTAssertEqual(TVKey.swipeDirection(dx: 5, dy: -70, reversed: true), .down)
+        XCTAssertNil(TVKey.swipeDirection(dx: 27, dy: 20, reversed: true))
+        var pad = PadInteraction(); pad.reversed = true
+        XCTAssertEqual(pad.begin(key: .right), [])
+        XCTAssertEqual(pad.move(dx: 80, dy: 0), [])
+        XCTAssertEqual(pad.end(dx: 100, dy: 0), [.tap(.left)])
+        // A tap is still the button under the finger.
+        XCTAssertEqual(pad.begin(key: .right), [])
+        XCTAssertEqual(pad.end(dx: 3, dy: 2), [.tap(.right)])
+    }
     func testPadTapSendsOneCommandOnRelease() {
         var pad = PadInteraction()
         XCTAssertEqual(pad.begin(key: .select), [])

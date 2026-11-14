@@ -114,11 +114,13 @@ public struct WakeRequest {
 }
 
 extension TVKey {
-    /// Screen coordinates: right/down are positive. A short drag is not a swipe.
-    public static func swipeDirection(dx: Double, dy: Double) -> TVKey? {
+    /// Screen coordinates: right/down are positive. A short drag is not a swipe. `reversed` (the "Reverse swipe
+    /// direction" setting) moves the other way: swipe left to go right, up to go down.
+    public static func swipeDirection(dx: Double, dy: Double, reversed: Bool = false) -> TVKey? {
         guard dx.isFinite, dy.isFinite, max(abs(dx), abs(dy)) >= 28 else { return nil }
-        if abs(dx) > abs(dy) { return dx > 0 ? .right : .left }
-        return dy > 0 ? .down : .up
+        let (x, y) = reversed ? (-dx, -dy) : (dx, dy)
+        if abs(x) > abs(y) { return x > 0 ? .right : .left }
+        return y > 0 ? .down : .up
     }
 }
 
@@ -128,6 +130,8 @@ public struct PadInteraction {
     public enum Command: Equatable { case tap(TVKey), press(TVKey), release(TVKey) }
     private enum Phase { case idle, pending(TVKey?), holding(TVKey), swiping }
     private var phase: Phase = .idle
+    /// Swipes go the other way (RemotePreferences.reverseSwipe).
+    public var reversed = false
     public init() {}
     public var isSwiping: Bool { if case .swiping = phase { return true }; return false }
     public mutating func begin(key: TVKey?) -> [Command] {
@@ -150,10 +154,10 @@ public struct PadInteraction {
         defer { phase = .idle }
         switch phase {
         case .pending(let key):
-            if let direction = TVKey.swipeDirection(dx: dx, dy: dy) { return [.tap(direction)] }
+            if let direction = TVKey.swipeDirection(dx: dx, dy: dy, reversed: reversed) { return [.tap(direction)] }
             return key.map { [.tap($0)] } ?? []
         case .holding(let key): return [.release(key)]
-        case .swiping: return TVKey.swipeDirection(dx: dx, dy: dy).map { [.tap($0)] } ?? []
+        case .swiping: return TVKey.swipeDirection(dx: dx, dy: dy, reversed: reversed).map { [.tap($0)] } ?? []
         case .idle: return []
         }
     }

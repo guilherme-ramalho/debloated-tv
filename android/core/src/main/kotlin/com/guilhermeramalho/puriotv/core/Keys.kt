@@ -12,10 +12,15 @@ enum class TVKey(val code: Long) {
     companion object {
         fun of(code: Long): TVKey? = entries.firstOrNull { it.code == code }
 
-        /** Screen coordinates: right/down are positive. A short drag is not a swipe. */
-        fun swipeDirection(dx: Double, dy: Double): TVKey? {
+        /**
+         * Screen coordinates: right/down are positive. A short drag is not a swipe. [reversed] (the "Reverse swipe
+         * direction" setting) moves the other way: swipe left to go right, up to go down.
+         */
+        fun swipeDirection(dx: Double, dy: Double, reversed: Boolean = false): TVKey? {
             if (!dx.isFinite() || !dy.isFinite() || max(abs(dx), abs(dy)) < 28) return null
-            return if (abs(dx) > abs(dy)) (if (dx > 0) RIGHT else LEFT) else (if (dy > 0) DOWN else UP)
+            val x = if (reversed) -dx else dx
+            val y = if (reversed) -dy else dy
+            return if (abs(x) > abs(y)) (if (x > 0) RIGHT else LEFT) else (if (y > 0) DOWN else UP)
         }
     }
 }
@@ -52,6 +57,8 @@ class PadInteraction {
 
     private var phase: Phase = Phase.Idle
     val isSwiping get() = phase == Phase.Swiping
+    /** Swipes go the other way (RemotePreferences.reverseSwipe). */
+    var reversed = false
 
     fun begin(key: TVKey?): List<Command> = cancel().also { phase = Phase.Pending(key) }
 
@@ -75,10 +82,10 @@ class PadInteraction {
         val p = phase
         phase = Phase.Idle
         return when (p) {
-            is Phase.Pending -> TVKey.swipeDirection(dx, dy)?.let { listOf(Command.Tap(it)) }
+            is Phase.Pending -> TVKey.swipeDirection(dx, dy, reversed)?.let { listOf(Command.Tap(it)) }
                 ?: p.key?.let { listOf(Command.Tap(it)) } ?: emptyList()
             is Phase.Holding -> listOf(Command.Release(p.key))
-            Phase.Swiping -> TVKey.swipeDirection(dx, dy)?.let { listOf(Command.Tap(it)) } ?: emptyList()
+            Phase.Swiping -> TVKey.swipeDirection(dx, dy, reversed)?.let { listOf(Command.Tap(it)) } ?: emptyList()
             Phase.Idle -> emptyList()
         }
     }

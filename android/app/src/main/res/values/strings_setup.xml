@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TV setup, Undo and Home update (DebloatViews.swift, DebloatFlow.swift, TVSetupViews.swift). English; wording
+     follows the iPhone app with "iPhone" as "phone". -->
+<resources>
+    <!-- Overview -->
+    <string name="su_title">Set up TV</string>
+    <string name="su_reclaimed">Your TV, reclaimed</string>
+    <string name="su_hero">Less clutter.\nMore control.</string>
+    <string name="su_overview_detail">A guided setup to keep your essentials, disable unwanted extras and choose a cleaner Home. No computer needed.</string>
+    <string name="su_choose_stays">Choose what stays</string>
+    <string name="su_choose_stays_detail">Your apps, TV features and Home screen. Every change is reviewed first.</string>
+    <string name="su_save_record">Save a recovery record</string>
+    <string name="su_save_record_detail">How every app was before setup, so it can all be put back. Not a full TV backup.</string>
+    <string name="su_risk_title">System changes carry risk</string>
+    <string name="su_risk_detail">Apps are disabled, never uninstalled, and only from cleanyourtv\'s lists, tested by its community on real TVs. Still, a feature can stop working, and in rare cases recovery may need a factory reset. You use this at your own risk.</string>
+    <string name="su_understand_risks">I understand the risks</string>
+    <string name="su_remote_ready">Have the TV\'s remote ready: turning on debugging and approving this phone happen on the TV.</string>
+    <string name="su_continue">Continue</string>
+
+    <!-- Developer options -->
+    <string name="su_debugging_title">Turn on network debugging</string>
+    <string name="su_dev_step1">On the TV, open Settings › System › About (on some TVs: Device Preferences › About).</string>
+    <string name="su_dev_step2">Highlight “Build” (or “Android TV OS build”) and press the remote’s OK button seven times, until it says you’re a developer.</string>
+    <string name="su_dev_step3">Go back to Settings › System › Developer options. Turn on USB debugging, and Network or ADB debugging if your TV shows it.</string>
+    <string name="su_dev_step4">Find the TV’s IP address in Settings › Network &amp; Internet, under your connection.</string>
+    <string name="su_tv_address">TV address</string>
+    <string name="su_wireless_unsupported">Newer TVs with only “Wireless debugging” (a pairing code) aren’t supported yet.</string>
+    <string name="su_connect">Connect</string>
+
+    <!-- Connecting and the list picker -->
+    <string name="su_allow_title">Allow this phone on the TV</string>
+    <string name="su_allow_detail">The TV shows “Allow USB debugging?”. Tick “Always allow from this computer” and choose Allow. This continues by itself.</string>
+    <string name="su_connecting">Connecting</string>
+    <string name="su_checking_tv">Checking the TV</string>
+    <string name="su_try_again">Try again</string>
+    <string name="su_connect_again">Connect again</string>
+    <string name="su_unsupported_title">This TV isn’t supported yet</string>
+    <string name="su_unsupported_detail">None of cleanyourtv\'s lists fits this TV, so nothing was changed. Guessing which apps are safe to disable can leave inputs black or the TV unable to start.</string>
+    <string name="su_dev_profiles">Development build. Profiles in this build: %1$s.</string>
+    <string name="su_dev_profiles_none">none (the Profiles assets weren\'t bundled)</string>
+    <string name="su_close">Close</string>
+    <string name="su_choose_list">Choose your TV\'s list</string>
+    <string name="su_choose_list_detail">This TV reports %1$s (%2$s). These lists come from cleanyourtv, each tested by its community on the TV it names. The best match is first.</string>
+    <string name="su_show_more">Show %1$d more</string>
+    <string name="su_nothing_until_apply">Nothing changes on the TV until you review and apply. Every change can be undone.</string>
+    <string name="su_closest_title">Use a list made for another model?</string>
+    <string name="su_closest_message">Nobody has tested it on your TV. Only apps found on your TV are offered and the safety checks still run, but an app your TV needs can look like one to remove. Check every app before you apply.</string>
+    <string name="su_use_list">Use this list</string>
+    <string name="su_match_tested_one">Tested with Purio TV on this TV. 1 app to review.</string>
+    <string name="su_match_tested">Tested with Purio TV on this TV. %1$d apps to review.</string>
+    <string name="su_match_model_one">Made for this model (%1$s). 1 of its apps is on this TV.</string>
+    <string name="su_match_model">Made for this model (%1$s). %2$d of its apps are on this TV.</string>
+    <string name="su_match_closest_one">Made for another model, the closest match. 1 of its apps is on this TV.</string>
+    <string name="su_match_closest">Made for another model, the closest match. %1$d of its apps are on this TV.</string>
+
+    <!-- Choose what stays -->
+    <string name="su_choose_closest">This list was made for another model. Only apps installed on this TV are shown: check each one, and switch on anything you want to keep; the rest is disabled.</string>
+    <string name="su_choose_model">List from cleanyourtv, tested by its community on this model, not by Purio TV. Switch on anything you want to keep; the rest is disabled.</string>
+    <string name="su_choose_tested">Tested list from cleanyourtv. Switch on anything you want to keep; the rest is disabled.</string>
+    <string name="su_testers">From the list\'s testers</string>
+    <string name="su_about_list">About this list</string>
+    <string name="su_choose_footer">Keep switched on = stays enabled. %1$d protected system apps are never touched. %2$d listed apps are already off or not installed.</string>
+    <string name="su_choose_footer_p1">Keep switched on = stays enabled. 1 protected system app is never touched. %1$d listed apps are already off or not installed.</string>
+    <string name="su_choose_footer_l1">Keep switched on = stays enabled. %1$d protected system apps are never touched. 1 listed app is already off or not installed.</string>
+    <string name="su_choose_footer_p1l1">Keep switched on = stays enabled. 1 protected system app is never touched. 1 listed app is already off or not installed.</string>
+    <string name="su_checking">Checking…</string>
+    <string name="su_review_changes">Review changes</string>
+
+    <!-- Review -->
+    <string name="su_review">Review</string>
+    <string name="su_will_disable">%1$d apps will be disabled</string>
+    <string name="su_will_disable_detail">Not uninstalled. The recovery record can turn them all back on.</string>
+    <string name="su_kept_by_checks">Kept by the safety checks</string>
+    <string name="su_show_apps">Show the %1$d apps</string>
+    <string name="su_reviewed">I reviewed these changes</string>
+    <string name="su_keep_wifi">Keep the TV\'s Wi-Fi</string>
+    <string name="su_wifi_detail">These networks were saved by the TV\'s setup wizard, and switching it off deletes them. Enter each password and this phone saves them again on the TV first, so the TV stays online.</string>
+    <string name="su_wifi_warning">If a password is wrong, the TV drops off Wi-Fi. You\'d then have to join the network again with the TV\'s own remote, in Settings › Network &amp; Internet.</string>
+    <string name="su_wifi_password">Wi-Fi password</string>
+    <string name="su_wifi_password_again">The same password again</string>
+    <string name="su_wifi_mismatch">The two passwords don\'t match.</string>
+    <string name="su_wifi_open">Open network: no password needed.</string>
+    <string name="su_wifi_once">The password goes to the TV once, over the debugging connection, which isn\'t encrypted. It\'s never saved on this phone.</string>
+    <string name="su_wifi_safer">Safer: do it on the TV</string>
+    <string name="su_wifi_safer_detail">On the TV, open Settings › Network &amp; Internet, forget the network and join it again. The setup wizard no longer owns it then, and nothing needs typing here. Then review again.</string>
+    <string name="su_review_again">Review again</string>
+
+    <!-- Choose Home -->
+    <string name="su_choose_home">Choose Home</string>
+    <string name="su_keeps_home">The TV keeps its own Home screen</string>
+    <string name="su_install_home">Install the clean Home screen</string>
+    <string name="su_install_home_detail">Replaces the stock launcher, which is disabled once the new one is running. Needed for TV Home editing in this app.</string>
+    <string name="su_dock_title">Dock (tap to add or remove, up to 7)</string>
+    <string name="su_rearrange_later">You can rearrange everything later from the TV tab.</string>
+    <string name="su_wizard_keeps_home">The setup wizard stays on, and on this TV it takes the Home button, so the new Home screen can\'t take over. Go back to the review to see why it was kept, or apply without the new Home screen.</string>
+    <string name="su_restart_once">At the end the TV restarts once, so this phone can check that Home and your changes hold before debugging goes off.</string>
+    <string name="su_apply">Apply to TV</string>
+    <string name="su_block_fire">Fire TV doesn\'t let another Home screen take over, so this setup only disables apps.</string>
+    <string name="su_block_cvte">This TV\'s board needs a special Home screen procedure that Purio TV doesn\'t do yet, so this setup only disables apps.</string>
+    <string name="su_block_debloat_only">This list\'s testers only disabled apps on this TV, so this setup does the same.</string>
+    <string name="su_block_custom">This TV only accepts a Home screen built especially for it, which Purio TV doesn\'t carry, so this setup only disables apps.</string>
+    <string name="su_block_no_config">Nobody has set up the new Home screen on this model with cleanyourtv yet, so this setup only disables apps.</string>
+
+    <!-- Apply -->
+    <string name="su_applying">Applying</string>
+    <string name="su_applied">Applied</string>
+    <string name="su_stopped">Stopped</string>
+    <string name="su_apply_failed">Nothing after the failed step was changed. You can restore everything this setup changed, or go back and try again.</string>
+    <string name="su_restore_tv">Restore the TV</string>
+    <string name="su_back_to_review">Back to review</string>
+    <string name="su_restore_confirm_title">Undo the setup on this TV?</string>
+    <string name="su_restore_confirm_message">Turns every app this setup disabled back on and gives Home back to the stock launcher.</string>
+
+    <!-- Test -->
+    <string name="su_test_title">Test on the TV</string>
+    <string name="su_restart_ok">Restarted and checked: Home works.</string>
+    <string name="su_still_enabled">%1$d apps stayed enabled because the TV refused: %2$s.</string>
+    <string name="su_check_home_tv">The Home button opens the TV\'s Home screen</string>
+    <string name="su_check_home_new">Home opens the new Home screen</string>
+    <string name="su_check_buttons">The remote\'s app buttons and volume work</string>
+    <string name="su_check_hdmi">An HDMI input shows a picture</string>
+    <string name="su_check_settings">Settings opens from Home</string>
+    <string name="su_check_online">The TV is still online (open an app)</string>
+    <string name="su_everything_works">Everything works</string>
+    <string name="su_something_wrong">Something’s wrong: restore</string>
+
+    <!-- Finish -->
+    <string name="su_secure_title">Secure the TV</string>
+    <string name="su_export_record">Export recovery record</string>
+    <string name="su_export_detail">It\'s also kept in this app (Settings › Undo TV setup). Save a copy somewhere else in case you replace this phone.</string>
+    <string name="su_exported">Recovery record saved.</string>
+    <string name="su_export_failed">Couldn\'t save the recovery record there.</string>
+    <string name="su_turn_off_debugging">Turn off network debugging now</string>
+    <string name="su_turn_off_detail">Switches debugging off on the TV and checks it\'s closed. Removing this phone\'s approval still needs the TV\'s menu (step 1).</string>
+    <string name="su_secure_step1">Settings › System › Developer options: choose Revoke USB debugging authorizations.</string>
+    <string name="su_secure_step2">Turn off USB debugging, and Network or ADB debugging.</string>
+    <string name="su_secure_step3">Restart the TV.</string>
+    <string name="su_no_debugging_needed">The remote and TV Home editing don\'t need debugging. Only another setup or a restore does.</string>
+    <string name="su_check_debugging_off">Check debugging is off</string>
+    <string name="su_debugging_off">Debugging is off: the TV refuses connections.</string>
+    <string name="su_debugging_open">The debugging port still accepts connections.</string>
+
+    <!-- Progress messages -->
+    <string name="su_connecting_to">Connecting to %1$s…</string>
+    <string name="su_allow_on_tv">On the TV, choose “Always allow” and Allow.</string>
+    <string name="su_connected_to">Connected to %1$s</string>
+    <string name="su_the_tv">the TV</string>
+    <string name="su_reading">Reading the TV\'s apps and settings…</string>
+    <string name="su_no_list">No list for this TV yet.</string>
+    <string name="su_choose_list_message">Choose the list for this TV.</string>
+    <string name="su_recognised">Recognised %1$s.</string>
+    <string name="su_running_checks">Running the safety checks…</string>
+    <string name="su_no_bundled_home">This build doesn\'t include the Home screen. Run scripts/bundle-launcher.sh and rebuild.</string>
+    <string name="su_disabling_group">Disabling group %1$d of %2$d: %3$d apps</string>
+    <string name="su_disabled_n">Disabled %1$d apps.</string>
+    <string name="su_disabled_n_still">Disabled %1$d apps; %2$d stayed enabled.</string>
+    <string name="su_home_installed">New Home screen installed and set as Home.</string>
+    <string name="su_restarting">Restarting the TV to check that everything holds. This takes a minute or two.</string>
+    <string name="su_restart_no_reconnect">The TV didn\'t let this phone back in after restarting, so it couldn\'t be checked. Look at the TV: if Home opens and the checks below pass, all is well. If not, turn network debugging on again and use Undo TV setup.</string>
+    <string name="su_restart_bad_home">After restarting, Home went to %1$s instead of a working Home screen. Restore the TV now, while this phone can still reach it.</string>
+    <string name="su_nothing">nothing</string>
+    <string name="su_re_enabled">The TV turned %1$d apps back on by itself when it restarted (its firmware does this at every start): %2$s.</string>
+    <string name="su_record_saved">Recovery record saved.</string>
+    <string name="su_restoring">Restoring the TV…</string>
+    <string name="su_saving_wifi">Saving the TV\'s Wi-Fi again, so it stays when the setup wizard is off…</string>
+    <string name="su_wifi_saved">Wi-Fi saved again: %1$s.</string>
+    <string name="su_restore_not_back">Restored, but %1$d apps didn\'t come back on: %2$s. Run the restore again; if they stay off, turn them on in the TV\'s Settings › Apps.</string>
+    <string name="su_restore_home">Restored, but Home is now %1$s instead of %2$s. Run the restore again, or choose a Home app on the TV.</string>
+    <string name="su_restore_ok">Restored and checked: everything that was on before setup is on again. %1$d apps stay disabled because they were already off before setup.</string>
+
+    <!-- Undo -->
+    <string name="su_undo_title">Undo TV setup</string>
+    <string name="su_undo_none">No recovery records on this phone yet. One is saved automatically before a setup changes anything.</string>
+    <string name="su_undo_record_detail">%1$s · %2$s · %3$d apps to turn back on</string>
+    <string name="su_undo_debugging">Network debugging must be on. The TV\'s address may have changed since setup.</string>
+    <string name="su_restoring_button">Restoring…</string>
+    <string name="su_restore_this_tv">Restore this TV</string>
+    <string name="su_undo_allow">On the TV, allow this phone (“Allow USB debugging?”).</string>
+
+    <!-- Home screen update -->
+    <string name="su_update_title">Update Home screen</string>
+    <string name="su_update_heading">Update the TV\'s Home screen</string>
+    <string name="su_update_detail">A newer version of the Home screen comes with this app. Your dock, apps, wallpaper and Home settings stay as they are. Takes about a minute.</string>
+    <string name="su_update_debugging">Turn on network debugging for a moment</string>
+    <string name="su_update_step1">On the TV, open Settings › System › Developer options.</string>
+    <string name="su_update_step2">Turn on USB debugging, and Network or ADB debugging if your TV shows it.</string>
+    <string name="su_update_step3">Check the TV\'s address in Settings › Network &amp; Internet.</string>
+    <string name="su_update_footer">You\'ll turn debugging off again at the end.</string>
+    <string name="su_updating">Updating the Home screen</string>
+    <string name="su_update_current">The TV already has this Home screen</string>
+    <string name="su_update_done">Home screen updated</string>
+    <string name="su_update_done_detail">Your layout and settings are as they were. New options appear in the TV tab once TV Home reconnects.</string>
+
+    <!-- Home screen install steps (LauncherStep) -->
+    <string name="su_ls_checking">Checking the TV</string>
+    <string name="su_ls_pushing">Sending the Home screen</string>
+    <string name="su_ls_installing">Installing</string>
+    <string name="su_ls_starting">Starting it</string>
+    <string name="su_ls_handover">Making it Home</string>
+    <string name="su_ls_helpers">Turning on the remote helpers</string>
+    <string name="su_ls_theme">Applying your layout</string>
+    <string name="su_ls_done">Done</string>
+
+    <!-- Why a step stopped (SetupIssue) -->
+    <string name="su_issue_adb_unreachable">Couldn\'t reach the TV\'s debugging port %1$s. Check that network debugging is on. (%2$s)</string>
+    <string name="su_issue_adb_refused">The TV refused this phone. Accept “Allow USB debugging?” on the TV and try again.</string>
+    <string name="su_issue_adb_busy">Another TV command is still running</string>
+    <string name="su_issue_adb_stream_refused">The TV refused %1$s</string>
+    <string name="su_issue_adb_file_refused">The TV refused the file: %1$s</string>
+    <string name="su_issue_adb_key_size">The TV debugging key must be RSA-2048</string>
+    <string name="su_issue_list_not_packages">This list has lines that are not package names: %1$s</string>
+    <string name="su_issue_no_apps_listed">The TV listed no apps, so nothing was changed. Check the connection and try again.</string>
+    <string name="su_issue_apply_unchecked">The TV didn\'t say which apps are on, so this step couldn\'t be checked. Reconnect and review again.</string>
+    <string name="su_issue_restore_other_tv">This recovery record belongs to another TV (%1$s), so nothing was changed. Pick the record made on this TV.</string>
+    <string name="su_issue_restore_unchecked">The restore ran, but the TV didn\'t say which apps are on now, so it couldn\'t be checked. Run it again.</string>
+    <string name="su_issue_home_chooser_ambiguous">Home has no default and %1$s stock launchers claim it. Pick a default Home on the TV first.</string>
+    <string name="su_issue_home_setup_wizard">Home belongs to Google TV\'s setup wizard. Finish the TV\'s setup, or include the setup wizard in the debloat, then try again.</string>
+    <string name="su_issue_home_unknown">Home currently belongs to %1$s, which isn\'t a stock launcher this app knows. Nothing was changed.</string>
+    <string name="su_issue_old_android">This TV runs Android SDK %1$s; the new Home screen needs Android 8.0 (SDK 26) or newer. Nothing was changed.</string>
+    <string name="su_issue_apk_damaged">The Home screen arrived damaged on the TV (checksum mismatch). Nothing was installed; try again.</string>
+    <string name="su_issue_install_older_sdk">The TV refused the Home screen as too new for its Android version. Nothing else was changed.</string>
+    <string name="su_issue_install_other_key">A different build of this Home screen is already on the TV, signed with another key. Uninstall it on the TV first, then try again.</string>
+    <string name="su_issue_install_downgrade">The TV already has a newer Home screen than this app carries. Update Purio TV, then try again. Nothing was changed.</string>
+    <string name="su_issue_install_refused">The TV refused to install the Home screen: %1$s</string>
+    <string name="su_issue_home_did_not_start">The new Home screen didn\'t start, so the stock one was left as it was.</string>
+    <string name="su_issue_home_stayed">Home stayed on %1$s instead of the new Home screen. The stock one was never turned off, so the TV works as before.</string>
+    <string name="su_issue_home_switch_no_answer">The TV stopped answering while Home was being switched. The stock Home screen was put back.</string>
+    <string name="su_issue_home_went_elsewhere">Home went to %1$s instead of the new Home screen, so the stock one was put back. On Google TV this usually means the setup wizard also claims Home: include it in the debloat, then try again.</string>
+    <string name="su_issue_helpers_not_granted">The new Home screen is installed, but the TV didn\'t give it permission to restore the remote\'s helpers after a force stop. Run setup again.</string>
+    <string name="su_issue_secure_settings_kept">The new Home screen is installed, but it may still hold permission to change system settings from an earlier install. Run setup again.</string>
+    <string name="su_issue_invalid_theme">Invalid Home layout</string>
+    <string name="su_issue_theme_refused">The TV refused the Home layout: %1$s</string>
+    <string name="su_issue_not_connected">Connect to the TV first</string>
+    <string name="su_issue_invalid_address">Enter the TV\'s IP address, for example 192.168.1.20</string>
+    <string name="su_issue_stopped_during_group">The TV stopped answering during group %1$s. Reconnect and review again; nothing after it was changed.</string>
+    <string name="su_issue_wifi_not_back">The TV didn\'t come back after saving its Wi-Fi again. On the TV, join %1$s in Settings › Network &amp; Internet, then connect again. Nothing else was changed.</string>
+    <string name="su_issue_wifi_not_saved">Couldn\'t save %1$s again (check the password). On the TV, join it in Settings › Network &amp; Internet, then review again. Nothing else was changed.</string>
+    <string name="su_issue_debugging_unreachable">The TV is no longer connected. Turn debugging off in the TV\'s menus.</string>
+    <string name="su_issue_update_home_not_ours">The TV\'s Home is its own Home screen again, so there\'s nothing to update. Run setup to bring the new one back. Nothing was changed.</string>
+    <string name="su_issue_update_no_profile">This phone didn\'t set up this TV\'s Home screen, so it can\'t update it from here. Nothing was changed.</string>
+    <string name="su_issue_update_not_installed">The new Home screen isn\'t on this TV. Use Run setup instead. Nothing was changed.</string>
+    <string name="su_issue_update_still_old">The TV still reports the old Home screen after the update. Try again.</string>
+
+    <!-- Why an app stays enabled (SkipReason) -->
+    <string name="su_skip_not_a_package">Not a package name.</string>
+    <string name="su_skip_core">Core Android or TV middleware: with it disabled the TV may not boot again. This can\'t be overridden.</string>
+    <string name="su_skip_never_disable">This TV\'s tested list says never to disable it.</string>
+    <string name="su_skip_wifi_unreadable">Couldn\'t read the TV\'s saved Wi-Fi networks, so the setup wizard stays: disabling it could delete them. Restart the TV and review again.</string>
+    <string name="su_skip_wifi_enterprise">A Wi-Fi network on the TV belongs to the setup wizard and uses a sign-in this phone can\'t save again. On the TV, forget it and join it again in Settings › Network &amp; Internet, then review again.</string>
+    <string name="su_skip_wifi_no_shell">The TV\'s Wi-Fi network belongs to the setup wizard, and this TV can\'t have it saved again from the phone. On the TV, forget the network and join it again in Settings › Network &amp; Internet, then review again.</string>
+    <string name="su_skip_home_owner_alone">It owns Home and nothing else that can answer Home stays enabled. Install the new Home screen first; it\'s disabled afterwards.</string>
+    <string name="su_skip_home_owner_wizard">It owns Home, and the setup wizard stays enabled and would take Home instead, a black screen the TV can crash-loop on. Install the new Home screen first.</string>
+    <string name="su_skip_home_no_default">Home has no default, and no other app could answer Home. Install the new Home screen first.</string>
+    <string name="su_skip_home_stock_unknown">Couldn\'t ask the TV which apps answer Home, and this is a stock launcher.</string>
+    <string name="su_skip_input_check_hung">The TV\'s system diagnostics are switched off after a hang, so the input-driver check can\'t read it. Restart the TV and try again.</string>
+    <string name="su_skip_input_check_unreadable">This firmware doesn\'t show its permissions, so the input-driver check can\'t read it. It stays enabled to be safe.</string>
+    <string name="su_skip_input_driver">It drives the HDMI, AV or tuner inputs. Disabled, they notice the cable but stay black, and only a full restore fixes it.</string>
+    <string name="su_skip_opens_inputs">The TV opens its inputs and channels with it; disabled, the input tiles do nothing.</string>
+    <string name="su_skip_opens_settings">The TV opens Settings with it; disabled, Settings (and the way back to Developer options) won\'t open.</string>
+
+    <!-- Notes on the whole plan (PlanNote) -->
+    <string name="su_note_home_by_claims">Home has no default on this TV, so the Home check went by the apps that answer Home.</string>
+    <string name="su_note_inputs_unchecked">Couldn\'t check which apps drive the HDMI inputs. After applying, open every input before putting the remote down.</string>
+    <string name="su_note_inputs_settings_unchecked">Couldn\'t check which apps open the inputs and Settings. After applying, open an HDMI input and Settings from Home.</string>
+    <string name="su_note_open_debugging_port">This TV lets any device on your network use its debugging port without asking. Turn debugging off when you\'re done.</string>
+    <string name="su_note_chromecast">Chromecast built-in keeps its credentials in the setup wizard: with the wizard off, casting to this TV stops working.</string>
+</resources>

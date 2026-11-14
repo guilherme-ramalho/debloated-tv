@@ -84,7 +84,7 @@ struct RemoteView: View {
                         .coordinateSpace(name: "dpad").contentShape(Circle())
                         .highPriorityGesture(DragGesture(minimumDistance: 0, coordinateSpace: .named("dpad"))
                             .updating($padTouching) { _, active, _ in active = true }
-                            .onChanged { pad.changed($0, model: model) }.onEnded { pad.ended($0) })
+                            .onChanged { pad.changed($0, model: model, reversed: preferences.value.reversesSwipes) }.onEnded { pad.ended($0) })
                         .onChange(of: padTouching) { _, touching in if !touching { pad.gestureReset() } }
                         .onChange(of: model.ready) { _, ready in if !ready { pad.cancel() } }
                         .onChange(of: phase) { _, value in if value != .active { pad.cancel() } }
@@ -106,9 +106,11 @@ struct RemoteView: View {
                         HoldKey(symbol: "minus", key: .volumeDown, model: model).frame(width: 64, height: 56)
                         Text(model.volume).font(.subheadline.weight(.medium)).frame(maxWidth: .infinity)
                         HoldKey(symbol: "plus", key: .volumeUp, model: model).frame(width: 64, height: 56)
+                        // Shows what a tap does, from the TV's own mute state: muted → speaker (unmute).
                         Button { model.tap(.mute) } label: {
-                            Image(systemName: "speaker.slash").font(.system(size: 19)).frame(width: 48, height: 56)
-                        }.tint(.white).accessibilityLabel("Mute").disabled(!model.ready).buttonStyle(RemotePressStyle())
+                            Image(systemName: model.muted ? "speaker.wave.2" : "speaker.slash").font(.system(size: 19)).frame(width: 48, height: 56)
+                                .contentTransition(.symbolEffect(.replace))
+                        }.tint(.white).accessibilityLabel(model.muted ? "Unmute" : "Mute").disabled(!model.ready).buttonStyle(RemotePressStyle())
                     }.background(ink, in: Capsule())
                     VStack(alignment: .leading, spacing: 12) {
                         LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 8) {
