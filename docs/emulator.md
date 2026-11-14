@@ -29,8 +29,11 @@
   2026) the Play Store updates itself and then Google Play services; Android force-stops everything bound to Play
   services while it installs, the TV Remote Service included, which drops a pairing in progress (CON-02 failed this
   way on 14 Nov 2026: "Force stopping com.google.android.gms … installPackageLI", then the remote service "has
-  died"). `scripts/e2e.sh` disables the Play Store (`pm disable-user com.android.vending`) as it prepares the TV;
-  loading the snapshot brings it back.
+  died"). Fixed for good on 15 Nov 2026: the clean snapshot was re-saved after
+  a boot on the host's clock let every pending update finish (Play Store, Play services, TV Remote Service 5.2 → 7.00,
+  stock launcher, YouTube, WebView, keyboard, TalkBack, TTS, Cast), with the Play Store then disabled so nothing
+  updates during a run. `scripts/e2e.sh` also disables it as it prepares the TV, in case a snapshot is saved without
+  that. The 31 Oct snapshot is backed up in `~/.android/avd/DebloatedTV-snapshot-backups/clean-2026-10-31`.
 - **Port 15555, not 5565.** adb scans ports 5555–5585 for emulators and would grab a forwarder there as a second
   device ("more than one device/emulator").
 - **The remote can pair but not control.** The Android TV Remote Service on the `android-tv` API 31 image accepts
