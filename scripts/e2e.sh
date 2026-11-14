@@ -159,7 +159,7 @@ scenario() {
   [ "$3" = 0 ] || fresh_simulator
   local status attempt
   for attempt in 1 2; do
-    local before; before=$(wc -l <"$LOG")
+    local before; before=$(( $(wc -l <"$LOG") + 1 ))   # arithmetic drops the spaces macOS wc puts before the number
     rm -rf "$OUT/e2e-$STAMP-$1.xcresult"
     set +e
     TEST_RUNNER_E2E_HELPER="http://127.0.0.1:$HELPER_PORT" TEST_RUNNER_E2E_TV_HOST=127.0.0.1 TEST_RUNNER_E2E_ADB_ADDRESS=127.0.0.1:15555 \
@@ -170,7 +170,7 @@ scenario() {
     set -e
     # The simulator sometimes fails to install the test runner right after an erase ("Failed to locate promise"):
     # nothing ran yet, so boot a fresh simulator and try once more.
-    if [ $status -ne 0 ] && [ $attempt = 1 ] && tail -n +"$before" "$LOG" | grep -q "Failed to install or launch the test runner"; then
+    if [ $status -ne 0 ] && [ $attempt = 1 ] && tail -n +"$before" "$LOG" | grep -qE "Failed to install or launch the test runner|failed to install the application"; then
       echo "[$1] the simulator didn't install the test runner; trying again on a fresh one" >>"$PROGRESS"
       fresh_simulator
       continue
