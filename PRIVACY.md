@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Purio TV (formerly Debloated TV) · effective 2 November 2026
+Purio TV (formerly Debloated TV) · effective 15 November 2026
 
 Purio TV collects no personal data. It has no accounts, no ads, no analytics and no servers of its own.
 
@@ -12,8 +12,10 @@ Purio TV collects no personal data. It has no accounts, no ads, no analytics and
 - **Keeps its settings on your iPhone.** The TV's address and name, the pairing keys (in the iOS Keychain), your
   remote shortcuts, quick actions, Home screen layouts and the recovery records made by TV setup are stored on the
   device only. Deleting the app deletes them; a recovery record you export goes wherever you save it.
-- **Photos you pick stay between your iPhone and your TV.** A wallpaper you choose is sent to the TV and nowhere else.
-  The app only sees the photos you select.
+- **Photos stay between your iPhone and your TV.** A wallpaper you choose is sent to the TV and nowhere else; the app
+  only sees the photos you select for it. Show on TV reads your photo library on the iPhone (only the photos you allow,
+  if you limit access) and sends the photo or video you open to your TV over your home network, through the TV's own
+  Cast player. Photos go without their location or camera details. Nothing is uploaded anywhere else.
 - **Local network access** is used to find and connect to your TV. iOS asks for it the first time.
 - **Siri and Shortcuts.** Phrases are handled by Apple under Apple's privacy policy; the app only receives the action
   to run.

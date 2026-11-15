@@ -23513,6 +23513,1968 @@
           }
         }
       }
+    },
+    "The TV couldn't start its player. Try again." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The TV couldn't start its player. Try again."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher konnte seinen Player nicht starten. Versuch es noch einmal."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tele no pudo abrir su reproductor. Vuelve a intentarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'a pas pu lancer son lecteur. Réessayez."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non è riuscita ad aprire il suo lettore. Riprova."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não conseguiu abrir o player. Tente de novo."
+          }
+        }
+      }
+    },
+    "The connection to the TV was interrupted." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The connection to the TV was interrupted."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Verbindung zum Fernseher wurde unterbrochen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha interrumpido la conexión con la tele."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La connexion à la TV a été interrompue."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La connessione con la TV si è interrotta."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A conexão com a TV foi interrompida."
+          }
+        }
+      }
+    },
+    "This TV can't show photos from Purio. It needs Chromecast built in (most Google TV and Android TV sets have it)." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This TV can't show photos from Purio. It needs Chromecast built in (most Google TV and Android TV sets have it)."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieser Fernseher kann keine Fotos von Purio zeigen. Dafür braucht er integriertes Chromecast (die meisten Google-TV- und Android-TV-Geräte haben es)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta tele no puede mostrar fotos de Purio. Necesita Chromecast integrado (la mayoría de las teles Google TV y Android TV lo tienen)."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette TV ne peut pas afficher les photos de Purio. Il lui faut Chromecast intégré (la plupart des TV Google TV et Android TV l'ont)."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa TV non può mostrare le foto di Purio. Serve Chromecast integrato (ce l'hanno quasi tutte le TV Google TV e Android TV)."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta TV não consegue mostrar fotos do Purio. Ela precisa ter Chromecast integrado (a maioria das TVs Google TV e Android TV tem)."
+          }
+        }
+      }
+    },
+    "Couldn't reach the TV. Check that it's on and on the same Wi-Fi as this iPhone." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't reach the TV. Check that it's on and on the same Wi-Fi as this iPhone."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher ist nicht erreichbar. Prüf, ob er eingeschaltet und im selben WLAN wie dieses iPhone ist."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo conectar con la tele. Comprueba que está encendida y en la misma wifi que este iPhone."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de joindre la TV. Vérifiez qu'elle est allumée et sur le même Wi-Fi que cet iPhone."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile raggiungere la TV. Controlla che sia accesa e sulla stessa rete Wi-Fi di questo iPhone."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível alcançar a TV. Verifique se ela está ligada e no mesmo Wi-Fi deste iPhone."
+          }
+        }
+      }
+    },
+    "The TV sent something unexpected. Try again." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The TV sent something unexpected. Try again."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat etwas Unerwartetes gesendet. Versuch es noch einmal."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tele envió algo inesperado. Vuelve a intentarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV a envoyé une réponse inattendue. Réessayez."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV ha inviato una risposta inattesa. Riprova."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV enviou algo inesperado. Tente de novo."
+          }
+        }
+      }
+    },
+    "This photo couldn't be read." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This photo couldn't be read."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Foto konnte nicht gelesen werden."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo leer esta foto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de lire cette photo."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile leggere questa foto."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível ler esta foto."
+          }
+        }
+      }
+    },
+    "This photo couldn't be prepared for the TV." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This photo couldn't be prepared for the TV."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Foto konnte nicht für den Fernseher vorbereitet werden."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo preparar esta foto para la tele."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de préparer cette photo pour la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile preparare questa foto per la TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível preparar esta foto para a TV."
+          }
+        }
+      }
+    },
+    "This iPhone isn't on the TV's Wi-Fi network." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This iPhone isn't on the TV's Wi-Fi network."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses iPhone ist nicht im WLAN des Fernsehers."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este iPhone no está en la wifi de la tele."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cet iPhone n'est pas sur le réseau Wi-Fi de la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo iPhone non è sulla rete Wi-Fi della TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este iPhone não está na rede Wi-Fi da TV."
+          }
+        }
+      }
+    },
+    "The TV couldn't play this video. It may use a format the TV's player doesn't support (often HDR or Dolby Vision from recent iPhones). Photos and other videos still work." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The TV couldn't play this video. It may use a format the TV's player doesn't support (often HDR or Dolby Vision from recent iPhones). Photos and other videos still work."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher konnte dieses Video nicht abspielen. Vielleicht nutzt es ein Format, das sein Player nicht kann (oft HDR oder Dolby Vision von neueren iPhones). Fotos und andere Videos funktionieren weiterhin."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tele no pudo reproducir este vídeo. Puede que use un formato que su reproductor no admite (a menudo HDR o Dolby Vision de iPhone recientes). Las fotos y otros vídeos siguen funcionando."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'a pas pu lire cette vidéo. Elle utilise peut-être un format que son lecteur ne prend pas en charge (souvent le HDR ou Dolby Vision des iPhone récents). Les photos et les autres vidéos fonctionnent toujours."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non è riuscita a riprodurre questo video. Forse usa un formato che il suo lettore non supporta (spesso HDR o Dolby Vision degli iPhone recenti). Le foto e gli altri video funzionano comunque."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não conseguiu reproduzir este vídeo. Ele pode usar um formato que o player da TV não aceita (geralmente HDR ou Dolby Vision de iPhones recentes). Fotos e outros vídeos continuam funcionando."
+          }
+        }
+      }
+    },
+    "The TV couldn't show this photo." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The TV couldn't show this photo."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher konnte dieses Foto nicht zeigen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tele no pudo mostrar esta foto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'a pas pu afficher cette photo."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non è riuscita a mostrare questa foto."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não conseguiu mostrar esta foto."
+          }
+        }
+      }
+    },
+    "This video couldn't be read." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This video couldn't be read."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Video konnte nicht gelesen werden."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo leer este vídeo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de lire cette vidéo."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile leggere questo video."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível ler este vídeo."
+          }
+        }
+      }
+    },
+    "All" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutti"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tudo"
+          }
+        }
+      }
+    },
+    "Videos" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Videos"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Videos"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vídeos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vidéos"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vídeos"
+          }
+        }
+      }
+    },
+    "Favourites" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourites"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoriten"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoritos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoris"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferiti"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoritos"
+          }
+        }
+      }
+    },
+    "Show on TV" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show on TV"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf dem Fernseher zeigen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar en la tele"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar na TV"
+          }
+        }
+      }
+    },
+    "Show photos on TV" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show photos on TV"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos auf dem Fernseher zeigen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar fotos en la tele"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher des photos sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra foto sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar fotos na TV"
+          }
+        }
+      }
+    },
+    "Section" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Section"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bereich"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sección"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Section"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sezione"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seção"
+          }
+        }
+      }
+    },
+    "Purio sees only the photos you chose. Choose more…" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio sees only the photos you chose. Choose more…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio sieht nur die Fotos, die du ausgewählt hast. Mehr auswählen …"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio solo ve las fotos que elegiste. Elegir más…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio ne voit que les photos que vous avez choisies. En choisir d'autres…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio vede solo le foto che hai scelto. Scegline altre…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Purio vê só as fotos que você escolheu. Escolher mais…"
+          }
+        }
+      }
+    },
+    "No favourites yet" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No favourites yet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Favoriten"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay favoritos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas encore de favoris"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ancora nessun preferito"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum favorito ainda"
+          }
+        }
+      }
+    },
+    "No photos or videos" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No photos or videos"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Fotos oder Videos"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay fotos ni vídeos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune photo ni vidéo"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna foto o video"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma foto ou vídeo"
+          }
+        }
+      }
+    },
+    "Video" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vídeo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vidéo"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vídeo"
+          }
+        }
+      }
+    },
+    "Slideshow" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slideshow"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diashow"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presentación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diaporama"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presentazione"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apresentação"
+          }
+        }
+      }
+    },
+    "Slideshow (%lld)" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slideshow (%lld)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diashow (%lld)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presentación (%lld)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diaporama (%lld)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presentazione (%lld)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apresentação (%lld)"
+          }
+        }
+      }
+    },
+    "Stop slideshow" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop slideshow"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diashow beenden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parar presentación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrêter le diaporama"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ferma presentazione"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parar apresentação"
+          }
+        }
+      }
+    },
+    "%lld items" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Objekt"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Objekte"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementos"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld élément"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld éléments"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementi"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld itens"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Select" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auswählen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleccionar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sélectionner"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecionar"
+          }
+        }
+      }
+    },
+    "Purio can't see your photos" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio can't see your photos"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio kann deine Fotos nicht sehen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio no puede ver tus fotos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio ne voit pas vos photos"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio non può vedere le tue foto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Purio não consegue ver suas fotos"
+          }
+        }
+      }
+    },
+    "To show photos and videos on your TV, allow access in Settings › Purio TV › Photos. They're read on this iPhone and sent only to your TV." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To show photos and videos on your TV, allow access in Settings › Purio TV › Photos. They're read on this iPhone and sent only to your TV."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um Fotos und Videos auf deinem Fernseher zu zeigen, erlaube den Zugriff unter Einstellungen › Purio TV › Fotos. Sie werden auf diesem iPhone gelesen und nur an deinen Fernseher gesendet."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para mostrar fotos y vídeos en tu tele, permite el acceso en Ajustes › Purio TV › Fotos. Se leen en este iPhone y solo se envían a tu tele."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour afficher vos photos et vidéos sur votre TV, autorisez l'accès dans Réglages › Purio TV › Photos. Elles sont lues sur cet iPhone et envoyées uniquement à votre TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per mostrare foto e video sulla TV, consenti l'accesso in Impostazioni › Purio TV › Foto. Vengono letti su questo iPhone e inviati solo alla tua TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para mostrar fotos e vídeos na sua TV, permita o acesso em Ajustes › Purio TV › Fotos. Eles são lidos neste iPhone e enviados só para a sua TV."
+          }
+        }
+      }
+    },
+    "Next item" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next item"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächstes Objekt"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Élément suivant"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento successivo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Próximo item"
+          }
+        }
+      }
+    },
+    "Keep browsing" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep browsing"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiter stöbern"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguir explorando"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuer à parcourir"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua a sfogliare"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar navegando"
+          }
+        }
+      }
+    },
+    "Back to library" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back to library"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurück zur Mediathek"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a la fototeca"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retour à la photothèque"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Torna alla libreria"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voltar à fototeca"
+          }
+        }
+      }
+    },
+    "Opening on %@…" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opening on %@…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird auf %@ geöffnet …"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abriendo en %@…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouverture sur %@…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apertura su %@…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrindo em %@…"
+          }
+        }
+      }
+    },
+    "The TV starts its player, about 10 seconds the first time." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The TV starts its player, about 10 seconds the first time."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher startet seinen Player, beim ersten Mal etwa 10 Sekunden."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tele abre su reproductor; la primera vez tarda unos 10 segundos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV lance son lecteur, environ 10 secondes la première fois."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV apre il suo lettore, circa 10 secondi la prima volta."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV abre o player, cerca de 10 segundos na primeira vez."
+          }
+        }
+      }
+    },
+    "Downloading from iCloud… %lld%%" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloading from iCloud… %lld%%"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird aus iCloud geladen … %lld %%"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descargando de iCloud… %lld %%"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Téléchargement depuis iCloud… %lld %%"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download da iCloud… %lld%%"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Baixando do iCloud… %lld%%"
+          }
+        }
+      }
+    },
+    "Stop on TV" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop on TV"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf dem Fernseher beenden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detener en la tele"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrêter sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interrompi sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parar na TV"
+          }
+        }
+      }
+    },
+    "Position" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Position"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Position"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posición"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Position"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posizione"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posição"
+          }
+        }
+      }
+    },
+    "Back 10 seconds" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back 10 seconds"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 Sekunden zurück"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atrás 10 segundos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reculer de 10 secondes"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indietro di 10 secondi"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voltar 10 segundos"
+          }
+        }
+      }
+    },
+    "Forward 10 seconds" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forward 10 seconds"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 Sekunden vor"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adelante 10 segundos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avancer de 10 secondes"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanti di 10 secondi"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avançar 10 segundos"
+          }
+        }
+      }
+    },
+    "Play" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiedergabe"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reproducir"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lecture"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riproduci"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reproduzir"
+          }
+        }
+      }
+    },
+    "Keep Purio open while the video plays: the TV streams it from your iPhone." : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep Purio open while the video plays: the TV streams it from your iPhone."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lass Purio geöffnet, solange das Video läuft: Der Fernseher streamt es von deinem iPhone."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén Purio abierta mientras se reproduce el vídeo: la tele lo recibe desde tu iPhone."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gardez Purio ouverte pendant la lecture : la TV lit la vidéo depuis votre iPhone."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tieni aperta Purio mentre il video è in riproduzione: la TV lo riceve dal tuo iPhone."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenha o Purio aberto enquanto o vídeo toca: a TV recebe o vídeo do seu iPhone."
+          }
+        }
+      }
+    },
+    "Opening…" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opening…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird geöffnet …"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abriendo…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouverture…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apertura…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrindo…"
+          }
+        }
+      }
+    },
+    "On TV" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On TV"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf dem TV"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En la tele"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na TV"
+          }
+        }
+      }
+    },
+    "Not on TV" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not on TV"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht auf dem TV"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No en la tele"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fora da TV"
+          }
+        }
+      }
+    },
+    "Shows the open photo on the TV again" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shows the open photo on the TV again"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeigt das geöffnete Foto wieder auf dem Fernseher"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelve a mostrar la foto abierta en la tele"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affiche de nouveau la photo ouverte sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra di nuovo sulla TV la foto aperta"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra a foto aberta na TV de novo"
+          }
+        }
+      }
+    },
+    "Stops sending photos to the TV while you browse" : {
+      "comment" : "Show on TV (photo library on the TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stops sending photos to the TV while you browse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sendet keine Fotos an den Fernseher, während du stöberst"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja de enviar fotos a la tele mientras exploras"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrête d'envoyer les photos à la TV pendant que vous parcourez"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smette di inviare foto alla TV mentre sfogli"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para de enviar fotos para a TV enquanto você navega"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

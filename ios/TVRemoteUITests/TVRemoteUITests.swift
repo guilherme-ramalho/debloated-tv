@@ -15,6 +15,64 @@ final class TVRemoteUITests: XCTestCase {
         return app
     }
 
+    /// UI-10 / CST-01: the remote's header keeps Show on TV, Type on TV and Inputs on screen without squeezing the
+    /// TV's name, on every phone size (run on the 4.7-inch SE and a Pro Max). SHOTS_DIR saves a screenshot.
+    func testHeaderFitsShowOnTV() throws {
+        let app = launchRemote()
+        let chip = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'offline' OR label CONTAINS[c] 'standby' OR label CONTAINS[c] '192.0.2'")).firstMatch
+        let buttons = [app.buttons["showOnTV"], app.buttons["typeOnTV"], app.buttons["Favorite inputs"]]
+        for button in buttons { XCTAssertTrue(button.waitForExistence(timeout: 5)); XCTAssertTrue(button.isHittable, button.identifier) }
+        let width = app.windows.firstMatch.frame.width
+        XCTAssertLessThanOrEqual(buttons[2].frame.maxX, width - 8, "inputs button off the edge")
+        XCTAssertLessThan(buttons[0].frame.maxX, buttons[1].frame.minX)
+        if chip.exists { XCTAssertGreaterThanOrEqual(chip.frame.width, 90, "the TV's name lost its room") }
+        save(app, "header-\(Int(width))")
+    }
+
+    /// CST-04: the library opens from the header, a photo opens full screen, and a TV that can't be reached says so.
+    /// Grant photo access first: xcrun simctl privacy <udid> grant photos com.guilhermeramalho.TVRemote.dev
+    func testShowOnTVOpensAPhotoFullScreen() throws {
+        let app = launchRemote()
+        addUIInterruptionMonitor(withDescription: "Photos access") { alert in
+            for label in ["Allow Full Access", "Allow Access to All Photos"] where alert.buttons[label].exists { alert.buttons[label].tap(); return true }
+            return false
+        }
+        app.buttons["showOnTV"].tap()
+        XCTAssertTrue(app.navigationBars["Show on TV"].waitForExistence(timeout: 5))
+        app.tap()   // lets the interruption monitor answer the permission prompt
+        let item = app.descendants(matching: .any).matching(identifier: "libraryItem").firstMatch
+        let found = item.waitForExistence(timeout: 10)
+        save(app, "library")
+        XCTAssertTrue(found, "no photos in the simulator's library")
+        item.tap()
+        XCTAssertTrue(app.buttons["viewerBack"].waitForExistence(timeout: 5))
+        save(app, "viewer")
+        // 192.0.2.10 never answers: after the connection timeout the TV problem is explained.
+        let alert = app.alerts["Purio TV"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 20), "no message for an unreachable TV")
+        XCTAssertTrue(alert.staticTexts.containing(NSPredicate(format: "label CONTAINS \"Couldn't reach the TV\"")).firstMatch.exists)
+        save(app, "no-cast")
+        alert.buttons["Keep browsing"].tap()
+        app.buttons["viewerBack"].tap()
+        app.buttons["closeShowOnTV"].tap()
+        XCTAssertTrue(app.buttons["showOnTV"].waitForExistence(timeout: 5))
+    }
+
+    private func launchRemote() -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestRemote", "YES", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        app.tabBars.buttons["Remote"].tap()
+        return app
+    }
+    private func save(_ app: XCUIApplication, _ name: String) {
+        let shot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: shot); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+        if let dir = ProcessInfo.processInfo.environment["SHOTS_DIR"] {
+            try? shot.pngRepresentation.write(to: URL(fileURLWithPath: dir + "/" + name + ".png"))
+        }
+    }
+
     func testTabsAreAllReachable() {
         let app = launch()
         for tab in ["Remote", "TV", "Actions", "Settings"] {

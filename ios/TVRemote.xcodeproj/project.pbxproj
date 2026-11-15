@@ -49,6 +49,9 @@
 		70000000000000000000001D /* Sources/Core/TVDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70000000000000000000001C /* Sources/Core/TVDiscovery.swift */; };
 		700000000000000000000012 /* Sources/App/TVSetupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000011 /* Sources/App/TVSetupViews.swift */; };
 		700000000000000000000014 /* Sources/Core/TVSetupState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700000000000000000000013 /* Sources/Core/TVSetupState.swift */; };
+		900000000000000000000002 /* Sources/Core/Cast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900000000000000000000001 /* Sources/Core/Cast.swift */; };
+		900000000000000000000004 /* Sources/Core/MediaServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900000000000000000000003 /* Sources/Core/MediaServer.swift */; };
+		900000000000000000000006 /* Sources/App/ShowOnTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900000000000000000000005 /* Sources/App/ShowOnTV.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +125,9 @@
 		70000000000000000000001C /* Sources/Core/TVDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/TVDiscovery.swift; sourceTree = SOURCE_ROOT; };
 		700000000000000000000011 /* Sources/App/TVSetupViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/TVSetupViews.swift; sourceTree = SOURCE_ROOT; };
 		700000000000000000000013 /* Sources/Core/TVSetupState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/TVSetupState.swift; sourceTree = SOURCE_ROOT; };
+		900000000000000000000001 /* Sources/Core/Cast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/Cast.swift; sourceTree = SOURCE_ROOT; };
+		900000000000000000000003 /* Sources/Core/MediaServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/MediaServer.swift; sourceTree = SOURCE_ROOT; };
+		900000000000000000000005 /* Sources/App/ShowOnTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/ShowOnTV.swift; sourceTree = SOURCE_ROOT; };
 		FAC2022F3097509C00ECC767 /* TVRemoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TVRemoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -178,6 +184,9 @@
 				70000000000000000000001A /* Sources/App/ConnectViews.swift */,
 				70000000000000000000001C /* Sources/Core/TVDiscovery.swift */,
 				700000000000000000000013 /* Sources/Core/TVSetupState.swift */,
+				900000000000000000000001 /* Sources/Core/Cast.swift */,
+				900000000000000000000003 /* Sources/Core/MediaServer.swift */,
+				900000000000000000000005 /* Sources/App/ShowOnTV.swift */,
 				70000000000000000000000D /* Sources/App/DebloatFlow.swift */,
 				300000000000000000000008 /* Sources/App/PairingViews.swift */,
 				30000000000000000000000A /* Sources/App/RemoteExtras.swift */,
@@ -359,6 +368,9 @@
 				70000000000000000000001B /* Sources/App/ConnectViews.swift in Sources */,
 				70000000000000000000001D /* Sources/Core/TVDiscovery.swift in Sources */,
 				700000000000000000000014 /* Sources/Core/TVSetupState.swift in Sources */,
+				900000000000000000000002 /* Sources/Core/Cast.swift in Sources */,
+				900000000000000000000004 /* Sources/Core/MediaServer.swift in Sources */,
+				900000000000000000000006 /* Sources/App/ShowOnTV.swift in Sources */,
 				70000000000000000000000E /* Sources/App/DebloatFlow.swift in Sources */,
 				300000000000000000000009 /* Sources/App/PairingViews.swift in Sources */,
 				30000000000000000000000B /* Sources/App/RemoteExtras.swift in Sources */,

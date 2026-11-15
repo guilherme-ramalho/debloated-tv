@@ -192,6 +192,48 @@
           }
         }
       }
+    },
+    "NSPhotoLibraryUsageDescription" : {
+      "comment" : "Shown when iOS asks for access to the photo library (Show on TV).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio zeigt deine Fotos und Videos auf deinem Fernseher. Sie werden auf diesem iPhone gelesen und nur an deinen Fernseher in deinem Heimnetz gesendet."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio shows your photos and videos on your TV. They’re read on this iPhone and sent only to your TV, on your home network."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio muestra tus fotos y vídeos en tu tele. Se leen en este iPhone y solo se envían a tu tele, en tu red doméstica."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio affiche vos photos et vidéos sur votre TV. Elles sont lues sur cet iPhone et envoyées uniquement à votre TV, sur votre réseau domestique."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio mostra le tue foto e i tuoi video sulla TV. Vengono letti su questo iPhone e inviati solo alla tua TV, sulla rete di casa."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Purio mostra suas fotos e vídeos na sua TV. Eles são lidos neste iPhone e enviados só para a sua TV, na sua rede de casa."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

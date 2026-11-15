@@ -52,6 +52,7 @@ struct RemoteView: View {
     @EnvironmentObject private var preferences: AppSettings
     @State private var keyboard = false
     @State private var inputs = false
+    @State private var showOnTV = false
     @ObservedObject var model: RemoteModel
     @State private var settings = false
     @StateObject private var pad = DPadGestureController()
@@ -61,7 +62,7 @@ struct RemoteView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                if !model.hasSavedPairing && !model.preparing {
+                if !model.hasSavedPairing && !model.preparing && !UITestHooks.showsRemote {
                     ConnectTVView(model: model)
                 } else {
                 VStack(spacing: 12) {
@@ -131,24 +132,37 @@ struct RemoteView: View {
             }
             .sheet(isPresented: $keyboard) { KeyboardView(model: model) }
             .sheet(isPresented: $inputs) { NavigationStack { InputSettingsView(model: model).toolbar { Button("Done") { inputs = false } } } }
+            .fullScreenCover(isPresented: $showOnTV) { ShowOnTVView(remote: model) }
 
         }
     }
-    /// Remote 1: power, then the TV and the app on screen (tap for connection settings), then typing and inputs.
+    /// Remote 1: power, then the TV and the app on screen (tap for connection settings), then Show on TV, typing
+    /// and inputs. Narrow phones (4.7-inch SE) get smaller round buttons so the TV's name keeps its room.
     private var controlsHeader: some View {
-        HStack(spacing: 12) {
+        ViewThatFits(in: .horizontal) {
+            header(button: 46, spacing: 12, nameRoom: 130)
+            header(button: 40, spacing: 8, nameRoom: 96)
+        }.frame(minHeight: 52)
+    }
+    private func header(button side: CGFloat, spacing: CGFloat, nameRoom: CGFloat) -> some View {
+        HStack(spacing: spacing) {
             topCommand("power", "Power", .power, Color(red: 1, green: 0.34, blue: 0.36))
             TVConnectionChip(model: model, layout: .block) { settings = true }
+                .frame(minWidth: nameRoom, alignment: .leading)
                 .contextMenu { Button("Connection settings", systemImage: "wifi") { settings = true } }
-            Button { keyboard = true } label: {
-                Image(systemName: "keyboard").font(.system(size: 19, weight: .medium)).frame(width: 46, height: 46)
-                    .background(QuietTheme.panel, in: Circle())
-            }.accessibilityLabel("Type on TV").accessibilityIdentifier("typeOnTV").buttonStyle(RemotePressStyle(radius: 23))
-            Button { inputs = true } label: {
-                Image(systemName: "rectangle.on.rectangle").font(.system(size: 19, weight: .medium)).frame(width: 46, height: 46)
-                    .background(Color(red: 22/255, green: 48/255, blue: 79/255), in: Circle())
-            }.accessibilityLabel("Favorite inputs").buttonStyle(RemotePressStyle(radius: 23))
-        }.frame(minHeight: 52)
+            roundButton("photo.on.rectangle.angled", side: side, fill: Color(red: 22/255, green: 48/255, blue: 79/255), tint: QuietTheme.cyan) { showOnTV = true }
+                .accessibilityLabel("Show photos on TV").accessibilityIdentifier("showOnTV")
+            roundButton("keyboard", side: side, fill: QuietTheme.panel) { keyboard = true }
+                .accessibilityLabel("Type on TV").accessibilityIdentifier("typeOnTV")
+            roundButton("rectangle.on.rectangle", side: side, fill: Color(red: 22/255, green: 48/255, blue: 79/255)) { inputs = true }
+                .accessibilityLabel("Favorite inputs")
+        }
+    }
+    private func roundButton(_ symbol: String, side: CGFloat, fill: Color, tint: Color = .white, _ action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol).font(.system(size: side * 0.41, weight: .medium)).foregroundStyle(tint)
+                .frame(width: side, height: side).background(fill, in: Circle())
+        }.buttonStyle(RemotePressStyle(radius: side / 2))
     }
     private func command(_ symbol: String, _ label: LocalizedStringKey, _ key: TVKey) -> some View {
         Button { model.tap(key) } label: {
@@ -240,5 +254,9 @@ enum UITestHooks {
         setup.update(host) { $0 = info }
         if defaults.bool(forKey: "uiTestOffer") { setup.offerFor = host }
     }
+    /// `-uiTestRemote YES`: the remote's controls without a paired TV (header layout and Show on TV tests).
+    static var showsRemote: Bool { UserDefaults.standard.bool(forKey: "uiTestRemote") }
 }
+#else
+enum UITestHooks { static let showsRemote = false }
 #endif

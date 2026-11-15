@@ -302,6 +302,28 @@ Run on the emulator first (`share setup`, address `<Mac>.local:15555`), then on 
 | PRO-04 | Release builds don't show development profiles | Pass | Auto: `testReleaseBuildsHideDevelopmentProfiles` |
 | PRO-05 | A new profile: setup on the real TV model, then undo | Everything in sections 4–6 passes on that TV | Manual |
 
+## 11. Show on TV (CST, 1.3)
+
+Photos and videos from the phone's library on the TV, through the TV's built-in Cast player (`docs/cast.md`).
+The `android-tv` emulator image has no Cast player, so the end-to-end suite doesn't cover it: real TV only.
+
+| ID | What to do | Expected | How |
+|---|---|---|---|
+| CST-01 | Remote header on a 4.7-inch iPhone SE and on a Pro Max | Show on TV, Type on TV and Inputs all on screen; the TV's name keeps its room (smaller round buttons on narrow phones) | Auto `testHeaderFitsShowOnTV` (UI, run on both sizes) |
+| CST-02 | Media formats on the TV's player | JPEG shown (HEIC refused, so photos are converted); iPhone .mov in H.264, HEVC and 10-bit HDR play as is; a portrait video plays upright; HDR colours look right | Auto `testPhotoBecomesAnUprightJPEGAtMost4KWithoutLocation`; TCL 15 Nov 2026 (formats); Manual: portrait and HDR look on the TV |
+| CST-03 | Swipe quickly through 20 photos, stop on one | The TV shows only the photo you stopped on, about a third of a second after you stop | Auto `testFastSwipesSendOnlyThePhotoYouStopOn` + Manual (TCL) |
+| CST-04 | Open Show on TV, allow access, tap a photo with the TV unreachable | Library grid, newest at the bottom; the photo opens full screen at once; "Opening on …" banner; then "Couldn't reach the TV…" | Auto `testShowOnTVOpensAPhotoFullScreen` (UI) |
+| CST-05 | First photo on a Cast TV, then swipe on | Photo full screen on the phone at once; on the TV after the player opens (about 10 s the first time); then within a second per photo; pill says "On TV" | Auto `testLiveShowsAPhotoOnTheTVAndStops` (`CAST_TEST_HOST`) + Manual (TCL) |
+| CST-06 | A video: play, pause, ±10 s, drag the position, TV volume | The TV plays it; the phone shows the still and the controls; the phone doesn't lock while it plays and may lock after | Manual (TCL) |
+| CST-07 | Slideshow from an open photo, and from Select (3 photos) | The next photo every 5 s, videos skipped, stops at the end; Stop slideshow stops it | Manual |
+| CST-08 | Tap "On TV" (pause), browse, tap again | Nothing reaches the TV while paused; resuming sends the open photo | Manual |
+| CST-09 | Stop on TV; then press Home on the TV's remote while a photo is showing; then leave the library | Stop on TV: the TV returns to Home. Home on the TV: the pill goes back to the TV's name and the next photo opens the player again. Leaving the library closes everything | Auto `testStopClosesThePlayer`, `testPlayerClosedOnTheTVIsReportedAndTheNextLoadRelaunches` + Manual |
+| CST-10 | Limited photo access, and access denied | Limited: only the chosen photos and "Choose more…". Denied: the explanation and Open Settings | Manual |
+| CST-11 | A photo or video kept only in iCloud | "Downloading from iCloud… n%" then it shows | Manual |
+| CST-12 | A TV without Chromecast built in | "This TV can't show photos from Purio…" | Auto `testConnectionFailuresAreExplained` |
+| CST-13 | Memory: open the library, scroll through hundreds of photos, view 20 full screen, leave | Xcode's memory gauge stays under about 100 MB in the library and returns close to where it was after leaving | Manual (Xcode debug gauge) |
+| CST-14 | Wire format and server | Frames, the session steps, byte ranges, only shared paths served, the TV's subnet picked | Auto `CastTests` |
+
 ## Release checklist
 
 `scripts/release.sh` does the mechanical part: bundles the launcher, verifies its release key
