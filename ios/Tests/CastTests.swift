@@ -85,6 +85,18 @@ final class CastTests: XCTestCase {
         XCTAssertEqual(cast.receive(CastMessage(source: "t-1", destination: "sender-purio", namespace: CastNamespace.media, json: ["type": "LOAD_FAILED"])).events, [.loadFailed])
     }
 
+    func testFailureOfAReplacedLoadIsIgnored() {
+        var cast = CastController()
+        _ = cast.load(photo); _ = cast.receive(status([player]))
+        let first = cast.load(CastController.Load(url: "http://x/long.m3u8", contentType: "application/x-mpegURL", title: "long", hls: true))
+        let second = cast.load(photo)
+        XCTAssertEqual((first[0].json["media"] as? [String: Any])?["hlsSegmentFormat"] as? String, "fmp4")
+        let failed = { (id: Any) in CastMessage(source: "t-1", destination: "sender-purio", namespace: CastNamespace.media, json: ["type": "LOAD_FAILED", "requestId": id]) }
+        XCTAssertEqual(cast.receive(failed(first[0].json["requestId"]!)).events, [], "the TV dropping the first load for the second")
+        XCTAssertEqual(cast.receive(failed(second[0].json["requestId"]!)).events, [.loadFailed])
+        XCTAssertEqual(cast.status().map(\.type), ["GET_STATUS"])
+    }
+
     func testStopClosesThePlayer() {
         var cast = CastController()
         XCTAssertTrue(cast.stop().isEmpty, "nothing to stop before a session")

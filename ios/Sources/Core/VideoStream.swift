@@ -15,16 +15,24 @@ public enum VideoPlan {
         }
     }
     public static let segmentSeconds = 6.0
-    /// Larger than 1080p, or heavier than 20 Mbit/s: the TV's Cast player can't keep up with it.
+    /// Larger than 1080p, heavier than 20 Mbit/s (the TV's Cast player can't keep up), or portrait (the player
+    /// stretched a portrait video to fill the screen, 1.3 test): converted, into a 16:9 frame.
     public static func needsConversion(_ source: Source) -> Bool {
-        max(source.width, source.height) > 1920 || min(source.width, source.height) > 1080 || source.bitsPerSecond > 20_000_000
+        source.height > source.width || source.width > 1920 || source.height > 1080 || source.bitsPerSecond > 20_000_000
     }
-    /// The upright size fitted inside 1920 x 1080 (or 1080 x 1920 for portrait), in even numbers.
+    /// The frame sent to the TV: always 16:9, 1920 x 1080 at most, never larger than the picture needs.
     public static func outputSize(width: Double, height: Double) -> CGSize {
-        let box = width >= height ? CGSize(width: 1920, height: 1080) : CGSize(width: 1080, height: 1920)
-        let scale = min(1, box.width / width, box.height / height)
-        func even(_ value: Double) -> Double { max(2, (value * scale / 2).rounded() * 2) }
-        return CGSize(width: even(width), height: even(height))
+        let scale = min(1, 1920 / width, 1080 / height)
+        let frameHeight = max(height * scale, width * scale * 9 / 16)
+        func even(_ value: Double) -> Double { max(2, (value / 2).rounded() * 2) }
+        return CGSize(width: even(frameHeight * 16 / 9), height: even(frameHeight))
+    }
+    /// Where the upright picture sits in that frame: as large as fits, centred (black bars at the sides for
+    /// portrait, as the TV would show it anyway).
+    public static func pictureRect(width: Double, height: Double, in frame: CGSize) -> CGRect {
+        let scale = min(frame.width / width, frame.height / height)
+        let size = CGSize(width: width * scale, height: height * scale)
+        return CGRect(x: (frame.width - size.width) / 2, y: (frame.height - size.height) / 2, width: size.width, height: size.height)
     }
     /// 60 fps sources keep 60; everything else plays at 30.
     public static func outputFrameRate(_ fps: Double) -> Int32 { fps > 40 ? 60 : 30 }
@@ -239,11 +247,15 @@ public final class VideoStream: NSObject, AVAssetWriterDelegate, @unchecked Send
         for old in max(0, index - 30)..<(index - 3) { try? FileManager.default.removeItem(at: segmentURL(old)) }
     }
 
-    /// Upright, scaled to the output size, in SDR (Rec. 709): AVFoundation tone-maps HDR (HLG, Dolby Vision) here.
+    /// Upright, fitted and centred in the 16:9 frame, in SDR (Rec. 709): AVFoundation tone-maps HDR (HLG, Dolby
+    /// Vision) here.
     private func composition() -> AVVideoComposition {
         let shown = CGRect(origin: .zero, size: naturalSize).applying(transform)
-        let scale = CGAffineTransform(scaleX: outputSize.width / abs(shown.width), y: outputSize.height / abs(shown.height))
-        let placed = transform.concatenating(CGAffineTransform(translationX: -shown.minX, y: -shown.minY)).concatenating(scale)
+        let picture = VideoPlan.pictureRect(width: abs(shown.width), height: abs(shown.height), in: outputSize)
+        let scale = picture.width / abs(shown.width)
+        let placed = transform.concatenating(CGAffineTransform(translationX: -shown.minX, y: -shown.minY))
+            .concatenating(CGAffineTransform(scaleX: scale, y: scale))
+            .concatenating(CGAffineTransform(translationX: picture.minX, y: picture.minY))
         let layer = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
         layer.setTransform(placed, at: .zero)
         let instruction = AVMutableVideoCompositionInstruction()

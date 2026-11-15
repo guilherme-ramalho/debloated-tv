@@ -20,6 +20,9 @@ import os
     }
     @Published private(set) var tv: TV = .off
     @Published private(set) var media: CastMediaStatus?
+    /// When `media` arrived: the player reports only on changes, so the phone moves the position on itself.
+    private(set) var mediaAt = Date()
+    private var refreshTask: Task<Void, Never>?
     /// The asset currently on the TV.
     @Published private(set) var shownID: String?
     @Published private(set) var downloading: Double?
@@ -80,8 +83,18 @@ import os
     }
     func play() { session?.play() }
     func pause() { session?.pause() }
-    func seek(to seconds: Double) { session?.seek(to: seconds) }
-    func skip(_ seconds: Double) { seek(to: (media?.currentTime ?? 0) + seconds) }
+    func seek(to seconds: Double) {
+        let target = max(0, min(seconds, media?.duration ?? seconds))
+        session?.seek(to: target)
+        if var status = media { status.currentTime = target; media = status; mediaAt = Date() }   // no jump back while the TV catches up
+    }
+    func skip(_ seconds: Double) { seek(to: position(at: Date()) + seconds) }
+    /// Where the TV is now: its last report, moved on by the time since while playing.
+    func position(at date: Date) -> Double {
+        guard let media else { return 0 }
+        let moved = media.playerState == "PLAYING" ? date.timeIntervalSince(mediaAt) : 0
+        return min(media.currentTime + moved, media.duration ?? .infinity)
+    }
 
     /// Closes the TV's player (it returns to Home) but keeps the library open.
     func stopOnTV() {
@@ -162,8 +175,9 @@ import os
             if status.playerState != media?.playerState || status.idleReason != media?.idleReason {
                 ShowOnTVLog.note("TV \(status.playerState)\(status.idleReason.map { " (\($0))" } ?? "") at \(Int(status.currentTime)) s, \(loadedAt.map { ShowOnTVLog.ms(since: $0) } ?? -1) ms after load")
             }
-            media = status
+            media = status; mediaAt = Date()
             if status.playerState != "IDLE" || status.idleReason == "FINISHED" { itemStarted = true }
+            if shownIsVideo && status.playing { startRefreshing() }
             keepAwake(shownIsVideo && status.playing)
             if status.idleReason == "ERROR" { reportLoadFailure() }
         case .loadFailed:
@@ -195,6 +209,18 @@ import os
         shownID = nil
     }
     private func keepAwake(_ on: Bool) { UIApplication.shared.isIdleTimerDisabled = on }
+    /// While a video plays, asks the TV where it is every 5 seconds so the phone's position doesn't drift.
+    private func startRefreshing() {
+        guard refreshTask == nil else { return }
+        refreshTask = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(5))
+                guard let self, self.shownIsVideo, self.media?.playing == true else { break }
+                self.session?.refresh()
+            }
+            self?.refreshTask = nil
+        }
+    }
 
     // MARK: media for the TV
 
@@ -377,6 +403,7 @@ struct ShowOnTVView: View {
     @State private var selecting = false
     @State private var selected: [String] = []
     @State private var lastOpened: Int?
+    @Namespace private var zoom
 
     init(remote: RemoteModel) {
         self.remote = remote
@@ -393,6 +420,12 @@ struct ShowOnTVView: View {
                 }
             }
             .background(QuietTheme.background)
+            .navigationDestination(item: $viewer) { start in
+                ShowOnTVViewer(remote: remote, tv: tv, items: start.items, start: start.index, slideshow: start.slideshow,
+                               zoom: start.zoomable ? zoom : nil) { index in
+                    if start.zoomable { lastOpened = index }
+                }
+            }
             .navigationTitle("Show on TV")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(QuietTheme.background, for: .navigationBar)
@@ -409,11 +442,6 @@ struct ShowOnTVView: View {
         .onChange(of: watcher.revision) { _, _ in reload() }
         .onChange(of: access) { _, _ in reload() }
         .onAppear(perform: reload)
-        .fullScreenCover(item: $viewer) { start in
-            ShowOnTVViewer(remote: remote, tv: tv, items: start.items, start: start.index, slideshow: start.slideshow) { index in
-                if start.items.count == assets.count { lastOpened = index }
-            }
-        }
     }
 
     private var library: some View {
@@ -444,6 +472,7 @@ struct ShowOnTVView: View {
                     ForEach(0..<assets.count, id: \.self) { index in
                         let asset = assets.object(at: index)
                         AssetThumbnail(asset: asset, side: side)
+                            .modifier(ZoomSource(id: index, namespace: zoom))
                             .overlay(alignment: .bottomTrailing) {
                                 if selecting {
                                     Image(systemName: selected.contains(asset.localIdentifier) ? "checkmark.circle.fill" : "circle")
@@ -502,7 +531,7 @@ struct ShowOnTVView: View {
             else if asset.mediaType == .image { selected.append(asset.localIdentifier) }
             return
         }
-        viewer = ViewerStart(items: .fetch(assets), index: index, slideshow: false)
+        viewer = ViewerStart(items: .fetch(assets), index: index, slideshow: false, zoomable: true)
     }
     private func startSlideshow() {
         if selecting {
@@ -512,10 +541,10 @@ struct ShowOnTVView: View {
             let ordered = selected.compactMap { byID[$0] }
             selecting = false; selected = []
             guard !ordered.isEmpty else { return }
-            viewer = ViewerStart(items: .list(ordered), index: 0, slideshow: true)
+            viewer = ViewerStart(items: .list(ordered), index: 0, slideshow: true, zoomable: false)
         } else {
             let start = lastOpened ?? (0..<assets.count).first { assets.object(at: $0).mediaType == .image } ?? 0
-            viewer = ViewerStart(items: .fetch(assets), index: start, slideshow: true)
+            viewer = ViewerStart(items: .fetch(assets), index: start, slideshow: true, zoomable: true)
         }
     }
     private func presentLimitedPicker() {
@@ -533,11 +562,31 @@ enum ViewerItems {
     var count: Int { switch self { case .fetch(let r): r.count; case .list(let l): l.count } }
     subscript(_ index: Int) -> PHAsset { switch self { case .fetch(let r): r.object(at: index); case .list(let l): l[index] } }
 }
-struct ViewerStart: Identifiable {
+struct ViewerStart: Identifiable, Hashable {
     let id = UUID()
     let items: ViewerItems
     let index: Int
     let slideshow: Bool
+    /// Opened from the grid (not a selection), so it can zoom out of and back into the photo's cell.
+    let zoomable: Bool
+    static func == (a: ViewerStart, b: ViewerStart) -> Bool { a.id == b.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
+}
+
+/// iOS 18+: the grid cell a photo zooms out of, and back into when the viewer is swiped down (as in Photos).
+struct ZoomSource: ViewModifier {
+    let id: Int
+    let namespace: Namespace.ID
+    func body(content: Content) -> some View {
+        if #available(iOS 18, *) { content.matchedTransitionSource(id: id, in: namespace) } else { content }
+    }
+}
+struct ZoomDestination: ViewModifier {
+    let id: Int
+    let namespace: Namespace.ID?
+    func body(content: Content) -> some View {
+        if #available(iOS 18, *), let namespace { content.navigationTransition(.zoom(sourceID: id, in: namespace)) } else { content }
+    }
 }
 
 /// A grid cell: a small thumbnail for the cell's size only, dropped when it scrolls away so memory stays at what's
@@ -594,21 +643,29 @@ struct ShowOnTVViewer: View {
     let items: ViewerItems
     let start: Int
     let slideshow: Bool
+    let zoom: Namespace.ID?
     let opened: (Int) -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var current: Int?
     @State private var chrome = true
-    @State private var playing = false
     @State private var slideshowTask: Task<Void, Never>?
+    @State private var scrub: Double?
+    /// How far the viewer is pulled down (swipe down to go back, where the zoom transition doesn't do it).
+    @State private var pull: CGFloat = 0
+    private var pullsByHand: Bool {
+        if #available(iOS 18, *) { return zoom == nil }
+        return true
+    }
 
     var body: some View {
         let index = current ?? start
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.black.opacity(Double(1 - min(pull, 300) / 400)).ignoresSafeArea()
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 0) {
                     ForEach(0..<items.count, id: \.self) { i in
-                        ViewerPage(asset: items[i]).containerRelativeFrame([.horizontal, .vertical]).id(i)
+                        ViewerPage(asset: items[i], casting: casting(for: items[i]), tvName: tv.tvName)
+                            .containerRelativeFrame([.horizontal, .vertical]).id(i)
                     }
                 }.scrollTargetLayout()
             }
@@ -616,9 +673,15 @@ struct ShowOnTVViewer: View {
             .scrollPosition(id: $current)
             .scrollIndicators(.hidden)
             .ignoresSafeArea()
+            .offset(y: pull)
+            .scaleEffect(CGFloat(1 - min(pull, 300) / 1200))
             .onTapGesture { withAnimation(.easeOut(duration: 0.2)) { chrome.toggle() } }
-            if chrome { overlay(index) }
+            .simultaneousGesture(pullsByHand ? pullDown : nil)
+            if chrome && pull == 0 { overlay(index).transition(.opacity) }
         }
+        .toolbar(.hidden, for: .navigationBar)
+        .navigationBarBackButtonHidden(true)
+        .modifier(ZoomDestination(id: index, namespace: zoom))
         .statusBarHidden(!chrome)
         .preferredColorScheme(.dark)
         .onAppear { current = start; focus(start); if slideshow { toggleSlideshow() } }
@@ -628,6 +691,26 @@ struct ShowOnTVViewer: View {
             if tv.problemIsItem && index + 1 < items.count { Button("Next item") { tv.problem = nil; withAnimation { current = index + 1 } } }
             Button("Keep browsing", role: .cancel) { tv.problem = nil }
         } message: { Text(tv.problem ?? "") }
+    }
+
+    /// Pull down to go back, like Photos: the photo follows the finger and shrinks, the black fades.
+    private var pullDown: some Gesture {
+        DragGesture(minimumDistance: 24)
+            .onChanged { value in
+                guard value.translation.height > 0, abs(value.translation.height) > abs(value.translation.width) * 1.3 else { return }
+                pull = value.translation.height
+            }
+            .onEnded { value in
+                if pull > 110 || (pull > 0 && value.predictedEndTranslation.height > 350) { dismiss() }
+                else { withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { pull = 0 } }
+            }
+    }
+    /// The video page's state on the TV, for its animation.
+    private func casting(for asset: PHAsset) -> ViewerPage.Casting? {
+        guard asset.mediaType == .video, tv.shownID == asset.localIdentifier, let media = tv.media else { return nil }
+        if media.playerState == "PLAYING" { return .playing }
+        if media.playerState == "BUFFERING" { return .buffering }
+        return media.playerState == "PAUSED" ? .paused : nil
     }
 
     private func overlay(_ index: Int) -> some View {
@@ -685,17 +768,22 @@ struct ShowOnTVViewer: View {
     private func videoControls(_ asset: PHAsset) -> some View {
         let onTV = tv.shownID == asset.localIdentifier
         let duration = tv.media?.duration ?? asset.duration
-        let time = onTV ? (tv.media?.currentTime ?? 0) : 0
         return VStack(spacing: 12) {
             if onTV {
-                VStack(spacing: 4) {
-                    Slider(value: Binding(get: { min(time, duration) }, set: { tv.seek(to: $0) }), in: 0...max(duration, 1))
+                // Redrawn twice a second from the TV's last report, so the bar follows the TV between reports.
+                TimelineView(.periodic(from: .now, by: 0.5)) { context in
+                    let time = scrub ?? tv.position(at: context.date)
+                    VStack(spacing: 4) {
+                        Slider(value: Binding(get: { min(time, duration) }, set: { scrub = $0 }), in: 0...max(duration, 1)) { editing in
+                            if !editing, let target = scrub { tv.seek(to: target); scrub = nil }
+                        }
                         .tint(QuietTheme.cyan).accessibilityLabel("Position")
-                    HStack {
-                        Text(Duration.seconds(time).formatted(.time(pattern: .minuteSecond)))
-                        Spacer()
-                        Text(Duration.seconds(duration).formatted(.time(pattern: .minuteSecond)))
-                    }.font(.system(size: 11)).monospacedDigit().foregroundStyle(QuietTheme.muted)
+                        HStack {
+                            Text(Duration.seconds(time).formatted(.time(pattern: .minuteSecond)))
+                            Spacer()
+                            Text(Duration.seconds(duration).formatted(.time(pattern: .minuteSecond)))
+                        }.font(.system(size: 11)).monospacedDigit().foregroundStyle(QuietTheme.muted)
+                    }
                 }
                 HStack(spacing: 30) {
                     round("gobackward.10", "Back 10 seconds") { tv.skip(-10) }
@@ -756,21 +844,69 @@ struct ShowOnTVViewer: View {
 /// One full-screen page: a screen-sized image (the TV gets its own 4K JPEG when it's shown), released when the
 /// page scrolls away.
 struct ViewerPage: View {
+    enum Casting { case playing, buffering, paused }
     let asset: PHAsset
+    var casting: Casting? = nil
+    var tvName = ""
     @State private var image: UIImage?
     @Environment(\.displayScale) private var scale
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                if let image { Image(uiImage: image).resizable().scaledToFit() } else { ProgressView().tint(.white) }
-                if asset.mediaType == .video {
+                if let image {
+                    Image(uiImage: image).resizable().scaledToFit()
+                        .blur(radius: casting == nil ? 0 : 24).opacity(casting == nil ? 1 : 0.45)
+                        .animation(.easeInOut(duration: 0.5), value: casting == nil)
+                } else { ProgressView().tint(.white) }
+                if let casting {
+                    CastingAnimation(state: casting, tvName: tvName).transition(.opacity.combined(with: .scale(scale: 0.9)))
+                } else if asset.mediaType == .video {
                     Image(systemName: "play.tv").font(.system(size: 30)).padding(16).background(.black.opacity(0.45), in: Circle()).foregroundStyle(.white.opacity(0.9))
                 }
             }
+            .animation(.easeInOut(duration: 0.4), value: casting)
             .frame(width: proxy.size.width, height: proxy.size.height)
             .task(id: asset.localIdentifier) { image = await AssetImages.image(asset, side: max(proxy.size.width, proxy.size.height) * scale, fill: false, network: true) }
             .onDisappear { image = nil }
         }
+    }
+}
+
+/// While a video plays on the TV: rings going out from a TV with a little level meter on its screen. It stops
+/// when the video pauses, and stays still with Reduce Motion. Drawn by TimelineView only while on screen.
+struct CastingAnimation: View {
+    let state: ViewerPage.Casting
+    let tvName: String
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    var body: some View {
+        let moving = state != .paused && !reduceMotion
+        VStack(spacing: 18) {
+            TimelineView(.animation(paused: !moving)) { context in
+                let t = context.date.timeIntervalSinceReferenceDate
+                ZStack {
+                    ForEach(0..<3, id: \.self) { ring in
+                        let phase = moving ? (t / 2.4 + Double(ring) / 3).truncatingRemainder(dividingBy: 1) : 0.3 + Double(ring) * 0.3
+                        Circle()
+                            .stroke(QuietTheme.cyan.opacity(moving ? 0.6 * (1 - phase) : 0.14), lineWidth: 2)
+                            .frame(width: 104 + 130 * phase, height: 104 + 130 * phase)
+                    }
+                    Circle().fill(QuietTheme.cyan.opacity(0.15)).frame(width: 104, height: 104)
+                    Image(systemName: "tv").font(.system(size: 44, weight: .regular)).foregroundStyle(QuietTheme.cyan)
+                    HStack(alignment: .bottom, spacing: 3) {
+                        ForEach(0..<4, id: \.self) { bar in
+                            Capsule().frame(width: 3.5, height: moving && state == .playing ? 5 + 9 * abs(sin(t * 2.6 + Double(bar) * 0.9)) : 4)
+                        }
+                    }
+                    .frame(height: 14, alignment: .bottom)
+                    .foregroundStyle(QuietTheme.cyan)
+                    .offset(y: -4)
+                }
+                .frame(width: 240, height: 240)
+            }
+            Text(state == .paused ? "Paused on \(tvName)" : "Playing on \(tvName)")
+                .font(.system(size: 16, weight: .semibold)).foregroundStyle(.white)
+        }
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -792,7 +928,7 @@ struct TVPill: View {
             .foregroundStyle(tv.tv == .on || tv.tv == .opening ? QuietTheme.cyan : QuietTheme.muted)
             .padding(.horizontal, 10).padding(.vertical, 7)
             .background(tv.tv == .on ? QuietTheme.cyan.opacity(0.16) : QuietTheme.panel, in: Capsule())
-            .frame(maxWidth: 150)
+            .fixedSize()          // hugs its text, so it sits flush right like the back button on the left
         }
         .accessibilityIdentifier("tvPill")
         .accessibilityHint(tv.tv == .paused ? Text("Shows the open photo on the TV again") : Text("Stops sending photos to the TV while you browse"))

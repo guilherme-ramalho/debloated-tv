@@ -325,7 +325,12 @@ The `android-tv` emulator image has no Cast player, so the end-to-end suite does
 | CST-14 | Wire format and server | Frames, the session steps, byte ranges, only shared paths served, the TV's subnet picked | Auto `CastTests` |
 | CST-15 | A 4K 60 fps HDR iPhone video, a 4K 30 fps one, a 1080p one | 4K plays smoothly after 2–4 s (converted to 1080p while it plays, normal colours); 1080p up to 20 Mbit/s goes as is; the log says which | Auto `VideoStreamTests` + Manual (TCL) |
 | CST-16 | In a converted video: drag the position far ahead, then back to the start | Plays from there within a few seconds (conversion restarts there); back works too | Auto `testJumpAheadConvertsFromThere` + Manual |
-| CST-17 | A video finishes on the TV | No "couldn't play" message (the TV's stray LOAD_FAILED is ignored) | Manual (TCL) |
+| CST-17 | A video finishes on the TV; switch to another video before one starts | No "couldn't play" message (a LOAD_FAILED for a finished or replaced load is ignored) | Auto `testFailureOfAReplacedLoadIsIgnored` + Manual (TCL) |
+| CST-18 | A portrait video | Upright at its own shape, black bars at the sides, never stretched (sent as a 16:9 frame) | Auto `testPortraitVideoIsCentredInA16By9Frame` + Manual (TCL) |
+| CST-19 | Watch the position while a video plays, then drag it | The phone's bar and time follow the TV (moved on between the TV's reports, checked every 5 s); after a drag it doesn't jump back | Manual |
+| CST-20 | A video playing on the TV, then paused | The phone shows the blurred still with rings going out from a TV and "Playing on …"; paused, it stops and says "Paused on …"; still with Reduce Motion | Manual |
+| CST-21 | Swipe down on an open photo | It shrinks back into its grid cell (iOS 18+; a pull-down on iOS 17 and in a selection slideshow) | Manual |
+| CST-22 | The On TV pill in the viewer | Flush right, mirroring the back button | Manual (screenshot) |
 
 ## Release checklist
 

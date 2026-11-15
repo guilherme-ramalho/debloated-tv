@@ -115,6 +115,9 @@ public struct CastController {
     public private(set) var mediaSession: Int?
     public private(set) var pending: Load?
     private var requestId = 0
+    /// The newest LOAD's request id: the TV answers a LOAD it dropped for a newer one with LOAD_FAILED, which must
+    /// not be reported against the newer one (1.3 test: "couldn't play" for a video that then played).
+    private var lastLoad = 0
 
     public init(sender: String = "sender-purio") { self.sender = sender }
 
@@ -142,6 +145,11 @@ public struct CastController {
     public mutating func pause() -> [CastMessage] { mediaCommand(["type": "PAUSE"]) }
     public mutating func seek(to seconds: Double) -> [CastMessage] { mediaCommand(["type": "SEEK", "currentTime": max(0, seconds)]) }
     public mutating func heartbeat() -> [CastMessage] { [message("receiver-0", CastNamespace.heartbeat, ["type": "PING"])] }
+    /// Asks the player where it is (it reports only on changes; the phone fills in between).
+    public mutating func status() -> [CastMessage] {
+        guard state == .ready, let transport else { return [] }
+        return [request(transport, CastNamespace.media, ["type": "GET_STATUS"])]
+    }
 
     /// Closes the player on the TV (it returns to Home) and ends the session.
     public mutating func stop() -> [CastMessage] {
@@ -172,7 +180,8 @@ public struct CastController {
                                                 currentTime: (status["currentTime"] as? NSNumber)?.doubleValue ?? 0,
                                                 duration: (media?["duration"] as? NSNumber)?.doubleValue,
                                                 idleReason: status["idleReason"] as? String))])
-        case (CastNamespace.media, "LOAD_FAILED"), (CastNamespace.media, "LOAD_CANCELLED"), (CastNamespace.media, "INVALID_REQUEST"):
+        case (CastNamespace.media, "LOAD_FAILED"), (CastNamespace.media, "INVALID_REQUEST"):
+            if let id = json["requestId"] as? Int, id != lastLoad { return ([], []) }   // about a load we've replaced
             return ([], [.loadFailed])
         case (CastNamespace.connection, "CLOSE") where incoming.source == transport:
             return playerGone()
@@ -203,6 +212,7 @@ public struct CastController {
         var media: [String: Any] = ["contentId": item.url, "contentType": item.contentType, "streamType": "BUFFERED",
                                     "metadata": ["metadataType": 0, "title": item.title]]
         if item.hls { media["hlsSegmentFormat"] = "fmp4"; media["hlsVideoSegmentFormat"] = "fmp4" }
+        lastLoad = requestId + 1
         return request(transport ?? "", CastNamespace.media, [
             "type": "LOAD", "sessionId": session ?? "", "autoplay": true, "currentTime": 0, "media": media])
     }
@@ -258,6 +268,7 @@ public final class CastSession {
     public func play() { run { $0.play() } }
     public func pause() { run { $0.pause() } }
     public func seek(to seconds: Double) { run { $0.seek(to: seconds) } }
+    public func refresh() { queue.async { [self] in if connection != nil { send(controller.status()) } } }
 
     /// Closes the TV's player and the connection.
     public func stop() {
@@ -304,8 +315,10 @@ public final class CastSession {
                 self.send(waiting)
                 self.receive()
                 self.startHeartbeat()
-            case .failed(let error), .waiting(let error):
+            case .failed(let error):
                 self.fail(Self.reason(for: error))
+            case .waiting(let error) where !self.connected:
+                self.fail(Self.reason(for: error))   // refused or unreachable at the start; a hiccup later isn't fatal
             default: break
             }
         }

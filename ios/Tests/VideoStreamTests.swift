@@ -7,16 +7,23 @@ final class VideoStreamTests: XCTestCase {
         XCTAssertTrue(VideoPlan.needsConversion(.init(width: 3840, height: 2160, fps: 60, bitsPerSecond: 85_000_000)), "iPhone 4K 60 fps HDR")
         XCTAssertTrue(VideoPlan.needsConversion(.init(width: 3840, height: 2160, fps: 30, bitsPerSecond: 25_000_000)), "4K 30 stutters on the TV")
         XCTAssertTrue(VideoPlan.needsConversion(.init(width: 2160, height: 3840, fps: 30, bitsPerSecond: 18_000_000)), "portrait 4K")
+        XCTAssertTrue(VideoPlan.needsConversion(.init(width: 1080, height: 1920, fps: 30, bitsPerSecond: 10_000_000)), "portrait: the TV stretched it")
         XCTAssertTrue(VideoPlan.needsConversion(.init(width: 1920, height: 1080, fps: 60, bitsPerSecond: 35_000_000)), "1080p but very heavy")
         XCTAssertFalse(VideoPlan.needsConversion(.init(width: 1920, height: 1080, fps: 30, bitsPerSecond: 16_000_000)), "iPhone 1080p plays as is")
-        XCTAssertFalse(VideoPlan.needsConversion(.init(width: 1080, height: 1920, fps: 30, bitsPerSecond: 10_000_000)), "portrait 1080p plays as is")
     }
 
-    func testOutputSizeKeepsTheShapeInside1080p() {
+    func testOutputIsA16By9FrameWithThePictureCentred() {
         XCTAssertEqual(VideoPlan.outputSize(width: 3840, height: 2160), CGSize(width: 1920, height: 1080))
-        XCTAssertEqual(VideoPlan.outputSize(width: 2160, height: 3840), CGSize(width: 1080, height: 1920))
-        XCTAssertEqual(VideoPlan.outputSize(width: 4032, height: 3024), CGSize(width: 1440, height: 1080))
+        XCTAssertEqual(VideoPlan.outputSize(width: 2160, height: 3840), CGSize(width: 1920, height: 1080), "portrait goes in a 16:9 frame")
+        XCTAssertEqual(VideoPlan.outputSize(width: 4032, height: 3024), CGSize(width: 1920, height: 1080))
         XCTAssertEqual(VideoPlan.outputSize(width: 1280, height: 720), CGSize(width: 1280, height: 720), "never enlarged")
+        XCTAssertEqual(VideoPlan.outputSize(width: 720, height: 1280), CGSize(width: 2276, height: 1280).applying(.init(scaleX: 1080 / 1280, y: 1080 / 1280)).rounded16x9, "a small portrait video still fits 1080 high")
+        let portrait = VideoPlan.pictureRect(width: 2160, height: 3840, in: CGSize(width: 1920, height: 1080))
+        XCTAssertEqual(portrait.height, 1080, accuracy: 0.5)
+        XCTAssertEqual(portrait.width, 607.5, accuracy: 0.5, "same shape as the original")
+        XCTAssertEqual(portrait.midX, 960, accuracy: 0.5, "centred")
+        let wide = VideoPlan.pictureRect(width: 3840, height: 2160, in: CGSize(width: 1920, height: 1080))
+        XCTAssertEqual(wide, CGRect(x: 0, y: 0, width: 1920, height: 1080))
         XCTAssertEqual(VideoPlan.outputFrameRate(59.94), 60)
         XCTAssertEqual(VideoPlan.outputFrameRate(29.97), 30)
         XCTAssertEqual(VideoPlan.outputFrameRate(24), 30)
@@ -67,6 +74,37 @@ final class VideoStreamTests: XCTestCase {
         }
     }
 
+    /// An iPhone portrait video (stored sideways with a 90° transform) becomes a 16:9 frame: the picture upright in
+    /// the middle at its own shape, black bars at the sides, so the TV can't stretch it (CST-18).
+    func testPortraitVideoIsCentredInA16By9Frame() async throws {
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent("stream-portrait-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: folder) }
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        let source = folder.appendingPathComponent("source.mov")
+        try await Self.makeVideo(at: source, width: 1920, height: 1080, seconds: 3, fps: 30,
+                                 transform: CGAffineTransform(a: 0, b: 1, c: -1, d: 0, tx: 1080, ty: 0), brightness: 200)
+        let stream = try await VideoStream(asset: AVURLAsset(url: source), folder: folder.appendingPathComponent("out"))
+        defer { stream.stop() }
+        XCTAssertEqual(stream.outputSize, CGSize(width: 1920, height: 1080))
+        stream.requested("s0.m4s")
+        try await Self.waitFor(stream.folder.appendingPathComponent("s0.m4s"), seconds: 60)
+        let joined = folder.appendingPathComponent("portrait.mp4")
+        try (Data(contentsOf: stream.folder.appendingPathComponent("init.mp4")) + Data(contentsOf: stream.folder.appendingPathComponent("s0.m4s"))).write(to: joined)
+        let generator = AVAssetImageGenerator(asset: AVURLAsset(url: joined))
+        let image = try await generator.image(at: CMTime(seconds: 1, preferredTimescale: 600)).image
+        XCTAssertEqual(image.width, 1920); XCTAssertEqual(image.height, 1080)
+        let context = CGContext(data: nil, width: 1920, height: 1080, bitsPerComponent: 8, bytesPerRow: 1920 * 4,
+                                space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+        context.draw(image, in: CGRect(x: 0, y: 0, width: 1920, height: 1080))
+        let pixels = context.data!.assumingMemoryBound(to: UInt8.self)
+        func brightness(x: Int, y: Int) -> Int { Int(pixels[(y * 1920 + x) * 4 + 1]) }
+        XCTAssertLessThan(brightness(x: 200, y: 540), 30, "black bar on the left")
+        XCTAssertLessThan(brightness(x: 1720, y: 540), 30, "black bar on the right")
+        XCTAssertGreaterThan(brightness(x: 960, y: 540), 100, "the picture in the middle")
+        XCTAssertGreaterThan(brightness(x: 960 - 290, y: 540), 100, "the picture is about 607 px wide")
+        XCTAssertLessThan(brightness(x: 960 - 320, y: 540), 30)
+    }
+
     /// A segment the TV jumps to is converted from there, without the ones before it.
     func testJumpAheadConvertsFromThere() async throws {
         let folder = FileManager.default.temporaryDirectory.appendingPathComponent("stream-jump-\(UUID().uuidString)")
@@ -97,11 +135,12 @@ final class VideoStreamTests: XCTestCase {
     }
 
     /// A moving test picture with a tone, written with AVAssetWriter.
-    static func makeVideo(at url: URL, width: Int, height: Int, seconds: Int, fps: Int32) async throws {
+    static func makeVideo(at url: URL, width: Int, height: Int, seconds: Int, fps: Int32, transform: CGAffineTransform = .identity, brightness: Int32? = nil) async throws {
         let writer = try AVAssetWriter(outputURL: url, fileType: .mov)
         let input = AVAssetWriterInput(mediaType: .video, outputSettings: [AVVideoCodecKey: AVVideoCodecType.hevc, AVVideoWidthKey: width, AVVideoHeightKey: height])
         let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: [
             kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA, kCVPixelBufferWidthKey as String: width, kCVPixelBufferHeightKey as String: height])
+        input.transform = transform
         writer.add(input)
         XCTAssertTrue(writer.startWriting())
         writer.startSession(atSourceTime: .zero)
@@ -112,7 +151,7 @@ final class VideoStreamTests: XCTestCase {
             guard let buffer else { continue }
             CVPixelBufferLockBaseAddress(buffer, [])
             let base = CVPixelBufferGetBaseAddress(buffer)!.assumingMemoryBound(to: UInt8.self)
-            memset(base, Int32(frame * 7 % 255), CVPixelBufferGetDataSize(buffer))
+            memset(base, brightness ?? Int32(frame * 7 % 255), CVPixelBufferGetDataSize(buffer))
             CVPixelBufferUnlockBaseAddress(buffer, [])
             adaptor.append(buffer, withPresentationTime: CMTime(value: CMTimeValue(frame), timescale: fps))
         }
@@ -120,6 +159,11 @@ final class VideoStreamTests: XCTestCase {
         await writer.finishWriting()
         XCTAssertEqual(writer.status, .completed, writer.error?.localizedDescription ?? "")
     }
+}
+
+extension CGSize {
+    /// The 16:9 frame VideoPlan builds for a size this tall.
+    var rounded16x9: CGSize { let h = (height / 2).rounded() * 2; return CGSize(width: (h * 16 / 9 / 2).rounded() * 2, height: h) }
 }
 
 func XCTUnwrapAsync<T>(_ value: @autoclosure () async throws -> T?, file: StaticString = #filePath, line: UInt = #line) async throws -> T {
