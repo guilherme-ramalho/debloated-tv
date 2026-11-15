@@ -1,6 +1,7 @@
 import SwiftUI
 import Photos
 import AVFoundation
+import os
 
 // Show on TV (1.3): the photo library, browsed like Photos; whatever is open full screen also appears on the TV
 // through its built-in Cast player (Core: Cast.swift, MediaServer.swift). Nothing runs until the library opens,
@@ -35,11 +36,15 @@ import AVFoundation
     private var sendTask: Task<Void, Never>?
     private var files: [URL] = []
     private var shownIsVideo = false
+    private var openedAt: Date?
+    private var loadedAt: Date?
     nonisolated private static let folder = FileManager.default.temporaryDirectory.appendingPathComponent("ShowOnTV", isDirectory: true)
 
     init(host: String, tvName: String) {
         self.host = host; self.tvName = tvName
+        server.requestLog = { method, shared, range in ShowOnTVLog.note("TV fetched (\(method)\(shared ? "" : ", unknown path → 404")\(range.map { ", \($0)" } ?? ""))") }
         Self.clearFiles()      // left over if the app was closed while showing
+        ShowOnTVLog.note("library opened (TV \(host))")
     }
 
     /// The viewer settled on an asset: it goes to the TV once it has stayed in front for a moment (CST-03).
@@ -54,6 +59,7 @@ import AVFoundation
         }
     }
     func toggleSending() {
+        ShowOnTVLog.note("pill tapped while \(tv)")
         switch tv {
         case .paused, .failed:
             tv = shownID == nil ? .off : .on
@@ -69,6 +75,7 @@ import AVFoundation
 
     /// Closes the TV's player (it returns to Home) but keeps the library open.
     func stopOnTV() {
+        ShowOnTVLog.note("stop on TV")
         sendTask?.cancel()
         session?.stop(); session = nil
         follower.forget(); shownID = nil; media = nil; downloading = nil
@@ -77,6 +84,7 @@ import AVFoundation
     }
     /// Leaving the library: everything goes.
     func close() {
+        ShowOnTVLog.note("library closed")
         settleTask?.cancel(); sendTask?.cancel()
         session?.stop(); session = nil
         server.stop()
@@ -92,7 +100,9 @@ import AVFoundation
     private var tvFailure: String? { if case .failed(let reason) = tv { return reason }; return nil }
 
     private func send(_ asset: PHAsset) async {
-        if session == nil { tv = .opening }
+        if session == nil { tv = .opening; openedAt = Date() }
+        let kind = asset.mediaType == .video ? "video \(Int(asset.duration)) s" : "photo \(asset.pixelWidth)x\(asset.pixelHeight)"
+        ShowOnTVLog.note("send \(kind)\(session == nil ? " (player not open yet)" : "")")
         do {
             guard let address = LocalAddress.current(for: host) else {
                 throw RemoteFailure.message(String(localized: "This iPhone isn't on the TV's Wi-Fi network."))
@@ -105,10 +115,14 @@ import AVFoundation
             shownID = asset.localIdentifier
             shownIsVideo = asset.mediaType == .video
             media = nil
+            loadedAt = Date()
+            ShowOnTVLog.note("load \(contentType) from \(address):\(port)")
             session.load(.init(url: "http://\(address):\(port)\(path)", contentType: contentType,
                                title: asset.creationDate.map { $0.formatted(date: .abbreviated, time: .shortened) } ?? "Purio TV"))
         } catch is CancellationError {
+            ShowOnTVLog.note("send cancelled (swiped on)")
         } catch {
+            ShowOnTVLog.note("send failed: \(error.localizedDescription)")
             downloading = nil
             follower.forget()
             if tv == .opening { tv = shownID == nil ? .off : .on }
@@ -125,20 +139,27 @@ import AVFoundation
     private func handle(_ event: CastController.Event) {
         switch event {
         case .ready:
+            ShowOnTVLog.note("TV player ready after \(openedAt.map { ShowOnTVLog.ms(since: $0) } ?? -1) ms")
             if tv == .opening { tv = .on }
         case .media(let status):
             if tv == .opening { tv = .on }
+            if status.playerState != media?.playerState || status.idleReason != media?.idleReason {
+                ShowOnTVLog.note("TV \(status.playerState)\(status.idleReason.map { " (\($0))" } ?? "") at \(Int(status.currentTime)) s, \(loadedAt.map { ShowOnTVLog.ms(since: $0) } ?? -1) ms after load")
+            }
             media = status
             keepAwake(shownIsVideo && status.playing)
             if status.idleReason == "ERROR" { reportLoadFailure() }
         case .loadFailed:
+            ShowOnTVLog.note("TV refused the item (LOAD_FAILED)")
             reportLoadFailure()
         case .receiverGone:
+            ShowOnTVLog.note("TV player gone (Home, another app, or connection closed)")
             // Home pressed on the TV, another app, or the connection dropped: the next photo opens the player again.
             session = nil; shownID = nil; media = nil; follower.forget()
             if tv != .paused { tv = .off }
             keepAwake(false)
         case .failed(let reason):
+            ShowOnTVLog.note("TV session failed: \(reason)")
             let wasOn = tv == .on
             session = nil; shownID = nil; media = nil; follower.forget()
             keepAwake(false)
@@ -166,6 +187,7 @@ import AVFoundation
         options.deliveryMode = .highQualityFormat
         options.version = .current
         options.progressHandler = { [weak self] progress, _, _, _ in Task { @MainActor in self?.downloading = progress < 1 ? progress : nil } }
+        let readStart = Date()
         let data: Data = try await withCheckedThrowingContinuation { result in
             PHImageManager.default().requestImageDataAndOrientation(for: asset, options: options) { data, _, _, info in
                 if let data { result.resume(returning: data) }
@@ -175,10 +197,15 @@ import AVFoundation
         downloading = nil
         try Task.checkCancellation()
         let file = Self.folder.appendingPathComponent("\(UUID().uuidString).jpg")
-        try await Task.detached(priority: .userInitiated) {
+        let readMS = ShowOnTVLog.ms(since: readStart), originalKB = data.count / 1024
+        let prepStart = Date()
+        let jpegKB = try await Task.detached(priority: .userInitiated) { () -> Int in
             try FileManager.default.createDirectory(at: Self.folder, withIntermediateDirectories: true)
-            try PhotoPrep.jpeg(from: data).write(to: file)
+            let jpeg = try PhotoPrep.jpeg(from: data)
+            try jpeg.write(to: file)
+            return jpeg.count / 1024
         }.value
+        ShowOnTVLog.note("photo read \(readMS) ms (\(originalKB) KB), converted to JPEG in \(ShowOnTVLog.ms(since: prepStart)) ms (\(jpegKB) KB)")
         track(file)
         return (file, "image/jpeg")
     }
@@ -198,8 +225,10 @@ import AVFoundation
         }
         downloading = nil
         if let url = (avAsset as? AVURLAsset)?.url, FileManager.default.isReadableFile(atPath: url.path) {
+            ShowOnTVLog.note("video served from the library file (.\(url.pathExtension.lowercased()))")
             return (url, url.pathExtension.lowercased() == "mov" ? "video/quicktime" : "video/mp4")
         }
+        ShowOnTVLog.note("video needs an export (\(type(of: avAsset)))")
         guard let export = AVAssetExportSession(asset: avAsset, presetName: AVAssetExportPresetHEVCHighestQuality) else {
             throw RemoteFailure.message(String(localized: "This video couldn't be read."))
         }
@@ -220,6 +249,40 @@ import AVFoundation
         while files.count > 2 { try? FileManager.default.removeItem(at: files.removeFirst()) }
     }
     private static func clearFiles() { try? FileManager.default.removeItem(at: folder) }
+}
+
+// MARK: - Log
+
+/// What Show on TV did and how long it took, for reviewing a test run: timings, sizes, memory and the TV's answers,
+/// never photo contents or locations. Always to the system log (Console, subsystem com.guilhermeramalho.TVRemote,
+/// category ShowOnTV); Dev builds also append to Documents/show-on-tv.log (capped at 1 MB), which can be copied off
+/// the phone with `xcrun devicectl device copy from --domain-type appDataContainer`.
+enum ShowOnTVLog {
+    private static let logger = Logger(subsystem: "com.guilhermeramalho.TVRemote", category: "ShowOnTV")
+    private static let queue = DispatchQueue(label: "tvremote.show-on-tv-log", qos: .utility)
+    #if DEBUG
+    static let file = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("show-on-tv.log")
+    #endif
+
+    static func note(_ message: String) {
+        logger.log("\(message, privacy: .public)")
+        #if DEBUG
+        let line = "\(Date().formatted(.iso8601.time(includingFractionalSeconds: true))) \(message) [mem \(memoryMB()) MB]\n"
+        queue.async {
+            if let size = (try? file.resourceValues(forKeys: [.fileSizeKey]))?.fileSize, size > 1_000_000 { try? FileManager.default.removeItem(at: file) }
+            if let handle = try? FileHandle(forWritingTo: file) { handle.seekToEndOfFile(); handle.write(Data(line.utf8)); try? handle.close() }
+            else { try? Data(line.utf8).write(to: file) }
+        }
+        #endif
+    }
+    /// The app's memory footprint, the number Xcode's memory gauge shows.
+    static func memoryMB() -> Int {
+        var info = task_vm_info_data_t()
+        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<natural_t>.size)
+        let result = withUnsafeMutablePointer(to: &info) { $0.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count) } }
+        return result == KERN_SUCCESS ? Int(info.phys_footprint / 1_048_576) : -1
+    }
+    static func ms(since start: Date) -> Int { Int(Date().timeIntervalSince(start) * 1000) }
 }
 
 // MARK: - Library

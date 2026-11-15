@@ -58,6 +58,8 @@ public final class MediaServer: @unchecked Sendable {
     private var items: [String: Item] = [:]
     public private(set) var port: UInt16?
     private static let chunk = 65536
+    /// Called (on the server's queue) for each request: method, whether the path is shared, the range asked.
+    public var requestLog: ((String, Bool, String?) -> Void)?
 
     public init() {}
 
@@ -128,6 +130,7 @@ public final class MediaServer: @unchecked Sendable {
     }
     private func respond(_ connection: NWConnection, _ head: HTTPRequestHead) {
         guard head.method == "GET" || head.method == "HEAD" else { return finish(connection, status: "405 Method Not Allowed") }
+        requestLog?(head.method, items[head.path] != nil, head.headers["range"])
         guard let item = items[head.path],
               let size = (try? item.file.resourceValues(forKeys: [.fileSizeKey]))?.fileSize,
               let handle = try? FileHandle(forReadingFrom: item.file) else { return finish(connection, status: "404 Not Found") }
