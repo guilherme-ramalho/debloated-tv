@@ -191,4 +191,19 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(try editor.append(frame.dropFirst(1000)), [body])
         XCTAssertThrowsError(try editor.append(Wire.varint(4_194_305)))
     }
+
+    func testRemoteShortcutsFollowTheDockThenTheList() {
+        var preferences = RemotePreferences()
+        let netflix = "com.netflix.ninja", youtube = "com.google.android.youtube.tv", prime = "com.amazon.amazonvideo.livingroom"
+        let disney = "com.disney.disneyplus", max = "com.wbd.stream", crunchyroll = "com.crunchyroll.crunchyroid", spotify = "com.spotify.tv.android"
+        XCTAssertEqual(preferences.remoteShortcutIDs(dock: nil), [netflix, youtube, prime, disney, max, crunchyroll], "no TV Home: the list")
+        XCTAssertEqual(preferences.remoteShortcutIDs(dock: [spotify, youtube, netflix]), [spotify, youtube, netflix, prime, disney, max],
+                       "a 3-app dock leads, then the list fills the rest without repeats")
+        XCTAssertEqual(preferences.remoteShortcutIDs(dock: [youtube, "com.unknown.app"]).first, youtube, "dock apps the phone doesn't know are skipped")
+        preferences.remoteCount = 2
+        XCTAssertEqual(preferences.remoteShortcutIDs(dock: [spotify, youtube, netflix]), [spotify, youtube])
+        preferences.remoteOrder = [crunchyroll, netflix]
+        preferences.remoteCount = 4
+        XCTAssertEqual(preferences.remoteShortcutIDs(dock: [youtube]), [youtube, crunchyroll, netflix], "the reordered list fills in")
+    }
 }

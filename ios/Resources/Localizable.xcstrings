@@ -25559,6 +25559,132 @@
           }
         }
       }
+    },
+    "Play again" : {
+      "comment" : "1.3",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play again"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erneut abspielen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a reproducir"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revoir"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riproduci di nuovo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assistir de novo"
+          }
+        }
+      }
+    },
+    "Finished. The TV shows the video's first frame." : {
+      "comment" : "1.3",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finished. The TV shows the video's first frame."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertig. Der Fernseher zeigt das erste Bild des Videos."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminado. La tele muestra el primer fotograma del vídeo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminé. La TV affiche la première image de la vidéo."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finito. La TV mostra il primo fotogramma del video."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminou. A TV mostra o primeiro quadro do vídeo."
+          }
+        }
+      }
+    },
+    "Apps in your TV Home dock come first on the remote, in the dock's order; the rest follow this list. Removing a shortcut keeps the app installed on the TV." : {
+      "comment" : "1.3",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps in your TV Home dock come first on the remote, in the dock's order; the rest follow this list. Removing a shortcut keeps the app installed on the TV."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps aus dem Dock deines TV-Startbildschirms stehen auf der Fernbedienung zuerst, in der Reihenfolge des Docks; der Rest folgt dieser Liste. Wenn du eine Verknüpfung entfernst, bleibt die App auf dem Fernseher installiert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las apps del dock de tu pantalla de inicio de la tele van primero en el mando, en el orden del dock; el resto sigue esta lista. Quitar un acceso directo no desinstala la app de la tele."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les apps du dock de votre écran d'accueil TV apparaissent d'abord sur la télécommande, dans l'ordre du dock ; les autres suivent cette liste. Retirer un raccourci laisse l'app installée sur la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le app nel dock della schermata Home della TV vengono prima sul telecomando, nell'ordine del dock; le altre seguono questo elenco. Togliere una scorciatoia lascia l'app installata sulla TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os apps do dock da tela inicial da TV vêm primeiro no controle, na ordem do dock; os demais seguem esta lista. Remover um atalho mantém o app instalado na TV."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

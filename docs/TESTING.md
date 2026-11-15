@@ -131,6 +131,7 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | REM-17 | Mute icon (1.2): mute from the app, then unmute with the TV's own remote, then reconnect while muted | Sound on: crossed-out speaker ("Mute"). Muted: plain speaker ("Unmute") and "Muted" in the middle. The icon follows the TV's own mute changes and is right again after reconnecting. Play/pause keeps its combined icon (the remote protocol doesn't report playback) | Manual (iPhone + Android, TCL); iPhone automated against the TCL: `TCLChecks` (passed 15 Nov 2026) |
 | REM-18 | Settings › Reverse swipe direction (1.2) on, then off | On: swipe left on the pad moves right, swipe up moves down; the highlight shows the direction sent; taps and holds on an arrow unchanged. Off: back to normal. Survives an app restart; settings saved by 1.1 still load | Auto `testReversedSwipesGoTheOtherWay` / `reversedSwipesGoTheOtherWay`; iPhone against the TCL: `TCLChecks` (keys read on the TV with getevent; passed 15 Nov 2026) + Manual |
 | REM-19 | Type on TV (1.2): open it from the remote's keyboard button | The text field is focused and the phone's keyboard is up without another tap; switching "Hide text while typing" on and off keeps it focused (iPhone; build 21 lost the focus on the switch, fixed after it) | iPhone: `TCLChecks` (TCL); Manual (Android) |
+| REM-20 | Remote app buttons with a TV Home dock of 3 apps (1.3) | The remote's first 3 app buttons are the dock's, in its order; the other 3 follow Settings › Remote shortcuts (Netflix, YouTube, Prime Video, Disney+, HBO Max, Crunchyroll by default), no repeats; without a TV Home, the list alone | Auto `testRemoteShortcutsFollowTheDockThenTheList` + Manual |
 
 ## 3. TV tab and setup entry (SET)
 
@@ -331,6 +332,8 @@ The `android-tv` emulator image has no Cast player, so the end-to-end suite does
 | CST-20 | A video playing on the TV, then paused | The phone shows the blurred still with rings going out from a TV and "Playing on …"; paused, it stops and says "Paused on …"; still with Reduce Motion | Manual |
 | CST-21 | Swipe down on an open photo | It shrinks back into its grid cell (iOS 18+; a pull-down on iOS 17 and in a selection slideshow) | Manual |
 | CST-22 | The On TV pill in the viewer | Flush right, mirroring the back button | Manual (screenshot) |
+| CST-23 | Let a video play to the end, then tap Play again | The TV shows the video's first frame, not a black screen; the phone shows Play again, which plays it from the start (converted videos too) | Manual (TCL) |
+| CST-24 | Scroll the library fast, up and down, through hundreds of items | No blank cells (a quick low-resolution picture first, then sharp); rows around the screen prepared ahead | Manual |
 
 ## Release checklist
 

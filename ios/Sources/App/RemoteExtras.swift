@@ -88,7 +88,7 @@ struct ShortcutSettingsView: View {
                     Button { settings.update { $0.remoteOrder.append(app.id) } } label: { Label(app.name, systemImage: "plus.circle") }
                 }
             }
-            Section { Text("Removing a shortcut keeps the app installed on the TV.").font(.footnote).foregroundStyle(.secondary) }
+            Section { Text("Apps in your TV Home dock come first on the remote, in the dock's order; the rest follow this list. Removing a shortcut keeps the app installed on the TV.").font(.footnote).foregroundStyle(.secondary) }
 
                 }.listRowBackground(QuietTheme.panel)
 }.navigationTitle("Remote shortcuts").toolbar { EditButton() }

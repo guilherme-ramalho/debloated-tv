@@ -25,6 +25,9 @@ import os
     private var refreshTask: Task<Void, Never>?
     /// The asset currently on the TV.
     @Published private(set) var shownID: String?
+    /// A video that played to the end: the TV shows its cover frame and the phone offers Play again.
+    @Published private(set) var endedID: String?
+    private var shownAsset: PHAsset?
     @Published private(set) var downloading: Double?
     @Published var problem: String?
     /// The problem is about this item (offer the next one), not about the TV.
@@ -115,6 +118,7 @@ import os
         keepAwake(false)
         stream?.stop(); stream = nil
         Self.clearFiles(); prepared = [:]
+        AssetImages.grid.stopCachingImagesForAllAssets()
     }
 
     private func sendIfDue() {
@@ -141,6 +145,8 @@ import os
             let contentType = choice.contentType
             let session = self.session ?? makeSession()
             shownID = asset.localIdentifier
+            shownAsset = asset
+            endedID = nil
             shownIsVideo = asset.mediaType == .video
             media = nil; itemStarted = false
             loadedAt = Date()
@@ -178,6 +184,7 @@ import os
             media = status; mediaAt = Date()
             if status.playerState != "IDLE" || status.idleReason == "FINISHED" { itemStarted = true }
             if shownIsVideo && status.playing { startRefreshing() }
+            if shownIsVideo && status.idleReason == "FINISHED", let asset = shownAsset, endedID != asset.localIdentifier { videoEnded(asset) }
             keepAwake(shownIsVideo && status.playing)
             if status.idleReason == "ERROR" { reportLoadFailure() }
         case .loadFailed:
@@ -209,6 +216,36 @@ import os
         shownID = nil
     }
     private func keepAwake(_ on: Bool) { UIApplication.shared.isIdleTimerDisabled = on }
+
+    /// The video played to the end: rather than leave the TV black, show its cover frame there, and let the phone
+    /// play it again (the TV's player can't restart a finished item).
+    private func videoEnded(_ asset: PHAsset) {
+        ShowOnTVLog.note("video finished: showing its cover frame on the TV")
+        endedID = asset.localIdentifier
+        shownIsVideo = false; media = nil; keepAwake(false)
+        stopStream()
+        sendTask?.cancel()
+        sendTask = Task { [weak self] in
+            guard let self, let image = await AssetImages.image(asset, side: CGFloat(PhotoPrep.tvPixel), fill: false),
+                  let jpeg = image.jpegData(compressionQuality: 0.85), let address = LocalAddress.current(for: self.host),
+                  let port = self.server.port, let session = self.session, !Task.isCancelled else { return }
+            let file = Self.folder.appendingPathComponent("cover-\(UUID().uuidString).jpg")
+            try? FileManager.default.createDirectory(at: Self.folder, withIntermediateDirectories: true)
+            guard (try? jpeg.write(to: file)) != nil else { return }
+            let path = self.server.share(file, contentType: "image/jpeg")
+            self.itemStarted = false
+            session.load(.init(url: "http://\(address):\(port)\(path)", contentType: "image/jpeg", title: ""))
+        }
+    }
+    /// Plays the finished video again from the start.
+    func playAgain() {
+        guard let asset = shownAsset, endedID == asset.localIdentifier else { return }
+        ShowOnTVLog.note("play again")
+        endedID = nil
+        follower.forget()
+        sendTask?.cancel()
+        sendTask = Task { [weak self] in await self?.send(asset) }
+    }
     /// While a video plays, asks the TV where it is every 5 seconds so the phone's position doesn't drift.
     private func startRefreshing() {
         guard refreshTask == nil else { return }
@@ -404,6 +441,7 @@ struct ShowOnTVView: View {
     @State private var selected: [String] = []
     @State private var lastOpened: Int?
     @Namespace private var zoom
+    @Environment(\.displayScale) private var displayScale
 
     init(remote: RemoteModel) {
         self.remote = remote
@@ -481,6 +519,7 @@ struct ShowOnTVView: View {
                             }
                             .overlay { if index == lastOpened && !selecting { Rectangle().stroke(QuietTheme.cyan, lineWidth: 2) } }
                             .onTapGesture { tap(index, asset) }
+                            .onAppear { if index % 16 == 0 { AssetImages.prefetch(assets, around: index, side: side * displayScale) } }
                             .accessibilityElement().accessibilityAddTraits(.isButton)
                             .accessibilityLabel(asset.mediaType == .video ? Text("Video") : Text("Photo"))
                             .accessibilityIdentifier("libraryItem")
@@ -606,12 +645,46 @@ struct AssetThumbnail: View {
             }
         }
         .frame(width: side, height: side).clipped()
-        .task(id: asset.localIdentifier) { image = await AssetImages.image(asset, side: side * scale, fill: true) }
+        .task(id: asset.localIdentifier) {
+            // A quick low-resolution picture at once, then the sharp one, decoded off the main thread.
+            for await next in AssetImages.thumbnails(asset, side: side * scale) {
+                image = await next.byPreparingForDisplay() ?? next
+            }
+        }
         .onDisappear { image = nil }
     }
 }
 
 enum AssetImages {
+    /// One manager for the grid, which keeps recently used thumbnails at hand as you scroll back and forth.
+    static let grid = PHCachingImageManager()
+
+    /// The grid cell's picture: the quick, low-resolution version first (shown at once, as Photos does), then the
+    /// sharp one. Cancelled with the calling task.
+    private static var gridOptions: PHImageRequestOptions {
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .opportunistic
+        options.resizeMode = .fast
+        options.isNetworkAccessAllowed = false
+        return options
+    }
+    /// Asks Photos to get the thumbnails a few rows either side of the screen ready, so scrolling meets them done.
+    static func prefetch(_ assets: PHFetchResult<PHAsset>, around index: Int, side: CGFloat) {
+        let range = max(0, index - 32)..<min(assets.count, index + 32)
+        guard !range.isEmpty else { return }
+        grid.startCachingImages(for: assets.objects(at: IndexSet(integersIn: range)), targetSize: CGSize(width: side, height: side),
+                                contentMode: .aspectFill, options: gridOptions)
+    }
+    static func thumbnails(_ asset: PHAsset, side: CGFloat) -> AsyncStream<UIImage> {
+        AsyncStream { continuation in
+            let id = grid.requestImage(for: asset, targetSize: CGSize(width: side, height: side), contentMode: .aspectFill, options: gridOptions) { image, info in
+                if let image { continuation.yield(image) }
+                if !((info?[PHImageResultIsDegradedKey] as? Bool) ?? false) { continuation.finish() }
+            }
+            continuation.onTermination = { _ in grid.cancelImageRequest(id) }
+        }
+    }
+
     /// One image at about `side` pixels; cancelled with the calling task.
     static func image(_ asset: PHAsset, side: CGFloat, fill: Bool, network: Bool = false) async -> UIImage? {
         let options = PHImageRequestOptions()
@@ -769,7 +842,14 @@ struct ShowOnTVViewer: View {
         let onTV = tv.shownID == asset.localIdentifier
         let duration = tv.media?.duration ?? asset.duration
         return VStack(spacing: 12) {
-            if onTV {
+            if tv.endedID == asset.localIdentifier {
+                Button { tv.playAgain() } label: {
+                    Label("Play again", systemImage: "arrow.counterclockwise")
+                        .font(.system(size: 16, weight: .semibold)).padding(.horizontal, 24).padding(.vertical, 14)
+                        .background(QuietTheme.cyan, in: Capsule()).foregroundStyle(Color(red: 0.04, green: 0.16, blue: 0.19))
+                }.accessibilityIdentifier("playAgain")
+                Text("Finished. The TV shows the video's first frame.").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+            } else if onTV {
                 // Redrawn twice a second from the TV's last report, so the bar follows the TV between reports.
                 TimelineView(.periodic(from: .now, by: 0.5)) { context in
                     let time = scrub ?? tv.position(at: context.date)
@@ -787,7 +867,7 @@ struct ShowOnTVViewer: View {
                 }
                 HStack(spacing: 30) {
                     round("gobackward.10", "Back 10 seconds") { tv.skip(-10) }
-                    Button { tv.media?.playing == true ? tv.pause() : tv.play() } label: {
+                    Button { tv.media?.playing == true ? tv.pause() : (tv.media?.idleReason == "FINISHED" ? tv.playAgain() : tv.play()) } label: {
                         Image(systemName: tv.media?.playing == true ? "pause.fill" : "play.fill").font(.system(size: 22))
                             .frame(width: 60, height: 60).background(QuietTheme.cyan, in: Circle()).foregroundStyle(Color(red: 0.04, green: 0.16, blue: 0.19))
                     }.accessibilityLabel(tv.media?.playing == true ? "Pause" : "Play")

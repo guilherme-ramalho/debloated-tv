@@ -128,6 +128,14 @@ public struct RemotePreferences: Codable, Equatable {
     public var reverseSwipe: Bool?
     public var reversesSwipes: Bool { get { reverseSwipe ?? false } set { reverseSwipe = newValue } }
     public init() { profileID = profiles.first?.id }
+    /// The remote's app buttons (1.3): the TV Home dock's apps first, in the dock's order, then the Remote
+    /// shortcuts list (Netflix, YouTube, Prime Video, Disney+, HBO Max, Crunchyroll unless changed) for the rest,
+    /// without repeats, `remoteCount` in all. `dock` is nil when no TV Home is connected (no real dock to follow).
+    public func remoteShortcutIDs(dock: [String]?) -> [String] {
+        var ids: [String] = []
+        for id in (dock ?? []) + remoteOrder where !ids.contains(id) && apps.contains(where: { $0.id == id }) { ids.append(id) }
+        return Array(ids.prefix(remoteCount))
+    }
     public func validate() throws {
         guard version == 1, (1...12).contains(remoteCount), remoteOrder.count <= 200, Set(remoteOrder).count == remoteOrder.count,
               remoteOrder.allSatisfy(RemoteApp.validPackage), (1...20).contains(profiles.count), actions.count <= 30, inputs.count <= 20,

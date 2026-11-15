@@ -71,7 +71,8 @@ struct LayoutChange: Equatable { var count = 0; var apply = LayoutApply.auto }
         layoutChange = LayoutChange(count: layoutChange.count + 1, apply: .manual)
     }
     func app(_ id: String) -> RemoteApp? { value.apps.first { $0.id == id } }
-    var remoteApps: [RemoteApp] { Array(value.remoteOrder.compactMap(app).prefix(value.remoteCount)) }
+    /// The remote's app buttons: the TV Home dock's order first (once a TV Home has connected), then the shortcuts list.
+    var remoteApps: [RemoteApp] { value.remoteShortcutIDs(dock: value.editorHost == nil ? nil : layout.dock).compactMap(app) }
     func merge(_ snapshot: LauncherSnapshot, host: String) {
         update { settings in
             settings.tvInputs = snapshot.inputs; settings.editorHost = host
