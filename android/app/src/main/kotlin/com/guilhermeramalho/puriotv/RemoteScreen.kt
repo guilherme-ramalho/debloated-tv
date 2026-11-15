@@ -32,6 +32,7 @@ import androidx.compose.material.icons.automirrored.outlined.Input
 import androidx.compose.material.icons.automirrored.rounded.Undo
 import androidx.compose.material.icons.outlined.ClosedCaption
 import androidx.compose.material.icons.outlined.Keyboard
+import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.runtime.collectAsState
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Tv
@@ -105,13 +106,14 @@ fun RemoteScreen(state: RemoteModel.State, model: RemoteModel) {
     var details by rememberSaveable { mutableStateOf(false) }
     var keyboard by rememberSaveable { mutableStateOf(false) }
     var inputs by rememberSaveable { mutableStateOf(false) }
+    var showOnTv by rememberSaveable { mutableStateOf(false) }
     val prefs by model.settings.value.collectAsState()
     val enabled = state.ready
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 30.dp).padding(top = 4.dp, bottom = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Header(state, model, { details = true }, { keyboard = true }, { inputs = true })
+        Header(state, model, { details = true }, { keyboard = true }, { inputs = true }, { showOnTv = true })
         DPad(enabled, prefs.reverseSwipe, model)
         Row(horizontalArrangement = Arrangement.spacedBy(25.dp)) {
             Command(Icons.AutoMirrored.Rounded.Undo, R.string.key_back, enabled) { model.tap(TVKey.BACK) }
@@ -130,17 +132,22 @@ fun RemoteScreen(state: RemoteModel.State, model: RemoteModel) {
     if (details) ConnectionSheet(state, model) { details = false }
     if (keyboard) KeyboardSheet(model) { keyboard = false }
     if (inputs) InputsSheet(model) { inputs = false }
+    if (showOnTv) ShowOnTvScreen(model, state) { showOnTv = false }
 }
 
 @Composable
-private fun Header(state: RemoteModel.State, model: RemoteModel, openDetails: () -> Unit, openKeyboard: () -> Unit, openInputs: () -> Unit) {
+private fun Header(state: RemoteModel.State, model: RemoteModel, openDetails: () -> Unit, openKeyboard: () -> Unit, openInputs: () -> Unit, openShowOnTv: () -> Unit) {
     val powerAvailable = state.pairing == null && state.link != RemoteModel.Link.CONNECTING
-    Row(Modifier.fillMaxWidth().heightIn(min = 52.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+    // Narrow phones get smaller round keys so the TV's name keeps its room (CST-01).
+    val narrow = androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp < 390
+    val key = if (narrow) 40.dp else 46.dp
+    Row(Modifier.fillMaxWidth().heightIn(min = 52.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(if (narrow) 8.dp else 12.dp)) {
         val powerLabel = stringResource(if (!state.ready || state.power == false) R.string.key_wake else R.string.key_power)
         RoundKey(Icons.Rounded.PowerSettingsNew, powerLabel, 48.dp, Quiet.power.copy(alpha = 0.11f), Quiet.power.copy(alpha = 0.25f), powerAvailable) { model.power() }
         ConnectionChip(state, model, openDetails, Modifier.weight(1f))
-        RoundKey(Icons.Outlined.Keyboard, stringResource(R.string.type_on_tv), 46.dp, Quiet.panel, null, true, openKeyboard)
-        RoundKey(Icons.AutoMirrored.Outlined.Input, stringResource(R.string.favorite_inputs), 46.dp, Quiet.inputs, null, true, openInputs)
+        RoundKey(Icons.Outlined.PhotoLibrary, stringResource(R.string.show_photos_on_tv), key, Quiet.inputs, null, true, Quiet.cyan, openShowOnTv)
+        RoundKey(Icons.Outlined.Keyboard, stringResource(R.string.type_on_tv), key, Quiet.panel, null, true, onClick = openKeyboard)
+        RoundKey(Icons.AutoMirrored.Outlined.Input, stringResource(R.string.favorite_inputs), key, Quiet.inputs, null, true, onClick = openInputs)
     }
 }
 
@@ -188,13 +195,13 @@ private fun ChipText(text: String, color: Color) =
     Text(text, color = color, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
 
 @Composable
-private fun RoundKey(icon: ImageVector, label: String, size: Dp, fill: Color, stroke: Color?, enabled: Boolean, onClick: () -> Unit) {
+private fun RoundKey(icon: ImageVector, label: String, size: Dp, fill: Color, stroke: Color?, enabled: Boolean, tint: Color = Color.White, onClick: () -> Unit) {
     val haptics = rememberHaptics()
     Surface(
         onClick = { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); onClick() }, enabled = enabled, shape = CircleShape, color = fill,
         border = stroke?.let { androidx.compose.foundation.BorderStroke(1.dp, it) },
         modifier = Modifier.size(size).alpha(if (enabled) 1f else 0.45f).semantics { contentDescription = label },
-    ) { Box(contentAlignment = Alignment.Center) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(22.dp)) } }
+    ) { Box(contentAlignment = Alignment.Center) { Icon(icon, null, tint = tint, modifier = Modifier.size(22.dp)) } }
 }
 
 /** Back, Home, Play and the media row: 65 × 50 rounded keys. */

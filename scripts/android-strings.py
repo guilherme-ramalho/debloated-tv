@@ -15,6 +15,12 @@ PHONE = {"de": [("dieses iPhone", "dieses Handy"), ("diesem iPhone", "diesem Han
          "pt-BR": [("iPhone", "celular")]}
 # Strings with no iPhone equivalent (or reworded for Android).
 ANDROID_ONLY = {
+    "cant_see_photos_detail": {
+        "de": "Um Fotos und Videos auf deinem Fernseher zu zeigen, erlaube Purio TV in den Einstellungen den Zugriff auf Fotos und Videos. Sie werden auf diesem Handy gelesen und nur an deinen Fernseher gesendet.",
+        "es": "Para mostrar fotos y vídeos en tu tele, permite a Purio TV acceder a fotos y vídeos en Ajustes. Se leen en este teléfono y solo se envían a tu tele.",
+        "fr": "Pour afficher vos photos et vidéos sur votre TV, autorisez Purio TV à accéder aux photos et vidéos dans les Paramètres. Elles sont lues sur ce téléphone et envoyées uniquement à votre TV.",
+        "it": "Per mostrare foto e video sulla TV, consenti a Purio TV l’accesso a foto e video nelle Impostazioni. Vengono letti su questo telefono e inviati solo alla tua TV.",
+        "pt-BR": "Para mostrar fotos e vídeos na sua TV, permita que o Purio TV acesse fotos e vídeos nas Configurações. Eles são lidos neste celular e enviados só para a sua TV."},
     "soon_tv": {
         "de": "Dein TV-Startbildschirm (Apps, Hintergrund, Look, Wetter, Sleep-Timer) und die TV-Einrichtung kommen bald zu Purio TV für Android. Nutze dafür bis dahin die iPhone-App.",
         "es": "Tu pantalla de inicio de la TV (apps, fondo, estilo, tiempo, temporizador) y la configuración de la TV llegarán pronto a Purio TV para Android. Mientras tanto, usa la app de iPhone.",

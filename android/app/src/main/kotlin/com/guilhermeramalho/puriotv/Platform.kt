@@ -176,6 +176,13 @@ fun Problem.message(): Int = when (this) {
     Problem.ACTION_APP_UNAVAILABLE -> R.string.problem_action_app
     Problem.ACTION_INPUT_UNASSIGNED -> R.string.problem_action_input
     Problem.ACTION_MUTE_UNKNOWN -> R.string.problem_action_mute
+    Problem.CAST_LAUNCH_FAILED -> R.string.problem_cast_launch
+    Problem.CAST_NO_CHROMECAST -> R.string.problem_cast_no_chromecast
+    Problem.CAST_UNREACHABLE -> R.string.problem_cast_unreachable
+    Problem.CAST_INTERRUPTED -> R.string.problem_cast_interrupted
+    Problem.PHOTO_UNREADABLE -> R.string.problem_photo_unreadable
+    Problem.VIDEO_UNREADABLE -> R.string.problem_video_unreadable
+    Problem.NOT_ON_TV_WIFI -> R.string.problem_not_on_tv_wifi
 }
 
 /** Where the TV setup status lives (the iPhone keeps it in UserDefaults). */
