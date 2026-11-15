@@ -161,12 +161,23 @@ scenario() {
   for attempt in 1 2; do
     local before; before=$(( $(wc -l <"$LOG") + 1 ))   # arithmetic drops the spaces macOS wc puts before the number
     rm -rf "$OUT/e2e-$STAMP-$1.xcresult"
+    local pbefore; pbefore=$(( $(wc -l <"$PROGRESS") + 1 ))
     set +e
     TEST_RUNNER_E2E_HELPER="http://127.0.0.1:$HELPER_PORT" TEST_RUNNER_E2E_TV_HOST=127.0.0.1 TEST_RUNNER_E2E_ADB_ADDRESS=127.0.0.1:15555 \
       xcodebuild test-without-building -project TVRemote.xcodeproj -scheme "Debloated TV Dev" \
         -destination "platform=iOS Simulator,id=$UDID" -only-testing:"TVRemoteUITests/TVRemoteEndToEndTests/$2" \
-        -parallel-testing-enabled NO -resultBundlePath "$OUT/e2e-$STAMP-$1.xcresult" >>"$LOG" 2>&1
-    status=$?
+        -parallel-testing-enabled NO -resultBundlePath "$OUT/e2e-$STAMP-$1.xcresult" >>"$LOG" 2>&1 &
+    local xcpid=$! waited=0 hung=0
+    # Watchdog for the launch: the simulator can also hang installing the runner instead of failing (15 Nov 2026:
+    # 27 minutes, no output). No first step within 10 minutes means nothing ran: stop it and treat it as that failure.
+    while kill -0 $xcpid 2>/dev/null; do
+      sleep 5; waited=$((waited + 5))
+      if [ $waited -ge 600 ] && ! tail -n +"$pbefore" "$PROGRESS" | grep -q "▶"; then
+        hung=1; kill $xcpid 2>/dev/null; sleep 5; kill -9 $xcpid 2>/dev/null; break
+      fi
+    done
+    wait $xcpid; status=$?
+    [ $hung = 1 ] && { status=1; echo "Failed to install or launch the test runner (no first step after 10 minutes)" >>"$LOG"; }
     set -e
     # The simulator sometimes fails to install the test runner right after an erase ("Failed to locate promise"):
     # nothing ran yet, so boot a fresh simulator and try once more.
