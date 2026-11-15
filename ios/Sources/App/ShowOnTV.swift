@@ -745,7 +745,7 @@ struct ShowOnTVViewer: View {
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 0) {
                     ForEach(0..<items.count, id: \.self) { i in
-                        ViewerPage(asset: items[i], casting: casting(for: items[i]), tvName: tv.tvName)
+                        ViewerPage(asset: items[i], casting: casting(for: items[i]), tvName: tv.tvName, animates: !chrome)
                             .containerRelativeFrame([.horizontal, .vertical]).id(i)
                     }
                 }.scrollTargetLayout()
@@ -829,7 +829,18 @@ struct ShowOnTVViewer: View {
                 Label { Text("Downloading from iCloud… \(Int(progress * 100))%") } icon: { ProgressView().tint(QuietTheme.cyan) }
                     .font(.system(size: 13)).padding(10).background(QuietTheme.panel.opacity(0.96), in: Capsule()).padding(.top, 10)
             }
-            Spacer()
+            // While the controls show, the casting animation lives in the space between them and the top bar,
+            // shrunk to fit, so it never runs into the position bar on any screen (1.3 test).
+            if let state = casting(for: asset) {
+                GeometryReader { space in
+                    CastingAnimation(state: state, tvName: tv.tvName)
+                        .scaleEffect(min(1, space.size.height / 300))
+                        .frame(width: space.size.width, height: space.size.height)
+                }
+                .transition(.opacity)
+            } else {
+                Spacer()
+            }
             VStack(spacing: 14) {
                 if asset.mediaType == .video { videoControls(asset) }
                 HStack {
@@ -936,6 +947,9 @@ struct ViewerPage: View {
     let asset: PHAsset
     var casting: Casting? = nil
     var tvName = ""
+    /// The animation is drawn here only while the viewer's controls are hidden; with them, the viewer draws it
+    /// in the space above them.
+    var animates = true
     @State private var image: UIImage?
     @Environment(\.displayScale) private var scale
     var body: some View {
@@ -947,7 +961,7 @@ struct ViewerPage: View {
                         .animation(.easeInOut(duration: 0.5), value: casting == nil)
                 } else { ProgressView().tint(.white) }
                 if let casting {
-                    CastingAnimation(state: casting, tvName: tvName).transition(.opacity.combined(with: .scale(scale: 0.9)))
+                    if animates { CastingAnimation(state: casting, tvName: tvName).transition(.opacity.combined(with: .scale(scale: 0.9))) }
                 } else if asset.mediaType == .video {
                     Image(systemName: "play.tv").font(.system(size: 30)).padding(16).background(.black.opacity(0.45), in: Circle()).foregroundStyle(.white.opacity(0.9))
                 }
