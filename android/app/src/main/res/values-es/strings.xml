@@ -163,7 +163,7 @@
     <string name="remote_shortcuts">Accesos directos del mando</string>
     <string name="remote_shortcuts_detail">Visibilidad y orden</string>
     <string name="visible_shortcuts">Accesos directos visibles: %1$d</string>
-    <string name="removing_shortcut_keeps">Quitar un acceso directo mantiene la app instalada en la TV.</string>
+    <string name="removing_shortcut_keeps">Las apps del dock de tu pantalla de inicio de la tele van primero en el mando, en el orden del dock; el resto sigue esta lista. Quitar un acceso directo no desinstala la app de la tele.</string>
     <string name="backup_restore">Copia y restauración</string>
     <string name="backup_restore_detail">Diseños del launcher y fondo</string>
     <string name="tv_setup">Configuración de la TV</string>

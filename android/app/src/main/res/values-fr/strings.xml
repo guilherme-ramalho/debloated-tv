@@ -163,7 +163,7 @@
     <string name="remote_shortcuts">Raccourcis de la télécommande</string>
     <string name="remote_shortcuts_detail">Visibilité et ordre</string>
     <string name="visible_shortcuts">Raccourcis visibles : %1$d</string>
-    <string name="removing_shortcut_keeps">Retirer un raccourci laisse l\'app installée sur la TV.</string>
+    <string name="removing_shortcut_keeps">Les apps du dock de votre écran d\'accueil TV apparaissent d\'abord sur la télécommande, dans l\'ordre du dock ; les autres suivent cette liste. Retirer un raccourci laisse l\'app installée sur la TV.</string>
     <string name="backup_restore">Sauvegarde et restauration</string>
     <string name="backup_restore_detail">Dispositions du launcher et fond d\'écran</string>
     <string name="tv_setup">Configuration de la TV</string>

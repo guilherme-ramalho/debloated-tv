@@ -125,7 +125,17 @@ data class RemotePreferences(
 
     val profile: HomeProfile get() = profiles.firstOrNull { it.id == profileID } ?: profiles[0]
     fun app(id: String): RemoteApp? = apps.firstOrNull { it.id == id }
-    val remoteApps: List<RemoteApp> get() = remoteOrder.mapNotNull(::app).take(remoteCount)
+    /**
+     * The remote's app buttons (1.3, remoteShortcutIDs in Preferences.swift): the TV Home dock's apps first, in the
+     * dock's order, then the Remote shortcuts list for the rest, no repeats, [remoteCount] in all. [dock] is null
+     * when no TV Home has connected (no real dock to follow).
+     */
+    fun remoteShortcutIDs(dock: List<String>?): List<String> {
+        val ids = mutableListOf<String>()
+        for (id in (dock ?: emptyList()) + remoteOrder) if (id !in ids && app(id) != null) ids += id
+        return ids.take(remoteCount)
+    }
+    val remoteApps: List<RemoteApp> get() = remoteShortcutIDs(if (editorHost == null) null else profile.layout.dock).mapNotNull(::app)
 
     companion object {
         /** First launch: "Movie time" (wake, then Netflix) with its name in the phone's language. */

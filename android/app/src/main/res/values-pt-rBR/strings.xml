@@ -163,7 +163,7 @@
     <string name="remote_shortcuts">Atalhos do controle</string>
     <string name="remote_shortcuts_detail">Visibilidade e ordem</string>
     <string name="visible_shortcuts">Atalhos visíveis: %1$d</string>
-    <string name="removing_shortcut_keeps">Remover um atalho mantém o app instalado na TV.</string>
+    <string name="removing_shortcut_keeps">Os apps do dock da tela inicial da TV vêm primeiro no controle, na ordem do dock; os demais seguem esta lista. Remover um atalho mantém o app instalado na TV.</string>
     <string name="backup_restore">Backup e restauração</string>
     <string name="backup_restore_detail">Layouts do launcher e papel de parede</string>
     <string name="tv_setup">Configuração da TV</string>

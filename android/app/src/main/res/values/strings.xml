@@ -175,7 +175,7 @@
     <string name="remote_shortcuts">Remote shortcuts</string>
     <string name="remote_shortcuts_detail">Visibility and order</string>
     <string name="visible_shortcuts">Visible shortcuts: %1$d</string>
-    <string name="removing_shortcut_keeps">Removing a shortcut keeps the app installed on the TV.</string>
+    <string name="removing_shortcut_keeps">Apps in your TV Home dock come first on the remote, in the dock\'s order; the rest follow this list. Removing a shortcut keeps the app installed on the TV.</string>
     <string name="backup_restore">Backup &amp; restore</string>
     <string name="backup_restore_detail">Launcher layouts and wallpaper</string>
     <string name="tv_setup">TV setup</string>

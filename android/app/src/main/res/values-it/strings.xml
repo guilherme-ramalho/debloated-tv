@@ -163,7 +163,7 @@
     <string name="remote_shortcuts">Scorciatoie del telecomando</string>
     <string name="remote_shortcuts_detail">Visibilità e ordine</string>
     <string name="visible_shortcuts">Scorciatoie visibili: %1$d</string>
-    <string name="removing_shortcut_keeps">Rimuovere una scorciatoia lascia l\'app installata sulla TV.</string>
+    <string name="removing_shortcut_keeps">Le app nel dock della schermata Home della TV vengono prima sul telecomando, nell\'ordine del dock; le altre seguono questo elenco. Togliere una scorciatoia lascia l\'app installata sulla TV.</string>
     <string name="backup_restore">Backup e ripristino</string>
     <string name="backup_restore_detail">Layout del launcher e sfondo</string>
     <string name="tv_setup">Configurazione TV</string>
