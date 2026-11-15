@@ -13,16 +13,23 @@ struct KeyboardView: View {
     @State private var sent = ""
     @State private var stamp = 0
     @State private var sending = false
-    /// The field takes focus as the sheet opens, so the keyboard is up and typing can start at once.
-    @FocusState private var focused: Bool
+    /// The field takes focus as the sheet opens, so the keyboard is up and typing can start at once. Both fields
+    /// stay in place and "Hide text while typing" moves the focus between them: swapping one field for the other
+    /// dropped the focus with the field that went away (REM-19, found on the TCL run of 15 Nov 2026).
+    private enum Field { case plain, hidden }
+    @FocusState private var focused: Field?
     static let delay: Duration = .milliseconds(400)
     var body: some View {
         NavigationStack {
             Form {
                 Group {
                 Section {
-                    if secure { SecureField("Search or enter text", text: $text).onSubmit(flush).focused($focused) }
-                    else { TextField("Search or enter text", text: $text).onSubmit(flush).focused($focused) }
+                    ZStack {
+                        TextField("Search or enter text", text: $text).onSubmit(flush).focused($focused, equals: .plain)
+                            .opacity(secure ? 0 : 1).allowsHitTesting(!secure).accessibilityHidden(secure)
+                        SecureField("Search or enter text", text: $text).onSubmit(flush).focused($focused, equals: .hidden)
+                            .opacity(secure ? 1 : 0).allowsHitTesting(secure).accessibilityHidden(!secure)
+                    }
                     Toggle("Hide text while typing", isOn: $secure)
                 } footer: { Text("First focus a search or password field on the TV. What you type appears there as you go. Text is sent over the paired encrypted connection and is never saved.") }
                 if !message.isEmpty { Text(message).font(.footnote).foregroundStyle(.secondary) }
@@ -31,8 +38,8 @@ struct KeyboardView: View {
 }.textInputAutocapitalization(.never).autocorrectionDisabled()
                 .navigationTitle("Type on TV").toolbar { Button("Done") { stamp += 1; Task { await push(); dismiss() } } }
                 .onChange(of: text) { _, _ in schedule() }
-                .onChange(of: secure) { _, _ in focused = true }
-                .task { try? await Task.sleep(for: .milliseconds(150)); focused = true }
+                .onChange(of: secure) { _, hidden in focused = hidden ? .hidden : .plain }
+                .task { try? await Task.sleep(for: .milliseconds(150)); focused = secure ? .hidden : .plain }
         }.onDisappear { stamp += 1 }.presentationDetents([.medium, .large])
     }
     private func schedule() {

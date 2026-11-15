@@ -204,3 +204,125 @@ final class StorePairing: XCTestCase {
         app.terminate()
     }
 }
+
+/// The 1.2 remote checks (TESTING.md REM-17, REM-18, REM-19) against a real TV, with the RELEASE app already paired
+/// in the simulator. Skipped unless TCL_CHECKS_DIR is set (pass it as TEST_RUNNER_TCL_CHECKS_DIR, with
+/// -parallel-testing-enabled NO). At each step that needs the TV side it creates <dir>/<step>.ready and waits for
+/// <dir>/<step>.go, which scripts/tcl-checks.py answers after reading the TV over ADB (mute state, keys received) or
+/// pressing its keys.
+/// Results go to <dir>/results.txt as "name=value" lines.
+final class TCLChecks: XCTestCase {
+    private var dir = ""
+    private var app: XCUIApplication!
+
+    func testRemote12OnTheTV() throws {
+        guard let out = ProcessInfo.processInfo.environment["TCL_CHECKS_DIR"], !out.isEmpty else { throw XCTSkip("Runs with TCL_CHECKS_DIR") }
+        dir = out
+        continueAfterFailure = true
+        app = XCUIApplication(bundleIdentifier: "com.guilhermeramalho.TVRemote")
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        openRemote()
+        if ProcessInfo.processInfo.environment["TCL_CHECKS_ONLY"] == "rem19" { typeOnTV(); return }
+
+        // REM-17: mute from the app, unmute and mute with the TV's own key, reconnect while muted.
+        report("rem17.start", muteLabel())
+        sync("rem17-start")
+        mute.tap()
+        report("rem17.afterAppMute", waitLabel("Unmute") + " mutedText=\(app.staticTexts["Muted"].exists)")
+        shot("rem17-muted")
+        sync("rem17-muted-from-app")          // the script checks the TV is muted, then presses its mute key
+        report("rem17.afterTVUnmute", waitLabel("Mute"))
+        sync("rem17-unmuted-from-tv")         // the script mutes again with the TV's key
+        report("rem17.afterTVMute", waitLabel("Unmute"))
+        app.terminate()
+        openRemote()
+        report("rem17.afterReconnect", waitLabel("Unmute"))
+        mute.tap()
+        report("rem17.afterAppUnmute", waitLabel("Mute"))
+        sync("rem17-done")                    // the script checks the TV is unmuted
+
+        // REM-18: reverse swipe on, swipes go the other way, survives a restart; off goes back to normal.
+        setReverse(true)
+        openRemoteTab()
+        sync("rem18-reversed-before")         // the script starts recording the keys the TV receives
+        swipe(dx: -110, dy: 0); sleep(2)
+        swipe(dx: 0, dy: -110); sleep(2)
+        sync("rem18-reversed-after")          // expect RIGHT, then DOWN
+        app.terminate()
+        app.launch()
+        report("rem18.afterRestart", reverseSwitch().value as? String ?? "?")
+        setReverse(false)
+        openRemoteTab()
+        sync("rem18-normal-before")
+        swipe(dx: -110, dy: 0); sleep(2)
+        sync("rem18-normal-after")            // expect LEFT
+
+        typeOnTV()
+        sync("done")
+    }
+
+    /// REM-19: Type on TV opens focused with the keyboard up; "Hide text while typing" keeps the focus.
+    private func typeOnTV() {
+        app.buttons["typeOnTV"].tap()
+        sleep(1)
+        let field = app.textFields["Search or enter text"]
+        report("rem19.fieldFocused", "\(field.exists && (field.value(forKey: "hasKeyboardFocus") as? Bool ?? false)) keyboard=\(app.keyboards.count > 0)")
+        shot("rem19-keyboard")
+        let hide = app.switches.containing(NSPredicate(format: "label CONTAINS %@", "Hide text while typing")).firstMatch
+        hide.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()   // the switch itself, at the right
+        sleep(1)
+        let secure = app.secureTextFields["Search or enter text"]
+        report("rem19.secureFocused", "switch=\(hide.value as? String ?? "?") \(secure.exists && (secure.value(forKey: "hasKeyboardFocus") as? Bool ?? false)) keyboard=\(app.keyboards.count > 0)")
+        shot("rem19-secure")
+        hide.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()   // the switch itself, at the right
+        sleep(1)
+        report("rem19.plainAgainFocused", "\(field.exists && (field.value(forKey: "hasKeyboardFocus") as? Bool ?? false)) keyboard=\(app.keyboards.count > 0)")
+        shot("rem19-plain-again")
+        app.navigationBars.buttons["Done"].tap()
+    }
+
+    private var mute: XCUIElement { app.buttons.matching(NSPredicate(format: "label == 'Mute' OR label == 'Unmute'")).firstMatch }
+    private func muteLabel() -> String { mute.exists ? mute.label : "missing" }
+    private func waitLabel(_ expected: String) -> String {
+        for _ in 0..<20 where muteLabel() != expected { Thread.sleep(forTimeInterval: 0.5) }
+        return muteLabel()
+    }
+    private func openRemote() {
+        app.launch()
+        openRemoteTab()
+        let ready = NSPredicate(format: "isEnabled == true")
+        expectation(for: ready, evaluatedWith: mute)
+        waitForExpectations(timeout: 30)
+        sleep(2)                                // the TV's first volume report
+    }
+    private func openRemoteTab() { app.tabBars.buttons.element(boundBy: 0).tap(); sleep(1) }
+    private func reverseSwitch() -> XCUIElement {
+        app.tabBars.buttons.element(boundBy: 3).tap(); sleep(1)
+        let toggle = app.switches.containing(NSPredicate(format: "label CONTAINS %@", "Reverse swipe direction")).firstMatch
+        for _ in 0..<4 where !toggle.isHittable { app.swipeUp() }
+        return toggle
+    }
+    private func setReverse(_ on: Bool) {
+        let toggle = reverseSwitch()
+        if (toggle.value as? String == "1") != on { toggle.tap() }
+        report("rem18.switch", toggle.value as? String ?? "?")
+    }
+    private func swipe(dx: CGFloat, dy: CGFloat) {
+        let centre = app.buttons["Select"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+        centre.press(forDuration: 0.05, thenDragTo: centre.withOffset(CGVector(dx: dx, dy: dy)))
+    }
+    private func report(_ name: String, _ value: String) {
+        let line = "\(name)=\(value)\n"
+        print("TCL-CHECK " + line, terminator: "")
+        let path = dir + "/results.txt"
+        if let handle = FileHandle(forWritingAtPath: path) { handle.seekToEndOfFile(); handle.write(Data(line.utf8)); handle.closeFile() }
+        else { FileManager.default.createFile(atPath: path, contents: Data(line.utf8)) }
+    }
+    private func sync(_ step: String) {
+        FileManager.default.createFile(atPath: "\(dir)/\(step).ready", contents: Data())
+        for _ in 0..<240 where !FileManager.default.fileExists(atPath: "\(dir)/\(step).go") { Thread.sleep(forTimeInterval: 0.5) }
+    }
+    private func shot(_ name: String) {
+        try? XCUIScreen.main.screenshot().pngRepresentation.write(to: URL(fileURLWithPath: "\(dir)/\(name).png"))
+    }
+}
