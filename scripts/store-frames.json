@@ -1,9 +1,11 @@
 {
   "_comment": "Store frames (scripts/store-frames.py): store order, the raw shot each frame uses, and its label and two-line headline per language. \\n breaks the headline.",
-  "order": ["01-remote", "02-tv-home", "07-look", "03-setup-review", "04-type", "05-actions", "06-action-steps"],
+  "order": ["01-remote", "08-show-on-tv", "09-show-video", "02-tv-home", "07-look", "03-setup-review", "04-type", "05-actions", "06-action-steps"],
   "text": {
     "en": [
       ["TV remote", "Your iPhone is\nthe remote"],
+      ["Show on TV", "Your photos,\non the big screen"],
+      ["4K videos", "Your videos play\nsmoothly on the TV"],
       ["New Home screen", "A clean, fast\nHome for your TV"],
       ["Four looks", "Make it yours\nin one tap"],
       ["Debloat", "Turn off the clutter,\nsafely"],
@@ -13,6 +15,8 @@
     ],
     "de": [
       ["TV-Fernbedienung", "Dein iPhone ist\ndie Fernbedienung"],
+      ["Auf dem TV zeigen", "Deine Fotos\nganz groß"],
+      ["4K-Videos", "Deine Videos laufen\nflüssig am TV"],
       ["Neuer Startbildschirm", "Ein aufgeräumter,\nschneller Start"],
       ["Vier Looks", "Dein Stil\nmit einem Tipp"],
       ["Aufräumen", "Ballast abschalten,\nsicher"],
@@ -22,6 +26,8 @@
     ],
     "es": [
       ["Mando de TV", "Tu iPhone es\nel mando"],
+      ["Mostrar en la tele", "Tus fotos,\nen la pantalla grande"],
+      ["Vídeos 4K", "Tus vídeos, fluidos\nen la tele"],
       ["Nueva pantalla de inicio", "Un inicio limpio\ny rápido para tu TV"],
       ["Cuatro estilos", "Hazlo tuyo\ncon un toque"],
       ["Limpieza", "Quita lo que sobra,\nsin riesgos"],
@@ -31,6 +37,8 @@
     ],
     "fr": [
       ["Télécommande", "Votre iPhone devient\nla télécommande"],
+      ["Afficher sur la TV", "Vos photos\nsur grand écran"],
+      ["Vidéos 4K", "Vos vidéos, fluides\nsur la TV"],
       ["Nouvel écran d'accueil", "Un accueil épuré\net rapide pour votre TV"],
       ["Quatre styles", "À votre goût,\nen un geste"],
       ["Nettoyage", "Désactivez le superflu,\nen toute sécurité"],
@@ -40,6 +48,8 @@
     ],
     "it": [
       ["Telecomando", "Il tuo iPhone è\nil telecomando"],
+      ["Mostra sulla TV", "Le tue foto\nsul grande schermo"],
+      ["Video 4K", "I tuoi video, fluidi\nsulla TV"],
       ["Nuova schermata Home", "Una Home pulita\ne veloce per la TV"],
       ["Quattro stili", "Rendila tua\ncon un tocco"],
       ["Pulizia", "Spegni il superfluo,\nin sicurezza"],
@@ -49,6 +59,8 @@
     ],
     "pt-BR": [
       ["Controle remoto", "Seu iPhone é\no controle"],
+      ["Mostrar na TV", "Suas fotos\nna tela grande"],
+      ["Vídeos 4K", "Seus vídeos fluidos\nna TV"],
       ["Nova tela inicial", "Uma tela inicial\nlimpa e rápida"],
       ["Quatro visuais", "Do seu jeito,\ncom um toque"],
       ["Limpeza", "Desative o excesso\ncom segurança"],

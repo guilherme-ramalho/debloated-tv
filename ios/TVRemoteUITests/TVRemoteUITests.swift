@@ -183,9 +183,11 @@ final class StoreScreenshots: XCTestCase {
             let tabs = app.tabBars.buttons
             XCTAssertTrue(tabs.element(boundBy: 0).waitForExistence(timeout: 10), "\(lang): app didn't start")
             if env["STORE_SHOTS_ONLY"] == "03" { setupReview(tabs); app.terminate(); continue }
+            if env["STORE_SHOTS_ONLY"] == "cast" { tabs.element(boundBy: 0).tap(); pause(5); castShots(); app.terminate(); continue }
 
             tabs.element(boundBy: 0).tap(); pause(5)            // the remote connects to the paired TV
             shot("01-remote")
+            castShots()
             if app.buttons["typeOnTV"].exists {
                 app.buttons["typeOnTV"].tap(); pause(1)
                 let field = app.textFields.firstMatch
@@ -212,6 +214,35 @@ final class StoreScreenshots: XCTestCase {
             setupReview(tabs)
             app.terminate()
         }
+    }
+
+    /// 08 and 09 (1.2 build 22): Show on TV with the paired TV. The newest photo full screen once the TV shows it,
+    /// then the newest item, a 4K video, playing on the TV. Needs photo access granted and that video in the library
+    /// (store-shots-auto.sh). Casts to the real TV for a few seconds and stops.
+    private func castShots() {
+        let open = app.buttons["showOnTV"]
+        guard open.waitForExistence(timeout: 5) else { print("STORE-SHOTS: no Show on TV button"); return }
+        addUIInterruptionMonitor(withDescription: "Photos access") { alert in
+            for label in ["Allow Full Access", "Allow Access to All Photos"] where alert.buttons[label].exists { alert.buttons[label].tap(); return true }
+            return false
+        }
+        open.tap()
+        pause(2); app.tap()       // lets the monitor answer the first-time prompt
+        let items = app.descendants(matching: .any).matching(identifier: "libraryItem")
+        guard items.firstMatch.waitForExistence(timeout: 10), items.count >= 2 else {
+            print("STORE-SHOTS: no photos (access not granted?)"); app.buttons["closeShowOnTV"].tap(); return
+        }
+        let count = items.count
+        items.element(boundBy: count - 2).tap()
+        if app.buttons["tvPill.on"].waitForExistence(timeout: 40) { pause(3); shot("08-show-on-tv") }
+        else { print("STORE-SHOTS: the TV didn't show the photo") }
+        app.buttons["viewerBack"].tap(); pause(2)
+        items.element(boundBy: count - 1).tap()
+        if app.descendants(matching: .any)["castingAnimation"].waitForExistence(timeout: 60) { pause(4); shot("09-show-video") }
+        else { print("STORE-SHOTS: the video didn't start on the TV") }
+        if app.buttons["stopOnTV"].exists { app.buttons["stopOnTV"].tap(); pause(2) }
+        app.buttons["viewerBack"].tap(); pause(1)
+        app.buttons["closeShowOnTV"].tap(); pause(1)
     }
 
     private func pause(_ seconds: UInt32) { sleep(seconds) }

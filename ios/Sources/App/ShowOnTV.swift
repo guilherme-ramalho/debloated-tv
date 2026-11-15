@@ -848,7 +848,7 @@ struct ShowOnTVViewer: View {
                         .disabled(asset.mediaType == .video && slideshowTask == nil)
                     Spacer()
                     action("Stop on TV", "stop.fill", hot: false) { slideshowTask?.cancel(); slideshowTask = nil; tv.stopOnTV() }
-                        .disabled(tv.shownID == nil)
+                        .disabled(tv.shownID == nil).accessibilityIdentifier("stopOnTV")
                 }
             }
             .padding(.horizontal, 18).padding(.bottom, 10).padding(.top, 30)
@@ -1009,6 +1009,7 @@ struct CastingAnimation: View {
                 .font(.system(size: 16, weight: .semibold)).foregroundStyle(.white)
         }
         .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("castingAnimation")
     }
 }
 
@@ -1032,7 +1033,7 @@ struct TVPill: View {
             .background(tv.tv == .on ? QuietTheme.cyan.opacity(0.16) : QuietTheme.panel, in: Capsule())
             .fixedSize()          // hugs its text, so it sits flush right like the back button on the left
         }
-        .accessibilityIdentifier("tvPill")
+        .accessibilityIdentifier(tv.tv == .on ? "tvPill.on" : "tvPill")
         .accessibilityHint(tv.tv == .paused ? Text("Shows the open photo on the TV again") : Text("Stops sending photos to the TV while you browse"))
     }
 }

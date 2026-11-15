@@ -6,6 +6,10 @@
 #   scripts/store-shots-auto.sh                  all six languages, both sizes
 #   scripts/store-shots-auto.sh --langs en,de    only these languages
 #   scripts/store-shots-auto.sh --only 03        only shot 03 (setup review)
+#   scripts/store-shots-auto.sh --only cast      only shots 08-09 (Show on TV; casts to the TV for a few seconds)
+#
+# Shots 08-09 need a recent photo and, newest of all, a 4K video in each simulator's library
+# (xcrun simctl addmedia <udid> <file>): the 1.2 shots used Apple's sample flowers and a slow zoom on its waterfall.
 #   scripts/store-shots-auto.sh --pair           open both simulators to pair them with the TV first (once)
 
 #
@@ -47,7 +51,10 @@ DD="$ROOT/ios/build/store-shots-dd"
 (cd "$ROOT/ios" && xcodebuild build -project TVRemote.xcodeproj -scheme "Debloated TV" -configuration Release \
   -destination "generic/platform=iOS Simulator" -derivedDataPath "$DD" -quiet) || die "Build failed."
 APP="$(find "$DD/Build/Products/Release-iphonesimulator" -maxdepth 1 -name '*.app' | head -n 1)"
-for udid in "$BIG" "$SMALL"; do xcrun simctl install "$udid" "$APP"; done
+for udid in "$BIG" "$SMALL"; do
+  xcrun simctl install "$udid" "$APP"
+  xcrun simctl privacy "$udid" grant photos "$BUNDLE_ID"      # Show on TV shots
+done
 
 if [ "$PAIR" = 1 ]; then
   open -a Simulator
