@@ -81,7 +81,14 @@ prepare_tv() {
   local skew=$(( $(date +%s) - $("$ADB" -s $SERIAL shell date +%s | tr -d '\r') ))
   if [ "${skew#-}" -gt 300 ]; then
     say "The emulator's clock is off by ${skew}s: rebooting it to pick up the host's time…"
-    "$ADB" -s $SERIAL reboot; sleep 8
+    # Right after a snapshot load adb can briefly see the emulator as offline ("error: device offline", 15 Nov
+    # 2026), so wait for it and try the reboot a few times before giving up.
+    local tries=0
+    until "$ADB" -s $SERIAL reboot 2>/dev/null; do
+      tries=$((tries + 1)); [ $tries -lt 10 ] || die "The emulator stayed offline; couldn't reboot it."
+      sleep 3; "$ADB" -s $SERIAL wait-for-device
+    done
+    sleep 8
     "$ADB" -s $SERIAL wait-for-device
     until booted; do sleep 2; done
     sleep 3
