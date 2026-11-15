@@ -118,7 +118,7 @@ import os
         keepAwake(false)
         stream?.stop(); stream = nil
         Self.clearFiles(); prepared = [:]
-        AssetImages.grid.stopCachingImagesForAllAssets()
+        AssetImages.stopPrefetching()
     }
 
     private func sendIfDue() {
@@ -561,6 +561,7 @@ struct ShowOnTVView: View {
 
     private func reload() {
         guard access == .authorized || access == .limited else { return }
+        AssetImages.stopPrefetching()
         assets = section.fetch()
         if let index = lastOpened, index >= assets.count { lastOpened = nil }
     }
@@ -668,13 +669,20 @@ enum AssetImages {
         options.isNetworkAccessAllowed = false
         return options
     }
+    /// The rows Photos is keeping ready: only those around the screen. Rows left behind are released, so memory
+    /// stays flat however far you scroll (1.3 test: keeping them all reached 250 MB).
+    @MainActor private static var cached = IndexSet()
     /// Asks Photos to get the thumbnails a few rows either side of the screen ready, so scrolling meets them done.
-    static func prefetch(_ assets: PHFetchResult<PHAsset>, around index: Int, side: CGFloat) {
-        let range = max(0, index - 32)..<min(assets.count, index + 32)
-        guard !range.isEmpty else { return }
-        grid.startCachingImages(for: assets.objects(at: IndexSet(integersIn: range)), targetSize: CGSize(width: side, height: side),
-                                contentMode: .aspectFill, options: gridOptions)
+    @MainActor static func prefetch(_ assets: PHFetchResult<PHAsset>, around index: Int, side: CGFloat) {
+        let wanted = IndexSet(integersIn: max(0, index - 32)..<min(assets.count, index + 32))
+        let size = CGSize(width: side, height: side)
+        let dropped = cached.subtracting(wanted).filteredIndexSet { $0 < assets.count }
+        let added = wanted.subtracting(cached)
+        if !dropped.isEmpty { grid.stopCachingImages(for: assets.objects(at: dropped), targetSize: size, contentMode: .aspectFill, options: gridOptions) }
+        if !added.isEmpty { grid.startCachingImages(for: assets.objects(at: added), targetSize: size, contentMode: .aspectFill, options: gridOptions) }
+        cached = wanted
     }
+    @MainActor static func stopPrefetching() { grid.stopCachingImagesForAllAssets(); cached = IndexSet() }
     static func thumbnails(_ asset: PHAsset, side: CGFloat) -> AsyncStream<UIImage> {
         AsyncStream { continuation in
             let id = grid.requestImage(for: asset, targetSize: CGSize(width: side, height: side), contentMode: .aspectFill, options: gridOptions) { image, info in
