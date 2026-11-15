@@ -94,7 +94,7 @@ public final class MediaServer: @unchecked Sendable {
 
     /// Makes a file reachable and returns its path ("/<random>/<name>"). Replaces whatever was shared before, so
     /// only the item on the TV (and the one prepared next) can be fetched.
-    public func share(_ file: URL, contentType: String, keep: Int = 2) -> String {
+    public func share(_ file: URL, contentType: String, keep: Int = 3) -> String {
         let token = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
         let path = "/\(token)/\(file.lastPathComponent.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "media")"
         queue.sync {
@@ -211,6 +211,9 @@ public enum LocalAddress {
 /// full. No metadata is copied: location and camera details never reach the TV.
 public enum PhotoPrep {
     public static let maxPixel = 3840
+    /// What the app sends: the TV's Cast player draws at 1920 x 1080 (TCL: `wm size` 1920x1080), so larger photos
+    /// look the same and only take longer to fetch and decode.
+    public static let tvPixel = 1920
 
     public static func jpeg(from data: Data, maxPixel: Int = maxPixel, quality: Double = 0.85) throws -> Data {
         guard let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary),

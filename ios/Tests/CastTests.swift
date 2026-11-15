@@ -156,7 +156,7 @@ final class CastTests: XCTestCase {
         let (_, missing) = try await URLSession.shared.data(from: URL(string: "http://127.0.0.1:\(port)/nothing/here.jpg")!)
         XCTAssertEqual((missing as? HTTPURLResponse)?.statusCode, 404)
         // Sharing more items than it keeps unshares the oldest.
-        _ = server.share(file, contentType: "video/mp4"); _ = server.share(file, contentType: "video/mp4")
+        for _ in 0..<3 { _ = server.share(file, contentType: "video/mp4") }
         let (_, gone) = try await URLSession.shared.data(from: URL(string: "http://127.0.0.1:\(port)\(path)")!)
         XCTAssertEqual((gone as? HTTPURLResponse)?.statusCode, 404)
     }
@@ -193,6 +193,9 @@ final class CastTests: XCTestCase {
         XCTAssertEqual(properties[kCGImagePropertyPixelHeight] as? Int, 3840, "long side at most 3840")
         XCTAssertNil(properties[kCGImagePropertyGPSDictionary], "no location reaches the TV")
         XCTAssertLessThan(jpeg.count, 3_000_000)
+        let forTV = try PhotoPrep.jpeg(from: original as Data, maxPixel: PhotoPrep.tvPixel)
+        let tvProperties = CGImageSourceCopyPropertiesAtIndex(CGImageSourceCreateWithData(forTV as CFData, nil)!, 0, nil) as? [CFString: Any]
+        XCTAssertEqual(tvProperties?[kCGImagePropertyPixelHeight] as? Int, 1920, "the app sends at most 1920 px")
     }
 
     func testUnreadablePhotoFailsClearly() {

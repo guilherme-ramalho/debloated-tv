@@ -38,6 +38,13 @@ import os
     private var shownIsVideo = false
     private var openedAt: Date?
     private var loadedAt: Date?
+    /// The item on the TV has started (shown, playing or finished): a LOAD_FAILED after that is stale. The TV's
+    /// player sends one when a video ends, which showed "couldn't play" for videos that played (1.3 test, 15 Nov).
+    private var itemStarted = false
+    /// Photos prepared for the TV, by asset: the one showing and its neighbours, so a swipe sends a ready file.
+    private var prepared: [String: URL] = [:]
+    private var neighbours: [PHAsset] = []
+    private var prefetchTask: Task<Void, Never>?
     nonisolated private static let folder = FileManager.default.temporaryDirectory.appendingPathComponent("ShowOnTV", isDirectory: true)
 
     init(host: String, tvName: String) {
@@ -47,9 +54,11 @@ import os
         ShowOnTVLog.note("library opened (TV \(host))")
     }
 
-    /// The viewer settled on an asset: it goes to the TV once it has stayed in front for a moment (CST-03).
-    func focus(_ asset: PHAsset) {
+    /// The viewer settled on an asset: it goes to the TV once it has stayed in front for a moment (CST-03). The
+    /// photos either side are prepared once it's showing.
+    func focus(_ asset: PHAsset, neighbours: [PHAsset] = []) {
         focusedAsset = asset
+        self.neighbours = neighbours
         follower.focused(asset.localIdentifier)
         settleTask?.cancel()
         settleTask = Task { [weak self] in
@@ -85,11 +94,11 @@ import os
     /// Leaving the library: everything goes.
     func close() {
         ShowOnTVLog.note("library closed")
-        settleTask?.cancel(); sendTask?.cancel()
+        settleTask?.cancel(); sendTask?.cancel(); prefetchTask?.cancel()
         session?.stop(); session = nil
         server.stop()
         keepAwake(false)
-        Self.clearFiles(); files = []
+        Self.clearFiles(); files = []; prepared = [:]
     }
 
     private func sendIfDue() {
@@ -114,11 +123,12 @@ import os
             let session = self.session ?? makeSession()
             shownID = asset.localIdentifier
             shownIsVideo = asset.mediaType == .video
-            media = nil
+            media = nil; itemStarted = false
             loadedAt = Date()
             ShowOnTVLog.note("load \(contentType) from \(address):\(port)")
             session.load(.init(url: "http://\(address):\(port)\(path)", contentType: contentType,
                                title: asset.creationDate.map { $0.formatted(date: .abbreviated, time: .shortened) } ?? "Purio TV"))
+            prefetch(around: asset)
         } catch is CancellationError {
             ShowOnTVLog.note("send cancelled (swiped on)")
         } catch {
@@ -147,9 +157,11 @@ import os
                 ShowOnTVLog.note("TV \(status.playerState)\(status.idleReason.map { " (\($0))" } ?? "") at \(Int(status.currentTime)) s, \(loadedAt.map { ShowOnTVLog.ms(since: $0) } ?? -1) ms after load")
             }
             media = status
+            if status.playerState != "IDLE" || status.idleReason == "FINISHED" { itemStarted = true }
             keepAwake(shownIsVideo && status.playing)
             if status.idleReason == "ERROR" { reportLoadFailure() }
         case .loadFailed:
+            guard !itemStarted else { ShowOnTVLog.note("ignored a stale LOAD_FAILED (the item had already started)"); return }
             ShowOnTVLog.note("TV refused the item (LOAD_FAILED)")
             reportLoadFailure()
         case .receiverGone:
@@ -180,13 +192,18 @@ import os
 
     // MARK: media for the TV
 
-    /// The photo as a JPEG at most 4K (the TV refuses HEIC), prepared off the main thread and freed once written.
-    private func photoFile(_ asset: PHAsset) async throws -> (URL, String) {
+    /// The photo as a JPEG for the TV (it refuses HEIC), at most 1920 px: the TV's apps draw at 1920 x 1080, so
+    /// more only makes the TV fetch and decode longer. Prepared off the main thread, kept while it's a neighbour.
+    private func photoFile(_ asset: PHAsset, ahead: Bool = false) async throws -> (URL, String) {
+        if let ready = prepared[asset.localIdentifier], FileManager.default.fileExists(atPath: ready.path) {
+            ShowOnTVLog.note("photo ready (prepared ahead)")
+            return (ready, "image/jpeg")
+        }
         let options = PHImageRequestOptions()
-        options.isNetworkAccessAllowed = true
+        options.isNetworkAccessAllowed = !ahead          // neighbours kept only in iCloud aren't downloaded ahead
         options.deliveryMode = .highQualityFormat
         options.version = .current
-        options.progressHandler = { [weak self] progress, _, _, _ in Task { @MainActor in self?.downloading = progress < 1 ? progress : nil } }
+        if !ahead { options.progressHandler = { [weak self] progress, _, _, _ in Task { @MainActor in self?.downloading = progress < 1 ? progress : nil } } }
         let readStart = Date()
         let data: Data = try await withCheckedThrowingContinuation { result in
             PHImageManager.default().requestImageDataAndOrientation(for: asset, options: options) { data, _, _, info in
@@ -194,19 +211,19 @@ import os
                 else { result.resume(throwing: (info?[PHImageErrorKey] as? Error) ?? RemoteFailure.message(String(localized: "This photo couldn't be read."))) }
             }
         }
-        downloading = nil
+        if !ahead { downloading = nil }
         try Task.checkCancellation()
         let file = Self.folder.appendingPathComponent("\(UUID().uuidString).jpg")
         let readMS = ShowOnTVLog.ms(since: readStart), originalKB = data.count / 1024
         let prepStart = Date()
         let jpegKB = try await Task.detached(priority: .userInitiated) { () -> Int in
             try FileManager.default.createDirectory(at: Self.folder, withIntermediateDirectories: true)
-            let jpeg = try PhotoPrep.jpeg(from: data)
+            let jpeg = try PhotoPrep.jpeg(from: data, maxPixel: PhotoPrep.tvPixel)
             try jpeg.write(to: file)
             return jpeg.count / 1024
         }.value
-        ShowOnTVLog.note("photo read \(readMS) ms (\(originalKB) KB), converted to JPEG in \(ShowOnTVLog.ms(since: prepStart)) ms (\(jpegKB) KB)")
-        track(file)
+        ShowOnTVLog.note("\(ahead ? "prepared ahead: " : "")photo read \(readMS) ms (\(originalKB) KB), converted to JPEG in \(ShowOnTVLog.ms(since: prepStart)) ms (\(jpegKB) KB)")
+        prepared[asset.localIdentifier] = file
         return (file, "image/jpeg")
     }
     /// The video straight from the library file: the TV plays iPhone .mov (H.264, HEVC, HDR) as is (CST-02), so
@@ -224,6 +241,7 @@ import os
             }
         }
         downloading = nil
+        await Self.describe(avAsset)
         if let url = (avAsset as? AVURLAsset)?.url, FileManager.default.isReadableFile(atPath: url.path) {
             ShowOnTVLog.note("video served from the library file (.\(url.pathExtension.lowercased()))")
             return (url, url.pathExtension.lowercased() == "mov" ? "video/quicktime" : "video/mp4")
@@ -243,12 +261,39 @@ import os
         track(file)
         return (file, "video/mp4")
     }
-    /// Keeps the two newest prepared files (the one on the TV and the one before it) and deletes older ones.
+    /// Keeps the photos for the one showing and its neighbours, deletes the rest, and prepares the missing neighbours
+    /// one at a time in the background.
+    private func prefetch(around asset: PHAsset) {
+        prefetchTask?.cancel()
+        let keep = Set(([asset] + neighbours).map(\.localIdentifier))
+        for (id, file) in prepared where !keep.contains(id) { try? FileManager.default.removeItem(at: file); prepared[id] = nil }
+        let todo = neighbours.filter { $0.mediaType == .image && prepared[$0.localIdentifier] == nil }
+        guard !todo.isEmpty else { return }
+        prefetchTask = Task { [weak self] in
+            for photo in todo {
+                guard !Task.isCancelled, let self else { return }
+                _ = try? await self.photoFile(photo, ahead: true)
+            }
+        }
+    }
+    /// Keeps the two newest exported videos and deletes older ones.
     private func track(_ file: URL) {
         files.append(file)
         while files.count > 2 { try? FileManager.default.removeItem(at: files.removeFirst()) }
     }
     private static func clearFiles() { try? FileManager.default.removeItem(at: folder) }
+    /// Logs what the TV is asked to play: size, frame rate, bit rate, codec and HDR.
+    private static func describe(_ asset: AVAsset) async {
+        guard let track = try? await asset.loadTracks(withMediaType: .video).first,
+              let (size, fps, rate, formats) = try? await track.load(.naturalSize, .nominalFrameRate, .estimatedDataRate, .formatDescriptions) else { return }
+        let format = formats.first
+        let codec = format.map { description -> String in
+            let code = CMFormatDescriptionGetMediaSubType(description).bigEndian
+            return withUnsafeBytes(of: code) { String(decoding: $0, as: UTF8.self) }
+        } ?? "?"
+        let transfer = format.flatMap { CMFormatDescriptionGetExtension($0, extensionKey: kCMFormatDescriptionExtension_TransferFunction) as? String } ?? "SDR"
+        ShowOnTVLog.note("video \(Int(size.width))x\(Int(size.height)) \(Int(fps.rounded())) fps \(codec) \(Int(rate / 1_000_000)) Mbit/s \(transfer)")
+    }
 }
 
 // MARK: - Log
@@ -682,7 +727,8 @@ struct ShowOnTVViewer: View {
     private func focus(_ index: Int) {
         guard index >= 0, index < items.count else { return }
         opened(index)
-        tv.focus(items[index])
+        let around = [index - 1, index + 1].filter { $0 >= 0 && $0 < items.count }.map { items[$0] }
+        tv.focus(items[index], neighbours: around)
     }
     /// Every 5 seconds to the next photo; videos are skipped, the end stops it, a swipe keeps it going from there.
     private func toggleSlideshow() {
