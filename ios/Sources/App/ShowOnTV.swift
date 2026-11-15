@@ -34,7 +34,8 @@ import os
     private var focusedAsset: PHAsset?
     private var settleTask: Task<Void, Never>?
     private var sendTask: Task<Void, Never>?
-    private var files: [URL] = []
+    /// The video being converted for the TV, if the one showing needed it.
+    private var stream: VideoStream?
     private var shownIsVideo = false
     private var openedAt: Date?
     private var loadedAt: Date?
@@ -87,6 +88,7 @@ import os
         ShowOnTVLog.note("stop on TV")
         sendTask?.cancel()
         session?.stop(); session = nil
+        stopStream()
         follower.forget(); shownID = nil; media = nil; downloading = nil
         tv = .paused
         keepAwake(false)
@@ -98,7 +100,8 @@ import os
         session?.stop(); session = nil
         server.stop()
         keepAwake(false)
-        Self.clearFiles(); files = []; prepared = [:]
+        stream?.stop(); stream = nil
+        Self.clearFiles(); prepared = [:]
     }
 
     private func sendIfDue() {
@@ -117,17 +120,20 @@ import os
                 throw RemoteFailure.message(String(localized: "This iPhone isn't on the TV's Wi-Fi network."))
             }
             let port = try await server.start()
-            let (file, contentType) = asset.mediaType == .video ? try await videoFile(asset) : try await photoFile(asset)
+            let choice: (path: String, contentType: String, hls: Bool)
+            if asset.mediaType == .video { choice = try await video(asset) }
+            else { let (file, type) = try await photoFile(asset); choice = (server.share(file, contentType: type), type, false) }
             guard !Task.isCancelled else { return }
-            let path = server.share(file, contentType: contentType)
+            if asset.mediaType != .video { stopStream() }
+            let contentType = choice.contentType
             let session = self.session ?? makeSession()
             shownID = asset.localIdentifier
             shownIsVideo = asset.mediaType == .video
             media = nil; itemStarted = false
             loadedAt = Date()
             ShowOnTVLog.note("load \(contentType) from \(address):\(port)")
-            session.load(.init(url: "http://\(address):\(port)\(path)", contentType: contentType,
-                               title: asset.creationDate.map { $0.formatted(date: .abbreviated, time: .shortened) } ?? "Purio TV"))
+            session.load(.init(url: "http://\(address):\(port)\(choice.path)", contentType: contentType,
+                               title: asset.creationDate.map { $0.formatted(date: .abbreviated, time: .shortened) } ?? "Purio TV", hls: choice.hls))
             prefetch(around: asset)
         } catch is CancellationError {
             ShowOnTVLog.note("send cancelled (swiped on)")
@@ -226,9 +232,10 @@ import os
         prepared[asset.localIdentifier] = file
         return (file, "image/jpeg")
     }
-    /// The video straight from the library file: the TV plays iPhone .mov (H.264, HEVC, HDR) as is (CST-02), so
-    /// nothing is copied. Slow-motion and other composed videos are exported once to a temporary file.
-    private func videoFile(_ asset: PHAsset) async throws -> (URL, String) {
+    /// A video for the TV: straight from the library file when the TV's player handles it (1080p, up to 20 Mbit/s),
+    /// otherwise converted to 1080p while it plays (VideoStream): the TV's player stutters at 4K and fails at 4K
+    /// 60 fps (CST-15). Slow-motion and other composed videos are converted too.
+    private func video(_ asset: PHAsset) async throws -> (path: String, contentType: String, hls: Bool) {
         let options = PHVideoRequestOptions()
         options.isNetworkAccessAllowed = true
         options.version = .current
@@ -241,25 +248,28 @@ import os
             }
         }
         downloading = nil
-        await Self.describe(avAsset)
-        if let url = (avAsset as? AVURLAsset)?.url, FileManager.default.isReadableFile(atPath: url.path) {
+        try Task.checkCancellation()
+        let source = await Self.describe(avAsset)
+        stopStream()
+        if let url = (avAsset as? AVURLAsset)?.url, FileManager.default.isReadableFile(atPath: url.path),
+           let source, !VideoPlan.needsConversion(source) {
             ShowOnTVLog.note("video served from the library file (.\(url.pathExtension.lowercased()))")
-            return (url, url.pathExtension.lowercased() == "mov" ? "video/quicktime" : "video/mp4")
+            let type = url.pathExtension.lowercased() == "mov" ? "video/quicktime" : "video/mp4"
+            return (server.share(url, contentType: type), type, false)
         }
-        ShowOnTVLog.note("video needs an export (\(type(of: avAsset)))")
-        guard let export = AVAssetExportSession(asset: avAsset, presetName: AVAssetExportPresetHEVCHighestQuality) else {
-            throw RemoteFailure.message(String(localized: "This video couldn't be read."))
-        }
-        try FileManager.default.createDirectory(at: Self.folder, withIntermediateDirectories: true)
-        let file = Self.folder.appendingPathComponent("\(UUID().uuidString).mp4")
-        export.outputURL = file
-        export.outputFileType = .mp4
-        downloading = 0
-        await withCheckedContinuation { (done: CheckedContinuation<Void, Never>) in export.exportAsynchronously { done.resume() } }
-        downloading = nil
-        guard export.status == .completed else { throw export.error ?? RemoteFailure.message(String(localized: "This video couldn't be read.")) }
-        track(file)
-        return (file, "video/mp4")
+        let started = Date()
+        let stream = try await VideoStream(asset: avAsset, folder: Self.folder.appendingPathComponent("stream-\(UUID().uuidString)", isDirectory: true))
+        stream.log = { ShowOnTVLog.note("conversion: \($0)") }
+        ShowOnTVLog.note("video converted while it plays: \(Int(stream.outputSize.width))x\(Int(stream.outputSize.height)) \(stream.frameRate) fps, set up in \(ShowOnTVLog.ms(since: started)) ms")
+        self.stream = stream
+        let base = server.shareFolder(stream.folder) { [weak stream] name in stream?.requested(name) }
+        return (base + "index.m3u8", "application/x-mpegURL", true)
+    }
+    private func stopStream() {
+        guard let stream else { return }
+        stream.stop()
+        try? FileManager.default.removeItem(at: stream.folder)
+        self.stream = nil
     }
     /// Keeps the photos for the one showing and its neighbours, deletes the rest, and prepares the missing neighbours
     /// one at a time in the background.
@@ -276,16 +286,11 @@ import os
             }
         }
     }
-    /// Keeps the two newest exported videos and deletes older ones.
-    private func track(_ file: URL) {
-        files.append(file)
-        while files.count > 2 { try? FileManager.default.removeItem(at: files.removeFirst()) }
-    }
     private static func clearFiles() { try? FileManager.default.removeItem(at: folder) }
-    /// Logs what the TV is asked to play: size, frame rate, bit rate, codec and HDR.
-    private static func describe(_ asset: AVAsset) async {
+    /// Logs what the TV is asked to play (size, frame rate, bit rate, codec, HDR) and returns it for the decision.
+    private static func describe(_ asset: AVAsset) async -> VideoPlan.Source? {
         guard let track = try? await asset.loadTracks(withMediaType: .video).first,
-              let (size, fps, rate, formats) = try? await track.load(.naturalSize, .nominalFrameRate, .estimatedDataRate, .formatDescriptions) else { return }
+              let (size, fps, rate, formats, transform) = try? await track.load(.naturalSize, .nominalFrameRate, .estimatedDataRate, .formatDescriptions, .preferredTransform) else { return nil }
         let format = formats.first
         let codec = format.map { description -> String in
             let code = CMFormatDescriptionGetMediaSubType(description).bigEndian
@@ -293,6 +298,8 @@ import os
         } ?? "?"
         let transfer = format.flatMap { CMFormatDescriptionGetExtension($0, extensionKey: kCMFormatDescriptionExtension_TransferFunction) as? String } ?? "SDR"
         ShowOnTVLog.note("video \(Int(size.width))x\(Int(size.height)) \(Int(fps.rounded())) fps \(codec) \(Int(rate / 1_000_000)) Mbit/s \(transfer)")
+        let shown = CGRect(origin: .zero, size: size).applying(transform)
+        return VideoPlan.Source(width: Int(abs(shown.width)), height: Int(abs(shown.height)), fps: Double(fps), bitsPerSecond: Double(rate))
     }
 }
 

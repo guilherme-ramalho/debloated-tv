@@ -101,7 +101,11 @@ public struct CastController {
     }
     public struct Load: Equatable {
         public var url: String, contentType: String, title: String
-        public init(url: String, contentType: String, title: String) { self.url = url; self.contentType = contentType; self.title = title }
+        /// An HLS playlist of fMP4 segments (a converted video): the player must be told the segment format.
+        public var hls: Bool
+        public init(url: String, contentType: String, title: String, hls: Bool = false) {
+            self.url = url; self.contentType = contentType; self.title = title; self.hls = hls
+        }
     }
     public static let mediaReceiver = "CC1AD845"
     public let sender: String
@@ -196,10 +200,11 @@ public struct CastController {
     }
     private mutating func loadMessage(_ item: Load) -> CastMessage {
         mediaSession = nil
+        var media: [String: Any] = ["contentId": item.url, "contentType": item.contentType, "streamType": "BUFFERED",
+                                    "metadata": ["metadataType": 0, "title": item.title]]
+        if item.hls { media["hlsSegmentFormat"] = "fmp4"; media["hlsVideoSegmentFormat"] = "fmp4" }
         return request(transport ?? "", CastNamespace.media, [
-            "type": "LOAD", "sessionId": session ?? "", "autoplay": true, "currentTime": 0,
-            "media": ["contentId": item.url, "contentType": item.contentType, "streamType": "BUFFERED",
-                      "metadata": ["metadataType": 0, "title": item.title]]])
+            "type": "LOAD", "sessionId": session ?? "", "autoplay": true, "currentTime": 0, "media": media])
     }
     private mutating func mediaCommand(_ json: [String: Any]) -> [CastMessage] {
         guard state == .ready, let transport, let mediaSession else { return [] }

@@ -20,6 +20,25 @@ is about 300 lines in `ios/Sources/Core/Cast.swift`, written like the remote pro
 - **Photos:** converted to JPEG at most 3840 px (`PhotoPrep`), upright, without metadata. **Videos** are served
   straight from the library file; slow-motion and other composed videos are exported once to a temporary file.
 
+## Heavy videos: converted while they play
+
+The TCL's Cast player plays 1080p smoothly, stutters at 4K 30 fps (25 Mbit/s: 8 s of video in 22 s, with all the
+data already there) and fails at 4K 60 fps / 85 Mbit/s (`IDLE (ERROR)` within 2–5 s). Its Realtek decoder is listed
+up to 4096 x 2176 and 80 Mbit/s (`/vendor/etc/media_codecs_realtek_video.xml`), so 4K itself is the Chromium Cast
+shell's limit, and above 80 Mbit/s the hardware's. iPhones record 4K 60 fps HDR at 55–90 Mbit/s.
+
+So a video larger than 1080p or above 20 Mbit/s goes through `VideoStream` (`VideoStream.swift`):
+`AVAssetReaderVideoCompositionOutput` makes upright 1080p (or 1080 x 1920) frames in Rec. 709 (AVFoundation tone-maps
+HLG and Dolby Vision), the hardware H.264 encoder writes them with a keyframe every 6 s, and `AVAssetWriter` in the
+HLS profile cuts exact 6-second fMP4 segments. The playlist is written in full before any segment exists (VOD), so
+the TV knows the length and can seek; `MediaServer` waits up to 30 s for a segment that isn't ready and tells the
+stream what the TV asked for. The stream stays at most 8 segments ahead, restarts at a segment the TV jumps to,
+and deletes segments more than 3 behind. The LOAD carries `hlsSegmentFormat`/`hlsVideoSegmentFormat` = `fmp4`.
+On a Mac the 1080p conversion of a 4K 60 fps HDR clip runs at about 2.5–3x real time.
+
+Later: a native player in Purio's TV Home would use the decoder directly and play 4K up to 80 Mbit/s as is (only on
+TVs that ran setup).
+
 ## What the TCL's player accepts (15 Nov 2026, Android 11, mediashell)
 
 | Media | Result |

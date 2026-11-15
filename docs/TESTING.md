@@ -323,6 +323,9 @@ The `android-tv` emulator image has no Cast player, so the end-to-end suite does
 | CST-12 | A TV without Chromecast built in | "This TV can't show photos from Purio…" | Auto `testConnectionFailuresAreExplained` |
 | CST-13 | Memory: open the library, scroll through hundreds of photos, view 20 full screen, leave | Xcode's memory gauge stays under about 100 MB in the library and returns close to where it was after leaving | Manual (Xcode debug gauge) |
 | CST-14 | Wire format and server | Frames, the session steps, byte ranges, only shared paths served, the TV's subnet picked | Auto `CastTests` |
+| CST-15 | A 4K 60 fps HDR iPhone video, a 4K 30 fps one, a 1080p one | 4K plays smoothly after 2–4 s (converted to 1080p while it plays, normal colours); 1080p up to 20 Mbit/s goes as is; the log says which | Auto `VideoStreamTests` + Manual (TCL) |
+| CST-16 | In a converted video: drag the position far ahead, then back to the start | Plays from there within a few seconds (conversion restarts there); back works too | Auto `testJumpAheadConvertsFromThere` + Manual |
+| CST-17 | A video finishes on the TV | No "couldn't play" message (the TV's stray LOAD_FAILED is ignored) | Manual (TCL) |
 
 ## Release checklist
 

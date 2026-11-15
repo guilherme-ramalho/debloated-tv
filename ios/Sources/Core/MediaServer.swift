@@ -105,11 +105,23 @@ public final class MediaServer: @unchecked Sendable {
         return path
     }
     private var order: [String] = []
+    private struct Folder { let url: URL; let requested: (String) -> Void }
+    private var folders: [String: Folder] = [:]
+
+    /// Shares a folder whose files appear over time (a converted video's playlist and segments) and returns its
+    /// path ("/<random>/"). A file asked for before it exists is waited for up to 30 s; `requested` hears every
+    /// name asked for, so the converter can follow the TV. Replaces the folder shared before.
+    public func shareFolder(_ url: URL, requested: @escaping (String) -> Void) -> String {
+        let token = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+        let path = "/\(token)/"
+        queue.sync { folders = [path: Folder(url: url, requested: requested)] }
+        return path
+    }
 
     public func stop() {
         queue.sync {
             listener?.cancel(); listener = nil; port = nil
-            items = [:]; order = []
+            items = [:]; order = []; folders = [:]
         }
     }
 
@@ -130,17 +142,46 @@ public final class MediaServer: @unchecked Sendable {
     }
     private func respond(_ connection: NWConnection, _ head: HTTPRequestHead) {
         guard head.method == "GET" || head.method == "HEAD" else { return finish(connection, status: "405 Method Not Allowed") }
+        if let (folder, name) = folderFile(head.path) {
+            requestLog?(head.method, true, name)
+            folder.requested(name)
+            let file = folder.url.appendingPathComponent(name)
+            return waitFor(file, until: Date().addingTimeInterval(30)) { [weak self] ready in
+                guard let self else { return }
+                guard ready else { return self.finish(connection, status: "404 Not Found") }
+                self.serveFile(connection, head, file, contentType: Self.contentType(name))
+            }
+        }
         requestLog?(head.method, items[head.path] != nil, head.headers["range"])
-        guard let item = items[head.path],
-              let size = (try? item.file.resourceValues(forKeys: [.fileSizeKey]))?.fileSize,
-              let handle = try? FileHandle(forReadingFrom: item.file) else { return finish(connection, status: "404 Not Found") }
+        guard let item = items[head.path] else { return finish(connection, status: "404 Not Found") }
+        serveFile(connection, head, item.file, contentType: item.contentType)
+    }
+    private func folderFile(_ path: String) -> (Folder, String)? {
+        guard let slash = path.dropFirst().firstIndex(of: "/") else { return nil }
+        let prefix = String(path[...slash]), name = String(path[path.index(after: slash)...])
+        guard let folder = folders[prefix], !name.isEmpty, !name.contains("/"), !name.contains(".."), !name.hasSuffix(".part") else { return nil }
+        return (folder, name)
+    }
+    private func waitFor(_ file: URL, until deadline: Date, _ done: @escaping (Bool) -> Void) {
+        if FileManager.default.fileExists(atPath: file.path) { return done(true) }
+        guard Date() < deadline else { return done(false) }
+        queue.asyncAfter(deadline: .now() + 0.1) { [weak self] in self?.waitFor(file, until: deadline, done) }
+    }
+    static func contentType(_ name: String) -> String {
+        if name.hasSuffix(".m3u8") { return "application/vnd.apple.mpegurl" }
+        if name.hasSuffix(".m4s") || name.hasSuffix(".mp4") { return "video/mp4" }
+        return "application/octet-stream"
+    }
+    private func serveFile(_ connection: NWConnection, _ head: HTTPRequestHead, _ file: URL, contentType: String) {
+        guard let size = (try? file.resourceValues(forKeys: [.fileSizeKey]))?.fileSize,
+              let handle = try? FileHandle(forReadingFrom: file) else { return finish(connection, status: "404 Not Found") }
         let asked = head.headers["range"]
         guard let range = ByteRange.resolve(asked, size: size) else {
             try? handle.close()
             return finish(connection, status: "416 Range Not Satisfiable", extra: "Content-Range: bytes */\(size)\r\n")
         }
         var response = asked == nil ? "HTTP/1.1 200 OK\r\n" : "HTTP/1.1 206 Partial Content\r\nContent-Range: bytes \(range.start)-\(range.end)/\(size)\r\n"
-        response += "Content-Type: \(item.contentType)\r\nContent-Length: \(range.length)\r\nAccept-Ranges: bytes\r\n"
+        response += "Content-Type: \(contentType)\r\nContent-Length: \(range.length)\r\nAccept-Ranges: bytes\r\n"
         response += "Access-Control-Allow-Origin: *\r\nCache-Control: no-store\r\nConnection: close\r\n\r\n"
         connection.send(content: Data(response.utf8), completion: .contentProcessed { [weak self] error in
             guard let self, error == nil, head.method == "GET" else { try? handle.close(); connection.cancel(); return }
