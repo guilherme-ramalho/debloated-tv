@@ -150,6 +150,7 @@ then stay on the real-TV checklist. `scripts/release.sh --e2e` runs the suite as
 | KWT-03 | Remove from Keep watching; then watch that show again | It leaves the strip at once; it comes back after it's watched again | Auto: `KeepWatchingTest.atMostTenAndARemovedShowComesBackWhenWatchedAgain`; Manual |
 | KWT-04 | Home 13 (older) or the permission missing | No strip; with a Home that has the feature but no permission, "Keep watching needs the latest Home screen. Update Home screen to turn it on." | Manual |
 | KWT-05 | Cost and privacy | Home reads the list only when the TV tab connects (no polling, nothing on Home's screen); posters come from each app's own artwork link, 6 s at most; the list goes only to the phone | Review |
+| KWT-06 | Keep watching › See all | A full-screen list of every show Home sent (up to 50, Home 16), newest first: poster with progress, title, app · episode · time left; tap one: Resume on TV / Remove (the list follows a removal). The strip itself shows the newest 10 | Auto: UI `testKeepWatchingSeeAllListsEveryShow`; Manual |
 
 ## 3. TV tab and setup entry (SET)
 

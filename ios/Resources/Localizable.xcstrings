@@ -5489,6 +5489,40 @@
         }
       }
     },
+    "From your TV's Continue watching list: apps that keep it show here. Tap one to pick up where you left off." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus der „Weiterschauen“-Liste deines Fernsehers: Apps, die sie führen, erscheinen hier. Tippe auf einen Titel, um weiterzuschauen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De la lista Seguir viendo de tu TV: aquí aparecen las apps que la usan. Toca uno para seguir donde lo dejaste."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depuis la liste Reprendre de votre TV : les apps qui la tiennent apparaissent ici. Touchez-en un pour reprendre où vous en étiez."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dall'elenco Continua a guardare della TV: qui compaiono le app che lo usano. Toccane uno per riprendere da dove eri rimasto."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da lista Continuar assistindo da sua TV: os apps que a usam aparecem aqui. Toque em um para continuar de onde parou."
+          }
+        }
+      }
+    },
     "Home opens the new Home screen" : {
       "localizations" : {
         "de" : {
@@ -5689,6 +5723,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se uma senha estiver errada, a TV perde o Wi-Fi. Aí você teria que reconectá-la com o próprio controle, em Configurações › Rede e Internet."
+          }
+        }
+      }
+    },
+    "Keep watching" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiterschauen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguir viendo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reprendre"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua a guardare"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar assistindo"
           }
         }
       }
@@ -14580,6 +14648,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proteger a TV"
+          }
+        }
+      }
+    },
+    "See all" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver todo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout voir"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vedi tutto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver tudo"
           }
         }
       }

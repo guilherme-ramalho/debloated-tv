@@ -192,7 +192,7 @@ public struct KeepWatchingList: Codable, Equatable, Sendable {
     public let items: [WatchingShow]
     public init(allowed: Bool, items: [WatchingShow]) { self.allowed = allowed; self.items = items }
     public func validate() throws {
-        guard items.count <= 10, items.allSatisfy({ $0.id.count <= 30 && $0.title.count <= 300 && $0.episode.count <= 300
+        guard items.count <= 50, items.allSatisfy({ $0.id.count <= 30 && $0.title.count <= 300 && $0.episode.count <= 300
                 && RemoteApp.validPackage($0.package) && ($0.posterJPEG?.count ?? 0) <= 300_000 }) else {
             throw RemoteFailure.message(String(localized: "Invalid TV editor response"))
         }

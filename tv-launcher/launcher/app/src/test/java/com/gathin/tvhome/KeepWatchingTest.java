@@ -36,9 +36,9 @@ public class KeepWatchingTest {
         assertEquals(Arrays.asList(2L, 4L, 3L, 5L), ids(out));
     }
 
-    @Test public void atMostTenAndARemovedShowComesBackWhenWatchedAgain() {
+    @Test public void atMostFiftyAndARemovedShowComesBackWhenWatchedAgain() {
         List<KeepWatching.Entry> rows = new ArrayList<>();
-        for (int i = 0; i < 14; i++) rows.add(row(i, "app.x", "Show " + i, null, null, 10, 100, NOW - i * 1000L));
+        for (int i = 0; i < 60; i++) rows.add(row(i, "app.x", "Show " + i, null, null, 10, 100, NOW - i * 1000L));
         assertEquals(KeepWatching.MAX, KeepWatching.select(rows, NOW, Collections.emptyMap()).size());
 
         Map<String, Long> hidden = new HashMap<>();

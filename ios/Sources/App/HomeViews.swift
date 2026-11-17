@@ -632,10 +632,16 @@ struct KeepWatchingStrip: View {
     @State private var picked: WatchingShow?
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            QuietSectionTitle(title: String(format: String(localized: "Keep watching on %@"), tvName))
+            HStack(alignment: .firstTextBaseline) {
+                QuietSectionTitle(title: String(format: String(localized: "Keep watching on %@"), tvName))
+                Spacer()
+                NavigationLink { KeepWatchingAllView(shows: shows) } label: {
+                    Text("See all").font(.system(size: 13, weight: .medium)).foregroundStyle(QuietTheme.cyan).frame(minHeight: 44)
+                }.accessibilityIdentifier("keepWatchingSeeAll")
+            }
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(alignment: .top, spacing: 10) {
-                    ForEach(shows) { show in
+                    ForEach(shows.prefix(10)) { show in
                         Button { picked = show } label: { KeepWatchingCard(show: show) }
                             .buttonStyle(.plain)
                             .accessibilityElement(children: .combine)
@@ -645,6 +651,53 @@ struct KeepWatchingStrip: View {
                 }.padding(.trailing, 20)
             }.padding(.trailing, -20)
         }
+        .sheet(item: $picked) { show in KeepWatchingSheet(show: show) }
+    }
+}
+
+/// See all: every show Home sent (up to 50), newest first, one row each. Tap one for Resume on TV / Remove.
+struct KeepWatchingAllView: View {
+    let shows: [WatchingShow]
+    @EnvironmentObject private var editor: HomeEditor
+    @State private var picked: WatchingShow?
+    /// The list follows removals made from the sheet.
+    private var current: [WatchingShow] { editor.keepWatching?.items ?? shows }
+    var body: some View {
+        QuietPage {
+            QuietCard {
+                ForEach(current) { show in
+                    Button { picked = show } label: {
+                        HStack(spacing: 12) {
+                            ZStack(alignment: .bottomLeading) {
+                                KeepWatchingPoster(show: show)
+                                if let progress = show.progress {
+                                    GeometryReader { proxy in
+                                        ZStack(alignment: .leading) {
+                                            Rectangle().fill(.white.opacity(0.18))
+                                            Rectangle().fill(QuietTheme.cyan).frame(width: proxy.size.width * progress)
+                                        }
+                                    }.frame(height: 3)
+                                }
+                            }
+                            .frame(width: 96, height: 54).clipShape(RoundedRectangle(cornerRadius: 9))
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(verbatim: show.title).font(.system(size: 14, weight: .semibold)).lineLimit(1)
+                                Text(verbatim: [KeepWatchingText.app(show.package), KeepWatchingText.detail(show)].filter { !$0.isEmpty }.joined(separator: " · "))
+                                    .font(.system(size: 12)).foregroundStyle(QuietTheme.muted).lineLimit(2).fixedSize(horizontal: false, vertical: true)
+                            }
+                            Spacer(minLength: 6)
+                            Image(systemName: "play.fill").font(.system(size: 12)).foregroundStyle(QuietTheme.cyan)
+                                .frame(width: 34, height: 34).background(QuietTheme.cyan.opacity(0.16), in: Circle()).accessibilityHidden(true)
+                        }
+                        .padding(.horizontal, 13).padding(.vertical, 10).contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain).accessibilityElement(children: .combine).accessibilityIdentifier("keepWatchingRow")
+                    if show.id != current.last?.id { Divider().overlay(QuietTheme.edge) }
+                }
+            }
+            QuietCaption(text: "From your TV's Continue watching list: apps that keep it show here. Tap one to pick up where you left off.")
+        }
+        .quietNavigation("Keep watching")
         .sheet(item: $picked) { show in KeepWatchingSheet(show: show) }
     }
 }

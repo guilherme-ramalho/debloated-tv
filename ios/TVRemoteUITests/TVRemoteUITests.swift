@@ -199,6 +199,25 @@ final class TVRemoteUITests: XCTestCase {
         save(app, "keep-watching-sheet")
     }
 
+    /// KWT-06: See all opens the full list; a row opens Resume on TV.
+    func testKeepWatchingSeeAllListsEveryShow() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestTVState", "installed", "-uiTestOffer", "NO", "-uiTestKeepWatching", "YES",
+                               "-e2eNoDiscovery", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        app.tabBars.buttons["TV"].tap()
+        let seeAll = app.buttons["keepWatchingSeeAll"]
+        XCTAssertTrue(seeAll.waitForExistence(timeout: 5))
+        seeAll.tap()
+        let rows = app.buttons.matching(identifier: "keepWatchingRow")
+        XCTAssertTrue(rows.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertEqual(rows.count, 3)
+        XCTAssertTrue(rows.element(boundBy: 1).label.contains("Prime Video"), rows.element(boundBy: 1).label)
+        save(app, "keep-watching-all")
+        rows.firstMatch.tap()
+        XCTAssertTrue(app.buttons["resumeOnTV"].waitForExistence(timeout: 5))
+    }
+
     /// CON-17: each found TV says what it is and what Purio can do on it; a Chromecast can't be picked.
     func testFoundTVsSayWhatTheyAreAndOnlyAndroidTVsPair() {
         let app = XCUIApplication()

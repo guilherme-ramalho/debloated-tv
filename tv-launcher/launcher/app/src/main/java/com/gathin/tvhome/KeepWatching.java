@@ -33,7 +33,8 @@ import java.util.Map;
  */
 final class KeepWatching {
     static final String PERMISSION = "android.permission.READ_TV_LISTINGS";
-    static final int MAX = 10;
+    /** The phone's strip shows the newest 10; See all shows the rest. */
+    static final int MAX = 50;
     private static final String PREFS = "keep_watching";
     private static final int POSTER_WIDTH = 320;
 
