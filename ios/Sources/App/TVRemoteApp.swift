@@ -62,7 +62,7 @@ struct RemoteView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                if !model.hasSavedPairing && !model.preparing && !UITestHooks.showsRemote {
+                if (!model.hasSavedPairing || UITestHooks.showsConnect) && !model.preparing && !UITestHooks.showsRemote {
                     ConnectTVView(model: model)
                 } else {
                 VStack(spacing: 12) {
@@ -256,6 +256,8 @@ enum UITestHooks {
     }
     /// `-uiTestRemote YES`: the remote's controls without a paired TV (header layout and Show on TV tests).
     static var showsRemote: Bool { UserDefaults.standard.bool(forKey: "uiTestRemote") }
+    /// `-showConnect YES` (Dev builds): the Connect screen even with a paired TV, to check discovery on a real network.
+    static var showsConnect: Bool { UserDefaults.standard.bool(forKey: "showConnect") }
     /// `-uiTestFoundTVs YES`: the Connect list shows one TV of each kind, without searching the network.
     static var foundTVs: [DiscoveredTV] {
         guard UserDefaults.standard.bool(forKey: "uiTestFoundTVs") else { return [] }
@@ -266,5 +268,5 @@ enum UITestHooks {
     }
 }
 #else
-enum UITestHooks { static let showsRemote = false; static let foundTVs: [DiscoveredTV] = [] }
+enum UITestHooks { static let showsRemote = false; static let showsConnect = false; static let foundTVs: [DiscoveredTV] = [] }
 #endif
