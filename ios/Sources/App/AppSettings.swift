@@ -73,6 +73,8 @@ struct LayoutChange: Equatable { var count = 0; var apply = LayoutApply.auto }
     func app(_ id: String) -> RemoteApp? { value.apps.first { $0.id == id } }
     /// The remote's app buttons: the TV Home dock's order first (once a TV Home has connected), then the shortcuts list.
     var remoteApps: [RemoteApp] { value.remoteShortcutIDs(dock: value.editorHost == nil ? nil : layout.dock).compactMap(app) }
+    /// The shortcuts list only (Roku, LG and Samsung TVs have no Purio Home dock to follow).
+    var shortcutApps: [RemoteApp] { value.remoteShortcutIDs(dock: nil).compactMap(app) }
     func merge(_ snapshot: LauncherSnapshot, host: String) {
         update { settings in
             settings.tvInputs = snapshot.inputs; settings.editorHost = host

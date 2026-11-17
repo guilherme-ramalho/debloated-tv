@@ -7,6 +7,74 @@
     "%@" : {
 
     },
+    "%@ is asking whether to allow this iPhone. Choose Allow (or Accept) with the TV's own remote." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ fragt, ob dieses iPhone erlaubt werden soll. Wähle „Zulassen“ (oder „Akzeptieren“) mit der Fernbedienung des Fernsehers."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ pregunta si permite este iPhone. Elige Permitir (o Aceptar) con el mando de la TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ demande s'il faut autoriser cet iPhone. Choisissez Autoriser (ou Accepter) avec la télécommande de la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ chiede se consentire questo iPhone. Scegli Consenti (o Accetta) con il telecomando della TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ está perguntando se permite este iPhone. Escolha Permitir (ou Aceitar) com o controle da TV."
+          }
+        }
+      }
+    },
+    "%@ isn't on this TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ist nicht auf diesem Fernseher."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ no está en esta TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ n'est pas sur cette TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ non è su questa TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ não está nesta TV."
+          }
+        }
+      }
+    },
     "%@ · %@ · %lld apps to turn back on" : {
       "localizations" : {
         "de" : {
@@ -509,6 +577,40 @@
         }
       }
     },
+    "A supported TV" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein unterstützter Fernseher"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una TV compatible"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une TV compatible"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una TV supportata"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma TV compatível"
+          }
+        }
+      }
+    },
     "A timer is shown as active only after the TV confirms it. Connect the TV editor to schedule one." : {
       "localizations" : {
         "de" : {
@@ -918,6 +1020,40 @@
         }
       }
     },
+    "Allow Purio on your TV" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio am Fernseher erlauben"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permite Purio en tu TV"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorisez Purio sur votre TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consenti Purio sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permita o Purio na sua TV"
+          }
+        }
+      }
+    },
     "Allow this iPhone on the TV" : {
       "localizations" : {
         "de" : {
@@ -1290,6 +1426,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Controle remoto para Android TV"
+          }
+        }
+      }
+    },
+    "Android TV, Google TV, Roku, LG (webOS) or Samsung (Tizen). LG needs LG Connect Apps on; Roku needs Control by mobile apps enabled." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Android TV, Google TV, Roku, LG (webOS) oder Samsung (Tizen). LG braucht LG Connect Apps; Roku braucht „Steuerung durch mobile Apps“ aktiviert."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Android TV, Google TV, Roku, LG (webOS) o Samsung (Tizen). LG necesita LG Connect Apps activado; Roku, el control mediante aplicaciones móviles habilitado."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Android TV, Google TV, Roku, LG (webOS) ou Samsung (Tizen). LG a besoin de LG Connect Apps ; Roku du contrôle par applications mobiles activé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Android TV, Google TV, Roku, LG (webOS) o Samsung (Tizen). LG richiede LG Connect Apps attivo; Roku il controllo tramite app mobili attivato."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Android TV, Google TV, Roku, LG (webOS) ou Samsung (Tizen). A LG precisa do LG Connect Apps ativado; o Roku, do controle por apps móveis ativado."
           }
         }
       }
@@ -4946,6 +5116,40 @@
         }
       }
     },
+    "Favourite inputs need Purio's TV Home (Android TV)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieblingseingänge brauchen Purios TV-Startbildschirm (Android TV)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las entradas favoritas necesitan el inicio de TV de Purio (Android TV)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les entrées favorites nécessitent l'accueil TV de Purio (Android TV)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gli ingressi preferiti richiedono la Home TV di Purio (Android TV)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As entradas favoritas precisam da tela inicial do Purio na TV (Android TV)"
+          }
+        }
+      }
+    },
     "Fire TV doesn't let another Home screen take over, so this setup only disables apps." : {
       "localizations" : {
         "de" : {
@@ -5456,6 +5660,40 @@
         }
       }
     },
+    "Nobody pressed Allow on the TV in time. Try again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Am Fernseher wurde nicht rechtzeitig „Zulassen“ gewählt. Versuche es erneut."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadie pulsó Permitir en la TV a tiempo. Inténtalo de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personne n'a choisi Autoriser sur la TV à temps. Réessayez."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuno ha scelto Consenti sulla TV in tempo. Riprova."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguém escolheu Permitir na TV a tempo. Tente de novo."
+          }
+        }
+      }
+    },
     "None of cleanyourtv's lists fits this TV, so nothing was changed. Guessing which apps are safe to disable can leave inputs black or the TV unable to start." : {
       "localizations" : {
         "de" : {
@@ -5622,6 +5860,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Na TV, abra Configurações › Sistema › Opções do desenvolvedor."
+          }
+        }
+      }
+    },
+    "Open Purio and allow it on the TV first" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffne zuerst Purio und erlaube es am Fernseher"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre Purio y permítelo en la TV primero"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrez d'abord Purio et autorisez-le sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri prima Purio e consentilo sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abra o Purio e permita na TV primeiro"
           }
         }
       }
@@ -12442,6 +12714,40 @@
         }
       }
     },
+    "Remote and apps" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fernbedienung und Apps"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mando y apps"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Télécommande et apps"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telecomando e app"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controle e apps"
+          }
+        }
+      }
+    },
     "Remote and setup" : {
       "localizations" : {
         "de" : {
@@ -15542,6 +15848,40 @@
         }
       }
     },
+    "That app isn't on this TV" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App ist nicht auf diesem Fernseher"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esa app no está en esta TV"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette app n'est pas sur cette TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa app non è su questa TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esse app não está nesta TV"
+          }
+        }
+      }
+    },
     "That code does not match this TV. Check the code and try again." : {
       "localizations" : {
         "de" : {
@@ -16018,6 +16358,40 @@
         }
       }
     },
+    "The Roku refuses this phone. On the Roku: Settings › System › Advanced system settings › Control by mobile apps › Network access: Enabled (or Permissive)." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Roku lehnt dieses Telefon ab. Am Roku: Einstellungen › System › Erweiterte Systemeinstellungen › Steuerung durch mobile Apps › Netzwerkzugriff: Aktiviert (oder Freizügig)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El Roku rechaza este teléfono. En el Roku: Configuración › Sistema › Configuración avanzada del sistema › Control mediante aplicaciones móviles › Acceso a la red: Habilitado (o Permisivo)."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le Roku refuse ce téléphone. Sur le Roku : Paramètres › Système › Paramètres système avancés › Contrôle par applications mobiles › Accès au réseau : Activé (ou Permissif)."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il Roku rifiuta questo telefono. Sul Roku: Impostazioni › Sistema › Impostazioni di sistema avanzate › Controllo tramite app mobili › Accesso alla rete: Attivato (o Permissivo)."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Roku recusa este telefone. No Roku: Configurações › Sistema › Configurações avançadas do sistema › Controle por apps móveis › Acesso à rede: Ativado (ou Permissivo)."
+          }
+        }
+      }
+    },
     "The same password again" : {
       "localizations" : {
         "de" : {
@@ -16325,6 +16699,40 @@
         }
       }
     },
+    "The TV closed the remote connection." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat die Verbindung der Fernbedienung beendet."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV cerró la conexión del mando."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV a fermé la connexion de la télécommande."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV ha chiuso la connessione del telecomando."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV fechou a conexão do controle."
+          }
+        }
+      }
+    },
     "The TV debugging key must be RSA-2048" : {
       "localizations" : {
         "de" : {
@@ -16389,6 +16797,108 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A TV não concluiu a conexão do controle."
+          }
+        }
+      }
+    },
+    "The TV didn't accept this phone. Accept it on the TV when it asks, and check that LG Connect Apps is on in the TV's network settings." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat dieses Telefon nicht angenommen. Bestätige es am Fernseher, wenn er fragt, und prüfe, ob LG Connect Apps in den Netzwerkeinstellungen des Fernsehers aktiviert ist."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV no aceptó este teléfono. Acéptalo en la TV cuando lo pida y comprueba que LG Connect Apps esté activado en los ajustes de red de la TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'a pas accepté ce téléphone. Acceptez-le sur la TV quand elle le demande, et vérifiez que LG Connect Apps est activé dans les paramètres réseau de la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non ha accettato questo telefono. Accettalo sulla TV quando lo chiede e controlla che LG Connect Apps sia attivo nelle impostazioni di rete della TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não aceitou este telefone. Aceite na TV quando ela pedir e verifique se o LG Connect Apps está ativado nas configurações de rede da TV."
+          }
+        }
+      }
+    },
+    "The TV didn't allow this phone. Press Allow on the TV when it asks (or allow it in Settings › General › External Device Manager › Device Connection Manager)." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat dieses Telefon nicht zugelassen. Wähle am Fernseher „Zulassen“, wenn er fragt (oder erlaube es unter Einstellungen › Allgemein › Externe Geräteverwaltung › Geräteverbindungsmanager)."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV no permitió este teléfono. Pulsa Permitir en la TV cuando lo pida (o permítelo en Ajustes › General › Administrador de dispositivos externos › Administrador de conexión de dispositivos)."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'a pas autorisé ce téléphone. Choisissez Autoriser sur la TV quand elle le demande (ou autorisez-le dans Paramètres › Général › Gestionnaire de périphériques externes › Gestionnaire de connexion des appareils)."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non ha consentito questo telefono. Scegli Consenti sulla TV quando lo chiede (o consentilo in Impostazioni › Generali › Gestione dispositivi esterni › Gestione connessione dispositivo)."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não permitiu este telefone. Escolha Permitir na TV quando ela pedir (ou permita em Configurações › Geral › Gerenciador de dispositivos externos › Gerenciador de conexão de dispositivos)."
+          }
+        }
+      }
+    },
+    "The TV didn't answer." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat nicht geantwortet."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV no respondió."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV n'a pas répondu."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV non ha risposto."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV não respondeu."
           }
         }
       }
@@ -16933,6 +17443,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A TV recusou este iPhone. Aceite \"Permitir depuração USB?\" na TV e tente de novo."
+          }
+        }
+      }
+    },
+    "The TV refused: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher hat abgelehnt: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV lo rechazó: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV a refusé : %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La TV ha rifiutato: %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV recusou: %@"
           }
         }
       }
@@ -18880,6 +19424,40 @@
         }
       }
     },
+    "Turn the TV on with its own remote; Purio connects when it's on." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schalte den Fernseher mit seiner eigenen Fernbedienung ein; Purio verbindet sich, sobald er an ist."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enciende la TV con su propio mando; Purio se conecta cuando esté encendida."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allumez la TV avec sa propre télécommande ; Purio se connecte dès qu'elle est allumée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accendi la TV con il suo telecomando; Purio si collega quando è accesa."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ligue a TV com o controle dela; o Purio conecta quando ela estiver ligada."
+          }
+        }
+      }
+    },
     "Turning on the remote helpers" : {
       "localizations" : {
         "de" : {
@@ -19828,6 +20406,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Configuração da TV"
+          }
+        }
+      }
+    },
+    "TV setup and Purio's Home screen work on Android TV and Google TV. On this TV, Purio is the remote: keys, apps, typing, widgets and quick actions." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die TV-Einrichtung und Purios Startbildschirm funktionieren auf Android TV und Google TV. Auf diesem Fernseher ist Purio die Fernbedienung: Tasten, Apps, Tippen, Widgets und Aktionen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La configuración de la TV y la pantalla de inicio de Purio funcionan en Android TV y Google TV. En esta TV, Purio es el mando: teclas, apps, escritura, widgets y acciones rápidas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La configuration de la TV et l'écran d'accueil de Purio fonctionnent sur Android TV et Google TV. Sur cette TV, Purio est la télécommande : touches, apps, saisie, widgets et actions rapides."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La configurazione della TV e la schermata Home di Purio funzionano su Android TV e Google TV. Su questa TV Purio è il telecomando: tasti, app, digitazione, widget e azioni rapide."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A configuração da TV e a tela inicial do Purio funcionam em Android TV e Google TV. Nesta TV, o Purio é o controle: teclas, apps, digitação, widgets e ações rápidas."
           }
         }
       }
@@ -21266,6 +21878,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Funciona com Android TV e Google TV. Em seguida, a TV mostra um código de 6 caracteres para confirmar que é você."
+          }
+        }
+      }
+    },
+    "Works with Android TV, Google TV, Roku, LG and Samsung TVs. Next, your TV shows a code or asks you to allow this iPhone." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funktioniert mit Android TV, Google TV, Roku, LG und Samsung. Danach zeigt dein Fernseher einen Code oder fragt, ob er dieses iPhone erlauben soll."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funciona con Android TV, Google TV, Roku, LG y Samsung. Después, tu TV muestra un código o te pide permitir este iPhone."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fonctionne avec Android TV, Google TV, Roku, LG et Samsung. Ensuite, votre TV affiche un code ou demande d'autoriser cet iPhone."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funziona con Android TV, Google TV, Roku, LG e Samsung. Poi la TV mostra un codice o chiede di consentire questo iPhone."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funciona com Android TV, Google TV, Roku, LG e Samsung. Em seguida, a TV mostra um código ou pede para permitir este iPhone."
           }
         }
       }

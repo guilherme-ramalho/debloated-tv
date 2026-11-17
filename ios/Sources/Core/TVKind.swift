@@ -22,12 +22,12 @@ public enum TVKind: String, Sendable, Equatable, CaseIterable {
 public enum TVSupport: Sendable, Equatable {
     /// Android TV / Google TV: remote, TV setup, and Show on TV when Chromecast built-in answers.
     case full(showOnTV: Bool)
-    /// Roku, LG, Samsung: the remote comes next (no server needed); nothing yet.
-    case remoteComing
+    /// Roku, LG, Samsung: the remote and the TV's apps (BrandRemote); no TV setup, Home or Show on TV.
+    case remote
     /// A Chromecast with no remote service: nothing yet.
     case notYet
 
-    public var canPair: Bool { if case .full = self { true } else { false } }
+    public var canPair: Bool { self != .notYet }
 }
 
 public enum TVPorts {
@@ -52,7 +52,7 @@ public enum TVPorts {
     public static func support(_ kind: TVKind, open: Set<UInt16>) -> TVSupport {
         switch kind {
         case .androidTV: .full(showOnTV: open.contains(cast))
-        case .roku, .lg, .samsung: .remoteComing
+        case .roku, .lg, .samsung: .remote
         case .chromecast: .notYet
         }
     }

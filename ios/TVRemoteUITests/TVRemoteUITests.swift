@@ -78,9 +78,21 @@ final class TVRemoteUITests: XCTestCase {
         app.buttons["closeShowOnTV"].tap()
     }
 
-    private func launchRemote(host: String = "192.0.2.10") -> XCUIApplication {
+    /// REM-21: a Roku's remote keeps only the keys a Roku has (no subtitles, no input menu).
+    func testRokuRemoteShowsOnlyTheKeysARokuHas() throws {
+        let app = launchRemote(extra: ["-tvKinds", "{ \"192.0.2.10\" = roku; }"])
+        XCTAssertTrue(app.buttons["remote-house.fill"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["remote-backward.fill"].exists)
+        XCTAssertFalse(app.buttons["remote-captions.bubble"].exists, "Roku has no subtitles key")
+        XCTAssertTrue(app.buttons["remote-gearshape"].exists, "Roku's * (options) key")
+        XCTAssertFalse(app.buttons["Inputs"].exists || app.buttons["Favorite inputs"].exists, "Roku has no input menu")
+        XCTAssertTrue(app.buttons["showOnTV"].exists)
+        save(app, "remote-roku")
+    }
+
+    private func launchRemote(host: String = "192.0.2.10", extra: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-tvHost", host, "-uiTestRemote", "YES", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["-tvHost", host, "-uiTestRemote", "YES", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"] + extra
         app.launch()
         app.tabBars.buttons["Remote"].tap()
         return app
@@ -152,7 +164,7 @@ final class TVRemoteUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["cleanyourtv"].waitForExistence(timeout: 5))
     }
 
-    /// CON-17: each found TV says what it is and what Purio can do on it; only Android TVs can be picked.
+    /// CON-17: each found TV says what it is and what Purio can do on it; a Chromecast can't be picked.
     func testFoundTVsSayWhatTheyAreAndOnlyAndroidTVsPair() {
         let app = XCUIApplication()
         app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestFoundTVs", "YES", "-e2eNoDiscovery", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
@@ -162,8 +174,8 @@ final class TVRemoteUITests: XCTestCase {
         XCTAssertTrue(rows.firstMatch.waitForExistence(timeout: 5))
         XCTAssertEqual(rows.count, 4)
         let lg = rows.matching(NSPredicate(format: "value == '192.0.2.20'")).firstMatch
-        XCTAssertTrue(lg.label.contains("LG webOS · Remote coming soon"), lg.label)
-        XCTAssertFalse(lg.isEnabled)
+        XCTAssertTrue(lg.label.contains("LG webOS · Remote and apps"), lg.label)
+        XCTAssertTrue(lg.isEnabled)
         let cast = rows.matching(NSPredicate(format: "value == '192.0.2.21'")).firstMatch
         XCTAssertTrue(cast.label.contains("Chromecast · Not supported yet"), cast.label)
         XCTAssertFalse(cast.isEnabled)

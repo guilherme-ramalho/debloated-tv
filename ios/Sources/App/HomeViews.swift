@@ -16,7 +16,16 @@ struct TVHomeView: View {
         NavigationStack {
             QuietPage {
                 QuietHeading(title: "TV") { EmptyView() }
-                if info.homeInstalled {
+                if model.kind != .androidTV && model.hasSavedPairing {
+                    // TV setup and Purio's Home are Android TV features; say so plainly for Roku, LG and Samsung.
+                    QuietCard {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Label { Text(verbatim: "\(model.tvName) · \(model.kind.label)") } icon: { Image(systemName: "tv") }.font(.system(size: 15, weight: .semibold))
+                            Text("TV setup and Purio's Home screen work on Android TV and Google TV. On this TV, Purio is the remote: keys, apps, typing, widgets and quick actions.")
+                                .font(.system(size: 13)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true)
+                        }.padding(14)
+                    }.accessibilityIdentifier("brandTVNotice")
+                } else if info.homeInstalled {
                     NavigationLink { TVSetupManageView(host: model.host) } label: { TVSetupStrip(info: info) }.buttonStyle(.plain)
                     if homeUpdateAvailable {
                         NavigationLink { HomeUpdateView(host: model.host) { editor.connect(model: model, force: true) } } label: { HomeUpdateCard() }

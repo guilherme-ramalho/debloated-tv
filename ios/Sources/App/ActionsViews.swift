@@ -19,7 +19,7 @@ import AppIntents
         task = Task {
             defer { if generation == token { running = nil; runner = nil; task = nil } }
             do {
-                try await result.run(action.steps, host: model.host, apps: settings.value.apps,
+                try await result.run(action.steps, host: model.host, kind: model.kind, apps: settings.value.apps,
                                      inputs: settings.value.editorHost == model.host ? settings.value.tvInputs : []) { [weak self] in if self?.generation == token { self?.progress = $0 } }
                 guard generation == token else { return }; message = String(localized: "Commands sent to TV")
             } catch is CancellationError { guard generation == token else { return }; message = String(localized: "Action cancelled") }
@@ -348,7 +348,7 @@ struct ConnectionView: View {
                     check = Task {
                         defer { testing = false }
                         let runner = CommandRunner()
-                        do { try await runner.diagnose(host: model.host); result = String(localized: "The paired TV responded. No command was sent.") }
+                        do { try await runner.diagnose(host: model.host, kind: model.kind); result = String(localized: "The paired TV responded. No command was sent.") }
                         catch { result = error.localizedDescription }
                     }
                 }.disabled(testing)

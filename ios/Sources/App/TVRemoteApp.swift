@@ -25,19 +25,19 @@ import SwiftUI
                 model.setAutoReconnect(settings.value.autoReconnect); if phase == .active { model.activate() }
             }
             .onChange(of: settings.value.autoReconnect) { _, value in model.setAutoReconnect(value) }
-            .onChange(of: selection) { _, tab in if tab == 1 { editor.autoConnect(model: model) } }
+            .onChange(of: selection) { _, tab in if tab == 1 && model.kind == .androidTV { editor.autoConnect(model: model) } }
             .onChange(of: model.host) { _, _ in editor.close() }
             .onChange(of: model.foregroundPackage) { _, package in setup.sawForeground(model.host, package) }
             .onChange(of: editor.ready) { _, ready in if ready { setup.sawHome(model.host); editor.connectedApplyPending(settings) } }
             .onChange(of: settings.layoutChange) { _, change in editor.layoutChanged(change, settings: settings) }
-            .onChange(of: model.pairings) { _, _ in setup.offerAfterPairing(model.host, showing: model.foregroundPackage) }
+            .onChange(of: model.pairings) { _, _ in if model.kind == .androidTV { setup.offerAfterPairing(model.host, showing: model.foregroundPackage) } }
             .onChange(of: setup.openSetup) { _, open in if open { selection = 1 } }
             .sheet(isPresented: Binding(get: { setup.offerFor != nil }, set: { if !$0 { setup.offerFor = nil } })) {
                 TVSetupOfferSheet(start: { setup.offerFor = nil; selection = 1; setup.openSetup = true }, later: { setup.offerFor = nil })
             }
             .onChange(of: editor.snapshot?.revision) { _, _ in if let snapshot = editor.snapshot { settings.merge(snapshot, host: model.host) } }
             .onChange(of: phase) { _, value in
-                if value == .active { model.activate(); if selection == 1 { editor.autoConnect(model: model) } }
+                if value == .active { model.activate(); if selection == 1 && model.kind == .androidTV { editor.autoConnect(model: model) } }
                 else if value == .background { model.deactivate(); editor.close(); actions.cancel() }
             }
             .sheet(isPresented: Binding(get: { model.pairing }, set: { if !$0 { model.cancelPairing() } })) { TVPairingView(model: model).environmentObject(settings) }
@@ -115,8 +115,8 @@ struct RemoteView: View {
                     }.background(ink, in: Capsule())
                     VStack(alignment: .leading, spacing: 12) {
                         LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 8) {
-                            ForEach(preferences.remoteApps) { item in
-                                app(item.name, item.launchURL, StreamingBrand.logo(item.id) ?? item.logo ?? "", StreamingBrand.color(item.id))
+                            ForEach(model.kind == .androidTV ? preferences.remoteApps : preferences.shortcutApps) { item in
+                                app(item, StreamingBrand.logo(item.id) ?? item.logo ?? "", StreamingBrand.color(item.id))
                             }
                         }
                     }
@@ -154,8 +154,13 @@ struct RemoteView: View {
                 .accessibilityLabel("Show photos on TV").accessibilityIdentifier("showOnTV")
             roundButton("keyboard", side: side, fill: QuietTheme.panel) { keyboard = true }
                 .accessibilityLabel("Type on TV").accessibilityIdentifier("typeOnTV")
-            roundButton("rectangle.on.rectangle", side: side, fill: Color(red: 22/255, green: 48/255, blue: 79/255)) { inputs = true }
-                .accessibilityLabel("Favorite inputs")
+            // Favourite inputs need Purio's TV Home (Android TV); other TVs get their own input menu, where they have one.
+            if model.kind == .androidTV || model.supports(.inputs) {
+                roundButton("rectangle.on.rectangle", side: side, fill: Color(red: 22/255, green: 48/255, blue: 79/255)) {
+                    if model.kind == .androidTV { inputs = true } else { model.tap(.inputs) }
+                }
+                .accessibilityLabel(model.kind == .androidTV ? "Favorite inputs" : "Inputs")
+            }
         }
     }
     private func roundButton(_ symbol: String, side: CGFloat, fill: Color, tint: Color = .white, _ action: @escaping () -> Void) -> some View {
@@ -164,11 +169,14 @@ struct RemoteView: View {
                 .frame(width: side, height: side).background(fill, in: Circle())
         }.buttonStyle(RemotePressStyle(radius: side / 2))
     }
-    private func command(_ symbol: String, _ label: LocalizedStringKey, _ key: TVKey) -> some View {
-        Button { model.tap(key) } label: {
-            Image(systemName: symbol).font(.system(size: 23, weight: .medium)).frame(width: 65, height: 50)
-                .background(ink, in: RoundedRectangle(cornerRadius: 21))
-        }.accessibilityLabel(Text(label)).accessibilityIdentifier("remote-\(symbol)").disabled(!model.ready).tint(.white).buttonStyle(RemotePressStyle())
+    /// A key this TV doesn't have (a Roku has no subtitles button) is left out; the row stays centred.
+    @ViewBuilder private func command(_ symbol: String, _ label: LocalizedStringKey, _ key: TVKey) -> some View {
+        if model.supports(key) {
+            Button { model.tap(key) } label: {
+                Image(systemName: symbol).font(.system(size: 23, weight: .medium)).frame(width: 65, height: 50)
+                    .background(ink, in: RoundedRectangle(cornerRadius: 21))
+            }.accessibilityLabel(Text(label)).accessibilityIdentifier("remote-\(symbol)").disabled(!model.ready).tint(.white).buttonStyle(RemotePressStyle())
+        }
     }
     private func topCommand(_ symbol: String, _ label: String, _ key: TVKey, _ accent: Color) -> some View {
         let available = key == .power ? !model.preparing && !model.showingPIN && !model.waking : model.ready
@@ -181,8 +189,9 @@ struct RemoteView: View {
             .opacity(available ? 1 : 0.45)
             .accessibilityLabel(key == .power && (!model.ready || model.powerOn == false) ? "Wake TV" : label)
     }
-    private func app(_ name: String, _ link: String, _ logo: String, _ color: Color) -> some View {
-        Button { model.launch(link) } label: {
+    private func app(_ item: RemoteApp, _ logo: String, _ color: Color) -> some View {
+        let name = item.name
+        return Button { model.open(item) } label: {
             Group { if !logo.isEmpty { Image(logo).resizable().renderingMode(.template).scaledToFit() } else { Text(name).font(.headline) } }
                 .frame(maxWidth: 108).frame(height: name == "Disney+" ? 42 : name == "HBO Max" ? 36 : 33).foregroundStyle(.white)
             .frame(maxWidth: .infinity).frame(height: 58)
@@ -263,7 +272,7 @@ enum UITestHooks {
         guard UserDefaults.standard.bool(forKey: "uiTestFoundTVs") else { return [] }
         return [DiscoveredTV(id: "a", name: "Living Room TV", host: "192.0.2.13", kind: .androidTV, support: .full(showOnTV: true)),
                 DiscoveredTV(id: "b", name: "Bedroom TV", host: "192.0.2.14", kind: .androidTV, support: .full(showOnTV: false)),
-                DiscoveredTV(id: "c", name: "[LG] webOS TV OLED55C1", host: "192.0.2.20", kind: .lg, support: .remoteComing),
+                DiscoveredTV(id: "c", name: "[LG] webOS TV OLED55C1", host: "192.0.2.20", kind: .lg, support: .remote),
                 DiscoveredTV(id: "d", name: "Kitchen", host: "192.0.2.21", kind: .chromecast, support: .notYet)]
     }
 }

@@ -20,10 +20,10 @@ final class TVKindTests: XCTestCase {
     func testWhatPurioCanDoOnEachKind() {
         XCTAssertEqual(TVPorts.support(.androidTV, open: [6466, 8009]), .full(showOnTV: true))
         XCTAssertEqual(TVPorts.support(.androidTV, open: [6466]), .full(showOnTV: false))
-        for kind in [TVKind.roku, .lg, .samsung] { XCTAssertEqual(TVPorts.support(kind, open: []), .remoteComing) }
+        for kind in [TVKind.roku, .lg, .samsung] { XCTAssertEqual(TVPorts.support(kind, open: []), .remote) }
         XCTAssertEqual(TVPorts.support(.chromecast, open: [8009]), .notYet)
         XCTAssertTrue(TVSupport.full(showOnTV: false).canPair)
-        XCTAssertFalse(TVSupport.remoteComing.canPair)
+        XCTAssertTrue(TVSupport.remote.canPair)
         XCTAssertFalse(TVSupport.notYet.canPair)
     }
 
@@ -54,7 +54,7 @@ final class TVKindTests: XCTestCase {
 
         let after = TVSightings.merge(all, probes: ["192.168.0.13": [6466, 8009], "192.168.0.20": [3001, 8009], "192.168.0.30": []])
         XCTAssertEqual(after.map(\.name), ["[LG] webOS TV OLED55", "Bedroom TV", "Living Room TV"])
-        XCTAssertEqual(after[0].kind, .lg); XCTAssertEqual(after[0].support, .remoteComing); XCTAssertEqual(after[0].host, "192.168.0.20")
+        XCTAssertEqual(after[0].kind, .lg); XCTAssertEqual(after[0].support, .remote); XCTAssertEqual(after[0].host, "192.168.0.20")
         XCTAssertEqual(after[2].support, .full(showOnTV: true))
         XCTAssertNil(after[1].host)
     }

@@ -19,6 +19,10 @@ import Security
     @Published var foregroundPackage = ""
     private var identity: ClientIdentity?
     private var session: TVSession?
+    /// The remote of a Roku, LG or Samsung TV (BrandRemote); nil for Android TVs, which use `session`.
+    private var brand: BrandRemote?
+    /// The app on screen on a Roku / LG TV, by its name there (Android TVs report a package instead).
+    @Published private(set) var brandApp = ""
     private var active = false
     /// True from "Pair TV" until the code is accepted or pairing is cancelled; drives the pairing sheet.
     @Published private(set) var pairing = false
@@ -33,13 +37,29 @@ import Security
     private var autoReconnect = true
     func setAutoReconnect(_ value: Bool) { autoReconnect = value; if !value { retry?.cancel(); retry = nil } }
     func sendText(_ text: String) async throws {
+        if let brand, ready { try await brand.writeText(text); return }
         guard ready, let session else { throw RemoteFailure.message(String(localized: "Connect the TV before sending text")) }
         try await session.writeText(text)
     }
 
+    /// What kind of TV the saved one is, as chosen on Connect (Android TV unless it said otherwise).
+    var kind: TVKind { Self.kind(of: host) }
+    static func kind(of host: String) -> TVKind {
+        (UserDefaults.standard.dictionary(forKey: "tvKinds") as? [String: String])?[host].flatMap(TVKind.init(rawValue:)) ?? .androidTV
+    }
+    private static func save(kind: TVKind, for host: String) {
+        var kinds = (UserDefaults.standard.dictionary(forKey: "tvKinds") as? [String: String]) ?? [:]
+        kinds[host] = kind == .androidTV ? nil : kind.rawValue
+        UserDefaults.standard.set(kinds, forKey: "tvKinds")
+    }
+    /// Whether the remote on screen has this key on this TV (Roku has no subtitles or input button, for one).
+    func supports(_ key: TVKey) -> Bool { kind.supports(key) }
+    static func makeBrand(_ kind: TVKind, host: String) -> BrandRemote? { BrandRemotes.make(kind, host: host) }
+
     func activate() {
         guard !active else { return }
         active = true; hasSavedPairing = pin() != nil
+        if kind != .androidTV { preparing = false; attempt = 0; connect(); return }
         if identity == nil && preparing {
             DispatchQueue.global(qos: .userInitiated).async {
                 let result = Result { try ClientIdentity.loadOrCreate() }
@@ -65,15 +85,17 @@ import Security
         retry?.cancel(); retry = nil
         token += 1
         session?.disconnect(); session = nil
+        brand?.disconnect(); brand = nil
         ready = false; powerOn = nil
-        if pairing { pairing = false; showingPIN = false }
+        if pairing { pairing = false; showingPIN = false; approving = false }
     }
 
     /// The TV's own name, as found on the network, for the host; the address when there's none.
     var tvName: String { (UserDefaults.standard.dictionary(forKey: "tvNames") as? [String: String])?[host] ?? host }
 
     /// Picks a TV (found on the network or typed) and starts pairing with it.
-    func pair(with host: String, name: String?) {
+    func pair(with host: String, name: String?, kind: TVKind = .androidTV) {
+        Self.save(kind: kind, for: TVAddress.typed(host))
         if let name, !name.isEmpty {
             var names = (UserDefaults.standard.dictionary(forKey: "tvNames") as? [String: String]) ?? [:]
             names[host] = String(name.prefix(80))
@@ -94,7 +116,9 @@ import Security
         }
         deactivate()
         host = value; UserDefaults.standard.set(value, forKey: "tvHost")
-        foregroundPackage = ""; attempt = 0; active = true; hasSavedPairing = pin() != nil; connect(); return true
+        foregroundPackage = ""; brandApp = ""; attempt = 0; active = true; hasSavedPairing = pin() != nil
+        if kind != .androidTV { preparing = false }
+        connect(); return true
     }
 
     private func pin() -> Data? {
@@ -163,7 +187,50 @@ import Security
         guard let pin = pin() else { hasSavedPairing = false; status = String(localized: "Pair your TV to get started"); ready = false; return }
         hasSavedPairing = true
         status = waking ? String(localized: "Waking TV…") : String(localized: "Connecting…")
+        if kind != .androidTV { newBrand()?.connect(credential: pin); return }
         newSession()?.connect(pin: pin)
+    }
+
+    /// True while a Roku/LG/Samsung TV shows its "Allow" prompt (instead of a code).
+    @Published private(set) var approving = false
+
+    private func newBrand() -> BrandRemote? {
+        guard active else { return nil }
+        retry?.cancel(); retry = nil
+        releaseAll(); ready = false; powerOn = nil; brandApp = ""
+        token += 1
+        let generation = token
+        session?.disconnect(); session = nil
+        brand?.disconnect()
+        guard let result = Self.makeBrand(kind, host: host) else { return nil }
+        brand = result
+        result.event = { [weak self] event in
+            guard let self, generation == self.token else { return }
+            switch event {
+            case .approvalNeeded:
+                self.approving = true; self.status = String(localized: "Allow Purio on your TV")
+            case .approved(let credential):
+                do { try self.savePin(credential) } catch { self.error = error.localizedDescription; return }
+                if self.pairing { self.pairings += 1 }
+                self.pairing = false; self.approving = false; self.error = ""; self.attempt = 0
+            case .connected:
+                self.pairing = false; self.approving = false
+                self.ready = true; self.status = String(localized: "Connected"); self.attempt = 0; self.error = ""
+            case .power(let on):
+                self.powerOn = on
+                self.status = on ? String(localized: "Connected") : String(localized: "Standby")
+            case .foreground(let name):
+                self.brandApp = name
+            case .volume(let current, let max, let muted):
+                self.muted = muted
+                self.volume = muted ? String(localized: "Muted") : (max == 100 ? String(localized: "Volume \(current)") : String(localized: "Volume \(current)/\(max)"))
+            case .error(let message):
+                self.ready = false; self.pressed.removeAll(); self.error = message
+                if self.pairing { self.approving = false; self.status = String(localized: "Pairing needs attention") }
+                else { self.status = String(localized: "Reconnecting…"); self.scheduleReconnect() }
+            }
+        }
+        return result
     }
     private func scheduleReconnect() {
         guard active && !pairing && autoReconnect else { return }
@@ -175,6 +242,12 @@ import Security
         DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: task)
     }
     func beginPairing() {
+        if kind != .androidTV, active {
+            cancelWake()
+            pairing = true; showingPIN = false; approving = false; error = ""; status = String(localized: "Connecting…")
+            newBrand()?.connect(credential: nil)
+            return
+        }
         guard active && !preparing else { return }
         cancelWake()
         // Without an identity (the Keychain refused to create or return it) there is nothing to pair with: say so
@@ -189,13 +262,23 @@ import Security
     func submit(_ code: String) { error = ""; session?.submit(code: code) }
     func cancelPairing() {
         guard pairing else { return }
-        pairing = false; showingPIN = false; token += 1
+        pairing = false; showingPIN = false; approving = false; token += 1
         session?.disconnect(); session = nil
+        brand?.disconnect(); brand = nil
         error = ""; connect()
     }
-    func tap(_ key: TVKey) { if ready { session?.key(key) } }
+    func tap(_ key: TVKey) {
+        guard ready else { return }
+        if let brand { brand.key(key, direction: 3) } else { session?.key(key) }
+    }
     func power() {
         guard active && !preparing && !pairing && !waking else { return }
+        if let brand {
+            // Roku turns on over the network; LG and Samsung only turn off (on needs Wake-on-LAN, not allowed on iOS yet).
+            if ready && (powerOn != false || kind == .roku) { brand.key(.power, direction: 3) }
+            else if !ready { error = String(localized: "Turn the TV on with its own remote; Purio connects when it's on."); attempt = 0; connect() }
+            return
+        }
         if ready && powerOn != false { session?.key(.power); return }
         guard pin() != nil else { error = String(localized: "Pair the TV while it is on before using wake."); return }
         waking = true; error = ""; status = String(localized: "Waking TV…")
@@ -232,23 +315,40 @@ import Security
     }
     func press(_ key: TVKey) {
         guard ready && !pressed.contains(key) else { return }
-        pressed.insert(key); session?.key(key, direction: 1)
+        pressed.insert(key)
+        if let brand { brand.key(key, direction: 1) } else { session?.key(key, direction: 1) }
     }
     func release(_ key: TVKey) {
         guard pressed.remove(key) != nil else { return }
-        session?.key(key, direction: 2)
+        if let brand { brand.key(key, direction: 2) } else { session?.key(key, direction: 2) }
     }
     private func releaseAll() { for key in Array(pressed) { release(key) } }
     func launch(_ url: String) { if ready { session?.launch(url) } }
+    /// An app button: its link on Android TVs, its name among the TV's own apps on Roku, LG and Samsung.
+    func open(_ app: RemoteApp) {
+        guard ready else { return }
+        guard let brand else { session?.launch(app.launchURL); return }
+        Task {
+            do { if try await brand.launch(named: app.name) == false { error = String(localized: "\(app.name) isn't on this TV.") } }
+            catch { self.error = error.localizedDescription }
+        }
+    }
+    /// Opens an app by name on any TV (quick actions, Siri): false when the TV doesn't have it.
+    func open(named name: String, link: String) async throws -> Bool {
+        if let brand { return try await brand.launch(named: name) }
+        try await sendLink(link); return true
+    }
     /// True when the remote is connected and the TV has spoken recently. After the phone sleeps, a dead socket can
     /// still look connected for a while; the TV pings every few seconds, so silence means it no longer hears us.
     var remoteLooksAlive: Bool {
+        if brand != nil { return ready }
         guard ready, let session else { return false }
         return Date().timeIntervalSince(session.lastInbound) < 12
     }
     /// Reconnects the remote first if it went quiet (up to 10 s). False if it still isn't answering.
     func freshen() async -> Bool {
-        if remoteLooksAlive { return true }
+        if let brand, ready, await brand.alive() { return true }
+        if brand == nil, remoteLooksAlive { return true }
         attempt = 0; connect()
         for _ in 0..<40 {
             try? await Task.sleep(nanoseconds: 250_000_000)
@@ -264,6 +364,7 @@ import Security
 
     var currentAppName: String? {
         guard ready, powerOn != false else { return nil }
+        if brand != nil { return brandApp.isEmpty ? nil : brandApp }
         return TVSession.appName(for: foregroundPackage)
     }
 }

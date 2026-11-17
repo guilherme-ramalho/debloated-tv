@@ -53,7 +53,7 @@ enum IntentSettings {
         guard !host.isEmpty else { throw RemoteFailure.message(String(localized: "Open Purio TV and pair your TV first")) }
         let settings = try read()
         let runner = CommandRunner()
-        try await runner.run(steps, host: host, apps: settings.apps, inputs: settings.editorHost == host ? settings.tvInputs : [])
+        try await runner.run(steps, host: host, kind: RemoteModel.kind(of: host), apps: settings.apps, inputs: settings.editorHost == host ? settings.tvInputs : [])
     }
 }
 

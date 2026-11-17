@@ -7,8 +7,8 @@ Purio TV collects no personal data. It has no accounts, no ads, no analytics and
 ## What the app does with data
 
 - **Talks only to your TV.** All connections go from your iPhone to the TV on your local network: the TV's remote
-  service, its network debugging when you run TV setup, and the Home screen editor. Nothing is sent to the developer
-  or to any third party.
+  service, its network debugging when you run TV setup, and the Home screen editor; on Roku, LG and Samsung TVs, the
+  TV's own network remote. Nothing is sent to the developer or to any third party.
 - **Keeps its settings on your iPhone.** The TV's address and name, the pairing keys (in the iOS Keychain), your
   remote shortcuts, quick actions, Home screen layouts and the recovery records made by TV setup are stored on the
   device only. Deleting the app deletes them; a recovery record you export goes wherever you save it.

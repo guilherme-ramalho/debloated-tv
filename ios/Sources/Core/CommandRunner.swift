@@ -36,7 +36,7 @@ public enum TVPairingStore {
     private var keysSettled = false
     static let keySettle: TimeInterval = 1.5
     public init() {}
-    public func cancel() { finishWait(RemoteFailure.message(String(localized: "Action cancelled"))); session?.disconnect(); session = nil }
+    public func cancel() { finishWait(RemoteFailure.message(String(localized: "Action cancelled"))); session?.disconnect(); session = nil; brand?.disconnect() }
     private func finishWait(_ error: Error? = nil) {
         timeout?.cancel(); timeout = nil
         guard let waiter else { return }; self.waiter = nil
@@ -57,9 +57,12 @@ public enum TVPairingStore {
             }
         }, onCancel: { Task { @MainActor [weak self] in self?.cancel() } })
     }
-    public func run(_ steps: [ActionStep], host: String, apps: [RemoteApp], inputs: [TVInput] = [], progress: ((Int) -> Void)? = nil) async throws {
+    public func run(_ steps: [ActionStep], host: String, kind: TVKind = .androidTV, apps: [RemoteApp], inputs: [TVInput] = [], progress: ((Int) -> Void)? = nil) async throws {
         guard (1...12).contains(steps.count), let pin = TVPairingStore.pin(host: host) else { throw RemoteFailure.message(String(localized: "Open TV Remote and pair the TV first")) }
         try Task.checkCancellation()
+        if let brand = BrandRemotes.make(kind, host: host) {
+            try await runBrand(steps, brand: brand, credential: pin, apps: apps, progress: progress); return
+        }
         let identity = try ClientIdentity.loadOrCreate()
         let session = TVSession(host: host, identity: identity); self.session = session
         defer { timeout?.cancel(); self.session?.disconnect(); self.session = nil }
@@ -109,6 +112,58 @@ public enum TVPairingStore {
         if sentKey { try await Task.sleep(nanoseconds: 300_000_000) }
     }
 
+    // MARK: Roku, LG, Samsung
+
+    private var brand: BrandRemote?
+
+    /// The same steps on a Roku, LG or Samsung TV: keys and apps by name. Inputs need Purio's Home (Android TV).
+    private func runBrand(_ steps: [ActionStep], brand: BrandRemote, credential: Data, apps: [RemoteApp], progress: ((Int) -> Void)?) async throws {
+        self.brand = brand
+        defer { timeout?.cancel(); brand.disconnect(); self.brand = nil }
+        power = nil; muted = nil
+        var connected = false
+        brand.event = { [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .connected: connected = true; self.finishWait()
+            case .power(let on): self.power = on; if self.waitForOn && on { self.finishWait() }
+            case .volume(_, _, let muted): self.muted = muted
+            case .approvalNeeded: self.finishWait(RemoteFailure.message(String(localized: "Open Purio and allow it on the TV first")))
+            case .error(let error): self.finishWait(RemoteFailure.message(error))
+            default: break
+            }
+        }
+        try await wait(seconds: 15) { brand.connect(credential: credential) }
+        guard connected else { return }
+        if power == nil { try? await Task.sleep(nanoseconds: 400_000_000) }   // the power state comes just after
+        for (index, step) in steps.enumerated() {
+            try Task.checkCancellation()
+            switch step.kind {
+            case .wake: if power == false { try await brand.writeKey(.power) }
+            case .sleep: if power != false { try await brand.writeKey(.power) }
+            case .openApp:
+                guard let app = apps.first(where: { $0.id == step.argument }), try await brand.launch(named: app.name) else {
+                    throw RemoteFailure.message(String(localized: "That app isn't on this TV"))
+                }
+            case .input: throw RemoteFailure.message(String(localized: "Favourite inputs need Purio's TV Home (Android TV)"))
+            case .home: try await brand.writeKey(.home)
+            case .pause: try await brand.writeKey(.pause)
+            case .playPause: try await brand.writeKey(.playPause)
+            case .volumeUp: try await brand.writeKey(.volumeUp)
+            case .volumeDown: try await brand.writeKey(.volumeDown)
+            case .key:
+                guard let key = step.key, brand.supports(key) else { throw RemoteFailure.message(String(localized: "Unsupported remote key")) }
+                try await brand.writeKey(key)
+            case .mute:
+                // LG reports its mute state; Roku and Samsung don't, so there the key is pressed as is.
+                if muted != true { try await brand.writeKey(.mute) }
+            }
+            progress?(index + 1)
+            if index < steps.count - 1 { try await Task.sleep(nanoseconds: 350_000_000) }
+        }
+        try await Task.sleep(nanoseconds: 300_000_000)
+    }
+
     /// Waits out what's left of `keySettle` since the TV's remote started, once per connection.
     private func settleKeys() async throws {
         guard !keysSettled else { return }
@@ -125,9 +180,23 @@ public enum TVPairingStore {
         try await session.writeKey(.power)
         if power != true { try await wait(seconds: 10, onOnly: true, start: {}) }
     }
-    public func diagnose(host: String) async throws {
+    public func diagnose(host: String, kind: TVKind = .androidTV) async throws {
         // An empty quick action is never allowed; this action requests no state-changing command.
         guard let pin = TVPairingStore.pin(host: host) else { throw RemoteFailure.message(String(localized: "Pair the TV first")) }
+        if let brand = BrandRemotes.make(kind, host: host) {
+            self.brand = brand
+            defer { brand.disconnect(); self.brand = nil }
+            brand.event = { [weak self] event in
+                switch event {
+                case .connected: self?.finishWait()
+                case .approvalNeeded: self?.finishWait(RemoteFailure.message(String(localized: "Open Purio and allow it on the TV first")))
+                case .error(let error): self?.finishWait(RemoteFailure.message(error))
+                default: break
+                }
+            }
+            try await wait(seconds: 15) { brand.connect(credential: pin) }
+            return
+        }
         let result = TVSession(host: host, identity: try ClientIdentity.loadOrCreate()); session = result
         defer { result.disconnect(); session = nil }
         result.event = { [weak self] event in

@@ -19,13 +19,20 @@ struct TVPairingView: View {
                         .onChange(of: code) { _, value in if value.count == 6 { model.submit(value) } }
                     if !model.error.isEmpty { Text(model.error).font(.footnote).foregroundStyle(.orange).multilineTextAlignment(.center) }
                     Button("The TV shows no code: try again") { code = ""; model.beginPairing() }.font(.footnote).foregroundStyle(QuietTheme.cyan).frame(minHeight: 44)
+                } else if model.approving {
+                    VStack(spacing: 8) {
+                        Text("Allow Purio on your TV").font(.system(size: 20, weight: .semibold))
+                        Text("\(model.tvName) is asking whether to allow this iPhone. Choose Allow (or Accept) with the TV's own remote.")
+                            .font(.system(size: 14)).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                    }
+                    ProgressView()
                 } else if !model.error.isEmpty {
                     Text("\(model.tvName) didn't answer.").multilineTextAlignment(.center)
                     Text(model.error).font(.footnote).foregroundStyle(.orange).multilineTextAlignment(.center)
                     Button("Try again") { model.beginPairing() }.buttonStyle(QuietPrimaryStyle())
                 } else {
                     ProgressView()
-                    Text("Asking \(model.tvName) to show a code…").foregroundStyle(.secondary).multilineTextAlignment(.center)
+                    (model.kind == .androidTV ? Text("Asking \(model.tvName) to show a code…") : Text("Connecting to \(model.tvName)…")).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     Text("Keep the TV on and on the same Wi-Fi as this iPhone.").font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 }
             }.padding(.horizontal, 24).padding(.vertical, 20).toolbar { Button("Cancel") { code = ""; model.cancelPairing() } }

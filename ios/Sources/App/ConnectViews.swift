@@ -46,7 +46,7 @@ struct ConnectTVView: View {
                 QuietCard {
                     ForEach(discovery.tvs) { tv in
                         let pairable = tv.host != nil && tv.support?.canPair != false
-                        Button { if let host = tv.host { model.pair(with: host, name: tv.name) } } label: {
+                        Button { if let host = tv.host { model.pair(with: host, name: tv.name, kind: tv.kind) } } label: {
                             QuietRow(title: Text(verbatim: tv.name), detail: Text(verbatim: tv.detail), symbol: "tv", chevron: pairable)
                                 .opacity(tv.support?.canPair == false ? 0.55 : 1)
                         }.buttonStyle(.plain).disabled(!pairable)
@@ -59,7 +59,7 @@ struct ConnectTVView: View {
                 .font(.system(size: 14)).foregroundStyle(QuietTheme.cyan).frame(maxWidth: .infinity, minHeight: 44)
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: "info.circle").foregroundStyle(QuietTheme.muted).accessibilityHidden(true)
-                Text("Works with Android TV and Google TV. Next, your TV shows a 6-character code to confirm it's you.")
+                Text("Works with Android TV, Google TV, Roku, LG and Samsung TVs. Next, your TV shows a code or asks you to allow this iPhone.")
                     .font(.system(size: 12)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true)
             }.padding(12).background(.white.opacity(0.045), in: RoundedRectangle(cornerRadius: 14))
         }
@@ -80,7 +80,7 @@ struct ConnectTVView: View {
                         Button("Open Settings") { if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) } }
                             .font(.system(size: 12)).foregroundStyle(QuietTheme.cyan).padding(.leading, 50).frame(minHeight: 44)
                     }
-                    tip(4, "An Android TV or Google TV", "Other systems (Samsung, LG webOS, Roku) aren't supported.")
+                    tip(4, "A supported TV", "Android TV, Google TV, Roku, LG (webOS) or Samsung (Tizen). LG needs LG Connect Apps on; Roku needs Control by mobile apps enabled.")
                 }.padding(.vertical, 6)
             }
             Button("Search again") { search() }.buttonStyle(QuietPrimaryStyle())
@@ -191,7 +191,7 @@ extension TVSupport {
         switch self {
         case .full(showOnTV: true): String(localized: "Remote, setup and Show on TV")
         case .full(showOnTV: false): String(localized: "Remote and setup")
-        case .remoteComing: String(localized: "Remote coming soon")
+        case .remote: String(localized: "Remote and apps")
         case .notYet: String(localized: "Not supported yet")
         }
     }
@@ -222,9 +222,7 @@ struct AddressEntrySheet: View {
                 if let other {
                     HStack(alignment: .top, spacing: 10) {
                         Image(systemName: "info.circle").foregroundStyle(QuietTheme.muted).accessibilityHidden(true)
-                        Text(verbatim: other == .chromecast
-                             ? String(localized: "That's a Chromecast. Purio can't control it yet.")
-                             : String(format: String(localized: "That's a %@ TV. Its remote is coming to Purio soon."), other.label))
+                        Text(verbatim: String(localized: "That's a Chromecast. Purio can't control it yet."))
                             .font(.system(size: 13)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true)
                     }.padding(12).background(.white.opacity(0.045), in: RoundedRectangle(cornerRadius: 14))
                     .accessibilityElement(children: .combine).accessibilityIdentifier("otherTVKind")
@@ -238,8 +236,8 @@ struct AddressEntrySheet: View {
         }.presentationDetents([.large])
     }
 
-    /// Knocks on the address first: an Android TV (or nothing answering, which pairing then explains) goes on to
-    /// pairing; any other TV is named here instead of a pairing that could never work.
+    /// Knocks on the address first to tell the kind of TV (Android TV when nothing answers, which pairing then
+    /// explains); a Chromecast, which has no remote, is named here instead.
     private func connect() {
         let host = TVAddress.typed(address)
         if ProcessInfo.processInfo.arguments.contains("-e2eNoDiscovery") { dismiss(); model.pair(with: host, name: nil); return }
@@ -247,8 +245,9 @@ struct AddressEntrySheet: View {
         Task {
             let open = await PortKnock.openPorts(host: host)
             checking = false
-            if let kind = TVPorts.kind(open: open), kind != .androidTV { other = kind; return }
-            dismiss(); model.pair(with: host, name: nil)
+            let kind = TVPorts.kind(open: open) ?? .androidTV
+            if kind == .chromecast { other = kind; return }
+            dismiss(); model.pair(with: host, name: nil, kind: kind)
         }
     }
 }
