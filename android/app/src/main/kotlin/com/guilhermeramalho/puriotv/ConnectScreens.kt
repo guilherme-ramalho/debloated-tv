@@ -130,7 +130,7 @@ fun ConnectScreen(model: RemoteModel) {
                         leadingContent = { Icon(Icons.Outlined.Tv, null) },
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                         modifier = Modifier.alpha(if (tv.support?.canPair == false) 0.55f else 1f)
-                            .clickable(enabled = pairable) { tv.host?.let { model.choose(it, tv.name) } },
+                            .clickable(enabled = pairable) { tv.host?.let { model.choose(it, tv.name, tv.kind) } },
                     )
                     if (i < tvs.lastIndex) RowDivider()
                 }
@@ -144,7 +144,7 @@ fun ConnectScreen(model: RemoteModel) {
             }
         }
     }
-    if (typing) AddressSheet(onDismiss = { typing = false }) { address -> typing = false; model.choose(address, address) }
+    if (typing) AddressSheet(onDismiss = { typing = false }) { address, kind -> typing = false; model.choose(address, address, kind) }
 }
 
 /** The row's second line: the kind of TV and what Purio can do on it (DiscoveredTV.detail). */
@@ -154,7 +154,7 @@ private fun tvDetail(tv: DiscoveredTv): String {
     val support = tv.support ?: return if (tv.kind == TvKind.ANDROID_TV) "${tv.kind.label} · $host" else stringResource(R.string.checking)
     val can = when (support) {
         is TvSupport.Full -> stringResource(if (support.showOnTv) R.string.tv_can_full else R.string.tv_can_basic)
-        TvSupport.RemoteComing -> stringResource(R.string.tv_remote_coming)
+        TvSupport.Remote -> stringResource(R.string.tv_remote_apps)
         TvSupport.NotYet -> stringResource(R.string.tv_not_yet)
     }
     return "${tv.kind.label} · $can"
@@ -176,7 +176,7 @@ private fun Tip(n: Int, title: Int, detail: Int) {
 /** Type the TV's address (AddressEntrySheet): commas become dots for keyboards that have no dot key. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AddressSheet(onDismiss: () -> Unit, onConnect: (String) -> Unit) {
+private fun AddressSheet(onDismiss: () -> Unit, onConnect: (String, TvKind) -> Unit) {
     var address by rememberSaveable { mutableStateOf("") }
     var checking by remember { mutableStateOf(false) }
     /** What answered at that address when it isn't an Android TV. */
@@ -189,7 +189,7 @@ private fun AddressSheet(onDismiss: () -> Unit, onConnect: (String) -> Unit) {
         scope.launch {
             val kind = TvPorts.kind(PortKnock.openPorts(address))
             checking = false
-            if (kind != null && kind != TvKind.ANDROID_TV) other = kind else onConnect(address)
+            if (kind == TvKind.CHROMECAST) other = kind else onConnect(address, kind ?: TvKind.ANDROID_TV)
         }
         Unit
     }
@@ -209,7 +209,7 @@ private fun AddressSheet(onDismiss: () -> Unit, onConnect: (String) -> Unit) {
                 Surface(color = Color.White.copy(alpha = 0.045f), shape = RoundedCornerShape(14.dp)) {
                     Row(Modifier.padding(12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         Icon(Icons.Outlined.Info, null, tint = Quiet.muted, modifier = Modifier.size(18.dp))
-                        Caption(if (kind == TvKind.CHROMECAST) stringResource(R.string.tv_is_chromecast) else stringResource(R.string.tv_is_other, kind.label))
+                        Caption(stringResource(R.string.tv_is_chromecast))
                     }
                 }
             }
@@ -250,8 +250,14 @@ fun PairingSheet(state: RemoteModel.State, model: RemoteModel) {
                     Icon(Icons.Outlined.Tv, null, tint = Quiet.muted, modifier = Modifier.size(44.dp))
                     Text(stringResource(R.string.pair_title), style = MaterialTheme.typography.titleLarge)
                     CircularProgressIndicator()
-                    Text(stringResource(R.string.pair_asking, state.tvName), textAlign = TextAlign.Center, color = Quiet.muted)
+                    Text(stringResource(if (state.kind == TvKind.ANDROID_TV) R.string.pair_asking else R.string.pair_connecting, state.tvName), textAlign = TextAlign.Center, color = Quiet.muted)
                     Caption(stringResource(R.string.pair_keep_on), Modifier)
+                }
+                RemoteModel.Pairing.Allow -> {
+                    Icon(Icons.Outlined.Tv, null, tint = Quiet.muted, modifier = Modifier.size(44.dp))
+                    Text(stringResource(R.string.pair_allow_title), style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
+                    Text(stringResource(R.string.pair_allow_detail, state.tvName), textAlign = TextAlign.Center, color = Quiet.muted)
+                    CircularProgressIndicator()
                 }
                 is RemoteModel.Pairing.Failed -> {
                     Icon(Icons.Outlined.Tv, null, tint = Quiet.muted, modifier = Modifier.size(44.dp))

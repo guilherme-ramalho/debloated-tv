@@ -83,7 +83,9 @@ class CommandActivity : ComponentActivity() {
                 }
                 val identity = withContext(Dispatchers.IO) { KeystoreIdentity.loadOrCreate(app.store.clientName) }
                 val info = ClientInfo(Build.MODEL ?: "Android", packageName, BuildInfo.versionName(application))
-                CommandRunner({ TVSession(tv.host, identity, app.store.clientName, info, lifecycleScope) })
+                val kind = com.guilhermeramalho.puriotv.core.TvKind.entries.firstOrNull { it.name == tv.kind } ?: com.guilhermeramalho.puriotv.core.TvKind.ANDROID_TV
+                CommandRunner({ TVSession(tv.host, identity, app.store.clientName, info, lifecycleScope) },
+                    newBrand = { com.guilhermeramalho.puriotv.core.BrandRemotes.make(kind, tv.host, lifecycleScope) })
                     .run(steps, pin, prefs.apps, if (prefs.editorHost == tv.host) prefs.tvInputs else emptyList())
                 when {
                     name != null -> getString(R.string.sent_named, name)

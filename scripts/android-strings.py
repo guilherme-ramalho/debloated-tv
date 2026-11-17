@@ -15,6 +15,12 @@ PHONE = {"de": [("dieses iPhone", "dieses Handy"), ("diesem iPhone", "diesem Han
          "pt-BR": [("iPhone", "celular")]}
 # Strings with no iPhone equivalent (or reworded for Android).
 ANDROID_ONLY = {
+    "brand_tv_notice": {
+        "de": "Die TV-Einrichtung und Purios Startbildschirm funktionieren auf Android TV und Google TV. Auf diesem Fernseher ist Purio die Fernbedienung: Tasten, Apps und Tippen.",
+        "es": "La configuración de la TV y la pantalla de inicio de Purio funcionan en Android TV y Google TV. En esta TV, Purio es el mando: teclas, apps y escritura.",
+        "fr": "La configuration de la TV et l’écran d’accueil de Purio fonctionnent sur Android TV et Google TV. Sur cette TV, Purio est la télécommande : touches, apps et saisie.",
+        "it": "La configurazione della TV e la schermata Home di Purio funzionano su Android TV e Google TV. Su questa TV Purio è il telecomando: tasti, app e digitazione.",
+        "pt-BR": "A configuração da TV e a tela inicial do Purio funcionam em Android TV e Google TV. Nesta TV, o Purio é o controle: teclas, apps e digitação."},
     "cant_see_photos_detail": {
         "de": "Um Fotos und Videos auf deinem Fernseher zu zeigen, erlaube Purio TV in den Einstellungen den Zugriff auf Fotos und Videos. Sie werden auf diesem Handy gelesen und nur an deinen Fernseher gesendet.",
         "es": "Para mostrar fotos y vídeos en tu tele, permite a Purio TV acceder a fotos y vídeos en Ajustes. Se leen en este teléfono y solo se envían a tu tele.",

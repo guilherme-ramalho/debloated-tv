@@ -85,7 +85,7 @@ private fun App(model: RemoteModel) {
     LaunchedEffect(editorState.ready) { if (editorState.ready) { model.setup.sawHome(state.host); model.editor.connectedApplyPending() } }
     LaunchedEffect(layoutChange) { if (layoutChange.count > 0) model.editor.layoutChanged(layoutChange) }
     LaunchedEffect(state.foreground) { state.foreground?.let { model.setup.sawForeground(state.host, it) } }
-    LaunchedEffect(state.pairings) { if (state.pairings > 0) model.setup.offerAfterPairing(state.host, state.foreground.orEmpty()) }
+    LaunchedEffect(state.pairings) { if (state.pairings > 0 && state.kind == com.guilhermeramalho.puriotv.core.TvKind.ANDROID_TV) model.setup.offerAfterPairing(state.host, state.foreground.orEmpty()) }
 
     CompositionLocalProvider(LocalHapticsOn provides prefs.haptics) {
         Scaffold(

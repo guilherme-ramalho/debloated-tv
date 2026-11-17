@@ -242,7 +242,7 @@ fun EditorConnection(model: RemoteModel) {
     val editor = model.editor
     val ed by editor.state.collectAsState()
     val tv by model.state.collectAsState()
-    LaunchedEffect(tv.ready, tv.power, tv.foreground) { editor.autoConnect() }
+    LaunchedEffect(tv.ready, tv.power, tv.foreground) { if (tv.kind == com.guilhermeramalho.puriotv.core.TvKind.ANDROID_TV) editor.autoConnect() }
     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Icon(if (ed.ready) Icons.Outlined.VerifiedUser else Icons.Outlined.Tv, null)

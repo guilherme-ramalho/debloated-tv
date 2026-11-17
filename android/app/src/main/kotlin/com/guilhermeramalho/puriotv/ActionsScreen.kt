@@ -84,7 +84,9 @@ class ActionController(private val context: Context, private val scope: Coroutin
         val host = remote.state.value.host
         job = scope.launch {
             val identity = try { remote.clientIdentity() } catch (e: Exception) { state.value = State(message = errorText(context, e)); return@launch }
-            val r = CommandRunner({ TVSession(host, identity, remote.clientName, remote.clientInfo(), scope) }).also { runner = it }
+            val kind = remote.state.value.kind
+            val r = CommandRunner({ TVSession(host, identity, remote.clientName, remote.clientInfo(), scope) },
+                newBrand = { com.guilhermeramalho.puriotv.core.BrandRemotes.make(kind, host, scope) }).also { runner = it }
             val message = try {
                 r.run(action.steps, pin, prefs.apps, if (prefs.editorHost == host) prefs.tvInputs else emptyList()) { n -> state.value = state.value.copy(progress = n) }
                 context.getString(R.string.commands_sent)

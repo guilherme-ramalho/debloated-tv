@@ -42,18 +42,19 @@ class Store(context: Context) {
             prefs.edit().putString("clientName", it).apply()
         }
 
-    data class PairedTV(val host: String, val name: String, val pin: ByteArray?)
+    /** [kind] is a TvKind name: Android TV unless Connect said Roku, LG or Samsung. */
+    data class PairedTV(val host: String, val name: String, val pin: ByteArray?, val kind: String = "ANDROID_TV")
 
     var tv: PairedTV?
         get() {
             val host = prefs.getString("host", null) ?: return null
             val pin = prefs.getString("pin", null)?.let { Base64.decode(it, Base64.NO_WRAP) }
-            return PairedTV(host, prefs.getString("tvName", host) ?: host, pin)
+            return PairedTV(host, prefs.getString("tvName", host) ?: host, pin, prefs.getString("tvKind", null) ?: "ANDROID_TV")
         }
         set(value) {
             prefs.edit().apply {
-                if (value == null) { remove("host"); remove("tvName"); remove("pin") } else {
-                    putString("host", value.host); putString("tvName", value.name)
+                if (value == null) { remove("host"); remove("tvName"); remove("pin"); remove("tvKind") } else {
+                    putString("host", value.host); putString("tvName", value.name); putString("tvKind", value.kind)
                     if (value.pin == null) remove("pin") else putString("pin", Base64.encodeToString(value.pin, Base64.NO_WRAP))
                 }
             }.apply()
@@ -239,6 +240,13 @@ fun Problem.message(): Int = when (this) {
     Problem.PHOTO_UNREADABLE -> R.string.problem_photo_unreadable
     Problem.VIDEO_UNREADABLE -> R.string.problem_video_unreadable
     Problem.NOT_ON_TV_WIFI -> R.string.problem_not_on_tv_wifi
+    Problem.ROKU_LIMITED -> R.string.problem_roku_limited
+    Problem.LG_REFUSED -> R.string.problem_lg_refused
+    Problem.SAMSUNG_REFUSED -> R.string.problem_samsung_refused
+    Problem.SAMSUNG_ALLOW_TIMEOUT -> R.string.problem_samsung_timeout
+    Problem.ALLOW_ON_TV_FIRST -> R.string.problem_allow_first
+    Problem.INPUTS_NEED_HOME -> R.string.problem_inputs_need_home
+    Problem.TURN_ON_WITH_REMOTE -> R.string.problem_turn_on_with_remote
 }
 
 /** Where the TV setup status lives (the iPhone keeps it in UserDefaults). */

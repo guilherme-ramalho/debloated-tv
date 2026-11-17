@@ -91,6 +91,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.guilhermeramalho.puriotv.core.PadInteraction
 import com.guilhermeramalho.puriotv.core.TVKey
+import com.guilhermeramalho.puriotv.core.TvKind
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -120,14 +121,15 @@ fun RemoteScreen(state: RemoteModel.State, model: RemoteModel) {
             Command(Icons.Rounded.Home, R.string.key_home, enabled) { model.tap(TVKey.HOME) }
             Command(PlayPauseIcon, R.string.key_play_pause, enabled) { model.tap(TVKey.PLAY_PAUSE) }
         }
+        // A key this TV doesn't have (a Roku has no subtitles button) is left out; the row stays centred.
         Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
             Command(Icons.Rounded.FastRewind, R.string.key_rewind, enabled) { model.tap(TVKey.REWIND) }
             Command(Icons.Rounded.FastForward, R.string.key_fast_forward, enabled) { model.tap(TVKey.FAST_FORWARD) }
-            Command(Icons.Outlined.ClosedCaption, R.string.key_captions, enabled) { model.tap(TVKey.CAPTIONS) }
-            Command(Icons.Outlined.Settings, R.string.key_settings, enabled) { model.tap(TVKey.SETTINGS) }
+            if (state.supports(TVKey.CAPTIONS)) Command(Icons.Outlined.ClosedCaption, R.string.key_captions, enabled) { model.tap(TVKey.CAPTIONS) }
+            if (state.supports(TVKey.SETTINGS)) Command(Icons.Outlined.Settings, R.string.key_settings, enabled) { model.tap(TVKey.SETTINGS) }
         }
         Volume(state, model)
-        Apps(enabled, prefs.remoteApps, model)
+        Apps(enabled, if (state.kind == TvKind.ANDROID_TV) prefs.remoteApps else prefs.shortcutApps, model)
     }
     if (details) ConnectionSheet(state, model) { details = false }
     if (keyboard) KeyboardSheet(model) { keyboard = false }
@@ -147,7 +149,9 @@ private fun Header(state: RemoteModel.State, model: RemoteModel, openDetails: ()
         ConnectionChip(state, model, openDetails, Modifier.weight(1f))
         RoundKey(Icons.Outlined.PhotoLibrary, stringResource(R.string.show_photos_on_tv), key, Quiet.inputs, null, true, Quiet.cyan, openShowOnTv)
         RoundKey(Icons.Outlined.Keyboard, stringResource(R.string.type_on_tv), key, Quiet.panel, null, true, onClick = openKeyboard)
-        RoundKey(Icons.AutoMirrored.Outlined.Input, stringResource(R.string.favorite_inputs), key, Quiet.inputs, null, true, onClick = openInputs)
+        // Favourite inputs need Purio's TV Home (Android TV); other TVs get their own input menu, where they have one.
+        if (state.kind == TvKind.ANDROID_TV) RoundKey(Icons.AutoMirrored.Outlined.Input, stringResource(R.string.favorite_inputs), key, Quiet.inputs, null, true, onClick = openInputs)
+        else if (state.supports(TVKey.INPUTS)) RoundKey(Icons.AutoMirrored.Outlined.Input, stringResource(R.string.key_inputs), key, Quiet.inputs, null, state.ready) { model.tap(TVKey.INPUTS) }
     }
 }
 
@@ -176,7 +180,7 @@ private fun ConnectionChip(state: RemoteModel.State, model: RemoteModel, openDet
                 else -> { Dot(Quiet.green); ChipText(state.tvName, Color.White) }
             }
         }
-        val app = Brand.nameOf(state.foreground)
+        val app = if (state.kind == TvKind.ANDROID_TV) Brand.nameOf(state.foreground) else state.appName
         if (state.ready && !standby && app != null) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                 Icon(Icons.Outlined.Tv, null, tint = Quiet.muted, modifier = Modifier.size(13.dp))
@@ -382,7 +386,7 @@ private fun Apps(enabled: Boolean, apps: List<com.guilhermeramalho.puriotv.core.
                 pair.forEach { app ->
                     val open = stringResource(R.string.open_app, app.name)
                     Surface(
-                        onClick = { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.launch(app.launchURL) }, enabled = enabled,
+                        onClick = { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.open(app) }, enabled = enabled,
                         shape = RoundedCornerShape(17.dp), color = Brand.color(app.id), border = androidx.compose.foundation.BorderStroke(1.dp, Quiet.edge),
                         modifier = Modifier.weight(1f).height(58.dp).alpha(if (enabled) 1f else 0.45f).semantics { contentDescription = open },
                     ) {

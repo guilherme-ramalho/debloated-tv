@@ -11,8 +11,14 @@ import kotlin.coroutines.coroutineContext
  * One short-lived paired connection per quick action, widget tap or tile tap (CommandRunner.swift). No queued
  * commands and no retries. Call it from the same single-thread scope its [TVSession] uses (the app's main thread).
  */
-class CommandRunner(private val newSession: () -> TVSession, private val clock: () -> Long = System::currentTimeMillis) {
+class CommandRunner(
+    private val newSession: () -> TVSession,
+    private val clock: () -> Long = System::currentTimeMillis,
+    /** The remote of a Roku, LG or Samsung TV; null (or returning null) for Android TVs. */
+    private val newBrand: (() -> BrandRemote?)? = null,
+) {
     private var session: TVSession? = null
+    private var brand: BrandRemote? = null
     private var power: Boolean? = null
     private var muted: Boolean? = null
     private var waiter: CompletableDeferred<Unit>? = null
@@ -24,6 +30,7 @@ class CommandRunner(private val newSession: () -> TVSession, private val clock: 
     fun cancel() {
         finish(RemoteFailure(Problem.INTERRUPTED, "Action cancelled"))
         session?.disconnect(); session = null
+        brand?.disconnect(); brand = null
     }
 
     private fun finish(error: Throwable? = null) {
@@ -66,6 +73,7 @@ class CommandRunner(private val newSession: () -> TVSession, private val clock: 
     suspend fun run(steps: List<ActionStep>, pin: ByteArray, apps: List<RemoteApp>, inputs: List<TVInput> = emptyList(), progress: ((Int) -> Unit)? = null) {
         if (steps.size !in 1..12) throw RemoteFailure(Problem.INVALID_ACTION)
         coroutineContext.ensureActive()
+        newBrand?.invoke()?.let { runBrand(steps, it, pin, apps, progress); return }
         val s = open()
         try {
             wait(15_000) { s.connect(pin) }
@@ -130,8 +138,70 @@ class CommandRunner(private val newSession: () -> TVSession, private val clock: 
         if (power != true) wait(10_000, onOnly = true) {}
     }
 
+    // ---- Roku, LG, Samsung
+
+    private fun openBrand(b: BrandRemote, connected: () -> Unit) {
+        brand = b
+        power = null; muted = null
+        b.onEvent = { event ->
+            when (event) {
+                BrandEvent.Connected -> { connected(); finish() }
+                is BrandEvent.Power -> { power = event.on; if (waitForOn && event.on) finish() }
+                is BrandEvent.Volume -> muted = event.muted
+                BrandEvent.ApprovalNeeded -> finish(RemoteFailure(Problem.ALLOW_ON_TV_FIRST))
+                is BrandEvent.Error -> finish(RemoteFailure(event.problem, event.detail))
+                else -> Unit
+            }
+        }
+    }
+
+    /** The same steps on a Roku, LG or Samsung TV: keys and apps by name. Inputs need Purio's Home (Android TV). */
+    private suspend fun runBrand(steps: List<ActionStep>, b: BrandRemote, credential: ByteArray, apps: List<RemoteApp>, progress: ((Int) -> Unit)?) {
+        var connected = false
+        openBrand(b) { connected = true }
+        try {
+            wait(15_000) { b.connect(credential) }
+            if (!connected) return
+            if (power == null) delay(400)   // the power state comes just after
+            steps.forEachIndexed { index, step ->
+                coroutineContext.ensureActive()
+                when (step.kind) {
+                    ActionStep.Kind.WAKE -> if (power == false) b.writeKey(TVKey.POWER)
+                    ActionStep.Kind.SLEEP -> if (power != false) b.writeKey(TVKey.POWER)
+                    ActionStep.Kind.OPEN_APP -> {
+                        val app = apps.firstOrNull { it.id == step.argument }
+                        if (app == null || !b.launch(app.name)) throw RemoteFailure(Problem.ACTION_APP_UNAVAILABLE)
+                    }
+                    ActionStep.Kind.INPUT -> throw RemoteFailure(Problem.INPUTS_NEED_HOME)
+                    ActionStep.Kind.HOME -> b.writeKey(TVKey.HOME)
+                    ActionStep.Kind.PAUSE -> b.writeKey(TVKey.PAUSE)
+                    ActionStep.Kind.PLAY_PAUSE -> b.writeKey(TVKey.PLAY_PAUSE)
+                    ActionStep.Kind.VOLUME_UP -> b.writeKey(TVKey.VOLUME_UP)
+                    ActionStep.Kind.VOLUME_DOWN -> b.writeKey(TVKey.VOLUME_DOWN)
+                    ActionStep.Kind.KEY -> {
+                        val k = step.key?.takeIf { b.supports(it) } ?: throw RemoteFailure(Problem.INVALID_ACTION)
+                        b.writeKey(k)
+                    }
+                    // LG reports its mute state; Roku and Samsung don't, so there the key is pressed as is.
+                    ActionStep.Kind.MUTE -> if (muted != true) b.writeKey(TVKey.MUTE)
+                }
+                progress?.invoke(index + 1)
+                if (index < steps.size - 1) delay(350)
+            }
+            delay(300)
+        } finally {
+            b.disconnect()
+            if (brand === b) brand = null
+        }
+    }
+
     /** Connects with the saved pairing and waits for the TV's first report. Sends no command. */
     suspend fun diagnose(pin: ByteArray) {
+        newBrand?.invoke()?.let { b ->
+            openBrand(b) {}
+            try { wait(15_000) { b.connect(pin) } } finally { b.disconnect(); if (brand === b) brand = null }
+            return
+        }
         val s = open()
         try { wait(15_000) { s.connect(pin) } } finally { s.disconnect(); if (session === s) session = null }
     }

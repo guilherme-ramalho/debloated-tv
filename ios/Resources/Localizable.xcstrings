@@ -1191,41 +1191,6 @@
         }
       }
     },
-    "An Android TV or Google TV" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ein Android-TV- oder Google-TV-Gerät"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Una Android TV o Google TV"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Une Android TV ou Google TV"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Una Android TV o Google TV"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uma Android TV ou Google TV"
-          }
-        }
-      }
-    },
     "An app or input" : {
       "localizations" : {
         "de" : {
@@ -11283,41 +11248,6 @@
         }
       }
     },
-    "Other systems (Samsung, LG webOS, Roku) aren't supported." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Andere Systeme (Samsung, LG webOS, Roku) werden nicht unterstützt."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Otros sistemas (Samsung, LG webOS, Roku) no son compatibles."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Les autres systèmes (Samsung, LG webOS, Roku) ne sont pas pris en charge."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Altri sistemi (Samsung, LG webOS, Roku) non sono supportati."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Outros sistemas (Samsung, LG webOS, Roku) não são compatíveis."
-          }
-        }
-      }
-    },
     "Pair" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -12778,40 +12708,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Controle e configuração"
-          }
-        }
-      }
-    },
-    "Remote coming soon" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fernbedienung kommt bald"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mando muy pronto"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Télécommande bientôt disponible"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Telecomando in arrivo"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Controle em breve"
           }
         }
       }
@@ -15912,40 +15808,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esse código não corresponde a esta TV. Confira o código e tente de novo."
-          }
-        }
-      }
-    },
-    "That's a %@ TV. Its remote is coming to Purio soon." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das ist ein %@-Fernseher. Seine Fernbedienung kommt bald zu Purio."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Es una TV %@. Su mando llegará pronto a Purio."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "C'est une TV %@. Sa télécommande arrive bientôt sur Purio."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "È una TV %@. Il suo telecomando arriverà presto su Purio."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "É uma TV %@. O controle dela chega em breve ao Purio."
           }
         }
       }
@@ -21843,41 +21705,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Senha do Wi-Fi %@, de novo"
-          }
-        }
-      }
-    },
-    "Works with Android TV and Google TV. Next, your TV shows a 6-character code to confirm it's you." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Funktioniert mit Android TV und Google TV. Danach zeigt dein Fernseher einen 6-stelligen Code, um zu bestätigen, dass du es bist."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Funciona con Android TV y Google TV. Después, tu TV muestra un código de 6 caracteres para confirmar que eres tú."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fonctionne avec Android TV et Google TV. Ensuite, votre TV affiche un code de 6 caractères pour confirmer que c'est vous."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Funziona con Android TV e Google TV. Poi la TV mostra un codice di 6 caratteri per confermare che sei tu."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Funciona com Android TV e Google TV. Em seguida, a TV mostra um código de 6 caracteres para confirmar que é você."
           }
         }
       }

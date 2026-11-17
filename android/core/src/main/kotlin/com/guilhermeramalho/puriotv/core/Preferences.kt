@@ -136,6 +136,8 @@ data class RemotePreferences(
         return ids.take(remoteCount)
     }
     val remoteApps: List<RemoteApp> get() = remoteShortcutIDs(if (editorHost == null) null else profile.layout.dock).mapNotNull(::app)
+    /** The shortcuts list only (Roku, LG and Samsung TVs have no Purio Home dock to follow). */
+    val shortcutApps: List<RemoteApp> get() = remoteShortcutIDs(null).mapNotNull(::app)
 
     companion object {
         /** First launch: "Movie time" (wake, then Netflix) with its name in the phone's language. */

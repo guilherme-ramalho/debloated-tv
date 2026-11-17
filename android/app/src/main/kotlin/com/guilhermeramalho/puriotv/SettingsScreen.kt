@@ -178,7 +178,8 @@ fun ConnectionScreen(model: RemoteModel, onBack: () -> Unit) {
                 result = try {
                     val pin = model.pin ?: throw UserMessage(context.getString(R.string.pair_first))
                     val identity = model.clientIdentity()
-                    CommandRunner({ TVSession(state.host, identity, model.clientName, model.clientInfo(), scope) }).diagnose(pin)
+                    CommandRunner({ TVSession(state.host, identity, model.clientName, model.clientInfo(), scope) },
+                        newBrand = { com.guilhermeramalho.puriotv.core.BrandRemotes.make(state.kind, state.host, scope) }).diagnose(pin)
                     context.getString(R.string.test_ok)
                 } catch (e: Exception) { errorText(context, e) }
                 testing = false
@@ -190,7 +191,7 @@ fun ConnectionScreen(model: RemoteModel, onBack: () -> Unit) {
         if (state.paired) TextButton(onClick = { confirmForget = true }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.forget_tv), color = Quiet.amber) }
     }
     if (confirmRepair) Confirm(stringResource(R.string.pair_again_title), stringResource(R.string.pair_again_message), stringResource(R.string.show_code), onDismiss = { confirmRepair = false }) {
-        model.choose(state.host, state.tvName)
+        model.choose(state.host, state.tvName, state.kind)
     }
     if (confirmForget) Confirm(stringResource(R.string.forget_title, state.tvName), stringResource(R.string.forget_message), stringResource(R.string.forget_confirm), destructive = true,
         onDismiss = { confirmForget = false }) { model.forget(); onBack() }

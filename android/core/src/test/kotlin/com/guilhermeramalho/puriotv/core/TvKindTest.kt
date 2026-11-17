@@ -25,10 +25,10 @@ class TvKindTest {
     @Test fun whatPurioCanDoOnEachKind() {
         assertEquals(TvSupport.Full(true), TvPorts.support(TvKind.ANDROID_TV, setOf(6466, 8009)))
         assertEquals(TvSupport.Full(false), TvPorts.support(TvKind.ANDROID_TV, setOf(6466)))
-        for (kind in listOf(TvKind.ROKU, TvKind.LG, TvKind.SAMSUNG)) assertEquals(TvSupport.RemoteComing, TvPorts.support(kind, emptySet()))
+        for (kind in listOf(TvKind.ROKU, TvKind.LG, TvKind.SAMSUNG)) assertEquals(TvSupport.Remote, TvPorts.support(kind, emptySet()))
         assertEquals(TvSupport.NotYet, TvPorts.support(TvKind.CHROMECAST, setOf(8009)))
         assertTrue(TvSupport.Full(false).canPair)
-        assertFalse(TvSupport.RemoteComing.canPair)
+        assertTrue(TvSupport.Remote.canPair)
         assertFalse(TvSupport.NotYet.canPair)
     }
 
@@ -60,7 +60,7 @@ class TvKindTest {
 
         val after = TvSightings.merge(all, mapOf("192.168.0.13" to setOf(6466, 8009), "192.168.0.20" to setOf(3001, 8009), "192.168.0.30" to emptySet()))
         assertEquals(listOf("[LG] webOS TV OLED55", "Bedroom TV", "Living Room TV"), after.map { it.name })
-        assertEquals(TvKind.LG, after[0].kind); assertEquals(TvSupport.RemoteComing, after[0].support); assertEquals("192.168.0.20", after[0].host)
+        assertEquals(TvKind.LG, after[0].kind); assertEquals(TvSupport.Remote, after[0].support); assertEquals("192.168.0.20", after[0].host)
         assertEquals(TvSupport.Full(true), after[2].support)
         assertNull(after[1].host)
     }

@@ -75,6 +75,13 @@ fun TVTab(model: RemoteModel, open: (TVRoute) -> Unit) {
     Page {
         PageTitle(stringResource(R.string.tab_tv))
         when {
+            // TV setup and Purio's Home are Android TV features; say so plainly for Roku, LG and Samsung.
+            state.kind != com.guilhermeramalho.puriotv.core.TvKind.ANDROID_TV && state.paired -> RowCard {
+                Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("${state.tvName} · ${state.kind.label}", fontWeight = FontWeight.SemiBold)
+                    Caption(stringResource(R.string.brand_tv_notice))
+                }
+            }
             info.homeInstalled -> {
                 SetupStrip(info) { open(TVRoute.Manage) }
                 val update = ed.snapshot?.let { LauncherVersion.updateAvailable(LauncherVersion.onTV(it), bundledHomeVersion(context)) } == true

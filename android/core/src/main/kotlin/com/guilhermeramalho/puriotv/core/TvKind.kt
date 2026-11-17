@@ -20,11 +20,11 @@ enum class TvKind(val label: String) {
 sealed interface TvSupport {
     /** Android TV / Google TV: remote, TV setup, and Show on TV when Chromecast built-in answers. */
     data class Full(val showOnTv: Boolean) : TvSupport
-    /** Roku, LG, Samsung: the remote comes next. */
-    data object RemoteComing : TvSupport
+    /** Roku, LG, Samsung: the remote and the TV's apps (TvBrands.kt); no TV setup, Home or Show on TV. */
+    data object Remote : TvSupport
     /** A Chromecast with no remote service. */
     data object NotYet : TvSupport
-    val canPair: Boolean get() = this is Full
+    val canPair: Boolean get() = this != NotYet
 }
 
 object TvPorts {
@@ -48,7 +48,7 @@ object TvPorts {
 
     fun support(kind: TvKind, open: Set<Int>): TvSupport = when (kind) {
         TvKind.ANDROID_TV -> TvSupport.Full(CAST in open)
-        TvKind.ROKU, TvKind.LG, TvKind.SAMSUNG -> TvSupport.RemoteComing
+        TvKind.ROKU, TvKind.LG, TvKind.SAMSUNG -> TvSupport.Remote
         TvKind.CHROMECAST -> TvSupport.NotYet
     }
 }
