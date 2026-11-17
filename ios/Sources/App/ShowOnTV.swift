@@ -30,6 +30,10 @@ import os
     private var shownAsset: PHAsset?
     @Published private(set) var downloading: Double?
     @Published var problem: String?
+    /// The TV refused a connection on the Cast port when Show on TV opened: it has no Chromecast built in (or it's
+    /// turned off). Said at once, above the library, instead of after a photo is picked.
+    @Published private(set) var noCast = false
+    @Published private(set) var checkingCast = false
     /// The problem is about this item (offer the next one), not about the TV.
     @Published private(set) var problemIsItem = false
     let host: String
@@ -59,6 +63,19 @@ import os
         server.requestLog = { method, shared, range in ShowOnTVLog.note("TV fetched (\(method)\(shared ? "" : ", unknown path → 404")\(range.map { ", \($0)" } ?? ""))") }
         Self.clearFiles()      // left over if the app was closed while showing
         ShowOnTVLog.note("library opened (TV \(host))")
+        Task { await checkCast() }
+    }
+
+    /// One connection to the TV's Cast port, closed at once. Only a refusal counts: a TV in standby or out of reach
+    /// stays possible, and sending explains it then.
+    func checkCast() async {
+        checkingCast = true
+        let answer = await PortKnock.answer(host: host, port: TVPorts.cast, timeout: 2)
+        checkingCast = false
+        ShowOnTVLog.note("Cast port \(answer)")
+        noCast = answer == .refused
+        if noCast { tv = .failed(CastSession.noCastMessage) }
+        else if case .failed = tv { tv = .off; follower.forget(); sendIfDue() }
     }
 
     /// The viewer settled on an asset: it goes to the TV once it has stayed in front for a moment (CST-03). The
@@ -487,6 +504,7 @@ struct ShowOnTVView: View {
             Picker("Section", selection: $section) {
                 ForEach(LibrarySection.allCases) { Text($0.title).tag($0) }
             }.pickerStyle(.segmented).padding(.horizontal, 16).padding(.bottom, 8)
+            if tv.noCast { noCastBanner }
             if access == .limited {
                 Button { presentLimitedPicker() } label: {
                     Label("Purio sees only the photos you chose. Choose more…", systemImage: "photo.badge.plus").font(.footnote)
@@ -542,6 +560,22 @@ struct ShowOnTVView: View {
         .font(.system(size: 15, weight: .medium))
         .padding(.horizontal, 18).padding(.vertical, 12)
         .background(QuietTheme.background.overlay(alignment: .top) { Divider().overlay(QuietTheme.edge) })
+    }
+
+    private var noCastBanner: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "tv.slash").foregroundStyle(.orange).accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(verbatim: CastSession.noCastMessage).font(.footnote).fixedSize(horizontal: false, vertical: true)
+                Button { Task { await tv.checkCast() } } label: {
+                    if tv.checkingCast { ProgressView().controlSize(.mini) } else { Text("Check again").font(.footnote.weight(.semibold)) }
+                }.disabled(tv.checkingCast).accessibilityIdentifier("checkCastAgain")
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(12).background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+        .padding(.horizontal, 16).padding(.bottom, 8)
+        .accessibilityElement(children: .contain).accessibilityIdentifier("noCast")
     }
 
     private var noAccess: some View {

@@ -156,27 +156,35 @@ public enum PortKnock {
     }
 
     public static func isOpen(host: String, port: UInt16, timeout: TimeInterval = 1.5) async -> Bool {
-        guard let nwPort = NWEndpoint.Port(rawValue: port) else { return false }
+        await answer(host: host, port: port, timeout: timeout) == .open
+    }
+
+    /// How a port answered. Only `refused` proves nothing listens there: a TV in standby or out of reach is `silent`.
+    public enum Answer: Sendable, Equatable { case open, refused, silent }
+
+    public static func answer(host: String, port: UInt16, timeout: TimeInterval = 1.5) async -> Answer {
+        guard let nwPort = NWEndpoint.Port(rawValue: port) else { return .silent }
         let tcp = NWProtocolTCP.Options()
         tcp.connectionTimeout = max(1, Int(timeout.rounded(.up)))
         let connection = NWConnection(host: NWEndpoint.Host(host), port: nwPort, using: NWParameters(tls: nil, tcp: tcp))
         let once = Once()
         return await withTaskCancellationHandler {
-            await withCheckedContinuation { (done: CheckedContinuation<Bool, Never>) in
-                let finish: @Sendable (Bool) -> Void = { open in
+            await withCheckedContinuation { (done: CheckedContinuation<Answer, Never>) in
+                let finish: @Sendable (Answer) -> Void = { answer in
                     guard once.claim() else { return }
                     connection.cancel()
-                    done.resume(returning: open)
+                    done.resume(returning: answer)
                 }
                 connection.stateUpdateHandler = { state in
                     switch state {
-                    case .ready: finish(true)
-                    case .failed, .waiting, .cancelled: finish(false)
+                    case .ready: finish(.open)
+                    case .failed(.posix(.ECONNREFUSED)), .waiting(.posix(.ECONNREFUSED)): finish(.refused)
+                    case .failed, .waiting, .cancelled: finish(.silent)
                     default: break
                     }
                 }
                 connection.start(queue: .global(qos: .utility))
-                DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + timeout) { finish(false) }
+                DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + timeout) { finish(.silent) }
             }
         } onCancel: { connection.cancel() }
     }

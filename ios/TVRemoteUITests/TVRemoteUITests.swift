@@ -59,9 +59,28 @@ final class TVRemoteUITests: XCTestCase {
         XCTAssertTrue(app.buttons["showOnTV"].waitForExistence(timeout: 5))
     }
 
-    private func launchRemote() -> XCUIApplication {
+    /// CST-27: a TV that refuses the Cast port (here this Mac: nothing listens on 127.0.0.1:8009) is explained as
+    /// soon as Show on TV opens, above the library, with Check again.
+    func testShowOnTVSaysAtOnceWhenTheTVHasNoChromecastBuiltIn() throws {
+        let app = launchRemote(host: "127.0.0.1")
+        addUIInterruptionMonitor(withDescription: "Photos access") { alert in
+            for label in ["Allow Full Access", "Allow Access to All Photos"] where alert.buttons[label].exists { alert.buttons[label].tap(); return true }
+            return false
+        }
+        app.buttons["showOnTV"].tap()
+        XCTAssertTrue(app.navigationBars["Show on TV"].waitForExistence(timeout: 5))
+        app.tap()
+        let banner = app.descendants(matching: .any)["noCast"]
+        XCTAssertTrue(banner.waitForExistence(timeout: 8), "no up-front message for a TV without Chromecast built in")
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'Chromecast built in'")).firstMatch.exists)
+        XCTAssertTrue(app.buttons["checkCastAgain"].exists)
+        save(app, "no-chromecast")
+        app.buttons["closeShowOnTV"].tap()
+    }
+
+    private func launchRemote(host: String = "192.0.2.10") -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestRemote", "YES", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["-tvHost", host, "-uiTestRemote", "YES", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
         app.tabBars.buttons["Remote"].tap()
         return app

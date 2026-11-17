@@ -103,7 +103,14 @@ object PortKnock {
         ports.map { port -> async { if (isOpen(host, port, timeoutMs)) port else null } }.awaitAll().filterNotNull().toSet()
     }
 
-    suspend fun isOpen(host: String, port: Int, timeoutMs: Int = 1500): Boolean = withContext(Dispatchers.IO) {
-        runCatching { Socket().use { it.connect(InetSocketAddress(host, port), timeoutMs) }; true }.getOrDefault(false)
+    suspend fun isOpen(host: String, port: Int, timeoutMs: Int = 1500): Boolean = answer(host, port, timeoutMs) == Answer.OPEN
+
+    /** How a port answered. Only [Answer.REFUSED] proves nothing listens there: a TV in standby or away is SILENT. */
+    enum class Answer { OPEN, REFUSED, SILENT }
+
+    suspend fun answer(host: String, port: Int, timeoutMs: Int = 1500): Answer = withContext(Dispatchers.IO) {
+        try { Socket().use { it.connect(InetSocketAddress(host, port), timeoutMs) }; Answer.OPEN }
+        catch (e: java.net.ConnectException) { if (e.message?.contains("refused", ignoreCase = true) == true) Answer.REFUSED else Answer.SILENT }
+        catch (e: Exception) { Answer.SILENT }
     }
 }

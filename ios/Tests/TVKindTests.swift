@@ -70,5 +70,15 @@ final class TVKindTests: XCTestCase {
         let port = try XCTUnwrap(listener.port?.rawValue)
         let open = await PortKnock.openPorts(host: "127.0.0.1", ports: [port, 1], timeout: 1)
         XCTAssertEqual(open, [port])
+        let answer = await PortKnock.answer(host: "127.0.0.1", port: port)
+        XCTAssertEqual(answer, .open)
+    }
+
+    /// CST-27: only a refusal means "no Chromecast built in"; a TV that doesn't answer (standby, away) isn't judged.
+    func testARefusedPortIsToldApartFromASilentOne() async {
+        let refused = await PortKnock.answer(host: "127.0.0.1", port: 1, timeout: 1)
+        XCTAssertEqual(refused, .refused)
+        let silent = await PortKnock.answer(host: "192.0.2.10", port: 8009, timeout: 1)   // documentation range: nobody there
+        XCTAssertEqual(silent, .silent)
     }
 }

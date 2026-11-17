@@ -324,11 +324,12 @@ public final class CastSession {
         }
         c.start(queue: queue)
     }
+    public static var noCastMessage: String {
+        String(localized: "This TV can't show photos from Purio. It needs Chromecast built in (most Google TV and Android TV sets have it).")
+    }
     /// A refused connection means nothing listens for Cast on the TV; anything else means the TV wasn't reached.
     static func reason(for error: NWError) -> String {
-        if case .posix(let code) = error, code == .ECONNREFUSED {
-            return String(localized: "This TV can't show photos from Purio. It needs Chromecast built in (most Google TV and Android TV sets have it).")
-        }
+        if case .posix(let code) = error, code == .ECONNREFUSED { return noCastMessage }
         return String(localized: "Couldn't reach the TV. Check that it's on and on the same Wi-Fi as this iPhone.")
     }
     private func receive() {

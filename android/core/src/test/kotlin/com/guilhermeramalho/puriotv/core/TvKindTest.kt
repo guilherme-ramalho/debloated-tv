@@ -71,4 +71,12 @@ class TvKindTest {
             assertEquals(setOf(server.localPort), PortKnock.openPorts("127.0.0.1", listOf(server.localPort, closed), 1000))
         }
     }
+
+    /** CST-27: only a refusal means "no Chromecast built in". */
+    @Test fun castAnswerTellsRefusedFromSilent() = runBlocking {
+        val closed = ServerSocket(0).let { val p = it.localPort; it.close(); p }
+        assertEquals(PortKnock.Answer.REFUSED, PortKnock.answer("127.0.0.1", closed, 1000))
+        assertEquals(PortKnock.Answer.SILENT, PortKnock.answer("192.0.2.10", 8009, 1000))
+        ServerSocket(0).use { assertEquals(PortKnock.Answer.OPEN, PortKnock.answer("127.0.0.1", it.localPort, 1000)) }
+    }
 }

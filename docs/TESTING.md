@@ -340,6 +340,7 @@ The `android-tv` emulator image has no Cast player, so the end-to-end suite does
 | CST-24 | Scroll the library fast, up and down, through hundreds of items | No blank cells (a quick low-resolution picture first, then sharp); rows around the screen prepared ahead | Manual |
 | CST-25 | Android: Show on TV on a phone against a Cast TV (CST-03 to CST-12, CST-17 to CST-24) | As on iPhone | **Not yet run** (built 16 Nov 2026, never on a phone) |
 | CST-26 | Android: a 4K or 4K 60 fps video | Converted to 1080p while it plays, as on iPhone | **Missing**: Android sends heavy videos as they are (Media3 conversion planned: fragmented MP4 split into 6 s pieces) |
+| CST-27 | Open Show on TV on a TV without Chromecast built in (or with it turned off in the TV's settings) | Within ~2 s a banner above the library: "This TV can't show photos from Purio. It needs Chromecast built in…" with Check again; the pill shows the warning. Turn Cast on, Check again: banner goes, photos go to the TV. A TV in standby or out of reach shows no banner (only a refusal counts) | Auto: `testARefusedPortIsToldApartFromASilentOne`, UI `testShowOnTVSaysAtOnceWhenTheTVHasNoChromecastBuiltIn`; Android: same (`castAnswerTellsRefusedFromSilent`); Manual |
 
 ## Release checklist
 

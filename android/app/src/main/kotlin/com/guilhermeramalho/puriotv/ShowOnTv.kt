@@ -118,6 +118,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.guilhermeramalho.puriotv.core.PortKnock
+import com.guilhermeramalho.puriotv.core.TvPorts
 import com.guilhermeramalho.puriotv.core.CastController
 import com.guilhermeramalho.puriotv.core.CastFollower
 import com.guilhermeramalho.puriotv.core.CastMediaStatus
@@ -254,6 +256,8 @@ class ShowOnTvModel(private val context: Context, val host: String, val tvName: 
     data class State(
         val tv: Tv = Tv.OFF, val media: CastMediaStatus? = null, val mediaAt: Long = 0, val shownId: Long? = null,
         val endedId: Long? = null, val problem: Problem? = null, val problemIsItem: Boolean = false, val failure: Problem? = null,
+        /** The TV refused the Cast port when Show on TV opened: no Chromecast built in (or turned off). Said at once. */
+        val noCast: Boolean = false, val checkingCast: Boolean = false,
     )
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state
@@ -272,7 +276,29 @@ class ShowOnTvModel(private val context: Context, val host: String, val tvName: 
     private val prepared = mutableMapOf<Long, File>()
     private val folder = File(context.cacheDir, "ShowOnTV").apply { deleteRecursively() }   // left over if the app was killed
 
-    init { server.requestLog = { method, shared, range -> Log.i(TAG, "TV fetched ($method${if (shared) "" else ", unknown path"}${range?.let { ", $it" } ?: ""})") } }
+    init {
+        server.requestLog = { method, shared, range -> Log.i(TAG, "TV fetched ($method${if (shared) "" else ", unknown path"}${range?.let { ", $it" } ?: ""})") }
+        checkCast()
+    }
+
+    /** One connection to the TV's Cast port, closed at once. Only a refusal counts; standby or away stays possible. */
+    fun checkCast() {
+        _state.update { it.copy(checkingCast = true) }
+        scope.launch {
+            val answer = PortKnock.answer(host, TvPorts.CAST, 2000)
+            Log.i(TAG, "Cast port $answer")
+            val refused = answer == PortKnock.Answer.REFUSED
+            val wasFailed = _state.value.tv == Tv.FAILED
+            _state.update {
+                when {
+                    refused -> it.copy(checkingCast = false, noCast = true, tv = Tv.FAILED, failure = Problem.CAST_NO_CHROMECAST)
+                    wasFailed -> it.copy(checkingCast = false, noCast = false, tv = Tv.OFF, failure = null)
+                    else -> it.copy(checkingCast = false, noCast = false)
+                }
+            }
+            if (!refused && wasFailed) { follower.forget(); sendIfDue() }
+        }
+    }
 
     fun focus(item: LibraryItem, around: List<LibraryItem>) {
         focused = item; neighbours = around
@@ -508,6 +534,8 @@ private fun Library(tv: ShowOnTvModel, remote: RemoteModel, remoteState: RemoteM
                 SegmentedButton(selected = section == s, onClick = { section = s }, shape = SegmentedButtonDefaults.itemShape(i, sections.size)) { Text(stringResource(s.title)) }
             }
         }
+        val tvState by tv.state.collectAsState()
+        if (tvState.noCast) NoCastBanner(tvState.checkingCast, tv::checkCast)
         if (partial) TextButton(onClick = chooseMore, modifier = Modifier.align(Alignment.CenterHorizontally)) { Text(stringResource(R.string.choose_more_photos), fontSize = 13.sp) }
         if (loaded && items.isEmpty()) {
             Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -543,6 +571,22 @@ private fun Library(tv: ShowOnTvModel, remote: RemoteModel, remoteState: RemoteM
     }
     viewer?.let { (list, start) ->
         Viewer(tv, remote, remoteState, list, start, slideshow, { id -> if (list === items) lastOpened = id }) { viewer = null }
+    }
+}
+
+/** The TV has no Chromecast built in (ShowOnTVView.noCastBanner): said above the library, with Check again. */
+@Composable
+private fun NoCastBanner(checking: Boolean, checkAgain: () -> Unit) {
+    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 8.dp).clip(RoundedCornerShape(12.dp))
+        .background(Quiet.amber.copy(alpha = 0.12f)).padding(12.dp).semantics { contentDescription = "noCast" },
+        horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Icon(Icons.Rounded.Warning, null, tint = Quiet.amber, modifier = Modifier.size(18.dp))
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text(stringResource(R.string.problem_cast_no_chromecast), fontSize = 13.sp, color = Color.White)
+            if (checking) CircularProgressIndicator(Modifier.size(14.dp), strokeWidth = 1.5.dp, color = Quiet.cyan)
+            else Text(stringResource(R.string.check_again), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = Quiet.cyan,
+                modifier = Modifier.clickable(onClick = checkAgain).padding(vertical = 4.dp))
+        }
     }
 }
 
