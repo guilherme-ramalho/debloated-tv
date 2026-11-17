@@ -42,10 +42,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -64,6 +66,12 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import com.guilhermeramalho.puriotv.core.DiscoveredTv
+import com.guilhermeramalho.puriotv.core.PortKnock
+import com.guilhermeramalho.puriotv.core.TvKind
+import com.guilhermeramalho.puriotv.core.TvPorts
+import com.guilhermeramalho.puriotv.core.TvSupport
 
 /** The Remote tab before any TV is paired (ConnectTVView): TVs found on the Wi-Fi, or type the address. */
 @Composable
@@ -115,12 +123,14 @@ fun ConnectScreen(model: RemoteModel) {
             }
             if (tvs.isNotEmpty()) RowCard {
                 tvs.forEachIndexed { i, tv ->
+                    val pairable = tv.host != null && tv.support?.canPair != false
                     ListItem(
                         headlineContent = { Text(tv.name) },
-                        supportingContent = { Text(tv.host ?: stringResource(R.string.finding_address)) },
+                        supportingContent = { Text(tvDetail(tv)) },
                         leadingContent = { Icon(Icons.Outlined.Tv, null) },
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-                        modifier = Modifier.clickable(enabled = tv.host != null) { tv.host?.let { model.choose(it, tv.name) } },
+                        modifier = Modifier.alpha(if (tv.support?.canPair == false) 0.55f else 1f)
+                            .clickable(enabled = pairable) { tv.host?.let { model.choose(it, tv.name) } },
                     )
                     if (i < tvs.lastIndex) RowDivider()
                 }
@@ -135,6 +145,19 @@ fun ConnectScreen(model: RemoteModel) {
         }
     }
     if (typing) AddressSheet(onDismiss = { typing = false }) { address -> typing = false; model.choose(address, address) }
+}
+
+/** The row's second line: the kind of TV and what Purio can do on it (DiscoveredTV.detail). */
+@Composable
+private fun tvDetail(tv: DiscoveredTv): String {
+    val host = tv.host ?: return stringResource(R.string.finding_address)
+    val support = tv.support ?: return if (tv.kind == TvKind.ANDROID_TV) "${tv.kind.label} · $host" else stringResource(R.string.checking)
+    val can = when (support) {
+        is TvSupport.Full -> stringResource(if (support.showOnTv) R.string.tv_can_full else R.string.tv_can_basic)
+        TvSupport.RemoteComing -> stringResource(R.string.tv_remote_coming)
+        TvSupport.NotYet -> stringResource(R.string.tv_not_yet)
+    }
+    return "${tv.kind.label} · $can"
 }
 
 @Composable
@@ -155,20 +178,47 @@ private fun Tip(n: Int, title: Int, detail: Int) {
 @Composable
 private fun AddressSheet(onDismiss: () -> Unit, onConnect: (String) -> Unit) {
     var address by rememberSaveable { mutableStateOf("") }
+    var checking by remember { mutableStateOf(false) }
+    /** What answered at that address when it isn't an Android TV. */
+    var other by remember { mutableStateOf<TvKind?>(null) }
+    val scope = rememberCoroutineScope()
+    // Knock first: an Android TV (or nothing answering, which pairing then explains) goes on to pairing; any other
+    // TV is named here instead of a pairing that could never work.
+    val connect = {
+        checking = true
+        scope.launch {
+            val kind = TvPorts.kind(PortKnock.openPorts(address))
+            checking = false
+            if (kind != null && kind != TvKind.ANDROID_TV) other = kind else onConnect(address)
+        }
+        Unit
+    }
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true), containerColor = Quiet.panel) {
         Column(Modifier.padding(horizontal = 24.dp).padding(bottom = 24.dp).navigationBarsPadding(), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Text(stringResource(R.string.address_title), style = MaterialTheme.typography.titleLarge)
             Caption(stringResource(R.string.address_hint))
             OutlinedTextField(
-                value = address, onValueChange = { address = it.replace(',', '.').filterNot(Char::isWhitespace).take(15) },
+                value = address, onValueChange = { address = it.replace(',', '.').filterNot(Char::isWhitespace).take(15); other = null },
                 label = { Text(stringResource(R.string.address_label)) }, placeholder = { Text("192.168.0.13") }, singleLine = true,
                 isError = address.isNotEmpty() && !isIPv4(address) && address.count { it == '.' } == 3 && address.last() != '.',
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Go),
-                keyboardActions = KeyboardActions(onGo = { if (isIPv4(address)) onConnect(address) }),
+                keyboardActions = KeyboardActions(onGo = { if (isIPv4(address) && !checking) connect() }),
                 modifier = Modifier.fillMaxWidth(),
             )
-            Button(onClick = { onConnect(address) }, enabled = isIPv4(address), modifier = Modifier.fillMaxWidth().height(48.dp)) {
-                Text(stringResource(R.string.address_connect))
+            other?.let { kind ->
+                Surface(color = Color.White.copy(alpha = 0.045f), shape = RoundedCornerShape(14.dp)) {
+                    Row(Modifier.padding(12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Icon(Icons.Outlined.Info, null, tint = Quiet.muted, modifier = Modifier.size(18.dp))
+                        Caption(if (kind == TvKind.CHROMECAST) stringResource(R.string.tv_is_chromecast) else stringResource(R.string.tv_is_other, kind.label))
+                    }
+                }
+            }
+            Button(onClick = connect, enabled = isIPv4(address) && !checking, modifier = Modifier.fillMaxWidth().height(48.dp)) {
+                if (checking) {
+                    CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
+                    Spacer(Modifier.size(8.dp))
+                    Text(stringResource(R.string.checking))
+                } else Text(stringResource(R.string.address_connect))
             }
         }
     }

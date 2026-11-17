@@ -10,8 +10,18 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
 import com.guilhermeramalho.puriotv.core.ClientIdentity
+import com.guilhermeramalho.puriotv.core.DiscoveredTv
+import com.guilhermeramalho.puriotv.core.PortKnock
+import com.guilhermeramalho.puriotv.core.TvSighting
+import com.guilhermeramalho.puriotv.core.TvSightings
 import com.guilhermeramalho.puriotv.core.Problem
 import com.guilhermeramalho.puriotv.core.RemoteClientName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.math.BigInteger
@@ -88,60 +98,106 @@ object KeystoreIdentity {
 }
 
 /**
- * Finds Android TVs and Google TVs on the Wi-Fi: their remote service announces `_androidtvremote2._tcp`.
+ * Finds TVs on the Wi-Fi the way their own apps do (TVDiscovery.swift): Android TVs and Google TVs announce
+ * `_androidtvremote2._tcp`, Chromecasts `_googlecast._tcp`, LG, Samsung, Roku and other TVs with AirPlay
+ * `_airplay._tcp`. Each address is then knocked on (TvKind.kt) to tell what it is and what Purio can do there.
  * Runs only while the TV picker is on screen (start/stop), so nothing searches in the background.
  */
 class TVDiscovery(context: Context) {
-    data class Found(val name: String, val host: String?)
-
     private val nsd = context.getSystemService(NsdManager::class.java)
     private val main = Handler(Looper.getMainLooper())
-    private val _tvs = MutableStateFlow<List<Found>>(emptyList())
-    val tvs: StateFlow<List<Found>> = _tvs
-    private var listener: NsdManager.DiscoveryListener? = null
+    private val _tvs = MutableStateFlow<List<DiscoveredTv>>(emptyList())
+    val tvs: StateFlow<List<DiscoveredTv>> = _tvs
+    private var listeners: List<NsdManager.DiscoveryListener> = emptyList()
+    private val sightings = mutableMapOf<String, TvSighting>()
+    private val probes = mutableMapOf<String, Set<Int>>()
+    private val probing = mutableMapOf<String, Job>()
+    /** NSD resolves one service at a time before Android 14 (a second one fails with "already active"). */
+    private val waiting = ArrayDeque<NsdServiceInfo>()
+    private var resolving = false
+    private var scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     fun start() {
         stop()
-        _tvs.value = emptyList()
-        val l = object : NsdManager.DiscoveryListener {
-            override fun onDiscoveryStarted(serviceType: String) = Unit
-            override fun onDiscoveryStopped(serviceType: String) = Unit
-            override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) = Unit
-            override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) = Unit
-            override fun onServiceFound(info: NsdServiceInfo) = main.post {
-                if (_tvs.value.none { it.name == info.serviceName }) {
-                    _tvs.value = (_tvs.value + Found(info.serviceName, null)).sortedBy { it.name.lowercase() }
-                    resolve(info)
-                }
-            }.let { }
-            override fun onServiceLost(info: NsdServiceInfo) = main.post {
-                _tvs.value = _tvs.value.filterNot { it.name == info.serviceName }
-            }.let { }
+        sightings.clear(); probes.clear(); _tvs.value = emptyList()
+        scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        listeners = TvSighting.Service.entries.map { service ->
+            object : NsdManager.DiscoveryListener {
+                override fun onDiscoveryStarted(serviceType: String) = Unit
+                override fun onDiscoveryStopped(serviceType: String) = Unit
+                override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) = Unit
+                override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) = Unit
+                override fun onServiceFound(info: NsdServiceInfo) = main.post {
+                    val sighting = TvSighting(service, info.serviceName)
+                    if (sighting.id !in sightings) {
+                        sightings[sighting.id] = sighting
+                        // Other services are worth checking only after their TXT record is read, so all are resolved.
+                        waiting.addLast(info); resolveNext()
+                        publish()
+                    }
+                }.let { }
+                override fun onServiceLost(info: NsdServiceInfo) = main.post {
+                    sightings.remove(TvSighting(service, info.serviceName).id); publish()
+                }.let { }
+            }.also { nsd.discoverServices(service.type, NsdManager.PROTOCOL_DNS_SD, it) }
         }
-        listener = l
-        nsd.discoverServices(SERVICE, NsdManager.PROTOCOL_DNS_SD, l)
     }
 
     fun stop() {
-        listener?.let { runCatching { nsd.stopServiceDiscovery(it) } }
-        listener = null
+        listeners.forEach { runCatching { nsd.stopServiceDiscovery(it) } }
+        listeners = emptyList()
+        waiting.clear(); resolving = false
+        scope.cancel(); probing.clear()
     }
 
-    @Suppress("DEPRECATION") // resolveService is the API available back to Android 8; one at a time is fine here.
-    private fun resolve(info: NsdServiceInfo) {
+    private fun publish() {
+        val next = TvSightings.merge(sightings.values.toList(), probes)
+        if (next != _tvs.value) _tvs.value = next
+    }
+
+    @Suppress("DEPRECATION") // resolveService is the API available back to Android 8; one at a time.
+    private fun resolveNext() {
+        if (resolving) return
+        val info = waiting.removeFirstOrNull() ?: return
+        resolving = true
         nsd.resolveService(info, object : NsdManager.ResolveListener {
-            override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) = Unit
+            override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) = main.post {
+                resolving = false
+                // A resolve left over from an earlier search can still be running: try this one again shortly.
+                if (errorCode == NsdManager.FAILURE_ALREADY_ACTIVE && listeners.isNotEmpty()) {
+                    waiting.addFirst(serviceInfo); main.postDelayed({ resolveNext() }, 300)
+                } else resolveNext()
+            }.let { }
             override fun onServiceResolved(resolved: NsdServiceInfo) {
                 val address = (if (Build.VERSION.SDK_INT >= 34) resolved.hostAddresses else listOfNotNull(resolved.host))
-                    .firstOrNull { it is Inet4Address }?.hostAddress ?: return
+                    .firstOrNull { it is Inet4Address }?.hostAddress
+                val txt = resolved.attributes.mapValues { (_, v) -> v?.toString(Charsets.UTF_8).orEmpty() }
                 main.post {
-                    _tvs.value = _tvs.value.map { if (it.name == resolved.serviceName) it.copy(host = address) else it }
+                    resolving = false
+                    val service = TvSighting.Service.entries.firstOrNull { resolved.serviceType.trim('.').startsWith(it.type) }
+                        ?: TvSighting.Service.entries.firstOrNull { s -> sightings.containsKey(s.type + "/" + resolved.serviceName) }
+                    val id = service?.let { it.type + "/" + resolved.serviceName }
+                    if (id != null && address != null && sightings.containsKey(id)) {
+                        val sighting = TvSighting(service, resolved.serviceName, address, txt)
+                        sightings[id] = sighting
+                        if (sighting.worthChecking) knock(address)
+                        publish()
+                    }
+                    resolveNext()
                 }
             }
         })
     }
 
-    companion object { const val SERVICE = "_androidtvremote2._tcp" }
+    /** Once per address while searching. */
+    private fun knock(host: String) {
+        if (host in probes || host in probing) return
+        probing[host] = scope.launch {
+            probes[host] = PortKnock.openPorts(host)
+            probing.remove(host)
+            publish()
+        }
+    }
 }
 
 fun Problem.message(): Int = when (this) {

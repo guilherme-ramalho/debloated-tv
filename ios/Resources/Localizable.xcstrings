@@ -5490,6 +5490,40 @@
         }
       }
     },
+    "Not supported yet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch nicht unterstützt"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no compatible"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas encore pris en charge"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non ancora supportato"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ainda não compatível"
+          }
+        }
+      }
+    },
     "Nothing changes on the TV until you review and apply. Every change can be undone." : {
       "localizations" : {
         "de" : {
@@ -12408,6 +12442,74 @@
         }
       }
     },
+    "Remote and setup" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fernbedienung und Einrichtung"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mando y configuración"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Télécommande et configuration"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telecomando e configurazione"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controle e configuração"
+          }
+        }
+      }
+    },
+    "Remote coming soon" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fernbedienung kommt bald"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mando muy pronto"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Télécommande bientôt disponible"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telecomando in arrivo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controle em breve"
+          }
+        }
+      }
+    },
     "Remote preferences" : {
       "localizations" : {
         "de" : {
@@ -12472,6 +12574,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Atalhos do controle"
+          }
+        }
+      }
+    },
+    "Remote, setup and Show on TV" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fernbedienung, Einrichtung und Auf dem Fernseher zeigen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mando, configuración y Mostrar en la tele"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Télécommande, configuration et Afficher sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telecomando, configurazione e Mostra sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controle, configuração e Mostrar na TV"
           }
         }
       }
@@ -15436,6 +15572,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esse código não corresponde a esta TV. Confira o código e tente de novo."
+          }
+        }
+      }
+    },
+    "That's a %@ TV. Its remote is coming to Purio soon." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das ist ein %@-Fernseher. Seine Fernbedienung kommt bald zu Purio."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es una TV %@. Su mando llegará pronto a Purio."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C'est une TV %@. Sa télécommande arrive bientôt sur Purio."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "È una TV %@. Il suo telecomando arriverà presto su Purio."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "É uma TV %@. O controle dela chega em breve ao Purio."
+          }
+        }
+      }
+    },
+    "That's a Chromecast. Purio can't control it yet." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das ist ein Chromecast. Purio kann ihn noch nicht steuern."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es un Chromecast. Purio aún no puede controlarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C'est un Chromecast. Purio ne peut pas encore le contrôler."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "È un Chromecast. Purio non può ancora controllarlo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "É um Chromecast. O Purio ainda não consegue controlá-lo."
           }
         }
       }

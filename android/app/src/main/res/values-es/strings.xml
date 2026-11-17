@@ -10,6 +10,12 @@
     <string name="tvs_on_network">TV en tu red</string>
     <string name="still_looking">Seguimos buscando…</string>
     <string name="finding_address">Buscando su dirección…</string>
+    <string name="tv_can_full">Mando, configuración y Mostrar en la tele</string>
+    <string name="tv_can_basic">Mando y configuración</string>
+    <string name="tv_remote_coming">Mando muy pronto</string>
+    <string name="tv_not_yet">Aún no compatible</string>
+    <string name="tv_is_chromecast">Es un Chromecast. Purio aún no puede controlarlo.</string>
+    <string name="tv_is_other">Es una TV %1$s. Su mando llegará pronto a Purio.</string>
     <string name="not_listed">Mi TV no aparece: escribir su dirección</string>
     <string name="connect_footer">Funciona con Android TV y Google TV. Después, tu TV muestra un código de 6 caracteres para confirmar que eres tú.</string>
     <string name="connect_none_title">Aún no se encontró ninguna TV</string>

@@ -23,6 +23,7 @@ struct ConnectTVView: View {
     private func search() {
         waitedLong = false
         discovery.start()
+        if !UITestHooks.foundTVs.isEmpty { discovery.show(UITestHooks.foundTVs) }
         Task { try? await Task.sleep(for: .seconds(8)); waitedLong = true }
     }
 
@@ -44,9 +45,12 @@ struct ConnectTVView: View {
             if !discovery.tvs.isEmpty {
                 QuietCard {
                     ForEach(discovery.tvs) { tv in
+                        let pairable = tv.host != nil && tv.support?.canPair != false
                         Button { if let host = tv.host { model.pair(with: host, name: tv.name) } } label: {
-                            QuietRow(title: Text(verbatim: tv.name), detail: tv.host.map { Text(verbatim: $0) } ?? Text("Finding its address…"), symbol: "tv")
-                        }.buttonStyle(.plain).disabled(tv.host == nil)
+                            QuietRow(title: Text(verbatim: tv.name), detail: Text(verbatim: tv.detail), symbol: "tv", chevron: pairable)
+                                .opacity(tv.support?.canPair == false ? 0.55 : 1)
+                        }.buttonStyle(.plain).disabled(!pairable)
+                        .accessibilityIdentifier("foundTV").accessibilityValue(Text(verbatim: tv.host ?? ""))
                         if tv.id != discovery.tvs.last?.id { Divider().overlay(QuietTheme.edge) }
                     }
                 }
@@ -173,11 +177,34 @@ private struct AddressTextField: UIViewRepresentable {
     }
 }
 
+extension DiscoveredTV {
+    /// The row's second line: the kind of TV and what Purio can do on it.
+    var detail: String {
+        guard let host else { return String(localized: "Finding its address…") }
+        guard let support else { return kind == .androidTV ? kind.label + " · " + host : String(localized: "Checking…") }
+        return kind.label + " · " + support.summary
+    }
+}
+
+extension TVSupport {
+    var summary: String {
+        switch self {
+        case .full(showOnTV: true): String(localized: "Remote, setup and Show on TV")
+        case .full(showOnTV: false): String(localized: "Remote and setup")
+        case .remoteComing: String(localized: "Remote coming soon")
+        case .notYet: String(localized: "Not supported yet")
+        }
+    }
+}
+
 /// Typing the TV's address when it isn't found on the network.
 struct AddressEntrySheet: View {
     @ObservedObject var model: RemoteModel
     @Environment(\.dismiss) private var dismiss
     @State private var address = ""
+    @State private var checking = false
+    /// What answered at that address when it isn't an Android TV.
+    @State private var other: TVKind?
     var body: some View {
         NavigationStack {
             QuietPage {
@@ -192,10 +219,37 @@ struct AddressEntrySheet: View {
                             .font(.system(size: 13)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true)
                     }.padding(14)
                 }
-                Button("Connect") { dismiss(); model.pair(with: address, name: nil) }
-                    .buttonStyle(QuietPrimaryStyle()).disabled(!TVAddress.isIPv4(address))
+                if let other {
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: "info.circle").foregroundStyle(QuietTheme.muted).accessibilityHidden(true)
+                        Text(verbatim: other == .chromecast
+                             ? String(localized: "That's a Chromecast. Purio can't control it yet.")
+                             : String(format: String(localized: "That's a %@ TV. Its remote is coming to Purio soon."), other.label))
+                            .font(.system(size: 13)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true)
+                    }.padding(12).background(.white.opacity(0.045), in: RoundedRectangle(cornerRadius: 14))
+                    .accessibilityElement(children: .combine).accessibilityIdentifier("otherTVKind")
+                }
+                Button { connect() } label: {
+                    if checking { HStack(spacing: 8) { ProgressView().controlSize(.small); Text("Checking…") } } else { Text("Connect") }
+                }
+                .buttonStyle(QuietPrimaryStyle()).disabled(!TVAddress.isIPv4(address) || checking)
+                .onChange(of: address) { _, _ in other = nil }
             }.quietNavigation("TV address").toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
         }.presentationDetents([.large])
+    }
+
+    /// Knocks on the address first: an Android TV (or nothing answering, which pairing then explains) goes on to
+    /// pairing; any other TV is named here instead of a pairing that could never work.
+    private func connect() {
+        let host = TVAddress.typed(address)
+        if ProcessInfo.processInfo.arguments.contains("-e2eNoDiscovery") { dismiss(); model.pair(with: host, name: nil); return }
+        checking = true
+        Task {
+            let open = await PortKnock.openPorts(host: host)
+            checking = false
+            if let kind = TVPorts.kind(open: open), kind != .androidTV { other = kind; return }
+            dismiss(); model.pair(with: host, name: nil)
+        }
     }
 }
 

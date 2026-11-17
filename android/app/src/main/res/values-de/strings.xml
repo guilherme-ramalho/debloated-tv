@@ -10,6 +10,12 @@
     <string name="tvs_on_network">Fernseher in deinem Netzwerk</string>
     <string name="still_looking">Suche läuft…</string>
     <string name="finding_address">Adresse wird ermittelt…</string>
+    <string name="tv_can_full">Fernbedienung, Einrichtung und Auf dem Fernseher zeigen</string>
+    <string name="tv_can_basic">Fernbedienung und Einrichtung</string>
+    <string name="tv_remote_coming">Fernbedienung kommt bald</string>
+    <string name="tv_not_yet">Noch nicht unterstützt</string>
+    <string name="tv_is_chromecast">Das ist ein Chromecast. Purio kann ihn noch nicht steuern.</string>
+    <string name="tv_is_other">Das ist ein %1$s-Fernseher. Seine Fernbedienung kommt bald zu Purio.</string>
     <string name="not_listed">Mein Fernseher fehlt: Adresse eingeben</string>
     <string name="connect_footer">Funktioniert mit Android TV und Google TV. Danach zeigt dein Fernseher einen 6-stelligen Code, um zu bestätigen, dass du es bist.</string>
     <string name="connect_none_title">Noch kein Fernseher gefunden</string>

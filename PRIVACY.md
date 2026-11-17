@@ -16,7 +16,10 @@ Purio TV collects no personal data. It has no accounts, no ads, no analytics and
   only sees the photos you select for it. Show on TV reads your photo library on the iPhone (only the photos you allow,
   if you limit access) and sends the photo or video you open to your TV over your home network, through the TV's own
   Cast player. Photos go without their location or camera details. Nothing is uploaded anywhere else.
-- **Local network access** is used to find and connect to your TV. iOS asks for it the first time.
+- **Local network access** is used to find and connect to your TV. iOS asks for it the first time. While the
+  Connect screen is open, the app lists the TVs that announce themselves on your network and briefly opens a
+  connection to a few of their ports to tell what kind of TV each one is (Android TV, Roku, LG, Samsung, Chromecast).
+  No data is sent in those checks, nothing is kept after you leave the screen, and nothing leaves your network.
 - **Siri and Shortcuts.** Phrases are handled by Apple under Apple's privacy policy; the app only receives the action
   to run.
 

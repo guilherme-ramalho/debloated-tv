@@ -256,7 +256,15 @@ enum UITestHooks {
     }
     /// `-uiTestRemote YES`: the remote's controls without a paired TV (header layout and Show on TV tests).
     static var showsRemote: Bool { UserDefaults.standard.bool(forKey: "uiTestRemote") }
+    /// `-uiTestFoundTVs YES`: the Connect list shows one TV of each kind, without searching the network.
+    static var foundTVs: [DiscoveredTV] {
+        guard UserDefaults.standard.bool(forKey: "uiTestFoundTVs") else { return [] }
+        return [DiscoveredTV(id: "a", name: "Living Room TV", host: "192.0.2.13", kind: .androidTV, support: .full(showOnTV: true)),
+                DiscoveredTV(id: "b", name: "Bedroom TV", host: "192.0.2.14", kind: .androidTV, support: .full(showOnTV: false)),
+                DiscoveredTV(id: "c", name: "[LG] webOS TV OLED55C1", host: "192.0.2.20", kind: .lg, support: .remoteComing),
+                DiscoveredTV(id: "d", name: "Kitchen", host: "192.0.2.21", kind: .chromecast, support: .notYet)]
+    }
 }
 #else
-enum UITestHooks { static let showsRemote = false }
+enum UITestHooks { static let showsRemote = false; static let foundTVs: [DiscoveredTV] = [] }
 #endif

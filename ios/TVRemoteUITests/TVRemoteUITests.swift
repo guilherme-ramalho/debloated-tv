@@ -9,8 +9,9 @@ final class TVRemoteUITests: XCTestCase {
     private func launch(tvState: String = "fresh", offer: Bool = false) -> XCUIApplication {
         let app = XCUIApplication()
         // 192.0.2.x is reserved for documentation: nothing answers there.
+        // -e2eNoDiscovery: the Connect screen never searches or knocks on TVs on this Mac's network.
         app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestTVState", tvState, "-uiTestOffer", offer ? "YES" : "NO",
-                               "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]   // the assertions read English text
+                               "-e2eNoDiscovery", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]   // the assertions read English text
         app.launch()
         return app
     }
@@ -130,6 +131,28 @@ final class TVRemoteUITests: XCTestCase {
         app.swipeUp()
         app.buttons["Credits & licenses"].tap()
         XCTAssertTrue(app.staticTexts["cleanyourtv"].waitForExistence(timeout: 5))
+    }
+
+    /// CON-17: each found TV says what it is and what Purio can do on it; only Android TVs can be picked.
+    func testFoundTVsSayWhatTheyAreAndOnlyAndroidTVsPair() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestFoundTVs", "YES", "-e2eNoDiscovery", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        app.tabBars.buttons["Remote"].tap()
+        let rows = app.buttons.matching(identifier: "foundTV")
+        XCTAssertTrue(rows.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertEqual(rows.count, 4)
+        let lg = rows.matching(NSPredicate(format: "value == '192.0.2.20'")).firstMatch
+        XCTAssertTrue(lg.label.contains("LG webOS · Remote coming soon"), lg.label)
+        XCTAssertFalse(lg.isEnabled)
+        let cast = rows.matching(NSPredicate(format: "value == '192.0.2.21'")).firstMatch
+        XCTAssertTrue(cast.label.contains("Chromecast · Not supported yet"), cast.label)
+        XCTAssertFalse(cast.isEnabled)
+        let tv = rows.matching(NSPredicate(format: "value == '192.0.2.13'")).firstMatch
+        XCTAssertTrue(tv.label.contains("Android TV · Remote, setup and Show on TV"), tv.label)
+        XCTAssertTrue(tv.isEnabled)
+        for row in rows.allElementsBoundByIndex { XCTAssertLessThanOrEqual(row.frame.maxX, app.frame.maxX + 0.5, "fits the screen") }
+        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "found-tvs"; shot.lifetime = .keepAlways; add(shot)
     }
 
     func testFirstLaunchGuidesToConnectAndTheAddressFieldTakesDots() {
@@ -267,7 +290,7 @@ final class StorePairing: XCTestCase {
         app.launch()
         app.tabBars.buttons["Remote"].tap()
         // Picked from the list when the TV is found, so the app knows its name; typed in otherwise.
-        let listed = app.buttons.containing(NSPredicate(format: "label CONTAINS %@", host)).firstMatch
+        let listed = app.buttons.matching(NSPredicate(format: "identifier == 'foundTV' AND value CONTAINS %@", host)).firstMatch
         if listed.waitForExistence(timeout: 15) { listed.tap() } else {
             let manual = app.buttons["My TV isn't listed: enter its address"]
             let instead = app.buttons["Enter the TV's address instead"]

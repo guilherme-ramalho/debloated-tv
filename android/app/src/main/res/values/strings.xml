@@ -14,6 +14,12 @@
     <string name="tvs_on_network">TVs on your network</string>
     <string name="still_looking">Still looking…</string>
     <string name="finding_address">Finding its address…</string>
+    <string name="tv_can_full">Remote, setup and Show on TV</string>
+    <string name="tv_can_basic">Remote and setup</string>
+    <string name="tv_remote_coming">Remote coming soon</string>
+    <string name="tv_not_yet">Not supported yet</string>
+    <string name="tv_is_chromecast">That\'s a Chromecast. Purio can\'t control it yet.</string>
+    <string name="tv_is_other">That\'s a %1$s TV. Its remote is coming to Purio soon.</string>
     <string name="not_listed">My TV isn\'t listed: enter its address</string>
     <string name="connect_footer">Works with Android TV and Google TV. Next, your TV shows a 6-character code to confirm it\'s you.</string>
     <string name="connect_none_title">No TV found yet</string>

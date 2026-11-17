@@ -44,6 +44,8 @@
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_androidtvremote2._tcp</string>
+		<string>_googlecast._tcp</string>
+		<string>_airplay._tcp</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Purio shows your photos and videos on your TV. They’re read on this iPhone and sent only to your TV, on your home network.</string>
