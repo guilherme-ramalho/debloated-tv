@@ -30,6 +30,22 @@ final class TVRemoteUITests: XCTestCase {
         save(app, "header-\(Int(width))")
     }
 
+    /// AST-05: with the assistant on, its button joins the header and everything still fits (the SE gets smaller
+    /// buttons); it opens the Ask Purio sheet with a text field (dictation is the keyboard's mic).
+    func testHeaderFitsTheAssistantButton() throws {
+        let app = launchRemote(extra: ["-uiTestAssistant"])
+        let buttons = [app.buttons["askPurio"], app.buttons["showOnTV"], app.buttons["typeOnTV"], app.buttons["Favorite inputs"]]
+        for button in buttons { XCTAssertTrue(button.waitForExistence(timeout: 5), button.identifier); XCTAssertTrue(button.isHittable, button.identifier) }
+        let width = app.windows.firstMatch.frame.width
+        XCTAssertLessThanOrEqual(buttons[3].frame.maxX, width - 8, "inputs button off the edge")
+        let chip = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'offline' OR label CONTAINS[c] 'standby' OR label CONTAINS[c] '192.0.2' OR label CONTAINS[c] 'connection'")).firstMatch
+        if chip.exists { XCTAssertGreaterThanOrEqual(chip.frame.width, 60, "the TV's name lost its room") }
+        save(app, "header-assistant-\(Int(width))")
+        app.buttons["askPurio"].tap()
+        XCTAssertTrue(app.textFields["assistantField"].waitForExistence(timeout: 5) || app.textViews["assistantField"].exists)
+        save(app, "assistant-\(Int(width))")
+    }
+
     /// CST-04: the library opens from the header, a photo opens full screen, and a TV that can't be reached says so.
     /// Grant photo access first: xcrun simctl privacy <udid> grant photos com.guilhermeramalho.TVRemote.dev
     func testShowOnTVOpensAPhotoFullScreen() throws {

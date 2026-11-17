@@ -49,6 +49,10 @@ import SwiftUI
 }
 
 struct RemoteView: View {
+    @State private var assistant = false
+    /// The assistant's button: on in Settings and Apple Intelligence ready (read when the remote shows).
+    @State private var assistantButton = false
+    @AppStorage(AssistantSettings.key) private var assistantOn = false
     @EnvironmentObject private var preferences: AppSettings
     @State private var keyboard = false
     @State private var inputs = false
@@ -131,6 +135,10 @@ struct RemoteView: View {
                     .presentationDetents([.medium, .large])
             }
             .sheet(isPresented: $keyboard) { KeyboardView(model: model) }
+            .sheet(isPresented: $assistant) { AssistantSheet(remote: model, apps: preferences.value.apps) }
+            .onAppear { assistantButton = AssistantSettings.showsButton }
+            .onChange(of: assistantOn) { _, _ in assistantButton = AssistantSettings.showsButton }
+            .onChange(of: settings) { _, open in if !open { assistantButton = AssistantSettings.showsButton } }
             .sheet(isPresented: $inputs) { NavigationStack { InputSettingsView(model: model).toolbar { Button("Done") { inputs = false } } } }
             .fullScreenCover(isPresented: $showOnTV) { ShowOnTVView(remote: model) }
 
@@ -142,6 +150,8 @@ struct RemoteView: View {
         ViewThatFits(in: .horizontal) {
             header(button: 46, spacing: 12, nameRoom: 130)
             header(button: 40, spacing: 8, nameRoom: 96)
+            // With the assistant's button too, the 4.7-inch SE needs one size smaller.
+            header(button: 36, spacing: 6, nameRoom: 72)
         }.frame(minHeight: 52)
     }
     private func header(button side: CGFloat, spacing: CGFloat, nameRoom: CGFloat) -> some View {
@@ -152,6 +162,10 @@ struct RemoteView: View {
                 .contextMenu { Button("Connection settings", systemImage: "wifi") { settings = true } }
             roundButton("photo.on.rectangle.angled", side: side, fill: Color(red: 22/255, green: 48/255, blue: 79/255), tint: QuietTheme.cyan) { showOnTV = true }
                 .accessibilityLabel("Show photos on TV").accessibilityIdentifier("showOnTV")
+            if assistantButton {
+                roundButton("sparkles", side: side, fill: QuietTheme.panel, tint: QuietTheme.cyan) { assistant = true }
+                    .accessibilityLabel("Ask Purio").accessibilityIdentifier("askPurio")
+            }
             roundButton("keyboard", side: side, fill: QuietTheme.panel) { keyboard = true }
                 .accessibilityLabel("Type on TV").accessibilityIdentifier("typeOnTV")
             // Favourite inputs need Purio's TV Home (Android TV); other TVs get their own input menu, where they have one.

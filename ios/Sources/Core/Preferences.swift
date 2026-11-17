@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RemoteApp: Codable, Identifiable, Equatable, Hashable {
+public struct RemoteApp: Codable, Identifiable, Equatable, Hashable, Sendable {
     public var id: String
     public var name: String
     public var launchURL: String

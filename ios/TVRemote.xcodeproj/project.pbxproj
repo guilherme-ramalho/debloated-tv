@@ -56,7 +56,9 @@
 		90000000000000000000000E /* Sources/Core/RokuRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90000000000000000000000D /* Sources/Core/RokuRemote.swift */; };
 		900000000000000000000010 /* Sources/Core/LGRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90000000000000000000000F /* Sources/Core/LGRemote.swift */; };
 		900000000000000000000012 /* Sources/Core/SamsungRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900000000000000000000011 /* Sources/Core/SamsungRemote.swift */; };
+		900000000000000000000016 /* Sources/Core/AssistantCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900000000000000000000015 /* Sources/Core/AssistantCommands.swift */; };
 		900000000000000000000008 /* Sources/Core/VideoStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900000000000000000000007 /* Sources/Core/VideoStream.swift */; };
+		900000000000000000000014 /* Sources/App/Assistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900000000000000000000013 /* Sources/App/Assistant.swift */; };
 		900000000000000000000006 /* Sources/App/ShowOnTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900000000000000000000005 /* Sources/App/ShowOnTV.swift */; };
 /* End PBXBuildFile section */
 
@@ -138,7 +140,9 @@
 		90000000000000000000000D /* Sources/Core/RokuRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/RokuRemote.swift; sourceTree = SOURCE_ROOT; };
 		90000000000000000000000F /* Sources/Core/LGRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/LGRemote.swift; sourceTree = SOURCE_ROOT; };
 		900000000000000000000011 /* Sources/Core/SamsungRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/SamsungRemote.swift; sourceTree = SOURCE_ROOT; };
+		900000000000000000000015 /* Sources/Core/AssistantCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/AssistantCommands.swift; sourceTree = SOURCE_ROOT; };
 		900000000000000000000007 /* Sources/Core/VideoStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Core/VideoStream.swift; sourceTree = SOURCE_ROOT; };
+		900000000000000000000013 /* Sources/App/Assistant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/Assistant.swift; sourceTree = SOURCE_ROOT; };
 		900000000000000000000005 /* Sources/App/ShowOnTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/App/ShowOnTV.swift; sourceTree = SOURCE_ROOT; };
 		FAC2022F3097509C00ECC767 /* TVRemoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TVRemoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -203,7 +207,9 @@
 				90000000000000000000000D /* Sources/Core/RokuRemote.swift */,
 				90000000000000000000000F /* Sources/Core/LGRemote.swift */,
 				900000000000000000000011 /* Sources/Core/SamsungRemote.swift */,
+				900000000000000000000015 /* Sources/Core/AssistantCommands.swift */,
 				900000000000000000000007 /* Sources/Core/VideoStream.swift */,
+				900000000000000000000013 /* Sources/App/Assistant.swift */,
 				900000000000000000000005 /* Sources/App/ShowOnTV.swift */,
 				70000000000000000000000D /* Sources/App/DebloatFlow.swift */,
 				300000000000000000000008 /* Sources/App/PairingViews.swift */,
@@ -393,7 +399,9 @@
 				90000000000000000000000E /* Sources/Core/RokuRemote.swift in Sources */,
 				900000000000000000000010 /* Sources/Core/LGRemote.swift in Sources */,
 				900000000000000000000012 /* Sources/Core/SamsungRemote.swift in Sources */,
+				900000000000000000000016 /* Sources/Core/AssistantCommands.swift in Sources */,
 				900000000000000000000008 /* Sources/Core/VideoStream.swift in Sources */,
+				900000000000000000000014 /* Sources/App/Assistant.swift in Sources */,
 				900000000000000000000006 /* Sources/App/ShowOnTV.swift in Sources */,
 				70000000000000000000000E /* Sources/App/DebloatFlow.swift in Sources */,
 				300000000000000000000009 /* Sources/App/PairingViews.swift in Sources */,

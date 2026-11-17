@@ -282,6 +282,7 @@ struct SettingsView: View {
                             Text("When returning to Purio TV").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
                         }
                     }.toggleStyle(QuietToggleStyle()).padding(.horizontal, 13).padding(.vertical, 10)
+                    AssistantSettingRow()
                 }
                 Button("Credits & licenses") { credits = true }.font(.footnote).foregroundStyle(QuietTheme.muted).frame(minHeight: 44)
                     .sheet(isPresented: $credits) {

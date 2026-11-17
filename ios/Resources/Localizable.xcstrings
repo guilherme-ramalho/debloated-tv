@@ -441,6 +441,40 @@
     "192.168.1.20" : {
 
     },
+    "A bit quieter" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etwas leiser"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un poco más bajo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un peu moins fort"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un po' più basso"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um pouco mais baixo"
+          }
+        }
+      }
+    },
     "A different build of this Home screen is already on the TV, signed with another key. Uninstall it on the TV first, then try again." : {
       "localizations" : {
         "de" : {
@@ -1497,6 +1531,108 @@
         }
       }
     },
+    "Apple Intelligence doesn't understand this language yet." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence versteht diese Sprache noch nicht."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence aún no entiende este idioma."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence ne comprend pas encore cette langue."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence non capisce ancora questa lingua."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A Apple Intelligence ainda não entende este idioma."
+          }
+        }
+      }
+    },
+    "Apple Intelligence is still downloading; the button appears when it's ready." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence wird noch geladen; die Taste erscheint, sobald es bereit ist."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence aún se está descargando; el botón aparecerá cuando esté listo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence est encore en téléchargement ; le bouton apparaîtra quand ce sera prêt."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence è ancora in download; il pulsante appare quando è pronto."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A Apple Intelligence ainda está sendo baixada; o botão aparece quando estiver pronta."
+          }
+        }
+      }
+    },
+    "Apple Intelligence is still getting ready. Try again in a moment." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence wird noch vorbereitet. Versuche es gleich noch einmal."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence aún se está preparando. Inténtalo en un momento."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence se prépare encore. Réessayez dans un instant."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence si sta ancora preparando. Riprova tra un momento."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A Apple Intelligence ainda está se preparando. Tente de novo em instantes."
+          }
+        }
+      }
+    },
     "Applied" : {
       "localizations" : {
         "de" : {
@@ -1804,6 +1940,108 @@
         }
       }
     },
+    "Ask in your own words: “open Netflix”, “a bit quieter”. Runs on this iPhone with Apple Intelligence; nothing is sent anywhere." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frag in deinen eigenen Worten: „Öffne Netflix“, „etwas leiser“. Läuft auf diesem iPhone mit Apple Intelligence; nichts wird irgendwohin gesendet."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pide con tus palabras: «abre Netflix», «un poco más bajo». Funciona en este iPhone con Apple Intelligence; no se envía nada a ninguna parte."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demandez avec vos mots : « ouvre Netflix », « un peu moins fort ». Fonctionne sur cet iPhone avec Apple Intelligence ; rien n'est envoyé nulle part."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiedi con parole tue: «apri Netflix», «un po' più basso». Funziona su questo iPhone con Apple Intelligence; non viene inviato nulla."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peça com suas palavras: “abra a Netflix”, “um pouco mais baixo”. Funciona neste iPhone com a Apple Intelligence; nada é enviado a lugar nenhum."
+          }
+        }
+      }
+    },
+    "Ask Purio" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio fragen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pregunta a Purio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demander à Purio"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiedi a Purio"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pergunte ao Purio"
+          }
+        }
+      }
+    },
+    "Ask Purio…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio fragen…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pregunta a Purio…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demander à Purio…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiedi a Purio…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pergunte ao Purio…"
+          }
+        }
+      }
+    },
     "Asking %@ to show a code…" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1870,6 +2108,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pedindo à TV em %@ que mostre um código…"
+          }
+        }
+      }
+    },
+    "Assistant" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assistent"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asistente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assistant"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assistente"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assistente"
           }
         }
       }
@@ -5315,6 +5587,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A tela inicial ficou em %@ em vez da nova. A original nunca foi desligada, então a TV funciona como antes."
+          }
+        }
+      }
+    },
+    "I can't help with that. I can only control your TV." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dabei kann ich nicht helfen. Ich kann nur deinen Fernseher steuern."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No puedo ayudar con eso. Solo puedo controlar tu TV."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je ne peux pas aider pour ça. Je peux seulement contrôler votre TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non posso aiutarti con questo. Posso solo controllare la tua TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não posso ajudar com isso. Só consigo controlar a sua TV."
           }
         }
       }
@@ -13971,6 +14277,40 @@
         }
       }
     },
+    "Say what you'd like the TV to do. It runs on this iPhone; nothing is sent anywhere." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sag, was der Fernseher tun soll. Läuft auf diesem iPhone; nichts wird irgendwohin gesendet."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Di lo que quieres que haga la TV. Funciona en este iPhone; no se envía nada a ninguna parte."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dites ce que la TV doit faire. Tout se passe sur cet iPhone ; rien n'est envoyé nulle part."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Di' cosa vuoi che faccia la TV. Funziona su questo iPhone; non viene inviato nulla."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diga o que você quer que a TV faça. Funciona neste iPhone; nada é enviado a lugar nenhum."
+          }
+        }
+      }
+    },
     "Search again" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -14138,6 +14478,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Selecionar entrada"
+          }
+        }
+      }
+    },
+    "Send" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
           }
         }
       }
@@ -15812,6 +16186,40 @@
         }
       }
     },
+    "That was a long chat, so I've started a fresh one. Please say it again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das war ein langes Gespräch, ich habe neu angefangen. Sag es bitte noch einmal."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fue una conversación larga, así que empecé una nueva. Dilo otra vez, por favor."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La conversation était longue, j'en ai commencé une nouvelle. Redites-le, s'il vous plaît."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La conversazione era lunga, ne ho iniziata una nuova. Ripetilo, per favore."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A conversa ficou longa, então comecei outra. Diga de novo, por favor."
+          }
+        }
+      }
+    },
     "That's a Chromecast. Purio can't control it yet." : {
       "localizations" : {
         "de" : {
@@ -15876,6 +16284,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "O robô do Android é reproduzido ou modificado a partir de trabalho criado e compartilhado pelo Google e usado de acordo com os termos da Licença Creative Commons Atribuição 3.0."
+          }
+        }
+      }
+    },
+    "The assistant needs iOS 26." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Assistent braucht iOS 26."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El asistente necesita iOS 26."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'assistant nécessite iOS 26."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'assistente richiede iOS 26."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O assistente precisa do iOS 26."
           }
         }
       }
@@ -18094,6 +18536,40 @@
         }
       }
     },
+    "Thinking…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denkt nach…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pensando…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réflexion…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sto pensando…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pensando…"
+          }
+        }
+      }
+    },
     "This backup is empty" : {
       "localizations" : {
         "de" : {
@@ -19077,6 +19553,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desligar TV"
+          }
+        }
+      }
+    },
+    "Turn on Apple Intelligence in iOS Settings to use it." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schalte Apple Intelligence in den iOS-Einstellungen ein, um ihn zu nutzen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activa Apple Intelligence en los Ajustes de iOS para usarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activez Apple Intelligence dans les Réglages d'iOS pour l'utiliser."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attiva Apple Intelligence nelle Impostazioni di iOS per usarlo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ative a Apple Intelligence nos Ajustes do iOS para usar."
           }
         }
       }
@@ -21602,6 +22112,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "O papel de parede passa de 1 MB"
+          }
+        }
+      }
+    },
+    "What's on the TV?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Was läuft gerade?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué hay en la TV?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qu'y a-t-il sur la TV ?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cosa c'è sulla TV?"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que está passando na TV?"
           }
         }
       }

@@ -82,3 +82,28 @@ final class TVKindTests: XCTestCase {
         XCTAssertEqual(silent, .silent)
     }
 }
+
+/// The assistant's vocabulary (AST-01..04): key words, presses capped at 10, apps by the name someone says.
+final class AssistantCommandsTests: XCTestCase {
+    func testEveryOfferedKeyNameMeansAKey() {
+        for name in AssistantCommands.keyNames { XCTAssertNotNil(AssistantCommands.key(named: name), name) }
+        XCTAssertEqual(AssistantCommands.key(named: "Select"), .select)
+        XCTAssertEqual(AssistantCommands.key(named: "fast forward"), .fastForward)
+        XCTAssertEqual(AssistantCommands.key(named: "volume_down"), .volumeDown)
+        XCTAssertEqual(AssistantCommands.key(named: "HDMI"), .inputs)
+        XCTAssertNil(AssistantCommands.key(named: "power"), "power has its own tool")
+        XCTAssertNil(AssistantCommands.key(named: "launch rockets"))
+    }
+    func testPressesAreCapped() {
+        XCTAssertEqual(AssistantCommands.times(0), 1)
+        XCTAssertEqual(AssistantCommands.times(3), 3)
+        XCTAssertEqual(AssistantCommands.times(50), 10)
+    }
+    func testAppsAreFoundByWhatPeopleSay() {
+        let apps = RemoteApp.known
+        XCTAssertEqual(AssistantCommands.app(named: "netflix", in: apps)?.id, "com.netflix.ninja")
+        XCTAssertEqual(AssistantCommands.app(named: "Amazon Prime Video", in: apps)?.name, "Prime Video")
+        XCTAssertEqual(AssistantCommands.app(named: "Max", in: apps)?.name, "HBO Max")
+        XCTAssertNil(AssistantCommands.app(named: "Minesweeper", in: apps))
+    }
+}

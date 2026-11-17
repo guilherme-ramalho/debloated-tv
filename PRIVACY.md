@@ -20,6 +20,9 @@ Purio TV collects no personal data. It has no accounts, no ads, no analytics and
   Connect screen is open, the app lists the TVs that announce themselves on your network and briefly opens a
   connection to a few of their ports to tell what kind of TV each one is (Android TV, Roku, LG, Samsung, Chromecast).
   No data is sent in those checks, nothing is kept after you leave the screen, and nothing leaves your network.
+- **The assistant (optional, off by default).** If you turn it on, what you type or dictate to it is handled by
+  Apple's on-device model (Apple Intelligence) on your iPhone, which turns it into remote commands for your TV. It
+  isn't sent to the developer or any server, and the conversation is forgotten when you close it.
 - **Siri and Shortcuts.** Phrases are handled by Apple under Apple's privacy policy; the app only receives the action
   to run.
 
