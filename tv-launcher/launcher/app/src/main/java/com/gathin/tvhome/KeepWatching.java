@@ -34,9 +34,6 @@ import java.util.Map;
 final class KeepWatching {
     static final String PERMISSION = "android.permission.READ_TV_LISTINGS";
     static final int MAX = 10;
-    static final long MAX_AGE_MS = 30L * 24 * 60 * 60 * 1000;
-    /** More than this much watched counts as finished. */
-    static final double DONE = 0.95;
     private static final String PREFS = "keep_watching";
     private static final int POSTER_WIDTH = 320;
 
@@ -64,16 +61,15 @@ final class KeepWatching {
     }
 
     /**
-     * What the phone shows: one card per show (its latest), newest first, at most [MAX]. Left out: finished ones,
-     * ones not watched for 30 days, ones with no title or no way to open them, and ones the person removed
-     * (until the show is watched again: [hidden] maps a show to when it was removed).
+     * What the phone shows: one card per show (its latest), newest first, at most [MAX], however old and however
+     * far watched (his choice, 17 Nov: finished and older shows stay). Left out: ones with no title or no way to
+     * open them, and ones the person removed (until the show is watched again: [hidden] maps a show to when it was
+     * removed).
      */
     static List<Entry> select(List<Entry> rows, long now, Map<String, Long> hidden) {
         Map<String, Entry> latest = new LinkedHashMap<>();
         for (Entry e : rows) {
             if (e.title == null || e.title.trim().isEmpty() || e.intentUri == null || e.intentUri.isEmpty()) continue;
-            if (e.lastWatched > 0 && now - e.lastWatched > MAX_AGE_MS) continue;
-            if (e.duration > 0 && e.position >= e.duration * DONE) continue;
             Long removedAt = hidden.get(e.showKey());
             if (removedAt != null && e.lastWatched <= removedAt) continue;
             Entry kept = latest.get(e.showKey());

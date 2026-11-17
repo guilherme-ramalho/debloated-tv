@@ -21,7 +21,7 @@ public class KeepWatchingTest {
         return new KeepWatching.Entry(id, pkg, title, null, s, e, pos, dur, watched, null, "intent:#Intent;package=" + pkg + ";end");
     }
 
-    @Test public void newestShowFirstOneCardEachFinishedAndOldOnesLeftOut() {
+    @Test public void newestShowFirstOneCardEachFinishedAndOldOnesKept() {
         List<KeepWatching.Entry> rows = Arrays.asList(
                 row(1, "com.netflix.ninja", "Show A", "1", "4", 600_000, 3_000_000, NOW - DAY),
                 row(2, "com.netflix.ninja", "Show A", "1", "5", 100_000, 3_000_000, NOW - 1000),   // a later episode of A
@@ -33,7 +33,7 @@ public class KeepWatchingTest {
         rows = new ArrayList<>(rows);
         rows.set(6, new KeepWatching.Entry(7, "com.netflix.ninja", "No link", null, "1", "1", 1, 10, NOW, null, null));
         List<KeepWatching.Entry> out = KeepWatching.select(rows, NOW, Collections.emptyMap());
-        assertEquals(Arrays.asList(2L, 3L), ids(out));
+        assertEquals(Arrays.asList(2L, 4L, 3L, 5L), ids(out));
     }
 
     @Test public void atMostTenAndARemovedShowComesBackWhenWatchedAgain() {
