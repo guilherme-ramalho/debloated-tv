@@ -15,6 +15,8 @@
     <!-- TCL volume workaround: corrects the extra initial volume step only when opted in through the theme. -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Keep watching on the phone: read the TV's Continue watching list when the phone asks (KeepWatching). -->
+    <uses-permission android:name="android.permission.READ_TV_LISTINGS" />
     <!-- Needed since Android 10 to read the Wi-Fi network name for the network pill. Never requested at
          runtime: build-and-install grants it with pm grant, so lint's Android 12 "ask for COARSE with
          FINE" rule does not apply here. -->

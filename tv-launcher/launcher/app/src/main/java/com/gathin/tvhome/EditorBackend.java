@@ -67,6 +67,9 @@ final class EditorBackend implements EditorServer.Backend {
                 case "uninstall": result = uninstall(payload); break;
                 case "sleepTimer": result = sleepTimer(payload); break;
                 case "homeSettings": result = homeSettings(payload); break;
+                case "keepWatching": result = KeepWatching.toPhone(ctx, System.currentTimeMillis()); break;
+                case "resumeWatching": result = resumeWatching(payload); break;
+                case "hideWatching": result = hideWatching(payload); break;
                 default: return error(id, "Unsupported request");
             }
             return new JSONObject().put("type", "response").put("id", id).put("ok", true).put("result", result).toString();
@@ -264,7 +267,7 @@ final class EditorBackend implements EditorServer.Backend {
         JSONObject w = cfg.weather;
         boolean on = w != null && w.optBoolean("enabled", false);
         JSONObject home = new JSONObject()
-                .put("features", new JSONArray().put("weather").put("sleepTimer").put("looks"))
+                .put("features", new JSONArray().put("weather").put("sleepTimer").put("looks").put("keepWatching"))
                 .put("look", HomeLooks.current(readJson(new File(themeDir(), Config.FILE_NAME))))
                 .put("weather", on)
                 .put("weatherAuto", on && w.optBoolean("auto", false))
@@ -292,6 +295,34 @@ final class EditorBackend implements EditorServer.Backend {
         writeAtomic(configFile, config.toString(2).getBytes(StandardCharsets.UTF_8));
         EditorHome.rebuild();
         return snapshot();
+    }
+
+    // ---- keep watching (KeepWatching) ------------------------------------------------------------------
+
+    private KeepWatching.Entry watching(JSONObject payload) {
+        long id;
+        try { id = Long.parseLong(payload.optString("id")); } catch (NumberFormatException e) { throw new IllegalArgumentException("Unknown show"); }
+        if (!KeepWatching.permitted(ctx)) throw new IllegalArgumentException("Home can't read Continue watching yet");
+        KeepWatching.Entry e = KeepWatching.find(ctx, id);
+        if (e == null) throw new IllegalArgumentException("That show is no longer in Continue watching");
+        return e;
+    }
+
+    /** Opens the show in its own app, at the app's own link (only links into the app that listed it). */
+    private JSONObject resumeWatching(JSONObject payload) throws JSONException {
+        KeepWatching.Entry e = watching(payload);
+        try {
+            ctx.startActivity(KeepWatching.resumeIntent(e));
+        } catch (java.net.URISyntaxException | android.content.ActivityNotFoundException ex) {
+            throw new IllegalArgumentException("The app couldn't open that show");
+        }
+        return new JSONObject().put("status", "opened");
+    }
+
+    /** Leaves the show out of Keep watching until it's watched again; returns the new list. */
+    private JSONObject hideWatching(JSONObject payload) throws JSONException {
+        KeepWatching.hide(ctx, watching(payload), System.currentTimeMillis());
+        return KeepWatching.toPhone(ctx, System.currentTimeMillis());
     }
 
     // ---- applyLayout ---------------------------------------------------------------------------------

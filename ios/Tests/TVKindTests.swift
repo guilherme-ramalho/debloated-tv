@@ -107,3 +107,19 @@ final class AssistantCommandsTests: XCTestCase {
         XCTAssertNil(AssistantCommands.app(named: "Minesweeper", in: apps))
     }
 }
+
+/// Keep watching (KWT-01..03): what Home sends decodes, is checked, and reads as progress and time left.
+final class KeepWatchingTests: XCTestCase {
+    func testHomesListDecodesAndIsChecked() throws {
+        let json = #"{"allowed":true,"items":[{"id":"12","package":"com.netflix.ninja","title":"A show","episode":"S2 · E5","positionMs":1900000,"durationMs":3280000,"lastWatched":1794900000,"posterJPEG":"/9j/4AAQ"},{"id":"13","package":"com.amazon.amazonvideo.livingroom","title":"A film","episode":"","positionMs":0,"durationMs":0,"lastWatched":1794800000}]}"#
+        let list = try JSONDecoder().decode(KeepWatchingList.self, from: Data(json.utf8))
+        try list.validate()
+        XCTAssertEqual(list.items.count, 2)
+        XCTAssertEqual(list.items[0].posterJPEG?.prefix(2), Data([0xff, 0xd8]))
+        XCTAssertEqual(list.items[0].minutesLeft, 23)
+        XCTAssertEqual(list.items[0].progress!, 0.579, accuracy: 0.001)
+        XCTAssertNil(list.items[1].progress); XCTAssertNil(list.items[1].minutesLeft)
+        let bad = KeepWatchingList(allowed: true, items: [WatchingShow(id: "1", package: "not a package!", title: "x", episode: "", positionMs: 0, durationMs: 0, lastWatched: 0, posterJPEG: nil)])
+        XCTAssertThrowsError(try bad.validate())
+    }
+}

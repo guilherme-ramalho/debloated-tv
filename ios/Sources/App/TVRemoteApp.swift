@@ -21,6 +21,7 @@ import SwiftUI
             .task {
                 #if DEBUG
                 UITestHooks.apply(setup: setup, host: model.host)
+                if UserDefaults.standard.bool(forKey: "uiTestKeepWatching") { editor.showSampleKeepWatching(UITestHooks.sampleKeepWatching) }
                 #endif
                 model.setAutoReconnect(settings.value.autoReconnect); if phase == .active { model.activate() }
             }
@@ -281,6 +282,12 @@ enum UITestHooks {
     static var showsRemote: Bool { UserDefaults.standard.bool(forKey: "uiTestRemote") }
     /// `-showConnect YES` (Dev builds): the Connect screen even with a paired TV, to check discovery on a real network.
     static var showsConnect: Bool { UserDefaults.standard.bool(forKey: "showConnect") }
+    /// `-uiTestKeepWatching YES`: the TV tab's Keep watching strip with sample shows (no TV, no posters).
+    static let sampleKeepWatching = KeepWatchingList(allowed: true, items: [
+        WatchingShow(id: "1", package: "com.netflix.ninja", title: "[Show title]", episode: "S2 · E5", positionMs: 1_900_000, durationMs: 3_280_000, lastWatched: 1_794_900_000, posterJPEG: nil),
+        WatchingShow(id: "2", package: "com.amazon.amazonvideo.livingroom", title: "[Film title]", episode: "", positionMs: 3_700_000, durationMs: 8_180_000, lastWatched: 1_794_800_000, posterJPEG: nil),
+        WatchingShow(id: "3", package: "com.wbd.stream", title: "[Series title with a long name]", episode: "S5 · E2", positionMs: 611_000, durationMs: 1_132_000, lastWatched: 1_794_700_000, posterJPEG: nil),
+    ])
     /// `-uiTestFoundTVs YES`: the Connect list shows one TV of each kind, without searching the network.
     static var foundTVs: [DiscoveredTV] {
         guard UserDefaults.standard.bool(forKey: "uiTestFoundTVs") else { return [] }

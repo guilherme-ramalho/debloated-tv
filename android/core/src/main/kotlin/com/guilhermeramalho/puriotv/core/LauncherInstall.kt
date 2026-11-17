@@ -172,6 +172,8 @@ class LauncherInstaller(private val tv: TVDevice) {
 
         step?.invoke(LauncherStep.HANDOVER, 0.0)
         tv.exec("pm grant $PACKAGE android.permission.ACCESS_FINE_LOCATION 2>/dev/null; echo location-granted")
+        // Keep watching on the phone reads the TV's Continue watching list (Home 14+); older builds ignore it.
+        tv.exec("pm grant $PACKAGE android.permission.READ_TV_LISTINGS 2>/dev/null; echo listings-granted")
         tv.exec("cmd package compile -m speed -f $PACKAGE", 300_000)
         if (stock != null) tv.exec("pm disable-user --user 0 $stock")
         tv.exec("cmd package set-home-activity --user 0 $ACTIVITY")

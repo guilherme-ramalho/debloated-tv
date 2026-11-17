@@ -398,6 +398,40 @@
         }
       }
     },
+    "%lld min left" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "noch %lld Min."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "quedan %lld min"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min restantes"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min rimanenti"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "faltam %lld min"
+          }
+        }
+      }
+    },
     "%lld of %lld" : {
       "localizations" : {
         "de" : {
@@ -5655,6 +5689,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se uma senha estiver errada, a TV perde o Wi-Fi. Aí você teria que reconectá-la com o próprio controle, em Configurações › Rede e Internet."
+          }
+        }
+      }
+    },
+    "Keep watching needs the latest Home screen. Update Home screen to turn it on." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„Weiterschauen“ braucht den neuesten Startbildschirm. Aktualisiere den Startbildschirm, um es einzuschalten."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«Seguir viendo» necesita la última pantalla de inicio. Actualiza la pantalla de inicio para activarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« Reprendre » nécessite le dernier écran d'accueil. Mettez à jour l'écran d'accueil pour l'activer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«Continua a guardare» richiede la Home più recente. Aggiorna la schermata Home per attivarlo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“Continuar assistindo” precisa da tela inicial mais recente. Atualize a tela inicial para ativar."
+          }
+        }
+      }
+    },
+    "Keep watching on %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiterschauen auf %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguir viendo en %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reprendre sur %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua a guardare su %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar assistindo na %@"
           }
         }
       }
@@ -13120,6 +13222,40 @@
         }
       }
     },
+    "Remove from Keep watching" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus „Weiterschauen“ entfernen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar de Seguir viendo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer de Reprendre"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rimuovi da Continua a guardare"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover de Continuar assistindo"
+          }
+        }
+      }
+    },
     "Removing a shortcut keeps the app installed on the TV." : {
       "localizations" : {
         "de" : {
@@ -13694,6 +13830,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restaurando…"
+          }
+        }
+      }
+    },
+    "Resume on TV" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf dem Fernseher fortsetzen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reanudar en la TV"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reprendre sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riprendi sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retomar na TV"
           }
         }
       }
@@ -15158,6 +15328,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostrando um código na sua TV…"
+          }
+        }
+      }
+    },
+    "Shows Resume on TV" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeigt „Auf dem Fernseher fortsetzen“"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muestra Reanudar en la TV"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affiche Reprendre sur la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra Riprendi sulla TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra Retomar na TV"
           }
         }
       }
@@ -21771,6 +21975,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aumentar volume"
+          }
+        }
+      }
+    },
+    "Wait for TV Home to connect" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warte, bis sich der TV-Startbildschirm verbindet"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espera a que se conecte el inicio de la TV"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attendez que l'accueil TV se connecte"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attendi che la Home TV si colleghi"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aguarde a tela inicial da TV conectar"
           }
         }
       }

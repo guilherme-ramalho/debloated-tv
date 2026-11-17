@@ -26,6 +26,11 @@ struct TVHomeView: View {
                         }.padding(14)
                     }.accessibilityIdentifier("brandTVNotice")
                 } else if info.homeInstalled {
+                    if let list = editor.keepWatching, list.allowed, !list.items.isEmpty {
+                        KeepWatchingStrip(tvName: model.tvName, shows: list.items)
+                    } else if editor.keepWatching?.allowed == false {
+                        QuietCaption(text: "Keep watching needs the latest Home screen. Update Home screen to turn it on.")
+                    }
                     NavigationLink { TVSetupManageView(host: model.host) } label: { TVSetupStrip(info: info) }.buttonStyle(.plain)
                     if homeUpdateAvailable {
                         NavigationLink { HomeUpdateView(host: model.host) { editor.connect(model: model, force: true) } } label: { HomeUpdateCard() }
@@ -614,5 +619,141 @@ struct LookView: View {
             defer { working = nil }
             do { try await editor.setLook(look) } catch { settings.notice = error.localizedDescription }
         }
+    }
+}
+
+
+// MARK: - Keep watching (the TV's Continue watching list, through Purio Home)
+
+/// The TV tab's strip: up to 10 shows, newest first, swiped sideways. Tap one for Resume on TV / Remove.
+struct KeepWatchingStrip: View {
+    let tvName: String
+    let shows: [WatchingShow]
+    @State private var picked: WatchingShow?
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            QuietSectionTitle(title: String(format: String(localized: "Keep watching on %@"), tvName))
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(alignment: .top, spacing: 10) {
+                    ForEach(shows) { show in
+                        Button { picked = show } label: { KeepWatchingCard(show: show) }
+                            .buttonStyle(.plain)
+                            .accessibilityElement(children: .combine)
+                            .accessibilityHint(Text("Shows Resume on TV"))
+                            .accessibilityIdentifier("keepWatchingCard")
+                    }
+                }.padding(.trailing, 20)
+            }.padding(.trailing, -20)
+        }
+        .sheet(item: $picked) { show in KeepWatchingSheet(show: show) }
+    }
+}
+
+struct KeepWatchingCard: View {
+    let show: WatchingShow
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            ZStack(alignment: .bottomLeading) {
+                KeepWatchingPoster(show: show).frame(width: 154, height: 87)
+                if let progress = show.progress {
+                    GeometryReader { proxy in
+                        ZStack(alignment: .leading) {
+                            Rectangle().fill(.white.opacity(0.18))
+                            Rectangle().fill(QuietTheme.cyan).frame(width: proxy.size.width * progress)
+                        }
+                    }.frame(height: 4)
+                }
+            }
+            .frame(width: 154, height: 87)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(QuietTheme.edge, lineWidth: 1))
+            .overlay(alignment: .bottomTrailing) {
+                Image(systemName: "play.fill").font(.system(size: 11)).foregroundStyle(.white)
+                    .frame(width: 28, height: 28).background(QuietTheme.background.opacity(0.72), in: Circle()).padding(8).padding(.bottom, 2)
+                    .accessibilityHidden(true)
+            }
+            Text(verbatim: show.title).font(.system(size: 13, weight: .semibold)).lineLimit(1)
+            Text(verbatim: KeepWatchingText.detail(show)).font(.system(size: 11)).foregroundStyle(QuietTheme.muted).lineLimit(1)
+        }.frame(width: 154, alignment: .leading)
+    }
+}
+
+/// The poster Home sent, or the app's name on a plain tile.
+struct KeepWatchingPoster: View {
+    let show: WatchingShow
+    var tile = QuietTheme.panel
+    var body: some View {
+        if let data = show.posterJPEG, let image = UIImage(data: data) {
+            Image(uiImage: image).resizable().scaledToFill()
+        } else {
+            ZStack(alignment: .topLeading) {
+                Rectangle().fill(tile)
+                Text(verbatim: KeepWatchingText.app(show.package)).font(.system(size: 10, weight: .bold)).textCase(.uppercase)
+                    .foregroundStyle(.white.opacity(0.85)).padding(8)
+            }
+        }
+    }
+}
+
+enum KeepWatchingText {
+    /// "S2 · E5 · 23 min left", "48 min left", or the episode alone.
+    static func detail(_ show: WatchingShow) -> String {
+        let left = show.minutesLeft.map { String(localized: "\($0) min left") }
+        return [show.episode.isEmpty ? nil : show.episode, left].compactMap { $0 }.joined(separator: " · ")
+    }
+    static func app(_ package: String) -> String {
+        TVSession.appName(for: package) ?? RemoteApp.known.first { $0.id == package }?.name ?? package.split(separator: ".").last.map(String.init) ?? package
+    }
+}
+
+/// Tap a show: its picture, how far in, Resume on TV, Remove from Keep watching.
+struct KeepWatchingSheet: View {
+    let show: WatchingShow
+    @EnvironmentObject private var editor: HomeEditor
+    @Environment(\.dismiss) private var dismiss
+    @State private var working = false
+    @State private var problem = ""
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            ZStack(alignment: .bottomLeading) {
+                KeepWatchingPoster(show: show, tile: QuietTheme.background).frame(maxWidth: .infinity).frame(height: 180)
+                if let progress = show.progress {
+                    GeometryReader { proxy in
+                        ZStack(alignment: .leading) {
+                            Rectangle().fill(.white.opacity(0.18))
+                            Rectangle().fill(QuietTheme.cyan).frame(width: proxy.size.width * progress)
+                        }
+                    }.frame(height: 5)
+                }
+            }
+            .frame(height: 180).clipShape(RoundedRectangle(cornerRadius: 16))
+            .overlay(alignment: .topLeading) {
+                // On a poster the app's name sits on top of it; without one the tile already shows it.
+                if show.posterJPEG != nil {
+                    Text(verbatim: KeepWatchingText.app(show.package)).font(.system(size: 11, weight: .bold)).textCase(.uppercase)
+                        .foregroundStyle(.white.opacity(0.9)).padding(12).shadow(radius: 3)
+                }
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Text(verbatim: show.title).font(.system(size: 20, weight: .semibold))
+                let detail = KeepWatchingText.detail(show)
+                if !detail.isEmpty { Text(verbatim: detail).font(.system(size: 14)).foregroundStyle(QuietTheme.muted) }
+            }
+            if !problem.isEmpty { Text(verbatim: problem).font(.footnote).foregroundStyle(.orange) }
+            Button {
+                act { try await editor.resume(show); dismiss() }
+            } label: {
+                Label("Resume on TV", systemImage: "play.fill").frame(maxWidth: .infinity)
+            }.buttonStyle(QuietPrimaryStyle()).disabled(working).accessibilityIdentifier("resumeOnTV")
+            Button("Remove from Keep watching") { act { try await editor.hide(show); dismiss() } }
+                .font(.system(size: 14, weight: .medium)).foregroundStyle(QuietTheme.muted).frame(maxWidth: .infinity, minHeight: 44).disabled(working)
+        }
+        .padding(.horizontal, 22).padding(.top, 28).padding(.bottom, 12)
+        .frame(maxHeight: .infinity, alignment: .top)
+        .presentationDetents([.height(470), .large]).presentationDragIndicator(.visible).presentationBackground(QuietTheme.panel)
+    }
+    private func act(_ work: @escaping () async throws -> Void) {
+        working = true; problem = ""
+        Task { do { try await work() } catch { problem = error.localizedDescription }; working = false }
     }
 }

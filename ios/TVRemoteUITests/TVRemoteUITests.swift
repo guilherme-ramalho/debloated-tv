@@ -180,6 +180,25 @@ final class TVRemoteUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["cleanyourtv"].waitForExistence(timeout: 5))
     }
 
+    /// KWT-04: the TV tab's Keep watching strip (sample shows), and a tap opens Resume on TV.
+    func testKeepWatchingStripOpensResume() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestTVState", "installed", "-uiTestOffer", "NO", "-uiTestKeepWatching", "YES",
+                               "-e2eNoDiscovery", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        app.tabBars.buttons["TV"].tap()
+        let cards = app.buttons.matching(identifier: "keepWatchingCard")
+        XCTAssertTrue(cards.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertEqual(cards.count, 3)
+        XCTAssertTrue(cards.firstMatch.label.contains("[Show title]"), cards.firstMatch.label)
+        XCTAssertTrue(cards.firstMatch.label.contains("S2 · E5 · 23 min left"), cards.firstMatch.label)
+        save(app, "keep-watching")
+        cards.firstMatch.tap()
+        XCTAssertTrue(app.buttons["resumeOnTV"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Remove from Keep watching"].exists)
+        save(app, "keep-watching-sheet")
+    }
+
     /// CON-17: each found TV says what it is and what Purio can do on it; a Chromecast can't be picked.
     func testFoundTVsSayWhatTheyAreAndOnlyAndroidTVsPair() {
         let app = XCUIApplication()

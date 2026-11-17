@@ -155,6 +155,8 @@ public struct LauncherInstaller: Sendable {
 
         step?(.handover, 0)
         _ = try await tv.run("pm grant \(Self.package) android.permission.ACCESS_FINE_LOCATION 2>/dev/null; echo location-granted")
+        // Keep watching on the phone reads the TV's Continue watching list (Home 14+); older builds ignore it.
+        _ = try await tv.run("pm grant \(Self.package) android.permission.READ_TV_LISTINGS 2>/dev/null; echo listings-granted")
         _ = try await tv.run("cmd package compile -m speed -f \(Self.package)", timeout: 300)
         if let stock { _ = try await tv.run("pm disable-user --user 0 \(stock)") }
         _ = try await tv.run("cmd package set-home-activity --user 0 \(Self.activity)")

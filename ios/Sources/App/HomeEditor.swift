@@ -32,7 +32,7 @@ import UniformTypeIdentifiers
     static let applyDelay: Duration = .milliseconds(800)
 
     func close() {
-        generation += 1; wanted = false; snapshot = nil; operation?.cancel(); operation = nil; client.close()
+        generation += 1; wanted = false; snapshot = nil; keepWatching = nil; operation?.cancel(); operation = nil; client.close()
         ready = false; busy = false; waitingFor = nil; backedUp = false
         message = String(localized: "TV Home connects when you open the TV tab with the TV on.")
     }
@@ -115,6 +115,7 @@ import UniformTypeIdentifiers
         let result = try await client.request("snapshot", as: LauncherSnapshot.self)
         guard generation == token else { throw CancellationError() }
         try result.validate(); snapshot = result; ready = true; message = String(localized: "Connected to TV Home")
+        Task { await loadKeepWatching() }
     }
     func apply(_ layout: HomeLayout, wallpaper: Data?) async throws {
         try layout.validate()
@@ -179,6 +180,36 @@ import UniformTypeIdentifiers
         guard result.status == "confirmationRequired" else { throw RemoteFailure.message(String(localized: "Unexpected uninstall response. Refresh the app list.")) }
         message = String(localized: "Confirm uninstall on your TV. Refresh afterward to check the result.")
     }
+    // MARK: Keep watching (Home 14+)
+
+    /// The TV's Continue watching list, read through Home when the TV tab connects. nil until read or not supported.
+    @Published private(set) var keepWatching: KeepWatchingList?
+
+    /// Reads it once (Home reads the TV's list only when asked; nothing polls).
+    func loadKeepWatching() async {
+        guard ready, snapshot?.home?.supports("keepWatching") == true else { return }
+        let token = generation
+        guard let list = try? await client.request("keepWatching", as: KeepWatchingList.self), generation == token,
+              (try? list.validate()) != nil else { return }
+        keepWatching = list
+    }
+    /// Opens the show in its app on the TV, where it left off (the app's own link).
+    func resume(_ show: WatchingShow) async throws {
+        guard ready else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect")) }
+        _ = try await client.request("resumeWatching", payload: ["id": show.id], as: Confirmation.self)
+    }
+    /// Leaves the show out until it's watched again.
+    func hide(_ show: WatchingShow) async throws {
+        guard ready else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect")) }
+        let token = generation
+        let list = try await client.request("hideWatching", payload: ["id": show.id], as: KeepWatchingList.self)
+        guard generation == token else { throw CancellationError() }
+        try list.validate(); keepWatching = list
+    }
+    #if DEBUG
+    func showSampleKeepWatching(_ list: KeepWatchingList) { keepWatching = list }
+    #endif
+
     func sleepTimer(minutes: Int) async throws {
         guard ready, (0...240).contains(minutes) else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect to schedule a sleep timer")) }
         let token = generation

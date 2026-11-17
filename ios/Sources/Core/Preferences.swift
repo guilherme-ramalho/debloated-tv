@@ -164,6 +164,41 @@ public struct LauncherHome: Codable, Equatable {
     public func supports(_ feature: String) -> Bool { features?.contains(feature) ?? false }
 }
 
+/// A show in Keep watching (launcher KeepWatching: the TV's own Continue watching list, read when asked).
+public struct WatchingShow: Codable, Identifiable, Equatable, Sendable {
+    public let id: String
+    public let package: String
+    public let title: String
+    /// "S2 · E5", "S2 · E5 · Title" or "".
+    public let episode: String
+    public let positionMs: Double
+    public let durationMs: Double
+    /// Unix seconds.
+    public let lastWatched: Double
+    public let posterJPEG: Data?
+    public init(id: String, package: String, title: String, episode: String, positionMs: Double, durationMs: Double, lastWatched: Double, posterJPEG: Data?) {
+        self.id = id; self.package = package; self.title = title; self.episode = episode
+        self.positionMs = positionMs; self.durationMs = durationMs; self.lastWatched = lastWatched; self.posterJPEG = posterJPEG
+    }
+    /// 0…1, nil when the app gives no duration.
+    public var progress: Double? { durationMs > 0 ? min(1, max(0, positionMs / durationMs)) : nil }
+    /// Whole minutes left (at least 1), nil when unknown.
+    public var minutesLeft: Int? { durationMs > positionMs && durationMs > 0 ? max(1, Int(((durationMs - positionMs) / 60_000).rounded())) : nil }
+}
+
+public struct KeepWatchingList: Codable, Equatable, Sendable {
+    /// Home may read the TV's list (READ_TV_LISTINGS granted).
+    public let allowed: Bool
+    public let items: [WatchingShow]
+    public init(allowed: Bool, items: [WatchingShow]) { self.allowed = allowed; self.items = items }
+    public func validate() throws {
+        guard items.count <= 10, items.allSatisfy({ $0.id.count <= 30 && $0.title.count <= 300 && $0.episode.count <= 300
+                && RemoteApp.validPackage($0.package) && ($0.posterJPEG?.count ?? 0) <= 300_000 }) else {
+            throw RemoteFailure.message(String(localized: "Invalid TV editor response"))
+        }
+    }
+}
+
 public struct LauncherSnapshot: Codable {
     public let revision: String
     public let layout: HomeLayout
