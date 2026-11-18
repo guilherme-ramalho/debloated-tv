@@ -23,6 +23,13 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
+      - name: Use Xcode 26
+        # The app uses iOS 26 APIs (widget IntentModes); the runner's default Xcode is older. Picks the newest
+        # Xcode 26 the runner has, as the Mac it's developed on uses.
+        run: |
+          xcode=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -n 1)
+          sudo xcode-select -s "$xcode"
+          xcodebuild -version
       - name: Unit tests
         working-directory: ios
         run: swift test
@@ -51,6 +58,13 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
+      - name: Use Xcode 26
+        # The app uses iOS 26 APIs (widget IntentModes); the runner's default Xcode is older. Picks the newest
+        # Xcode 26 the runner has, as the Mac it's developed on uses.
+        run: |
+          xcode=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -n 1)
+          sudo xcode-select -s "$xcode"
+          xcodebuild -version
       - name: UI tests
         working-directory: ios
         run: |
