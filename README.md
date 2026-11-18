@@ -1,102 +1,106 @@
-# Purio TV (formerly Debloated TV)
+# Purio TV
 
-A personal native SwiftUI remote for Android TV, developed against a TCL Smart TV Pro running Android 11.
+**Make your Android TV fast again, from your iPhone.** Purio TV switches off the apps your TV doesn't need, puts a
+clean Home screen with no ads on it, and is a full remote. Free, no ads, no account, no tracking.
 
-The iPhone connects directly to Android TV Remote Service v2 on the local network. Normal use requires no Mac server, ADB, Google account, cloud relay, or additional TV companion app.
+[**Download on the App Store**](https://apps.apple.com/app/apple-store/id6828204875?pt=129696627&ct=github-readme&mt=8)
+· iPhone, iOS 17 or later · English, Português, Español, Français, Deutsch, Italiano
 
-## Development branch: mobile expansion
+## What it does
 
-`feature/personalization-and-actions` contains the next mobile version (build 15). TV installation and live testing are deliberately deferred until the TV is available. The accepted baseline is build 11 on `main`.
+**Clean up the TV (TV setup)**
+- Finds your model among 450+ Android TV and Google TV lists made by the
+  [cleanyourtv](https://github.com/Gathin23/cleanyourtv) community, and switches off the preinstalled apps that
+  slow the TV down. Nothing is uninstalled, and you choose what stays.
+- Installs Purio Home, a fast Home screen with no ads or sponsored rows: your apps in a dock, your wallpaper,
+  weather, a sleep timer.
+- Saves a recovery record first, so **Undo** puts the TV back as it was.
+- No computer needed. You turn on the TV's network debugging for a few minutes; the app walks you through it and
+  helps you turn it off again at the end.
 
-| Area | Implemented on iPhone | TV requirements / remaining validation |
-| --- | --- | --- |
-| Remote | D-pad with integrated directional swipes, keyboard, editable streaming count/order, press feedback | Live-test gestures and text fields; some TV apps reject remote text |
-| TV Home | Offline drafts, 1–7 dock icons, reorder/hide, presets or photo wallpaper, profiles | Applying needs a future launcher editing adapter; it is not installed or included in this branch |
-| Backup | Export/import versioned JSON with wallpaper, restore into a draft | Restore does not change the TV until Apply succeeds |
-| Inputs | Named favorites and assignment UI; original TV input menu remains available | Sync real input IDs from the future adapter before assigning favorites |
-| Actions | Editable command sequences and cancellation | Validate sequences against physical TV; commands are not transactional |
-| Siri | Control TV and Run TV Quick Action intents; five suggested App Shortcuts | Requires pairing, local network, possibly unlock; physical Siri testing pending |
-| Widgets | Configurable four-button Home Screen widget and iOS 18+ Control Center action | Uses the containing app’s background process and existing pairing; device validation pending |
-| Sleep timer | Schedule/cancel UI and typed request | Requires a confirmed TV-owned timer in the future adapter; no phone background timer |
-| Uninstall | Distinct destructive action with confirmation flow | Requires synced installed-app data and Android confirmation; system apps excluded |
-| Settings | Haptics, automatic reconnect, paired connection diagnostic | Diagnostic performs a handshake without sending a control command |
+**Remote**
+- D-pad with swipes, volume, play/pause, power, rewind, fast-forward, subtitles and TV settings.
+- Type on the TV with the iPhone keyboard; your favourite apps one tap away.
+- Home Screen, Lock Screen and Control Center widgets, quick actions and Siri.
+- Wakes the TV from standby on supported models.
 
-Photo/video casting and an AirPlay receiver remain exploratory; their menu is hidden until ready. Common streaming logos are bundled locally, with registry entries for additional installed apps; preparing a logo does not install an app or add an unverified shortcut. Automatic ad skipping is excluded. Title collection and its TV companion remain removed. The app indicator identifies the open streaming app, so the playback icon remains a neutral toggle rather than guessing playback state.
+**Show on TV**
+- Browse your iPhone's photos and videos and open them on the TV through its Chromecast built in. Swipe and the TV
+  follows; heavy 4K and HDR videos are converted on the fly so they play smoothly.
 
-Home editing saves drafts atomically on the phone. Selecting a profile or wallpaper does not silently alter the TV. Photos are downsampled to at most 1920 pixels and compressed to at most 1 MB; the photo picker grants access only to selected images. Up to 20 recent backups are loaded into memory. Exported backups can contain the selected wallpaper but never pairing keys or viewing history.
+**Arrange the TV's Home screen from the phone**
+- Dock, app order, hidden apps, wallpaper, look and weather, edited on the iPhone and applied in one tap.
 
-The launcher editing contract is documented in [docs/launcher-editor-contract.md](docs/launcher-editor-contract.md). These mobile screens are ready for the next integration phase; their presence does not mean that TV-side features are operational yet.
+## Coming next
 
-## Existing controls
+On the development branch, not yet in the App Store:
+- The Connect screen tells you what kind of TV it found.
+- A remote for Roku, LG (webOS) and Samsung (Tizen) TVs, straight from the phone.
+- **Ask Purio**, an optional on-device assistant on iPhones with Apple Intelligence ("open Netflix", "volume up 5").
+  It runs on the iPhone; nothing goes to a server.
+- **Keep watching**: the shows you left halfway, from the TV's own Continue watching list; tap to resume on the TV.
+- The Android app (in `android/`), not yet on Google Play.
 
-- D-pad with a 116-point OK target; Home, Back, playback toggle, inputs, power, volume, and mute.
-- White SF Symbols, visible press feedback, and light haptics. D-pad and volume support holding and release on backgrounding.
-- Two-column, logo-only streaming shortcuts: Netflix, YouTube, Prime Video, Disney+, HBO Max, and Crunchyroll.
-- One header row with Power, the current streaming app, a tappable connection dot/text, Keyboard, and Input. No duplicate Settings icon or disconnected Connect/Pair button row.
-- Power and Input share the header above the original SwiftUI D-pad, with separate touch areas and no overlap. Taps, holds, and directional swipes share the same pad.
-- Saved secure pairing and automatic reconnect.
-- Standby wake on supported TCL firmware with the required TV standby settings.
+## Which TVs
 
-## What’s on TV
+- **Remote:** Android TV and Google TV sets and boxes with Google's TV remote service (most of them).
+- **TV setup and Purio Home:** Android TV and Google TV with Android 8 or later. The app picks the list for your
+  model; models without a tested list get the closest one only after you confirm.
+- **Show on TV:** TVs with Chromecast built in.
 
-The app name comes from the foreground package reported by the existing remote service. It updates over the same connection used for navigation and volume, with no extra TV process.
+Tested on real TVs and on the Android TV emulator before each release. Reports from other models are welcome:
+open an issue with your TV's brand and model.
 
-This identifies the open app, not whether a video is playing. The icon stays static and Play/Pause remains a neutral toggle. Titles, detailed HDMI device names, and playback-state collection are intentionally omitted. The entire app indicator is hidden on Home, inputs, unknown apps, standby, disconnection, or an empty app report. A streaming app being open does not prove active playback.
+## Privacy
 
-## Build and install
+Purio TV talks only to your TV, on your home network. It has no account, no ads, no analytics and no servers;
+settings, pairing keys and recovery records stay on your iPhone. Details in [PRIVACY.md](PRIVACY.md).
 
-Requires Xcode with an iOS SDK and an iPhone running iOS 17 or newer.
+## Safety
 
-1. Open `ios/TVRemote.xcodeproj` and select the TVRemote target.
-2. Choose your signing Team for both TVRemote and TVRemoteWidgets, and matching available bundle identifiers (the extension must use the app identifier as its prefix). The repository contains no signing credentials or provisioning profiles.
-3. Choose your iPhone and build/run. Wireless installation requires the phone to have been paired with Xcode first.
-4. Open TV Remote, allow Local Network access, enter the TV’s IPv4 address in Connection settings, and tap Pair TV. Enter the six-character code displayed by the TV.
+Every change to a TV goes through guarded steps: only apps on a tested list are switched off (never system
+essentials), a recovery record is saved before anything changes, and every change can be undone from the app. The
+Home screen is switched only after the new one has started, and the old one comes back if anything goes wrong.
 
-The shared Run scheme uses Release without debugger attachment. Personal Team development builds require periodic re-signing; the provisioning profile determines expiry. Ordinary app updates preserve the pairing identity in Keychain.
+## Support
 
-The TV must have Android TV Remote Service enabled. Control and pairing use TCP 6466 and 6467 respectively. Use the same trusted local network; do not forward these ports to the internet. Debugging is only needed for initial TV maintenance, not normal remote operation.
+Questions and TV reports: [SUPPORT.md](SUPPORT.md). Security issues: [SECURITY.md](SECURITY.md).
 
-## Standby wake
+---
 
-On the tested TCL, Network Standby and Screenless Service were required to keep the built-in remote service reachable. Quick Start was already enabled.
+## For developers
 
-Power refreshes the reported state, waits briefly for the TCL virtual input bridge, and sends one Power toggle only if the TV still reports standby. Wake expires after 30 seconds and cancels on backgrounding. A sent toggle is not automatically replayed. Overnight standby behavior and other TV models are not guaranteed.
+| Folder | What's in it |
+| --- | --- |
+| `ios/` | The iPhone app (SwiftUI, `TVRemote.xcodeproj`) and a Swift package with the core and its tests |
+| `android/` | The Android app (Kotlin, Jetpack Compose) and its core |
+| `tv-launcher/` | Purio Home, the TV Home screen (a fork of cleanyourtv's launcher, MIT; merges in `UPSTREAM.md`) |
+| `scripts/` | Emulator, end-to-end tests, launcher bundling, release and store screenshots |
+| `docs/` | Design decisions, test cases (`TESTING.md`), protocols and the phone ↔ TV Home editor contract |
 
-## Tests
+**Build**
+1. `scripts/bundle-launcher.sh` builds Purio Home and bundles it into the iPhone app (Java 17, Android SDK).
+2. Open `ios/TVRemote.xcodeproj`, pick the **Debloated TV Dev** scheme, set your signing team, and run on an iPhone.
+   A launcher you install is tied to the key that signed it; see [docs/launcher-signing.md](docs/launcher-signing.md).
 
-Run the shared core tests on macOS:
+**Test**
+- iPhone core: `cd ios && swift test`
+- Purio Home: `cd tv-launcher/launcher && ./gradlew testReleaseUnitTest`
+- Android core: `cd android && ./gradlew :core:test`
+- End to end against a disposable Android TV emulator: `scripts/e2e.sh` (see [docs/emulator.md](docs/emulator.md))
 
-```sh
-cd ios
-swift test
-```
+Test cases and their IDs are in [docs/TESTING.md](docs/TESTING.md).
 
-Twenty-four tests cover tap/hold/swipe arbitration and cancellation, swipe directions and jitter rejection, saved layouts, backup validation, command bounds, keyboard UTF-16 offsets, editor frame limits, fragmented/coalesced frames, malformed input, protobuf fields, certificate generation, pairing proofs, wake expiry/cancellation/single-use behavior, foreground app names, and explicit empty-app updates. The baseline controls and standby wake were tested on the physical TV and iPhone. New branch features still need device testing. The app and widget pass iOS SDK type checks. Build 14 uses a single remote header row and restores the original SwiftUI D-pad with integrated swipe handling. Saved pairing and active connection are treated separately: an offline paired TV offers reconnection, while Pair TV appears only without saved pairing; re-pairing remains in Connection settings. The TV tab uses a TV icon. The native layout aligns the native cards, profile menu, dock tiles, action cards, timer choices and switches with the approved navy preview. Photos & Video is hidden while receiver support is unfinished. The restricted command-line build cannot access CoreSimulator/actool, but the normal signed build succeeds in the Xcode app, including asset compilation and the widget extension. Native appearance and gestures still require the iPhone check; TV command behavior is deferred until the television is available.
+## Credits
 
-## Privacy and security
+- [cleanyourtv](https://github.com/Gathin23/cleanyourtv) by Gathin (MIT): the per-model debloat lists and the
+  launcher Purio Home is built on.
+- [androidtvremote2](https://github.com/tronikos/androidtvremote2): the Android TV Remote v2 protocol reference.
+- [couch-tv](https://github.com/Seagey/couch-tv) (MIT) and [aiowebostv](https://github.com/home-assistant-libs/aiowebostv)
+  (Apache 2.0): references for the Roku, LG and Samsung remotes; see [docs/tv-brands.md](docs/tv-brands.md).
+- Streaming logos from [Simple Icons](https://github.com/simple-icons/simple-icons); Disney+ and HBO Max marks from
+  their owners' brand pages. Marks belong to their owners.
 
-Each iPhone generates its own RSA identity. Pairing proofs bind the TV code to both devices’ keys, and subsequent connections verify the saved TV certificate fingerprint. Private keys are stored in Keychain, not bundled in source.
-
-There is no viewing-history storage, screenshot scanning, notification access, analytics, or separate metadata server. The Android playback companion has been removed. Commands are not queued while disconnected.
-
-Do not commit private keys, pairing state, device logs, build products, or provisioning profiles. The included `.gitignore` excludes these common artifacts.
-
-To report a vulnerability, see [SECURITY.md](SECURITY.md).
-
-## Beta identity
-
-App Store name: **Purio TV** (renamed from Debloated TV in 1.1). Home Screen name: **Purio TV**. Siri also answers to "Purio" and each language's "my TV". Bundle identifiers and existing pairing storage remain unchanged, so updating keeps pairings and settings. A static launch screen shows the mark; there is no onboarding button or artificial launch delay.
-
-Manual App Store Connect setup and upload steps are in [docs/testflight.md](docs/testflight.md). No App Store record or TestFlight upload has been created by this work.
-
-## References and assets
-
-- [Android TV Remote v2 protocol reference](https://github.com/tronikos/androidtvremote2)
-- [Google pairing schema](https://android.googlesource.com/platform/external/google-tv-pairing-protocol/+/refs/heads/master/proto/polo.proto)
-- Netflix, YouTube, Prime Video, Crunchyroll, Spotify, Apple TV, Paramount+, Plex, Twitch, DAZN, and Tubi logos: [Simple Icons v11.15.0](https://github.com/simple-icons/simple-icons/tree/11.15.0/icons).
-- Disney+ logo: [Disney-authored artwork on Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Disney_Plus_logo.svg).
-- HBO Max logo: [official brand portal](https://brand.hbomax.com/logos).
-
-Streaming marks belong to their respective owners. This personal project is not affiliated with those services, Apple, Google, or TCL. AirPlay, photo sharing, voice dictation, and automatic device discovery are not implemented. Keyboard input is implemented on this development branch, with TV compatibility testing pending.
-
-The Android robot is reproduced or modified from work created and shared by Google and used according to terms described in the [Creative Commons 3.0 Attribution License](https://creativecommons.org/licenses/by/3.0/). The same attribution is available under Settings → Artwork credits in the app.
+Purio TV is an independent project, not affiliated with Google, Apple, or any TV maker or streaming service. The
+Android robot is reproduced or modified from work created and shared by Google and used according to the
+[Creative Commons 3.0 Attribution License](https://creativecommons.org/licenses/by/3.0/).
