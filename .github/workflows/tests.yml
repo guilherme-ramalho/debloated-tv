@@ -23,6 +23,13 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
+      - name: Use Xcode 26
+        # The app uses iOS 26 APIs (widget IntentModes); the runner's default Xcode is older. Picks the newest
+        # Xcode 26 the runner has, as the Mac it's developed on uses.
+        run: |
+          xcode=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -n 1)
+          sudo xcode-select -s "$xcode"
+          xcodebuild -version
       - name: Unit tests
         working-directory: ios
         run: swift test
@@ -51,12 +58,33 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
+      - name: Use Xcode 26
+        # The app uses iOS 26 APIs (widget IntentModes); the runner's default Xcode is older. Picks the newest
+        # Xcode 26 the runner has, as the Mac it's developed on uses.
+        run: |
+          xcode=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -n 1)
+          sudo xcode-select -s "$xcode"
+          xcodebuild -version
       - name: UI tests
         working-directory: ios
         run: |
           # Skipped until the TVRemoteUITests target is added to the Xcode project (docs/TESTING.md, "Automated tests").
           grep -q TVRemoteUITests TVRemote.xcodeproj/project.pbxproj || { echo "No UI test target yet: skipping."; exit 0; }
-          device=$(xcrun simctl list devices available | grep -m1 -oE 'iPhone [^(]+' | sed 's/ *$//')
+          # An iPhone simulator on the newest iOS (the UI tests target iOS 26), booted with one photo in its library
+          # (Show on TV needs one, CST-04).
+          udid=$(xcrun simctl list devices available -j | python3 -c "
+          import json, re, sys
+          devices = json.load(sys.stdin)['devices']
+          ios = sorted((tuple(map(int, re.findall(r'\d+', k))), k) for k in devices if '.iOS-' in k)
+          print(next(d['udid'] for _, k in reversed(ios) for d in devices[k] if d['name'].startswith('iPhone')))")
+          echo "Simulator: $udid"
+          xcrun simctl boot "$udid"
+          xcrun simctl bootstatus "$udid"
+          xcrun simctl addmedia "$udid" Assets.xcassets/AppIcon.appiconset/AppIcon.png
+          # Full photo access up front, as on a developer's simulator: the test can't always answer the prompt here.
+          xcrun simctl privacy "$udid" grant photos com.guilhermeramalho.TVRemote.dev
+          # Seen by the tests as PURIO_CI (xcodebuild hands TEST_RUNNER_* variables to the test runner).
+          export TEST_RUNNER_PURIO_CI=1
           xcodebuild test -project TVRemote.xcodeproj -scheme "Debloated TV Dev" \
-            -destination "platform=iOS Simulator,name=$device" \
+            -destination "id=$udid" \
             -only-testing:TVRemoteUITests -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
