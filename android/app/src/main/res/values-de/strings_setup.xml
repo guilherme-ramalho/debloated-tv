@@ -165,6 +165,9 @@
     <string name="su_updating">Startbildschirm wird aktualisiert</string>
     <string name="su_update_current">Der Fernseher hat diesen Startbildschirm schon</string>
     <string name="su_update_done">Startbildschirm aktualisiert</string>
+    <string name="su_update_checking">Prüfe, ob der Fernseher den neuen Startbildschirm hat…</string>
+    <string name="su_update_slow">Der Fernseher braucht länger als sonst. Es läuft noch: Lass den Fernseher an und bleib mit dem Handy in WLAN-Reichweite.</string>
+    <string name="su_update_retry_hint">Vielleicht ist der Fernseher schon fertig. „Erneut versuchen“ prüft das zuerst und erledigt nur, was noch fehlt.</string>
     <string name="su_update_done_detail">Layout und Einstellungen sind wie vorher. Neue Optionen erscheinen im Tab TV, sobald TV Home wieder verbunden ist.</string>
     <string name="su_ls_checking">Fernseher wird geprüft</string>
     <string name="su_ls_pushing">Startbildschirm wird gesendet</string>

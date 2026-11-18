@@ -165,6 +165,9 @@
     <string name="su_updating">Mise à jour de l\'écran d\'accueil</string>
     <string name="su_update_current">La TV a déjà cet écran d\'accueil</string>
     <string name="su_update_done">Écran d\'accueil mis à jour</string>
+    <string name="su_update_checking">Vérification : le téléviseur a-t-il le nouvel écran d’accueil…</string>
+    <string name="su_update_slow">Le téléviseur met plus de temps que d’habitude. C’est toujours en cours : laissez le téléviseur allumé et le téléphone près du Wi-Fi.</string>
+    <string name="su_update_retry_hint">Le téléviseur a peut-être terminé de lui-même. Réessayer vérifie d’abord et ne termine que ce qui manque.</string>
     <string name="su_update_done_detail">Votre disposition et vos réglages sont inchangés. Les nouvelles options apparaissent dans l\'onglet TV dès que TV Home se reconnecte.</string>
     <string name="su_ls_checking">Vérification de la TV</string>
     <string name="su_ls_pushing">Envoi de l\'écran d\'accueil</string>

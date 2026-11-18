@@ -46,6 +46,21 @@ final class LauncherInstallTests: XCTestCase {
         XCTAssertFalse(tv.sent.contains { $0.contains("InputKeyService") })
     }
 
+    /// LCH-22: an update whose connection broke after the TV installed the new build is finished over a new
+    /// connection: nothing is sent or installed again, nothing is disabled, the layout is left alone, and the
+    /// helpers, Home and permissions are set again.
+    func testFinishingACutOffUpdateRepeatsOnlyTheLastSteps() async throws {
+        let tv = FakeDevice(answers: answers)
+        let home = try await LauncherInstaller(tv: tv).finishUpdate(options: LauncherOptions(homeKeyService: true, restoreKeyServices: true))
+        XCTAssertEqual(home, "com.gathin.tvhome/.MainActivity")
+        XCTAssertTrue(tv.pushed.isEmpty)
+        XCTAssertFalse(tv.sent.contains { $0.hasPrefix("pm install") || $0.hasPrefix("pm disable-user") || $0.contains("config.json") })
+        XCTAssertEqual(tv.sent.first, LauncherInstaller.restartWithHelpers)
+        XCTAssertTrue(tv.sent.contains("cmd package set-home-activity --user 0 com.gathin.tvhome/.MainActivity"))
+        XCTAssertTrue(tv.sent.contains { $0.contains("HomeKeyService enabled") })
+        XCTAssertTrue(tv.sent.contains { $0.hasPrefix("pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS") })
+    }
+
     /// LCH-21: a list installed with STOCK_LAUNCHER=none keeps the stock launcher on, starts the new one without
     /// claiming Home first (#1274), and still makes it Home; a failed handover has nothing to roll back.
     func testKeepStockLauncherDisablesNothing() async throws {

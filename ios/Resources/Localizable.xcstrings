@@ -2860,6 +2860,40 @@
         }
       }
     },
+    "Checking whether the TV has the new Home screen…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prüfe, ob der Fernseher den neuen Startbildschirm hat…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprobando si el televisor tiene la nueva pantalla de inicio…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vérification : le téléviseur a-t-il le nouvel écran d’accueil…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifico se il televisore ha la nuova schermata Home…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verificando se a TV tem a nova tela inicial…"
+          }
+        }
+      }
+    },
     "Checking…" : {
       "localizations" : {
         "de" : {
@@ -5859,6 +5893,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lista do cleanyourtv, testada pela comunidade neste modelo, não pelo Purio TV. Ligue o que quiser manter; o resto é desativado."
+          }
+        }
+      }
+    },
+    "Lost the connection to the TV. Check that the iPhone and the TV are on the same Wi-Fi." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Verbindung zum Fernseher ist abgebrochen. Prüfe, ob iPhone und Fernseher im selben WLAN sind."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se perdió la conexión con el televisor. Comprueba que el iPhone y el televisor estén en la misma red Wi-Fi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La connexion au téléviseur a été perdue. Vérifiez que l’iPhone et le téléviseur sont sur le même Wi-Fi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connessione al televisore persa. Controlla che iPhone e televisore siano sulla stessa rete Wi-Fi."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A conexão com a TV caiu. Verifique se o iPhone e a TV estão no mesmo Wi-Fi."
           }
         }
       }
@@ -17785,6 +17853,40 @@
         }
       }
     },
+    "The TV is taking longer than usual. Still working: keep the TV on and this iPhone near the Wi-Fi." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Fernseher braucht länger als sonst. Es läuft noch: Lass den Fernseher an und bleib mit dem iPhone in WLAN-Reichweite."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El televisor está tardando más de lo normal. Sigue en marcha: deja el televisor encendido y el iPhone cerca del Wi-Fi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le téléviseur met plus de temps que d’habitude. C’est toujours en cours : laissez le téléviseur allumé et l’iPhone près du Wi-Fi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il televisore ci sta mettendo più del solito. Sta ancora lavorando: lascia acceso il televisore e tieni l’iPhone vicino al Wi-Fi."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV está demorando mais que o normal. Ainda em andamento: deixe a TV ligada e o iPhone perto do Wi-Fi."
+          }
+        }
+      }
+    },
     "The TV keeps its own Home screen" : {
       "localizations" : {
         "de" : {
@@ -17849,6 +17951,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A TV não listou nenhum app, então nada foi alterado. Verifique a conexão e tente de novo."
+          }
+        }
+      }
+    },
+    "The TV may have finished on its own. Try again checks it first and only finishes what's missing." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vielleicht ist der Fernseher schon fertig. „Erneut versuchen“ prüft das zuerst und erledigt nur, was noch fehlt."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puede que el televisor ya haya terminado. Reintentar lo comprueba primero y solo completa lo que falta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le téléviseur a peut-être terminé de lui-même. Réessayer vérifie d’abord et ne termine que ce qui manque."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forse il televisore ha già finito. Riprova prima controlla e completa solo ciò che manca."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A TV pode ter terminado sozinha. Tentar de novo verifica primeiro e só conclui o que falta."
           }
         }
       }

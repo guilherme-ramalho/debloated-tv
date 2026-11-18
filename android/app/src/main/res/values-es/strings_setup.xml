@@ -165,6 +165,9 @@
     <string name="su_updating">Actualizando la pantalla de inicio</string>
     <string name="su_update_current">La TV ya tiene esta pantalla de inicio</string>
     <string name="su_update_done">Pantalla de inicio actualizada</string>
+    <string name="su_update_checking">Comprobando si el televisor tiene la nueva pantalla de inicio…</string>
+    <string name="su_update_slow">El televisor está tardando más de lo normal. Sigue en marcha: deja el televisor encendido y el teléfono cerca del Wi-Fi.</string>
+    <string name="su_update_retry_hint">Puede que el televisor ya haya terminado. Reintentar lo comprueba primero y solo completa lo que falta.</string>
     <string name="su_update_done_detail">Tu diseño y tus ajustes siguen como estaban. Las nuevas opciones aparecen en la pestaña TV cuando TV Home se vuelva a conectar.</string>
     <string name="su_ls_checking">Comprobando la TV</string>
     <string name="su_ls_pushing">Enviando la pantalla de inicio</string>

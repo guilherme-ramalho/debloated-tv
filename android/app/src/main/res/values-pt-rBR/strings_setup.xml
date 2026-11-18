@@ -165,6 +165,9 @@
     <string name="su_updating">Atualizando a tela inicial</string>
     <string name="su_update_current">A TV já tem esta tela inicial</string>
     <string name="su_update_done">Tela inicial atualizada</string>
+    <string name="su_update_checking">Verificando se a TV tem a nova tela inicial…</string>
+    <string name="su_update_slow">A TV está demorando mais que o normal. Ainda em andamento: deixe a TV ligada e o celular perto do Wi-Fi.</string>
+    <string name="su_update_retry_hint">A TV pode ter terminado sozinha. Tentar de novo verifica primeiro e só conclui o que falta.</string>
     <string name="su_update_done_detail">Seu layout e ajustes estão como antes. As novas opções aparecem na aba TV quando o TV Home se reconectar.</string>
     <string name="su_ls_checking">Verificando a TV</string>
     <string name="su_ls_pushing">Enviando a tela inicial</string>

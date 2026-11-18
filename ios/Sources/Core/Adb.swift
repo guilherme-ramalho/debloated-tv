@@ -212,6 +212,18 @@ public actor AdbClient {
             }
         }
     }
+    /// How long the network may be gone before the connection counts as lost.
+    static let lostGrace: Double = 15
+    private var lostTimer: Task<Void, Never>?
+    private func pathChanged(viable: Bool) {
+        lostTimer?.cancel(); lostTimer = nil
+        guard !viable, state != .closed else { return }
+        lostTimer = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: UInt64(Self.lostGrace * 1_000_000_000))
+            guard !Task.isCancelled else { return }
+            await self?.fail(RemoteFailure.message(String(localized: "Lost the connection to the TV. Check that the iPhone and the TV are on the same Wi-Fi.")))
+        }
+    }
     private func timedOut(_ token: Int) {
         guard token == waiterToken, let waiting = waiter else { return }
         waiter = nil
@@ -266,6 +278,9 @@ public actor AdbClient {
         c.stateUpdateHandler = { [weak self] state in
             if case .failed(let e) = state { Task { await self?.fail(e) } }
         }
+        // Wi-Fi gone (out of range, roaming): without this the next answer is awaited for the step's whole timeout
+        // (up to 5 minutes for an install). A path back within the grace period keeps the connection.
+        c.viabilityUpdateHandler = { [weak self] viable in Task { await self?.pathChanged(viable: viable) } }
         log?("TCP connected to \(host):\(port)")
         receiveLoop()
         send(Adb.Message(Adb.cnxn, Adb.version, Adb.maxData, Data("host::debloated-tv".utf8) + Data([0])))
@@ -299,6 +314,7 @@ public actor AdbClient {
 
     public func close() {
         if let connection { connection.cancel() }
+        lostTimer?.cancel(); lostTimer = nil
         connection = nil; state = .closed; failure = CancellationError()
         if let waiting = waiter { waiter = nil; waiterTimeout?.cancel(); waiting.resume(throwing: CancellationError()) }
     }

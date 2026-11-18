@@ -117,5 +117,15 @@ class SetupSequenceTest {
         val current = tv("com.gathin.tvhome/.MainActivity", 13)
         assertFalse(SetupSequence.updateHome(current, banner, ByteArray(10), 13, profiles, store, "h"))
         assertTrue(current.pushed.isEmpty())
+        // LCH-22: a retry after a cut-off install finishes the last steps on a TV that has the build, installing nothing.
+        val resumed = tv("com.gathin.tvhome/.MainActivity", 13).apply {
+            prefixes += "am start -W" to "Status: ok"
+            prefixes += "pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS" to "restore-granted"
+            prefixes += "pm revoke com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS" to "secure-settings-revoked"
+        }
+        assertTrue(SetupSequence.updateHome(resumed, banner, ByteArray(10), 13, profiles, store, "h", resume = true))
+        assertTrue(resumed.pushed.isEmpty())
+        assertFalse(resumed.sent.any { it.startsWith("pm install") || it.startsWith("pm disable-user") })
+        assertTrue(resumed.sent.contains("cmd package set-home-activity --user 0 com.gathin.tvhome/.MainActivity"))
     }
 }

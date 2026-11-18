@@ -143,7 +143,18 @@ public struct LauncherInstaller: Sendable {
             throw RemoteFailure.message(String(localized: "The TV already has a newer Home screen than this app carries. Update Purio TV, then try again. Nothing was changed."))
         }
         guard out.contains("Success") else { throw RemoteFailure.message("The TV refused to install the Home screen: \(out.trimmingCharacters(in: .whitespacesAndNewlines))") }
+        return try await afterInstall(options: options, theme: theme, stock: stock, step: step)
+    }
 
+    /// The last steps of an update whose connection broke after the TV had installed the new build (Update Home
+    /// screen, LCH-22): restart it, make sure it's Home, turn the remote helpers back on, settle the permissions. Each
+    /// step is safe to repeat; nothing is disabled (the new Home already owns Home) and the layout is left alone.
+    public func finishUpdate(options: LauncherOptions, step: (@Sendable (LauncherStep, Double) -> Void)? = nil) async throws -> String {
+        try await afterInstall(options: options, theme: nil, stock: nil, step: step)
+    }
+
+    private func afterInstall(options: LauncherOptions, theme: Data?, stock: String?,
+                              step: (@Sendable (LauncherStep, Double) -> Void)?) async throws -> String {
         _ = try await tv.run(Self.restartWithHelpers)
 
         step?(.starting, 0)

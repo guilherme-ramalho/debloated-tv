@@ -160,7 +160,19 @@ class LauncherInstaller(private val tv: TVDevice) {
         if (out.contains("INSTALL_FAILED_UPDATE_INCOMPATIBLE")) throw SetupFailure(SetupIssue.INSTALL_OTHER_KEY)
         if (out.contains("INSTALL_FAILED_VERSION_DOWNGRADE")) throw SetupFailure(SetupIssue.INSTALL_DOWNGRADE)
         if (!out.contains("Success")) throw SetupFailure(SetupIssue.INSTALL_REFUSED, out.trim())
+        return afterInstall(options, theme, stock, step)
+    }
 
+    /**
+     * The last steps of an update whose connection broke after the TV had installed the new build (Update Home
+     * screen, LCH-22): restart it, make sure it's Home, turn the remote helpers back on, settle the permissions. Each
+     * step is safe to repeat; nothing is disabled (the new Home already owns Home) and the layout is left alone.
+     */
+    suspend fun finishUpdate(options: LauncherOptions, step: ((LauncherStep, Double) -> Unit)? = null): String =
+        afterInstall(options, null, null, step)
+
+    private suspend fun afterInstall(options: LauncherOptions, theme: ByteArray?, stock: String?,
+                                     step: ((LauncherStep, Double) -> Unit)?): String {
         tv.exec(RESTART_WITH_HELPERS)
 
         step?.invoke(LauncherStep.STARTING, 0.0)

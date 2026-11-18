@@ -227,13 +227,19 @@ struct HomeUpdateView: View {
             }
             if let error = flow.error {
                 QuietCard { Label(error, systemImage: "exclamationmark.triangle").font(.system(size: 13)).foregroundStyle(.orange).padding(14) }
-                if !flow.busy && flow.step != .done { Button("Try again") { flow.update() }.buttonStyle(QuietPrimaryStyle()) }
+                if !flow.busy && flow.step != .done {
+                    Button("Try again") { flow.update() }.buttonStyle(QuietPrimaryStyle()).accessibilityIdentifier("homeUpdateRetry")
+                    if flow.installStarted {
+                        QuietCaption(text: "The TV may have finished on its own. Try again checks it first and only finishes what's missing.")
+                    }
+                }
             }
         }
         .quietNavigation("Update Home screen")
         .navigationBarBackButtonHidden(flow.busy)
-        .onDisappear { flow.cancel() }
-        .onChange(of: flow.step) { _, step in if step == .done { updated() } }
+        .onAppear { flow.onDone = updated }
+        // Leaving for another tab mid-update must not strand it: the TV carries on, and so does the phone.
+        .onDisappear { if !flow.busy { flow.cancel() } }
     }
 
     private var start: some View {
@@ -267,16 +273,28 @@ struct HomeUpdateView: View {
                 Text("The TV shows “Allow USB debugging?”. Tick “Always allow from this computer” and choose Allow. This continues by itself.")
                     .foregroundStyle(QuietTheme.muted)
             } else {
-                Text(flow.step == .connecting ? "Connecting" : "Updating the Home screen").font(.system(size: 24, weight: .bold))
+                Text(workingTitle).font(.system(size: 24, weight: .bold))
                 if flow.step == .updating { ProgressView(value: flow.progress).tint(QuietTheme.cyan) }
             }
-            if flow.busy { HStack { ProgressView(); Text(flow.message).font(.system(size: 13)).foregroundStyle(QuietTheme.muted) } }
+            if flow.busy {
+                HStack(spacing: 10) { ProgressView(); Text(flow.message).font(.system(size: 13)).foregroundStyle(QuietTheme.muted) }
+                    .accessibilityElement(children: .combine).accessibilityIdentifier("homeUpdateWorking")
+                if flow.slow {
+                    QuietCaption(text: "The TV is taking longer than usual. Still working: keep the TV on and this iPhone near the Wi-Fi.")
+                }
+            }
         }
     }
 
+    private var workingTitle: LocalizedStringKey {
+        flow.checking ? "Checking the TV" : flow.step == .connecting ? "Connecting" : "Updating the Home screen"
+    }
+
+    private var doneTitle: LocalizedStringKey { flow.alreadyCurrent ? "The TV already has this Home screen" : "Home screen updated" }
+
     private var done: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Label(flow.alreadyCurrent ? "The TV already has this Home screen" : "Home screen updated", systemImage: "checkmark.circle")
+            Label(doneTitle, systemImage: "checkmark.circle")
                 .font(.system(size: 20, weight: .semibold)).foregroundStyle(QuietTheme.cyan)
             if !flow.alreadyCurrent {
                 QuietCaption(text: "Your layout and settings are as they were. New options appear in the TV tab once TV Home reconnects.")

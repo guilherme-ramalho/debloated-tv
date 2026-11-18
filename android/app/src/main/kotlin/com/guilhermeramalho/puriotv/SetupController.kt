@@ -30,6 +30,7 @@ import com.guilhermeramalho.puriotv.core.TVInventory
 import com.guilhermeramalho.puriotv.core.TVSetupStatus
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -396,33 +397,90 @@ class HomeUpdateController(app: Context, host: String) : SetupWork(app) {
     /** True when the TV already had this version (nothing installed). */
     var alreadyCurrent by mutableStateOf(false); private set
     var debuggingClosed by mutableStateOf<Boolean?>(null); private set
+    /** The TV hasn't reported anything for a while. */
+    var slow by mutableStateOf(false); private set
+    /** Asking the TV afresh whether the update landed, after the connection broke or stalled. */
+    var checking by mutableStateOf(false); private set
+    /** The TV started installing in this session: a retry checks it and finishes the update rather than starting over. */
+    var installStarted by mutableStateOf(false); private set
+    private var lastHeard = System.currentTimeMillis()
+    private var stalled = false
+    private var watchdog: Job? = null
+
+    private fun heard() { lastHeard = System.currentTimeMillis(); slow = false }
+
+    override fun cancel() {
+        watchdog?.cancel(); watchdog = null
+        slow = false; checking = false
+        super.cancel()
+    }
 
     fun update() {
         val target = TVAddress.parse(address) ?: run { error = s(R.string.su_issue_invalid_address); return }
         val bundled = bundledHomeVersion(app)
         if (bundled == null || !SetupPlatform.hasBundledApk(app)) { error = s(R.string.su_no_bundled_home); return }
-        step = Step.CONNECTING; progress = 0f; alreadyCurrent = false; debuggingClosed = null
+        step = if (installStarted) Step.UPDATING else Step.CONNECTING
+        progress = 0f; alreadyCurrent = false; debuggingClosed = null; stalled = false
+        heard()
         perform {
-            message = s(R.string.su_connecting_to, target.host)
-            adb?.let { old -> adb = null; old.close() }
-            val apk = SetupPlatform.bundledApk(app) ?: throw SetupFailure(SetupIssue.NO_BUNDLED_HOME)
-            val client = SetupPlatform.open(target, 120_000) { approvalAsked(s(R.string.su_allow_on_tv)) }
-            adb = client
-            waitingForApproval = false
-            val profiles = withContext(Dispatchers.IO) { SetupPlatform.loadProfiles(app) }
-            val steps = LauncherStep.entries.size
-            val installed = SetupSequence.updateHome(client, client.properties, apk, bundled, profiles, SetupPlatform.store(app), target.host) { st, fraction ->
-                scope.launch {
-                    if (step == Step.DONE) return@launch   // a late progress report
-                    step = Step.UPDATING
-                    message = s(st.text())
-                    progress = minOf(1f, ((st.ordinal + fraction) / steps).toFloat())
+            try {
+                try { attempt(target, bundled) }
+                catch (first: Exception) {
+                    if (!installStarted || (first is CancellationException && !stalled)) throw first
+                    // The connection broke or stalled after the TV began installing. It may well have finished: ask
+                    // it over a fresh connection, and finish the last steps if the new Home is there.
+                    stalled = false; checking = true
+                    try { attempt(target, bundled) }
+                    catch (second: Exception) { throw if (second is CancellationException && !stalled) second else if (second is CancellationException) first else second }
+                }
+            } finally { watchdog?.cancel(); watchdog = null; slow = false; checking = false }
+        }
+        watchdog?.cancel()
+        watchdog = scope.launch {
+            while (true) {
+                delay(5_000)
+                if (!busy) return@launch
+                if (waitingForApproval) { heard(); continue }   // the person is at the TV
+                val quiet = System.currentTimeMillis() - lastHeard
+                if (quiet > SLOW_AFTER_MS && !slow) slow = true
+                if (quiet > STALLED_AFTER_MS && installStarted && !checking && !stalled) {
+                    stalled = true
+                    adb?.let { old -> adb = null; old.close() }   // the waiting step throws; update() asks the TV afresh
                 }
             }
-            alreadyCurrent = !installed
-            progress = 1f
-            step = Step.DONE
         }
+    }
+
+    private suspend fun attempt(target: TVAddress, bundled: Int) {
+        message = if (checking) s(R.string.su_update_checking) else s(R.string.su_connecting_to, target.host); heard()
+        adb?.let { old -> adb = null; old.close() }
+        val apk = SetupPlatform.bundledApk(app) ?: throw SetupFailure(SetupIssue.NO_BUNDLED_HOME)
+        val client = SetupPlatform.open(target, 120_000) { approvalAsked(s(R.string.su_allow_on_tv)) }
+        adb = client
+        waitingForApproval = false
+        heard()
+        val profiles = withContext(Dispatchers.IO) { SetupPlatform.loadProfiles(app) }
+        val steps = LauncherStep.entries.size
+        val installed = SetupSequence.updateHome(client, client.properties, apk, bundled, profiles, SetupPlatform.store(app), target.host,
+            resume = installStarted, installing = { installStarted = true }) { st, fraction ->
+            scope.launch {
+                if (step == Step.DONE) return@launch   // a late progress report
+                step = Step.UPDATING
+                message = s(st.text())
+                progress = minOf(1f, ((st.ordinal + fraction) / steps).toFloat())
+                heard()
+            }
+        }
+        alreadyCurrent = !installed
+        progress = 1f
+        step = Step.DONE
+    }
+
+    companion object {
+        /** No news from the TV for this long: the screen says it's taking a while. */
+        const val SLOW_AFTER_MS = 30_000L
+        /** No news for this long once the install began: drop the connection and ask the TV afresh (LCH-22). */
+        const val STALLED_AFTER_MS = 180_000L
     }
 
     fun turnOffDebugging() {

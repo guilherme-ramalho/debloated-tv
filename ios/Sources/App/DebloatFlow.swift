@@ -459,37 +459,70 @@ enum DebuggingSwitch {
     /// The bundled launcher's versionCode (tvhome.json from scripts/bundle-launcher.sh); nil in a build without it.
     static let bundledVersion: Int? = LauncherVersion.bundled(
         Bundle.main.url(forResource: "tvhome", withExtension: "json", subdirectory: "Launcher").flatMap { try? Data(contentsOf: $0) })
+    /// No news from the TV for this long: the screen says it's taking a while.
+    static let slowAfter: TimeInterval = 30
+    /// No news for this long once the install began: drop the connection and ask the TV afresh (LCH-22).
+    static let stalledAfter: TimeInterval = 180
 
-    @Published var step: Step = .start
+    @Published var step: Step = .start { didSet { heard(); if step == .done, oldValue != .done { onDone?() } } }
     @Published var address: String
     @Published private(set) var busy = false
     @Published private(set) var waitingForApproval = false
-    @Published private(set) var message = ""
+    @Published private(set) var message = "" { didSet { heard() } }
     @Published var error: String?
-    @Published private(set) var progress: Double = 0
+    @Published private(set) var progress: Double = 0 { didSet { if progress != oldValue { heard() } } }
     /// True when the TV already had this version (nothing installed).
     @Published private(set) var alreadyCurrent = false
     @Published private(set) var debuggingClosed: Bool?
+    /// The TV hasn't reported anything for a while.
+    @Published private(set) var slow = false
+    /// Asking the TV afresh whether the update landed, after the connection broke or stalled.
+    @Published private(set) var checking = false
+    /// The TV started installing in this session: a retry checks it and finishes the update rather than starting over.
+    @Published private(set) var installStarted = false
+    /// Called once when the TV has the new Home (to reconnect the editor), also if the screen was left meanwhile.
+    var onDone: (() -> Void)?
     private var adb: AdbClient?
     private var task: Task<Void, Never>?
+    private var watchdog: Task<Void, Never>?
+    private var lastHeard = Date()
+    private var stalled = false
 
     init(host: String) { address = host }
 
     func cancel() {
         task?.cancel(); task = nil
-        busy = false; waitingForApproval = false
+        watchdog?.cancel(); watchdog = nil
+        busy = false; waitingForApproval = false; slow = false; checking = false
         if let adb { Task { await adb.close() } }
         adb = nil
     }
 
+    private func heard() { lastHeard = Date(); if slow { slow = false } }
+
     private func run(_ work: @escaping () async throws -> Void) {
         task?.cancel()
-        error = nil; busy = true
+        error = nil; busy = true; heard()
         task = Task {
             do { try await work() }
             catch is CancellationError {}
             catch { self.error = error.localizedDescription }
-            self.busy = false; self.waitingForApproval = false
+            self.busy = false; self.waitingForApproval = false; self.slow = false; self.checking = false
+            self.watchdog?.cancel(); self.watchdog = nil
+        }
+        watchdog?.cancel()
+        watchdog = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(5))
+                guard let self, self.busy else { return }
+                if self.waitingForApproval { self.heard(); continue }   // the person is at the TV
+                let quiet = Date().timeIntervalSince(self.lastHeard)
+                if quiet > Self.slowAfter, !self.slow { self.slow = true }
+                if quiet > Self.stalledAfter, self.installStarted, !self.checking, !self.stalled, let adb = self.adb {
+                    self.stalled = true
+                    await adb.close()   // the waiting step throws; update() asks the TV afresh
+                }
+            }
         }
     }
 
@@ -498,53 +531,75 @@ enum DebuggingSwitch {
         guard let apk = DebloatFlow.bundledAPK, let bundled = Self.bundledVersion else {
             error = String(localized: "This build doesn't include the Home screen. Run scripts/bundle-launcher.sh and rebuild."); return
         }
-        step = .connecting; progress = 0; alreadyCurrent = false; debuggingClosed = nil
+        step = installStarted ? .updating : .connecting; progress = 0; alreadyCurrent = false; debuggingClosed = nil
+        stalled = false
         run {
-            self.message = String(localized: "Connecting to \(target.host)…")
-            if let old = self.adb { await old.close() }
-            let client = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
-            self.adb = client
-            _ = try await client.connect(name: "Purio TV@iPhone", approvalTimeout: 120) {
-                Task { @MainActor in self.waitingForApproval = true; self.message = String(localized: "On the TV, choose “Always allow” and Allow.") }
-            }
-            self.waitingForApproval = false
-            // The profile decides the remote helpers and permissions, exactly as setup installed them.
-            let properties = try await Debloater(tv: client).profileProperties(await client.properties)
-            // Only a TV whose Home is the new Home screen: after an undo the stock launcher is Home again, and an update
-            // must not take it over (nor disable it) without a setup and its recovery record.
-            let home = try await client.shell(DebloatRules.homeQuery, timeout: 30).output.split(separator: "\n").last
-                .map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
-            guard home.hasPrefix(LauncherInstaller.package + "/") else {
-                throw RemoteFailure.message(String(localized: "The TV's Home is its own Home screen again, so there's nothing to update. Run setup to bring the new one back. Nothing was changed."))
-            }
-            // A tested profile by exact match, or the list applied last in this TV's recovery record.
-            let profiles = DebloatFlow.loadProfiles()
-            let identity = try await Debloater(tv: client).identity()
-            let used = RecoveryStore.all().first { saved in saved.record.tv.map { $0.sameTV(as: identity) && $0.key != nil && $0.key == identity.key }
-                ?? (saved.record.host == target.host) }.flatMap { saved in profiles.first { $0.id == saved.record.lastList } }
-            guard let profile = DebloatProfile.match(properties, in: profiles) ?? used else {
-                throw RemoteFailure.message(String(localized: "This phone didn't set up this TV's Home screen, so it can't update it from here. Nothing was changed."))
-            }
-            let installer = LauncherInstaller(tv: client)
-            guard let installed = try await installer.installedVersion() else {
-                throw RemoteFailure.message(String(localized: "The new Home screen isn't on this TV. Use Run setup instead. Nothing was changed."))
-            }
-            if installed >= bundled { self.alreadyCurrent = true; self.step = .done; return }
-            self.step = .updating
-            _ = try await installer.install(apk: apk, options: profile.manifest.launcher, theme: nil, listedStock: profile.manifest.stockLauncher) { step, fraction in
-                Task { @MainActor in
-                    self.message = step.title
-                    let index = Double(LauncherStep.allCases.firstIndex(of: step) ?? 0)
-                    self.progress = min(1, (index + fraction) / Double(LauncherStep.allCases.count))
+            do { try await self.attempt(target: target, apk: apk, bundled: bundled) }
+            catch let first where self.installStarted && (self.stalled || !(first is CancellationError)) {
+                // The connection broke or stalled after the TV began installing. It may well have finished: ask it
+                // over a fresh connection, and finish the last steps if the new Home is there.
+                self.stalled = false; self.checking = true
+                do { try await self.attempt(target: target, apk: apk, bundled: bundled) }
+                catch let second where !(second is CancellationError) || self.stalled {
+                    throw RemoteFailure.message(second is CancellationError ? first.localizedDescription : second.localizedDescription)
                 }
             }
+        }
+    }
+
+    private func attempt(target: TVAddress, apk: Data, bundled: Int) async throws {
+        self.message = self.checking ? String(localized: "Checking whether the TV has the new Home screen…") : String(localized: "Connecting to \(target.host)…")
+        if let old = self.adb { await old.close() }
+        let client = AdbClient(host: target.host, port: target.port, key: try AdbKey.loadOrCreate())
+        self.adb = client
+        _ = try await client.connect(name: "Purio TV@iPhone", approvalTimeout: 120) {
+            Task { @MainActor in self.waitingForApproval = true; self.message = String(localized: "On the TV, choose “Always allow” and Allow.") }
+        }
+        self.waitingForApproval = false
+        // The profile decides the remote helpers and permissions, exactly as setup installed them.
+        let properties = try await Debloater(tv: client).profileProperties(await client.properties)
+        // Only a TV whose Home is the new Home screen: after an undo the stock launcher is Home again, and an update
+        // must not take it over (nor disable it) without a setup and its recovery record.
+        let home = try await client.shell(DebloatRules.homeQuery, timeout: 30).output.split(separator: "\n").last
+            .map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
+        guard home.hasPrefix(LauncherInstaller.package + "/") else {
+            throw RemoteFailure.message(String(localized: "The TV's Home is its own Home screen again, so there's nothing to update. Run setup to bring the new one back. Nothing was changed."))
+        }
+        // A tested profile by exact match, or the list applied last in this TV's recovery record.
+        let profiles = DebloatFlow.loadProfiles()
+        let identity = try await Debloater(tv: client).identity()
+        let used = RecoveryStore.all().first { saved in saved.record.tv.map { $0.sameTV(as: identity) && $0.key != nil && $0.key == identity.key }
+            ?? (saved.record.host == target.host) }.flatMap { saved in profiles.first { $0.id == saved.record.lastList } }
+        guard let profile = DebloatProfile.match(properties, in: profiles) ?? used else {
+            throw RemoteFailure.message(String(localized: "This phone didn't set up this TV's Home screen, so it can't update it from here. Nothing was changed."))
+        }
+        let installer = LauncherInstaller(tv: client)
+        guard let installed = try await installer.installedVersion() else {
+            throw RemoteFailure.message(String(localized: "The new Home screen isn't on this TV. Use Run setup instead. Nothing was changed."))
+        }
+        let report: @Sendable (LauncherStep, Double) -> Void = { step, fraction in
+            Task { @MainActor in
+                self.message = step.title
+                let index = Double(LauncherStep.allCases.firstIndex(of: step) ?? 0)
+                self.progress = min(1, (index + fraction) / Double(LauncherStep.allCases.count))
+            }
+        }
+        if installed >= bundled {
+            // Installed in this session before the connection broke: finish the last steps (helpers, permissions).
+            guard self.installStarted else { self.alreadyCurrent = true; self.step = .done; return }
+            self.step = .updating
+            _ = try await installer.finishUpdate(options: profile.manifest.launcher, step: report)
+        } else {
+            self.step = .updating
+            self.installStarted = true
+            _ = try await installer.install(apk: apk, options: profile.manifest.launcher, theme: nil, listedStock: profile.manifest.stockLauncher, step: report)
             let now = try await installer.installedVersion()
             guard now == bundled else {
                 throw RemoteFailure.message(String(localized: "The TV still reports the old Home screen after the update. Try again."))
             }
-            self.progress = 1
-            self.step = .done
         }
+        self.progress = 1
+        self.step = .done
     }
 
     func turnOffDebugging() {

@@ -165,6 +165,9 @@
     <string name="su_updating">Aggiornamento della schermata Home</string>
     <string name="su_update_current">La TV ha già questa schermata Home</string>
     <string name="su_update_done">Schermata Home aggiornata</string>
+    <string name="su_update_checking">Verifico se il televisore ha la nuova schermata Home…</string>
+    <string name="su_update_slow">Il televisore ci sta mettendo più del solito. Sta ancora lavorando: lascia acceso il televisore e tieni l’telefono vicino al Wi-Fi.</string>
+    <string name="su_update_retry_hint">Forse il televisore ha già finito. Riprova prima controlla e completa solo ciò che manca.</string>
     <string name="su_update_done_detail">Layout e impostazioni sono come prima. Le nuove opzioni compaiono nella scheda TV quando TV Home si ricollega.</string>
     <string name="su_ls_checking">Controllo della TV</string>
     <string name="su_ls_pushing">Invio della schermata Home</string>

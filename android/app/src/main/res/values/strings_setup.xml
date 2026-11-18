@@ -189,6 +189,9 @@
     <string name="su_updating">Updating the Home screen</string>
     <string name="su_update_current">The TV already has this Home screen</string>
     <string name="su_update_done">Home screen updated</string>
+    <string name="su_update_checking">Checking whether the TV has the new Home screen…</string>
+    <string name="su_update_slow">The TV is taking longer than usual. Still working: keep the TV on and this phone near the Wi-Fi.</string>
+    <string name="su_update_retry_hint">The TV may have finished on its own. Try again checks it first and only finishes what\'s missing.</string>
     <string name="su_update_done_detail">Your layout and settings are as they were. New options appear in the TV tab once TV Home reconnects.</string>
 
     <!-- Home screen install steps (LauncherStep) -->

@@ -255,11 +255,12 @@ object SetupSequence {
     /**
      * "Update Home screen": installs the newer launcher this app carries over the one on the TV (`pm install -r`),
      * keeping its config.json, wallpaper and layout. Returns false when the TV already had [bundledVersion] or newer
-     * (nothing installed). [banner]: the connection's banner properties.
+     * (nothing installed). [banner]: the connection's banner properties. [resume]: this phone began installing in
+     * an attempt whose connection broke; a TV that has the build then gets the last steps again (LCH-22).
      */
     suspend fun updateHome(tv: TVDevice, banner: Map<String, String>, apk: ByteArray, bundledVersion: Int,
-                           profiles: List<DebloatProfile>, store: RecoveryStore, host: String,
-                           step: ((LauncherStep, Double) -> Unit)? = null): Boolean {
+                           profiles: List<DebloatProfile>, store: RecoveryStore, host: String, resume: Boolean = false,
+                           installing: (() -> Unit)? = null, step: ((LauncherStep, Double) -> Unit)? = null): Boolean {
         // The profile decides the remote helpers and permissions, exactly as setup installed them.
         val properties = Debloater(tv).profileProperties(banner)
         // Only a TV whose Home is the new Home screen: after an undo the stock launcher is Home again, and an update
@@ -274,7 +275,12 @@ object SetupSequence {
         val profile = DebloatProfile.match(properties, profiles) ?: used ?: throw SetupFailure(SetupIssue.UPDATE_NO_PROFILE)
         val installer = LauncherInstaller(tv)
         val installed = installer.installedVersion() ?: throw SetupFailure(SetupIssue.UPDATE_NOT_INSTALLED)
-        if (installed >= bundledVersion) return false
+        if (installed >= bundledVersion) {
+            if (!resume) return false
+            installer.finishUpdate(profile.manifest.launcher, step)
+            return true
+        }
+        installing?.invoke()
         installer.install(apk, profile.manifest.launcher, theme = null, listedStock = profile.manifest.stockLauncher, step = step)
         if (installer.installedVersion() != bundledVersion) throw SetupFailure(SetupIssue.UPDATE_STILL_OLD)
         return true

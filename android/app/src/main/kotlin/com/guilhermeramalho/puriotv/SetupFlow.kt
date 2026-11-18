@@ -606,7 +606,8 @@ fun HomeUpdateScreen(model: RemoteModel, onBack: () -> Unit) {
     val flow = remember {
         SetupHolder.update ?: HomeUpdateController(context, model.state.value.host).also { SetupHolder.update = it }
     }
-    DisposableEffect(flow) { onDispose { flow.cancel() } }
+    // Leaving for another tab mid-update must not strand it: the TV carries on, and so does the phone.
+    DisposableEffect(flow) { onDispose { if (!flow.busy) flow.cancel() } }
     val leave = { flow.cancel(); SetupHolder.update = null; onBack() }
     // Once the TV has the new Home: reconnect the editor so the TV tab reads the new version.
     LaunchedEffect(flow.step) {
@@ -635,10 +636,15 @@ fun HomeUpdateScreen(model: RemoteModel, onBack: () -> Unit) {
                     Heading(stringResource(R.string.su_allow_title))
                     Text(stringResource(R.string.su_allow_detail), color = Quiet.muted)
                 } else {
-                    Heading(stringResource(if (flow.step == HomeUpdateController.Step.CONNECTING) R.string.su_connecting else R.string.su_updating))
+                    Heading(stringResource(when {
+                        flow.checking -> R.string.su_ls_checking
+                        flow.step == HomeUpdateController.Step.CONNECTING -> R.string.su_connecting
+                        else -> R.string.su_updating
+                    }))
                     if (flow.step == HomeUpdateController.Step.UPDATING) LinearProgressIndicator(progress = { flow.progress }, modifier = Modifier.fillMaxWidth(), color = Quiet.cyan)
                 }
                 if (flow.busy) Working(flow.message)
+                if (flow.busy && flow.slow) Caption(stringResource(R.string.su_update_slow))
             }
             HomeUpdateController.Step.DONE -> {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -655,7 +661,10 @@ fun HomeUpdateScreen(model: RemoteModel, onBack: () -> Unit) {
         }
         flow.error?.let {
             Warning(it)
-            if (!flow.busy && flow.step != HomeUpdateController.Step.DONE) PrimaryButton(stringResource(R.string.su_try_again)) { flow.update() }
+            if (!flow.busy && flow.step != HomeUpdateController.Step.DONE) {
+                PrimaryButton(stringResource(R.string.su_try_again)) { flow.update() }
+                if (flow.installStarted) Caption(stringResource(R.string.su_update_retry_hint))
+            }
         }
     }
 }

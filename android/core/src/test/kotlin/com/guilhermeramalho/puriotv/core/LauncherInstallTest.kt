@@ -25,6 +25,18 @@ class LauncherInstallTest {
         assertFalse(tv.sent.any { it.contains("InputKeyService") })
     }
 
+    /** LCH-22: finishing a cut-off update repeats only the last steps: nothing sent, installed or disabled, no layout. */
+    @Test fun finishingACutOffUpdateRepeatsOnlyTheLastSteps() = runBlocking {
+        val tv = FakeDevice(answers)
+        val home = LauncherInstaller(tv).finishUpdate(LauncherOptions(homeKeyService = true, restoreKeyServices = true))
+        assertEquals("com.gathin.tvhome/.MainActivity", home)
+        assertTrue(tv.pushed.isEmpty())
+        assertFalse(tv.sent.any { it.startsWith("pm install") || it.startsWith("pm disable-user") || it.contains("config.json") })
+        assertEquals(LauncherInstaller.RESTART_WITH_HELPERS, tv.sent.first())
+        assertTrue(tv.sent.contains("cmd package set-home-activity --user 0 com.gathin.tvhome/.MainActivity"))
+        assertTrue(tv.sent.any { it.contains("HomeKeyService enabled") })
+    }
+
     /** LCH-21: STOCK_LAUNCHER=none keeps the stock launcher on, starts the new one without claiming Home first, still makes it Home. */
     @Test fun keepStockLauncherDisablesNothing() = runBlocking {
         val options = LauncherOptions(keepStockLauncher = true)
