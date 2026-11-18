@@ -81,6 +81,8 @@ jobs:
           xcrun simctl boot "$udid"
           xcrun simctl bootstatus "$udid"
           xcrun simctl addmedia "$udid" Assets.xcassets/AppIcon.appiconset/AppIcon.png
+          # Full photo access up front, as on a developer's simulator: the test can't always answer the prompt here.
+          xcrun simctl privacy "$udid" grant photos com.guilhermeramalho.TVRemote.dev
           xcodebuild test -project TVRemote.xcodeproj -scheme "Debloated TV Dev" \
             -destination "id=$udid" \
             -only-testing:TVRemoteUITests -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
