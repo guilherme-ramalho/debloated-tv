@@ -70,8 +70,14 @@ jobs:
         run: |
           # Skipped until the TVRemoteUITests target is added to the Xcode project (docs/TESTING.md, "Automated tests").
           grep -q TVRemoteUITests TVRemote.xcodeproj/project.pbxproj || { echo "No UI test target yet: skipping."; exit 0; }
-          # The first available iPhone simulator, booted with one photo in its library (Show on TV needs one, CST-04).
-          udid=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k,v in d.items() if 'iOS' in k for x in v if x['name'].startswith('iPhone')))")
+          # An iPhone simulator on the newest iOS (the UI tests target iOS 26), booted with one photo in its library
+          # (Show on TV needs one, CST-04).
+          udid=$(xcrun simctl list devices available -j | python3 -c "
+          import json, re, sys
+          devices = json.load(sys.stdin)['devices']
+          ios = sorted((tuple(map(int, re.findall(r'\d+', k))), k) for k in devices if '.iOS-' in k)
+          print(next(d['udid'] for _, k in reversed(ios) for d in devices[k] if d['name'].startswith('iPhone')))")
+          echo "Simulator: $udid"
           xcrun simctl boot "$udid"
           xcrun simctl bootstatus "$udid"
           xcrun simctl addmedia "$udid" Assets.xcassets/AppIcon.appiconset/AppIcon.png
