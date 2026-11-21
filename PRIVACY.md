@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Purio TV (formerly Debloated TV) · effective 15 November 2026
+Purio TV (formerly Debloated TV) · effective 21 November 2026
 
 Purio TV collects no personal data. It has no accounts, no ads, no analytics and no servers of its own.
 
@@ -20,9 +20,11 @@ Purio TV collects no personal data. It has no accounts, no ads, no analytics and
   Connect screen is open, the app lists the TVs that announce themselves on your network and briefly opens a
   connection to a few of their ports to tell what kind of TV each one is (Android TV, Roku, LG, Samsung, Chromecast).
   No data is sent in those checks, nothing is kept after you leave the screen, and nothing leaves your network.
-- **Keep watching (Android TVs with Purio's Home).** When you open the TV tab, Purio's Home on the TV reads the TV's
-  own Continue watching list (what Netflix, Prime Video and other apps keep there) and sends it to your phone, with
-  each show's picture fetched from that app's own artwork link. It isn't stored on the phone or sent anywhere else.
+- **Keep watching (Android TVs with Purio's Home).** While the TV shows Purio's Home and the remote is open, Purio's
+  Home on the TV reads the TV's own Continue watching list (what Netflix, Prime Video and other apps keep there) and
+  sends it to your phone, with each show's picture fetched from that app's own artwork link. If you turn on Keep
+  watching on Home, the TV also shows the list above its dock, fetching those pictures itself. The list isn't stored
+  on the phone or sent anywhere else, and you can turn either off in the app's settings.
 - **The assistant (optional, off by default).** If you turn it on, what you type or dictate to it is handled by
   Apple's on-device model (Apple Intelligence) on your iPhone, which turns it into remote commands for your TV. It
   isn't sent to the developer or any server, and the conversation is forgotten when you close it.

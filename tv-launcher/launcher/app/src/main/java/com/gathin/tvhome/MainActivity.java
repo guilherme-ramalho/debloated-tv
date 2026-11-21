@@ -202,6 +202,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private TextView raceKicker, raceHeadline, raceSessions;
     /** game_day: each team's next game from an add-on, rotating in the race panel; null when the key is off. */
     private GameDay gameDay;
+    /** keep_watching_row (Home 17): Keep watching above the dock; null when the key is off. */
+    private KeepWatchingRow watchRow;
     private View raceBar;
     private LinearLayout racePager;
     private long rotationStart;
@@ -577,6 +579,13 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         raceBar = findViewById(R.id.raceBar);
         racePager = findViewById(R.id.racePager);
         gameDay = GameDay.create(this, cfg.gameDay, handler, this::updatePanel);
+        if (cfg.keepWatchingRow) {
+            // A card in focus: the dock's glass and name shelf step aside, as for the App library pill.
+            watchRow = new KeepWatchingRow(this, findViewById(R.id.watchRow), findViewById(R.id.watchCards), () -> {
+                hideGlass();
+                hideHero();
+            });
+        }
         // The rotation runs on the clock that never jumps: setting the TV's time must not stall or stretch a turn.
         rotationStart = SystemClock.elapsedRealtime();
         showStats = cfg.showStats;
@@ -1088,6 +1097,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
         restartIdleClock();
         promptsPaused = false;
+        if (watchRow != null) watchRow.refresh();   // read only now: Home came back, so what was watched may have changed
         if (grid.getAdapter() == null) grid.setAdapter(adapter);   // dropped by onTrimMemory
         switch (tileRefresh.onResume(packagesChangedSinceRebuild())) {
             case REBUILD:
@@ -1339,6 +1349,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         // RUNNING_LOW and CRITICAL also arrive while Home is visible when an accessibility service keeps the
         // process in the foreground; never blank the screen the owner is looking at.
         if (!MemoryTrimPolicy.shouldRelease(level, started)) return;
+        KeepWatchingRow.Posters.clear();
         adapter.clear();
         // Detach the adapter too: with Home stopped no layout pass runs, so the tile views (and the bitmaps
         // they hold) would stay attached until Home comes back. setAdapter(null) recycles them now.
@@ -1371,6 +1382,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         RemoteKeys.release(this);
         cancelHoldOk();
         if (gameDay != null) gameDay.shutdown();
+        if (watchRow != null) watchRow.shutdown();
         unregisterReceiver(packageReceiver);
         if (openOnStartOnWake) unregisterReceiver(wakeReceiver);
         wallpaperPlayer.close();
@@ -1900,6 +1912,18 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         String label = adapter.labelAt(position);
         int color = adapter.ambientColorAt(position);
         float y = dockTopInRoot - 14 * density - 26 * density - hero.getHeight();
+        if (watchRow != null && watchRow.visible()) {
+            // Keep watching sits where the name shelf goes: the shelf stays hidden, the glow still follows the app.
+            hero.animate().cancel();
+            hero.setAlpha(0f);
+            heroShown = false;
+            if (ambientGlow) {
+                ambient.animate().cancel();
+                setAmbient(color);
+                ambient.setAlpha(1f);
+            }
+            return;
+        }
         boolean changed = !label.contentEquals(heroName.getText());
         if (cinematic && heroArtAlpha > 0f) showHeroArt(position);
 

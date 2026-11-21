@@ -267,8 +267,9 @@ final class EditorBackend implements EditorServer.Backend {
         JSONObject w = cfg.weather;
         boolean on = w != null && w.optBoolean("enabled", false);
         JSONObject home = new JSONObject()
-                .put("features", new JSONArray().put("weather").put("sleepTimer").put("looks").put("keepWatching"))
+                .put("features", new JSONArray().put("weather").put("sleepTimer").put("looks").put("keepWatching").put("keepWatchingRow"))
                 .put("look", HomeLooks.current(readJson(new File(themeDir(), Config.FILE_NAME))))
+                .put("keepWatchingRow", readJson(new File(themeDir(), Config.FILE_NAME)).optBoolean("keep_watching_row", false))
                 .put("weather", on)
                 .put("weatherAuto", on && w.optBoolean("auto", false))
                 .put("locationAllowed", TvLocation.permitted(ctx));
@@ -281,13 +282,15 @@ final class EditorBackend implements EditorServer.Backend {
 
     /**
      * weather: true turns the clock-side weather on with the TV's own location; false turns it off.
-     * look: cinema, calm, glass or gallery (HomeLooks). Either or both.
+     * look: cinema, calm, glass or gallery (HomeLooks). keepWatchingRow: Keep watching above the dock (Home 17).
+     * Any of them.
      */
     private JSONObject homeSettings(JSONObject payload) throws IOException, JSONException {
-        if (!payload.has("weather") && !payload.has("look")) throw new IllegalArgumentException("Nothing to change");
+        if (!payload.has("weather") && !payload.has("look") && !payload.has("keepWatchingRow")) throw new IllegalArgumentException("Nothing to change");
         File configFile = new File(themeDir(), Config.FILE_NAME);
         JSONObject config = readJson(configFile);
         if (payload.has("look")) HomeLooks.apply(config, payload.getString("look"));
+        if (payload.has("keepWatchingRow")) config.put("keep_watching_row", payload.getBoolean("keepWatchingRow"));
         if (payload.has("weather")) {
             boolean on = payload.getBoolean("weather");
             config.put("weather", on ? new JSONObject().put("enabled", true).put("auto", true) : new JSONObject().put("enabled", false));

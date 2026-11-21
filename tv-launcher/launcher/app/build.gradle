@@ -13,8 +13,8 @@ android {
         applicationId providers.gradleProperty('launcherApplicationId').getOrElse('com.gathin.tvhome')
         minSdk 26
         targetSdk 34
-        versionCode 16
-        versionName '3.4.2'
+        versionCode 17
+        versionName '3.5.0'
     }
 
     // Release key: read from Gradle properties kept outside the repository (~/.gradle/gradle.properties), never committed.

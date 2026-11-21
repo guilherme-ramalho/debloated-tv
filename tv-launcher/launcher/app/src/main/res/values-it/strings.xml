@@ -154,4 +154,17 @@
     <string name="weather_unavailable">Meteo non disponibile</string>
     <string name="weather_label">%1$d°C  ·  Percepita %2$d°C</string>
     <string name="weather_cached">in cache</string>
+
+    <!-- Keep watching on Home (Home 17) -->
+    <string name="watch_title">Continua a guardare</string>
+    <string name="watch_see_all">Vedi tutto</string>
+    <string name="watch_count">%1$d titoli</string>
+    <string name="watch_minutes_left">mancano %1$d min</string>
+    <string name="watch_cant_open">Impossibile aprire questo titolo</string>
+    <string name="watch_remove_title">Rimuovere %1$s?</string>
+    <string name="watch_remove_detail">Torna quando lo guardi di nuovo.</string>
+    <string name="watch_remove">Rimuovi</string>
+    <string name="watch_list_subtitle">Dalla lista Continua a guardare della TV, dal più recente</string>
+    <string name="watch_hint">OK: riprendi  ·  Tieni premuto OK: rimuovi</string>
+    <string name="watch_empty">Ancora niente da continuare</string>
 </resources>

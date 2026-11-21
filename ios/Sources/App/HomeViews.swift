@@ -138,6 +138,10 @@ struct TVHomeView: View {
                         WeatherRow(home: home)
                         Divider().overlay(QuietTheme.edge)
                     }
+                    if let home = editor.snapshot?.home, home.supports("keepWatchingRow") {
+                        KeepWatchingRowSetting(home: home)
+                        Divider().overlay(QuietTheme.edge)
+                    }
                     NavigationLink { HomeAppsView() } label: { QuietRow(title: "Apps & order", detail: "Reorder, hide or uninstall", symbol: "square.grid.2x2") }
                     Divider().overlay(QuietTheme.edge)
                     NavigationLink { ProfilesView() } label: { QuietRow(title: "Profiles", detail: "Save a layout for each person", symbol: "person.2") }
@@ -565,6 +569,35 @@ struct WeatherRow: View {
         Task {
             defer { working = false }
             do { try await editor.setWeather(on) } catch { settings.notice = error.localizedDescription }
+        }
+    }
+}
+
+/// Keep watching on TV Home itself (Home 17): up to four shows above the dock, See all for the rest.
+struct KeepWatchingRowSetting: View {
+    let home: LauncherHome
+    @EnvironmentObject private var editor: HomeEditor
+    @EnvironmentObject private var settings: AppSettings
+    @State private var working = false
+    var body: some View {
+        Toggle(isOn: Binding(get: { home.keepWatchingRow == true }, set: { change($0) })) {
+            HStack(spacing: 11) {
+                Image(systemName: "play.rectangle.on.rectangle").font(.system(size: 18)).frame(width: 25).foregroundStyle(.white)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Keep watching on Home").font(.system(size: 14, weight: .medium)).foregroundStyle(.white)
+                    Text("Shows you left halfway, above the dock").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+                }
+            }
+        }
+        .tint(Color(red: 71/255, green: 156/255, blue: 142/255)).disabled(working || !editor.ready)
+        .padding(.horizontal, 13).padding(.vertical, 10).frame(minHeight: 61)
+        .accessibilityIdentifier("keepWatchingRowSetting")
+    }
+    private func change(_ on: Bool) {
+        working = true
+        Task {
+            defer { working = false }
+            do { try await editor.setKeepWatchingRow(on) } catch { settings.notice = error.localizedDescription }
         }
     }
 }

@@ -183,6 +183,8 @@ final class Config {
     final boolean correctPrehandledVolumeKeys;
     /** Personal fork: optional clock-side weather settings. */
     final JSONObject weather;
+    /** Keep watching above the dock (theme keep_watching_row, Home 17; the phone's TV tab switches it). Off by default. */
+    final boolean keepWatchingRow;
     /** Stock launcher whose home screen is sent back here if the firmware revives it (config.xml stock_home_redirect). */
     final String stockHomeRedirect;
     /** A Live TV window the firmware opens by itself at power-on is sent back to Home (power_on_home). */
@@ -295,8 +297,9 @@ final class Config {
                    boolean handleViewInputs, boolean tileMenu, boolean dockEvenPadding, boolean dockBand, boolean cinematicDots, boolean cinematicWhiteFocus, boolean wifiStatusColor, int cinematicScrim, int cinematicArt,
                    Map<String, Set<String>> wallpaperMoods, boolean gamepadPassthrough, boolean consumeVolumeKeys, boolean powerOnHome, boolean homeLongPressHome, boolean wifiStatusWarnings, List<String> topBarApps, boolean showGreeting, boolean headerWhite, boolean clockWallpaper, int clockWallpaperDim, boolean clockGlow, String glassStyle, boolean singleRow, boolean dockBandAll, boolean lunarDate, int lunarUtcOffset, boolean dateBelowClock, boolean vpnPill, String locale, boolean powerOnHomeAlways, boolean inputsConnectedOnly,
                    int openOnStartNetworkWait, boolean openOnStartOnWake, boolean iconOnlyVpn, String clockFormat, boolean backOpensClock, boolean glowSnap,
-                   boolean correctPrehandledVolumeKeys, JSONObject weather) {
+                   boolean correctPrehandledVolumeKeys, JSONObject weather, boolean keepWatchingRow) {
         this.weather = weather;
+        this.keepWatchingRow = keepWatchingRow;
         this.correctPrehandledVolumeKeys = correctPrehandledVolumeKeys;
         this.handleViewInputs = handleViewInputs;
         this.tileMenu = tileMenu;
@@ -719,7 +722,8 @@ final class Config {
                 dateBelowClock, vpnPill, locale, powerOnHomeAlways, inputsConnectedOnly,
                 Math.max(0, Math.min(600, openOnStartNetworkWait)), openOnStartOnWake, iconOnlyVpn, clockFormat, backOpensClock, glowSnap,
                 json != null && bool(json, "correct_prehandled_volume_keys", false),
-                json == null ? null : json.optJSONObject("weather"));
+                json == null ? null : json.optJSONObject("weather"),
+                json != null && bool(json, "keep_watching_row", false));
     }
 
     /**

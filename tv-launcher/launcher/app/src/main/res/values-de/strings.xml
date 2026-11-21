@@ -79,4 +79,17 @@
     <string name="weather_unavailable">Wetter nicht verfügbar</string>
     <string name="weather_label">%1$d°C  ·  Gefühlt %2$d°C</string>
     <string name="weather_cached">zwischengespeichert</string>
+
+    <!-- Keep watching on Home (Home 17) -->
+    <string name="watch_title">Weiterschauen</string>
+    <string name="watch_see_all">Alle anzeigen</string>
+    <string name="watch_count">%1$d Sendungen</string>
+    <string name="watch_minutes_left">noch %1$d Min.</string>
+    <string name="watch_cant_open">Diese Sendung ließ sich nicht öffnen</string>
+    <string name="watch_remove_title">%1$s entfernen?</string>
+    <string name="watch_remove_detail">Sie kommt zurück, wenn du sie wieder schaust.</string>
+    <string name="watch_remove">Entfernen</string>
+    <string name="watch_list_subtitle">Aus der Weiterschauen-Liste deines Fernsehers, neueste zuerst</string>
+    <string name="watch_hint">OK: fortsetzen  ·  OK halten: entfernen</string>
+    <string name="watch_empty">Noch nichts zum Weiterschauen</string>
 </resources>

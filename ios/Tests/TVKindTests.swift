@@ -110,6 +110,17 @@ final class AssistantCommandsTests: XCTestCase {
 
 /// Keep watching (KWT-01..03): what Home sends decodes, is checked, and reads as progress and time left.
 final class KeepWatchingTests: XCTestCase {
+    /// KWT-08: Home 17 says it has the row and whether it's on.
+    func testHomeSaysWhetherTheRowIsOn() throws {
+        let json = #"{"features":["weather","keepWatching","keepWatchingRow"],"keepWatchingRow":true,"version":17}"#
+        let home = try JSONDecoder().decode(LauncherHome.self, from: Data(json.utf8))
+        XCTAssertTrue(home.supports("keepWatchingRow"))
+        XCTAssertEqual(home.keepWatchingRow, true)
+        let older = try JSONDecoder().decode(LauncherHome.self, from: Data(#"{"features":["keepWatching"],"version":16}"#.utf8))
+        XCTAssertFalse(older.supports("keepWatchingRow"))
+        XCTAssertNil(older.keepWatchingRow)
+    }
+
     func testHomesListDecodesAndIsChecked() throws {
         let json = #"{"allowed":true,"items":[{"id":"12","package":"com.netflix.ninja","title":"A show","episode":"S2 · E5","positionMs":1900000,"durationMs":3280000,"lastWatched":1794900000,"posterJPEG":"/9j/4AAQ"},{"id":"13","package":"com.amazon.amazonvideo.livingroom","title":"A film","episode":"","positionMs":0,"durationMs":0,"lastWatched":1794800000}]}"#
         let list = try JSONDecoder().decode(KeepWatchingList.self, from: Data(json.utf8))

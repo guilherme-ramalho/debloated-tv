@@ -163,4 +163,17 @@
     <string name="clock_format_system">System</string>
     <string name="clock_format_12">12-hour</string>
     <string name="clock_format_24">24-hour</string>
+
+    <!-- Keep watching on Home (Home 17) -->
+    <string name="watch_title">Keep watching</string>
+    <string name="watch_see_all">See all</string>
+    <string name="watch_count">%1$d shows</string>
+    <string name="watch_minutes_left">%1$d min left</string>
+    <string name="watch_cant_open">That show couldn\'t be opened</string>
+    <string name="watch_remove_title">Remove %1$s?</string>
+    <string name="watch_remove_detail">It comes back when you watch it again.</string>
+    <string name="watch_remove">Remove</string>
+    <string name="watch_list_subtitle">From your TV\'s Continue watching list, newest first</string>
+    <string name="watch_hint">OK: resume  ·  Hold OK: remove</string>
+    <string name="watch_empty">Nothing to keep watching yet</string>
 </resources>

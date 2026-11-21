@@ -236,6 +236,15 @@ import UniformTypeIdentifiers
         try result.validate(); snapshot = result
     }
 
+    /// Keep watching above the dock on TV Home (Home 17). Applies at once; Home redraws on the TV.
+    func setKeepWatchingRow(_ on: Bool) async throws {
+        guard ready, snapshot?.home?.supports("keepWatchingRow") == true else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect")) }
+        let token = generation
+        let result = try await client.request("homeSettings", payload: ["keepWatchingRow": on], as: LauncherSnapshot.self)
+        guard generation == token else { throw CancellationError() }
+        try result.validate(); snapshot = result
+    }
+
     /// Weather by the clock on TV Home, placed by the TV itself. Applies at once; Home redraws on the TV.
     func setWeather(_ on: Bool) async throws {
         guard ready, snapshot?.home?.supports("weather") == true else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect to change the weather")) }

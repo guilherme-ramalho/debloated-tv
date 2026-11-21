@@ -164,6 +164,12 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+        <!-- Keep watching, every show: opened from the row's See all on Home (keep_watching_row). -->
+        <activity
+            android:name=".KeepWatchingActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.TvHome" />
         <activity
             android:name=".HomeSettingsActivity"
             android:exported="false"

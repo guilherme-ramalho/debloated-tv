@@ -5863,6 +5863,40 @@
         }
       }
     },
+    "Keep watching on Home" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiterschauen auf dem Startbildschirm"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguir viendo en la pantalla de inicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reprendre sur l’écran d’accueil"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua a guardare nella Home"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar assistindo na tela inicial"
+          }
+        }
+      }
+    },
     "Keep watching on the remote" : {
       "localizations" : {
         "de" : {
@@ -15634,6 +15668,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra Retomar na TV"
+          }
+        }
+      }
+    },
+    "Shows you left halfway, above the dock" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angefangene Sendungen, über dem Dock"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lo que dejaste a medias, encima del dock"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce que vous avez laissé en cours, au-dessus du dock"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quello che hai lasciato a metà, sopra il dock"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que você parou na metade, acima do dock"
           }
         }
       }

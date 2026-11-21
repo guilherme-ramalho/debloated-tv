@@ -179,6 +179,19 @@ final class KeepWatching {
     // ---- posters -------------------------------------------------------------------------------------------
 
     private static String poster(Context ctx, String uri) {
+        Bitmap small = posterBitmap(ctx, uri, POSTER_WIDTH);
+        if (small == null) return null;
+        ByteArrayOutputStream jpeg = new ByteArrayOutputStream();
+        small.compress(Bitmap.CompressFormat.JPEG, 72, jpeg);
+        small.recycle();
+        return Base64.encodeToString(jpeg.toByteArray(), Base64.NO_WRAP);
+    }
+
+    /**
+     * The poster at most [width] px wide (RGB_565), from the app's own artwork link: a content or resource URI, or
+     * https. Null when there is none or it can't be read. Network and decoding: never on the main thread.
+     */
+    static Bitmap posterBitmap(Context ctx, String uri, int width) {
         if (uri == null || uri.isEmpty()) return null;
         try (InputStream in = open(ctx, uri)) {
             if (in == null) return null;
@@ -188,20 +201,43 @@ final class KeepWatching {
             BitmapFactory.decodeByteArray(bytes, 0, bytes.length, bounds);
             if (bounds.outWidth <= 0) return null;
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = Math.max(1, Integer.highestOneBit(bounds.outWidth / POSTER_WIDTH));
+            options.inSampleSize = Math.max(1, Integer.highestOneBit(bounds.outWidth / width));
             options.inPreferredConfig = Bitmap.Config.RGB_565;
             Bitmap decoded = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
             if (decoded == null) return null;
-            int h = Math.max(1, Math.round(decoded.getHeight() * (POSTER_WIDTH / (float) decoded.getWidth())));
-            Bitmap small = decoded.getWidth() > POSTER_WIDTH ? Bitmap.createScaledBitmap(decoded, POSTER_WIDTH, h, true) : decoded;
-            ByteArrayOutputStream jpeg = new ByteArrayOutputStream();
-            small.compress(Bitmap.CompressFormat.JPEG, 72, jpeg);
-            if (small != decoded) small.recycle();
-            decoded.recycle();
-            return Base64.encodeToString(jpeg.toByteArray(), Base64.NO_WRAP);
+            if (decoded.getWidth() <= width) return decoded;
+            int h = Math.max(1, Math.round(decoded.getHeight() * (width / (float) decoded.getWidth())));
+            Bitmap small = Bitmap.createScaledBitmap(decoded, width, h, true);
+            if (small != decoded) decoded.recycle();
+            return small;
         } catch (Exception | OutOfMemoryError e) {
             return null;
         }
+    }
+
+    // ---- the row on Home (Home 17, keep_watching_row) -------------------------------------------------
+
+    /** Cards the row on Home shows: up to 4 shows; with more, the 4th place is "See all". */
+    static final int ROW_CARDS = 4;
+
+    static int rowShows(int total) {
+        return total <= ROW_CARDS ? total : ROW_CARDS - 1;
+    }
+
+    static boolean rowSeeAll(int total) {
+        return total > ROW_CARDS;
+    }
+
+    /** Minutes left in the show, or -1 when the app gave no position or length (or it's finished). */
+    static int minutesLeft(Entry e) {
+        if (e.duration <= 0 || e.position <= 0 || e.position >= e.duration) return -1;
+        return (int) Math.max(1, Math.round((e.duration - e.position) / 60000.0));
+    }
+
+    /** 0 to 1000, for the progress bar; 0 when the app gave no position. */
+    static int progress(Entry e) {
+        if (e.duration <= 0 || e.position <= 0) return 0;
+        return (int) Math.min(1000, e.position * 1000 / e.duration);
     }
 
     private static InputStream open(Context ctx, String uri) throws java.io.IOException {

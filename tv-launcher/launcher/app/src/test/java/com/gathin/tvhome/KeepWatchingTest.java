@@ -60,4 +60,25 @@ public class KeepWatchingTest {
         for (KeepWatching.Entry e : list) out.add(e.id);
         return out;
     }
+
+    /** KWT-08: the row on Home shows up to four shows; with more, the fourth place is See all. */
+    @Test public void rowShowsFourOrThreeAndSeeAll() {
+        assertEquals(Collections.emptyList(), KeepWatchingRow.plan(0));
+        assertEquals(Arrays.asList("show"), KeepWatchingRow.plan(1));
+        assertEquals(Arrays.asList("show", "show", "show", "show"), KeepWatchingRow.plan(4));
+        assertEquals(Arrays.asList("show", "show", "show", "seeAll"), KeepWatchingRow.plan(5));
+        assertEquals(Arrays.asList("show", "show", "show", "seeAll"), KeepWatchingRow.plan(50));
+    }
+
+    /** KWT-08: time left and progress come from the app's own position and length; none when it gave neither. */
+    @Test public void minutesLeftAndProgress() {
+        assertEquals(23, KeepWatching.minutesLeft(row(1, "p.q", "A", "2", "5", 37 * 60_000L, 60 * 60_000L, NOW)));
+        assertEquals(1, KeepWatching.minutesLeft(row(1, "p.q", "A", null, null, 59 * 60_000L + 50_000, 60 * 60_000L, NOW)));
+        assertEquals(-1, KeepWatching.minutesLeft(row(1, "p.q", "A", null, null, 0, 60 * 60_000L, NOW)));
+        assertEquals(-1, KeepWatching.minutesLeft(row(1, "p.q", "A", null, null, 60 * 60_000L, 60 * 60_000L, NOW)));
+        assertEquals(-1, KeepWatching.minutesLeft(row(1, "p.q", "A", null, null, 10, 0, NOW)));
+        assertEquals(500, KeepWatching.progress(row(1, "p.q", "A", null, null, 30 * 60_000L, 60 * 60_000L, NOW)));
+        assertEquals(0, KeepWatching.progress(row(1, "p.q", "A", null, null, 0, 60 * 60_000L, NOW)));
+        assertEquals(1000, KeepWatching.progress(row(1, "p.q", "A", null, null, 70 * 60_000L, 60 * 60_000L, NOW)));
+    }
 }
