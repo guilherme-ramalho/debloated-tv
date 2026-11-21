@@ -22415,6 +22415,40 @@
         }
       }
     },
+    "Update Home screen (TV tab) to see the TV's inputs here." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualisiere den Startbildschirm (Tab TV), um die Eingänge des Fernsehers hier zu sehen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualiza la pantalla de inicio (pestaña TV) para ver aquí las entradas de la tele."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mettez à jour l’écran d’accueil (onglet TV) pour voir ici les entrées de la TV."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiorna la schermata Home (scheda TV) per vedere qui gli ingressi della TV."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualize a tela inicial (aba TV) para ver aqui as entradas da TV."
+          }
+        }
+      }
+    },
     "Update Home screen to switch inputs from the phone." : {
       "localizations" : {
         "de" : {

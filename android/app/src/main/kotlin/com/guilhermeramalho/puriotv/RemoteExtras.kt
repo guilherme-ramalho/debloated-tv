@@ -369,7 +369,9 @@ fun TvInputsSheet(model: RemoteModel, onDismiss: () -> Unit) {
         Column(Modifier.padding(horizontal = 20.dp).padding(bottom = 16.dp).navigationBarsPadding().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(stringResource(R.string.key_inputs), style = MaterialTheme.typography.titleLarge)
-            if (inputs.isEmpty()) Text(stringResource(if (editor.ready) R.string.inputs_none else R.string.inputs_from_home), fontSize = 13.sp, color = Quiet.muted)
+            // Home before 18 can't send its list: say so rather than "no inputs".
+            if (editor.ready && editor.snapshot?.home?.supports("inputs") != true) Text(stringResource(R.string.inputs_update_home), fontSize = 13.sp, color = Quiet.amber)
+            else if (inputs.isEmpty()) Text(stringResource(if (editor.ready) R.string.inputs_none else R.string.inputs_from_home), fontSize = 13.sp, color = Quiet.muted)
             inputs.forEach { input ->
                 Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(Quiet.panel)
                     .clickable(enabled = switching == null) {

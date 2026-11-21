@@ -430,4 +430,5 @@
     <string name="input_connected">Connesso</string>
     <string name="input_nothing_connected">Niente collegato</string>
     <string name="inputs_tv_menu">Apri il menu ingressi della TV</string>
+    <string name="inputs_update_home">Aggiorna la schermata Home (scheda TV) per vedere qui gli ingressi della TV.</string>
 </resources>

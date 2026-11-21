@@ -443,4 +443,5 @@
     <string name="input_connected">Connected</string>
     <string name="input_nothing_connected">Nothing connected</string>
     <string name="inputs_tv_menu">Open the TV\'s own input menu</string>
+    <string name="inputs_update_home">Update Home screen (TV tab) to see the TV\'s inputs here.</string>
 </resources>

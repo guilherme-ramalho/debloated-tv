@@ -336,7 +336,11 @@ struct TVInputsSheet: View {
     var body: some View {
         NavigationStack {
             List {
-                if editor.inputRows.isEmpty {
+                if editor.ready, editor.snapshot?.home?.supports("inputs") != true {
+                    // Home before 18 can't send its list: say so rather than "no inputs".
+                    Text("Update Home screen (TV tab) to see the TV's inputs here.")
+                        .font(.footnote).foregroundStyle(.orange).listRowBackground(QuietTheme.panel)
+                } else if editor.inputRows.isEmpty {
                     Text(editor.ready ? "This TV lists no inputs." : "Purio reads the inputs from the TV's Home screen: press Home on the TV once, and they appear here.")
                         .font(.footnote).foregroundStyle(QuietTheme.muted).listRowBackground(QuietTheme.panel)
                 }

@@ -271,7 +271,7 @@ struct RemoteView: View {
             ForEach(apps) { item in appTile(item) }
             Button { allApps = true } label: {
                 VStack(spacing: 5) {
-                    AllAppsMark().aspectRatio(1, contentMode: .fit)
+                    Color.clear.aspectRatio(1, contentMode: .fit).overlay { AllAppsMark() }
                     Text("All apps").font(.system(size: 10)).foregroundStyle(QuietTheme.muted).lineLimit(1)
                 }
             }.buttonStyle(.plain).accessibilityIdentifier("allApps").accessibilityLabel("All apps on the TV")
@@ -281,13 +281,16 @@ struct RemoteView: View {
         let logo = StreamingBrand.logo(item.id) ?? item.logo ?? ""
         return Button { model.open(item) } label: {
             VStack(spacing: 5) {
-                Group {
-                    if !logo.isEmpty { Image(logo).resizable().renderingMode(.template).scaledToFit().padding(item.name == "Netflix" ? 12 : 9) }
-                    else { Text(item.name.prefix(2)).font(.system(size: 17, weight: .bold)) }
-                }
-                .foregroundStyle(.white).frame(maxWidth: .infinity).aspectRatio(1, contentMode: .fit)
-                .background(StreamingBrand.color(item.id), in: RoundedRectangle(cornerRadius: 14))
-                .overlay(RoundedRectangle(cornerRadius: 14).stroke(.white.opacity(0.1), lineWidth: 1))
+                // A square the width of its column first, the logo inside it: every button the same size,
+                // whatever the logo's own shape.
+                Color.clear.aspectRatio(1, contentMode: .fit)
+                    .background(StreamingBrand.color(item.id), in: RoundedRectangle(cornerRadius: 14))
+                    .overlay(RoundedRectangle(cornerRadius: 14).stroke(.white.opacity(0.1), lineWidth: 1))
+                    .overlay {
+                        if !logo.isEmpty { Image(logo).resizable().renderingMode(.template).scaledToFit().padding(item.name == "Netflix" ? 13 : 10) }
+                        else { Text(item.name.prefix(2)).font(.system(size: 17, weight: .bold)) }
+                    }
+                    .foregroundStyle(.white)
                 Text(item.name).font(.system(size: 10)).foregroundStyle(QuietTheme.muted).lineLimit(1).minimumScaleFactor(0.8)
             }
         }.buttonStyle(RemotePressStyle(radius: 14)).disabled(!model.ready).opacity(model.ready ? 1 : 0.45)

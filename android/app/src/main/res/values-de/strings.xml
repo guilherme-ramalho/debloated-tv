@@ -430,4 +430,5 @@
     <string name="input_connected">Verbunden</string>
     <string name="input_nothing_connected">Nichts angeschlossen</string>
     <string name="inputs_tv_menu">Eingangsmenü des Fernsehers öffnen</string>
+    <string name="inputs_update_home">Aktualisiere den Startbildschirm (Tab TV), um die Eingänge des Fernsehers hier zu sehen.</string>
 </resources>
