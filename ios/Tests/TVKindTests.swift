@@ -138,6 +138,18 @@ final class KeepWatchingTests: XCTestCase {
 
 /// REM-25: channel and number keys reach every kind of TV under its own name; Roku has no number keys.
 final class RemoteKeysTests: XCTestCase {
+    /// REM-28: Home 17's input list decodes, and a malformed one is refused.
+    func testInputListDecodesAndIsChecked() throws {
+        let json = #"{"inputs":[{"id":"com.tcl.tvinput/.HdmiInputService/HW5","name":"PlayStation · HDMI 1","kind":"hdmi","connected":true},{"id":"com.tcl.tvinput/.AvInput/HW2","name":"AV","kind":"av"},{"id":"live-tv","name":"Live TV","kind":"live"}]}"#
+        let list = try JSONDecoder().decode(TVInputList.self, from: Data(json.utf8))
+        XCTAssertNoThrow(try list.validate())
+        XCTAssertEqual(list.inputs.map(\.kind), ["hdmi", "av", "live"])
+        XCTAssertEqual(list.inputs[0].connected, true)
+        XCTAssertNil(list.inputs[1].connected)
+        let bad = TVInputList(inputs: [TVInputRow(id: "x", name: "X", kind: "usb", connected: nil)])
+        XCTAssertThrowsError(try bad.validate())
+    }
+
     func testChannelAndNumberKeysPerTV() {
         XCTAssertEqual(TVKey.channelUp.rawValue, 166)
         XCTAssertEqual(TVKey.digits.map(\.rawValue), Array(7...16))

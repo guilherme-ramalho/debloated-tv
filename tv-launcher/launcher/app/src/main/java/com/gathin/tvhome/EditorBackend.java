@@ -70,6 +70,8 @@ final class EditorBackend implements EditorServer.Backend {
                 case "keepWatching": result = KeepWatching.toPhone(ctx, System.currentTimeMillis()); break;
                 case "resumeWatching": result = resumeWatching(payload); break;
                 case "hideWatching": result = hideWatching(payload); break;
+                case "inputs": result = InputList.toPhone(ctx, Config.load(ctx)); break;
+                case "openInput": result = openInput(payload); break;
                 default: return error(id, "Unsupported request");
             }
             return new JSONObject().put("type", "response").put("id", id).put("ok", true).put("result", result).toString();
@@ -267,7 +269,7 @@ final class EditorBackend implements EditorServer.Backend {
         JSONObject w = cfg.weather;
         boolean on = w != null && w.optBoolean("enabled", false);
         JSONObject home = new JSONObject()
-                .put("features", new JSONArray().put("weather").put("sleepTimer").put("looks").put("keepWatching").put("keepWatchingRow"))
+                .put("features", new JSONArray().put("weather").put("sleepTimer").put("looks").put("keepWatching").put("keepWatchingRow").put("inputs"))
                 .put("look", HomeLooks.current(readJson(new File(themeDir(), Config.FILE_NAME))))
                 .put("keepWatchingRow", readJson(new File(themeDir(), Config.FILE_NAME)).optBoolean("keep_watching_row", false))
                 .put("weather", on)
@@ -298,6 +300,21 @@ final class EditorBackend implements EditorServer.Backend {
         writeAtomic(configFile, config.toString(2).getBytes(StandardCharsets.UTF_8));
         EditorHome.rebuild();
         return snapshot();
+    }
+
+    // ---- inputs (InputList, Home 17) ---------------------------------------------------------------------
+
+    /** Switches to one of the inputs the phone was given, through Home (its own vendor routes apply). */
+    private JSONObject openInput(JSONObject payload) throws JSONException {
+        String id = payload.optString("id");
+        boolean listed = false;
+        JSONArray inputs = InputList.toPhone(ctx, Config.load(ctx)).getJSONArray("inputs");
+        for (int i = 0; i < inputs.length(); i++) if (inputs.getJSONObject(i).getString("id").equals(id)) listed = true;
+        if (!listed) throw new IllegalArgumentException("That input isn't on this TV");
+        ctx.startActivity(new Intent(InputList.ACTION_OPEN).setClass(ctx, MainActivity.class)
+                .putExtra(InputList.EXTRA_ID, id).putExtra(InputList.EXTRA_TOKEN, InputList.TOKEN)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+        return new JSONObject().put("status", "opened");
     }
 
     // ---- keep watching (KeepWatching) ------------------------------------------------------------------

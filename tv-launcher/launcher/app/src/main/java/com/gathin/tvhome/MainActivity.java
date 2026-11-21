@@ -963,7 +963,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
         // Not after recreate(): the launch intent survives it and would open the settings again.
         if (savedInstanceState == null && !openLauncherSettingsIfAsked(getIntent()) && !openLibraryIfAsked(getIntent())) {
-            openInputsIfAsked(getIntent());
+            if (!openInputsIfAsked(getIntent())) switchInputIfAsked(getIntent());
         }
     }
 
@@ -987,6 +987,25 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
      * open it again. Nothing to do when the TV has no inputs to list (the pill is hidden then).
      * top_menu hides the pill, so the list hangs under the gear there, as in showInputs().
      */
+    /**
+     * The phone's Inputs key (EditorBackend.openInput, Home 17): switch to that input the way the Inputs menu does,
+     * or open Live TV. Only with Home's own editor token, so another app can't switch inputs through Home.
+     */
+    private boolean switchInputIfAsked(Intent intent) {
+        if (intent == null || !InputList.ACTION_OPEN.equals(intent.getAction())) return false;
+        setIntent(new Intent(Intent.ACTION_MAIN));
+        if (!InputList.TOKEN.equals(intent.getStringExtra(InputList.EXTRA_TOKEN))) return true;
+        String id = intent.getStringExtra(InputList.EXTRA_ID);
+        if (id == null) return true;
+        if (InputList.LIVE_TV.equals(id)) {
+            Intent liveTv = liveTvIntent();
+            if (liveTv != null) open(liveTv);
+        } else {
+            openInput(id);
+        }
+        return true;
+    }
+
     private boolean openInputsIfAsked(Intent intent) {
         if (intent == null || !ACTION_VIEW_INPUTS.equals(intent.getAction())) return false;
         setIntent(new Intent(Intent.ACTION_MAIN));
@@ -1050,6 +1069,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (openLauncherSettingsIfAsked(intent)) return;
         if (openLibraryIfAsked(intent)) return;
         if (openInputsIfAsked(intent)) return;
+        if (switchInputIfAsked(intent)) return;
         if (intent == null || !intent.hasCategory(Intent.CATEGORY_HOME)) return;
         if (gameDay != null && !stopped) gameDay.read();
         grid.scrollToPosition(0);

@@ -57,6 +57,25 @@ public struct FavoriteInput: Codable, Identifiable, Equatable {
     public var inputID: String?
     public init(name: String, inputID: String? = nil) { self.name = name; self.inputID = inputID }
 }
+/// One of the TV's inputs as Home's own Inputs menu lists it (Home 18, editor request "inputs").
+public struct TVInputRow: Codable, Identifiable, Equatable, Sendable {
+    public let id: String
+    public let name: String
+    /// hdmi, av or live (Live TV).
+    public let kind: String
+    /// Something plugged in and on, as the TV reports it; nil when the TV can't tell (AV jacks, some brands).
+    public let connected: Bool?
+    public init(id: String, name: String, kind: String, connected: Bool?) { self.id = id; self.name = name; self.kind = kind; self.connected = connected }
+}
+public struct TVInputList: Codable, Equatable, Sendable {
+    public let inputs: [TVInputRow]
+    public init(inputs: [TVInputRow]) { self.inputs = inputs }
+    public func validate() throws {
+        guard inputs.count <= 40, inputs.allSatisfy({ !$0.id.isEmpty && $0.id.utf8.count <= 512 && $0.name.count <= 120 && ["hdmi", "av", "live"].contains($0.kind) })
+        else { throw RemoteFailure.message(String(localized: "Invalid TV editor response")) }
+    }
+}
+
 public struct TVInput: Codable, Identifiable, Equatable {
     public var id: String
     public var name: String

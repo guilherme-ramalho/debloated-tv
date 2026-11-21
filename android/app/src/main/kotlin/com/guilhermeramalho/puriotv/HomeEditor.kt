@@ -218,6 +218,36 @@ class HomeEditor(private val context: Context, private val scope: CoroutineScope
         update("homeSettings", buildJsonObject { put("weather", on) })
     }
 
+    // Inputs (Home 17): the TV's inputs as Home's own menu lists them; the last list is kept per TV.
+    private val _inputs = MutableStateFlow<List<com.guilhermeramalho.puriotv.core.TvInputRow>>(emptyList())
+    val inputs: StateFlow<List<com.guilhermeramalho.puriotv.core.TvInputRow>> = _inputs
+    private val inputPrefs by lazy { context.getSharedPreferences("tv_inputs", Context.MODE_PRIVATE) }
+
+    fun cachedInputs(host: String) {
+        val saved = inputPrefs.getString(host, null)
+        _inputs.value = saved?.let { runCatching { kotlinx.serialization.json.Json.decodeFromString<com.guilhermeramalho.puriotv.core.TvInputList>(it).also { l -> l.validate() }.inputs }.getOrNull() } ?: emptyList()
+    }
+
+    suspend fun loadInputs() {
+        if (!ready || _state.value.snapshot?.home?.supports("inputs") != true) return
+        val token = generation
+        val list = runCatching { client.request<com.guilhermeramalho.puriotv.core.TvInputList>("inputs", buildJsonObject { }).also { it.validate() } }.getOrNull() ?: return
+        if (generation != token) return
+        _inputs.value = list.inputs
+        inputPrefs.edit().putString(remote.state.value.host, kotlinx.serialization.json.Json.encodeToString(com.guilhermeramalho.puriotv.core.TvInputList.serializer(), list)).apply()
+    }
+
+    /** Switches the TV to that input through Home (its own vendor routes apply). Connects first if needed. */
+    suspend fun openInput(input: com.guilhermeramalho.puriotv.core.TvInputRow) {
+        if (!ready) {
+            connect(force = true)
+            repeat(40) { if (!ready) kotlinx.coroutines.delay(250) }
+        }
+        if (!ready) throw UserMessage(s(R.string.editor_no_answer))
+        if (_state.value.snapshot?.home?.supports("inputs") != true) throw UserMessage(s(R.string.inputs_need_update))
+        client.requestRaw("openInput", buildJsonObject { put("id", input.id) })
+    }
+
     private suspend fun update(operation: String, payload: kotlinx.serialization.json.JsonObject) {
         val token = generation
         val result = client.request<LauncherSnapshot>(operation, payload).also { it.validate() }

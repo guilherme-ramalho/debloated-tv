@@ -423,4 +423,11 @@
     <string name="all_apps">Alle Apps</string>
     <string name="all_apps_tv">Alle Apps auf dem Fernseher</string>
     <string name="all_apps_partial">Bis Purios Startbildschirm verbunden ist (der Fernseher auf dem Startbildschirm), stehen hier nur die Apps der Fernbedienung.</string>
+    <string name="editor_no_answer">TV Home hat nicht geantwortet</string>
+    <string name="inputs_need_update">Aktualisiere den Startbildschirm, um Eingänge vom Handy aus zu wechseln.</string>
+    <string name="inputs_none">Dieser Fernseher meldet keine Eingänge.</string>
+    <string name="inputs_from_home">Purio liest die Eingänge vom Startbildschirm des Fernsehers: Drück einmal Home auf dem Fernseher, dann erscheinen sie hier.</string>
+    <string name="input_connected">Verbunden</string>
+    <string name="input_nothing_connected">Nichts angeschlossen</string>
+    <string name="inputs_tv_menu">Eingangsmenü des Fernsehers öffnen</string>
 </resources>

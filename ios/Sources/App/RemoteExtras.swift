@@ -323,3 +323,60 @@ struct AllAppsSheet: View {
         }.listRowBackground(QuietTheme.panel).disabled(!model.ready).accessibilityIdentifier("allAppsRow")
     }
 }
+
+
+/// The Inputs key on Android TV (1.3): the TV's inputs exactly as its Home screen's Inputs menu lists them; tap one
+/// to switch. Opens at once with the last list seen and refreshes when Purio's Home answers. No naming or matching.
+struct TVInputsSheet: View {
+    @ObservedObject var model: RemoteModel
+    @EnvironmentObject private var editor: HomeEditor
+    @Environment(\.dismiss) private var dismiss
+    @State private var switching: String?
+    @State private var problem = ""
+    var body: some View {
+        NavigationStack {
+            List {
+                if editor.inputRows.isEmpty {
+                    Text(editor.ready ? "This TV lists no inputs." : "Purio reads the inputs from the TV's Home screen: press Home on the TV once, and they appear here.")
+                        .font(.footnote).foregroundStyle(QuietTheme.muted).listRowBackground(QuietTheme.panel)
+                }
+                ForEach(editor.inputRows) { input in
+                    Button { open(input) } label: {
+                        HStack(spacing: 12) {
+                            Image(systemName: input.kind == "live" ? "antenna.radiowaves.left.and.right" : input.kind == "av" ? "cable.connector" : "rectangle.connected.to.line.below")
+                                .font(.system(size: 17)).frame(width: 28).foregroundStyle(QuietTheme.cyan)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(verbatim: input.name).foregroundStyle(.white)
+                                if input.connected == true { Text("Connected").font(.caption).foregroundStyle(QuietTheme.toggle) }
+                                else if input.connected == false { Text("Nothing connected").font(.caption).foregroundStyle(QuietTheme.muted) }
+                            }
+                            Spacer()
+                            if switching == input.id { ProgressView() }
+                        }.frame(minHeight: 44)
+                    }.listRowBackground(QuietTheme.panel).disabled(switching != nil).accessibilityIdentifier("tvInput")
+                }
+                if !problem.isEmpty { Text(verbatim: problem).font(.footnote).foregroundStyle(.orange).listRowBackground(QuietTheme.panel) }
+                Section {
+                    Button("Open the TV's own input menu", systemImage: "rectangle.on.rectangle") { model.tap(.inputs); dismiss() }
+                        .disabled(!model.ready).listRowBackground(QuietTheme.panel)
+                }
+            }
+            .scrollContentBackground(.hidden).background(QuietTheme.background)
+            .navigationTitle("Inputs").navigationBarTitleDisplayMode(.inline)
+            .toolbar { Button("Done") { dismiss() } }
+            .task {
+                editor.cachedInputs(for: model.host)
+                if editor.ready { await editor.loadInputs() } else { editor.autoConnect(model: model) }
+            }
+            .onChange(of: editor.ready) { _, ready in if ready { Task { await editor.loadInputs() } } }
+        }
+        .presentationDetents([.medium, .large])
+    }
+    private func open(_ input: TVInputRow) {
+        switching = input.id; problem = ""
+        Task {
+            defer { switching = nil }
+            do { try await editor.openInput(input, model: model); dismiss() } catch { problem = error.localizedDescription }
+        }
+    }
+}

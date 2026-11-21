@@ -6577,6 +6577,40 @@
         }
       }
     },
+    "Nothing connected" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nichts angeschlossen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nada conectado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rien de branché"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niente collegato"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nada conectado"
+          }
+        }
+      }
+    },
     "Numbers" : {
       "localizations" : {
         "de" : {
@@ -6743,6 +6777,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abra o Purio e permita na TV primeiro"
+          }
+        }
+      }
+    },
+    "Open the TV's own input menu" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eingangsmenü des Fernsehers öffnen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir el menú de entradas de la tele"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir le menu des entrées de la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri il menu ingressi della TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir o menu de entradas da TV"
+          }
+        }
+      }
+    },
+    "Purio reads the inputs from the TV's Home screen: press Home on the TV once, and they appear here." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio liest die Eingänge vom Startbildschirm des Fernsehers: Drück einmal Home auf dem Fernseher, dann erscheinen sie hier."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio lee las entradas de la pantalla de inicio de la tele: pulsa Inicio en la tele una vez y aparecerán aquí."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio lit les entrées depuis l’écran d’accueil de la TV : appuyez une fois sur Accueil sur la TV et elles apparaissent ici."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purio legge gli ingressi dalla schermata Home della TV: premi Home sulla TV una volta e compaiono qui."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Purio lê as entradas da tela inicial da TV: aperte Home na TV uma vez e elas aparecem aqui."
           }
         }
       }
@@ -20033,6 +20135,40 @@
         }
       }
     },
+    "This TV lists no inputs." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieser Fernseher meldet keine Eingänge."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta tele no indica ninguna entrada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette TV n’indique aucune entrée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa TV non indica nessun ingresso."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta TV não lista nenhuma entrada."
+          }
+        }
+      }
+    },
     "This TV only accepts a Home screen built especially for it, which Purio TV doesn't carry, so this setup only disables apps." : {
       "localizations" : {
         "de" : {
@@ -22275,6 +22411,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Atualizar a tela inicial"
+          }
+        }
+      }
+    },
+    "Update Home screen to switch inputs from the phone." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualisiere den Startbildschirm, um Eingänge vom Handy aus zu wechseln."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualiza la pantalla de inicio para cambiar de entrada desde el teléfono."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mettez à jour l’écran d’accueil pour changer d’entrée depuis le téléphone."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiorna la schermata Home per cambiare ingresso dal telefono."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualize a tela inicial para trocar de entrada pelo celular."
           }
         }
       }

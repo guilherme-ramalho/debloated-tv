@@ -423,4 +423,11 @@
     <string name="all_apps">Tutte le app</string>
     <string name="all_apps_tv">Tutte le app della TV</string>
     <string name="all_apps_partial">Finché la schermata Home di Purio non si collega (la TV sulla sua Home), sono elencate solo le app del telecomando.</string>
+    <string name="editor_no_answer">TV Home non ha risposto</string>
+    <string name="inputs_need_update">Aggiorna la schermata Home per cambiare ingresso dal telefono.</string>
+    <string name="inputs_none">Questa TV non indica nessun ingresso.</string>
+    <string name="inputs_from_home">Purio legge gli ingressi dalla schermata Home della TV: premi Home sulla TV una volta e compaiono qui.</string>
+    <string name="input_connected">Connesso</string>
+    <string name="input_nothing_connected">Niente collegato</string>
+    <string name="inputs_tv_menu">Apri il menu ingressi della TV</string>
 </resources>

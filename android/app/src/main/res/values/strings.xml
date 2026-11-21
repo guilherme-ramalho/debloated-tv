@@ -436,4 +436,11 @@
     <string name="all_apps">All apps</string>
     <string name="all_apps_tv">All apps on the TV</string>
     <string name="all_apps_partial">Only the remote\'s own apps are listed until Purio\'s Home screen connects (the TV on its Home screen).</string>
+    <string name="editor_no_answer">TV Home did not answer</string>
+    <string name="inputs_need_update">Update Home screen to switch inputs from the phone.</string>
+    <string name="inputs_none">This TV lists no inputs.</string>
+    <string name="inputs_from_home">Purio reads the inputs from the TV\'s Home screen: press Home on the TV once, and they appear here.</string>
+    <string name="input_connected">Connected</string>
+    <string name="input_nothing_connected">Nothing connected</string>
+    <string name="inputs_tv_menu">Open the TV\'s own input menu</string>
 </resources>

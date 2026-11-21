@@ -124,9 +124,10 @@ struct RemoteView: View {
                             Color.clear.frame(width: 66, height: 182)
                         }
                     }
-                    appRow
+                    // The same room above and below the app row (12 + 12).
+                    appRow.padding(.top, 12)
                     if let shows = keepWatchingShows {
-                        KeepWatchingStrip(tvName: model.tvName, shows: shows).padding(.top, 10)
+                        KeepWatchingStrip(tvName: model.tvName, shows: shows).padding(.top, 12)
                     }
                 }.padding(.horizontal, 24).padding(.top, 4).padding(.bottom, 12)
                 }
@@ -144,7 +145,7 @@ struct RemoteView: View {
             .onChange(of: model.foregroundPackage) { _, _ in keepWatchingIfOnHome() }
             .onChange(of: assistantOn) { _, _ in assistantButton = AssistantSettings.showsButton }
             .onChange(of: settings) { _, open in if !open { assistantButton = AssistantSettings.showsButton } }
-            .sheet(isPresented: $inputs) { NavigationStack { InputSettingsView(model: model).toolbar { Button("Done") { inputs = false } } } }
+            .sheet(isPresented: $inputs) { TVInputsSheet(model: model) }
             .fullScreenCover(isPresented: $showOnTV) { ShowOnTVView(remote: model) }
             .sheet(isPresented: $allApps) { AllAppsSheet(model: model) }
 
@@ -266,15 +267,15 @@ struct RemoteView: View {
     /// Five app buttons (the TV Home dock's apps first) and All apps, which lists every app on the TV.
     private var appRow: some View {
         let apps = Array((model.kind == .androidTV ? preferences.remoteApps : preferences.shortcutApps).prefix(5))
-        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 6), spacing: 6) {
+        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: 6), spacing: 4) {
             ForEach(apps) { item in appTile(item) }
             Button { allApps = true } label: {
                 VStack(spacing: 5) {
-                    AllAppsMark().frame(width: 52, height: 52)
+                    AllAppsMark().aspectRatio(1, contentMode: .fit)
                     Text("All apps").font(.system(size: 10)).foregroundStyle(QuietTheme.muted).lineLimit(1)
                 }
             }.buttonStyle(.plain).accessibilityIdentifier("allApps").accessibilityLabel("All apps on the TV")
-        }.padding(.top, 4)
+        }
     }
     private func appTile(_ item: RemoteApp) -> some View {
         let logo = StreamingBrand.logo(item.id) ?? item.logo ?? ""
@@ -284,7 +285,7 @@ struct RemoteView: View {
                     if !logo.isEmpty { Image(logo).resizable().renderingMode(.template).scaledToFit().padding(item.name == "Netflix" ? 12 : 9) }
                     else { Text(item.name.prefix(2)).font(.system(size: 17, weight: .bold)) }
                 }
-                .foregroundStyle(.white).frame(width: 52, height: 52)
+                .foregroundStyle(.white).frame(maxWidth: .infinity).aspectRatio(1, contentMode: .fit)
                 .background(StreamingBrand.color(item.id), in: RoundedRectangle(cornerRadius: 14))
                 .overlay(RoundedRectangle(cornerRadius: 14).stroke(.white.opacity(0.1), lineWidth: 1))
                 Text(item.name).font(.system(size: 10)).foregroundStyle(QuietTheme.muted).lineLimit(1).minimumScaleFactor(0.8)

@@ -148,11 +148,12 @@ fun RemoteScreen(state: RemoteModel.State, model: RemoteModel) {
             }
             if (state.supports(TVKey.CHANNEL_UP)) ChannelPill(enabled, model) else Box(Modifier.size(66.dp, 182.dp))
         }
-        AppRow(enabled, (if (state.kind == TvKind.ANDROID_TV) prefs.remoteApps else prefs.shortcutApps).take(5), model) { allApps = true }
+        // The same room above the app row as the iPhone's (12 + 12).
+        AppRow(enabled, (if (state.kind == TvKind.ANDROID_TV) prefs.remoteApps else prefs.shortcutApps).take(5), model, Modifier.padding(top = 12.dp)) { allApps = true }
     }
     if (details) ConnectionSheet(state, model) { details = false }
     if (keyboard) KeyboardSheet(model) { keyboard = false }
-    if (inputs) InputsSheet(model) { inputs = false }
+    if (inputs) TvInputsSheet(model) { inputs = false }
     if (allApps) AllAppsSheet(state, model) { allApps = false }
     if (showOnTv) ShowOnTvScreen(model, state) { showOnTv = false }
 }
@@ -241,22 +242,24 @@ private fun GridKey(icon: ImageVector, @StringRes label: Int, available: Boolean
 
 /** Five app buttons (the TV Home dock's apps first) and All apps, which lists every app on the TV. */
 @Composable
-private fun AppRow(enabled: Boolean, apps: List<com.guilhermeramalho.puriotv.core.RemoteApp>, model: RemoteModel, openAll: () -> Unit) {
+private fun AppRow(enabled: Boolean, apps: List<com.guilhermeramalho.puriotv.core.RemoteApp>, model: RemoteModel, modifier: Modifier, openAll: () -> Unit) {
     val haptics = rememberHaptics()
-    Row(Modifier.fillMaxWidth().padding(top = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+    // Six columns sharing the width: the buttons grow with the phone (about 56 dp on a 412 dp wide one).
+    val tile = ((androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp - 48 - 5 * 4) / 6).dp
+    Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         apps.forEach { app ->
             val open = stringResource(R.string.open_app, app.name)
-            Column(Modifier.width(54.dp).clip(RoundedCornerShape(14.dp)).clickable(enabled = enabled) { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.open(app) }
+            Column(Modifier.width(tile).clip(RoundedCornerShape(14.dp)).clickable(enabled = enabled) { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.open(app) }
                 .semantics { contentDescription = open }.alpha(if (enabled) 1f else 0.45f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                AppTile(app.id, app.name, 52.dp)
+                AppTile(app.id, app.name, tile)
                 Text(app.name, fontSize = 10.sp, color = Quiet.muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
-        repeat(5 - apps.size) { Box(Modifier.width(54.dp)) }
+        repeat(5 - apps.size) { Box(Modifier.width(tile)) }
         val all = stringResource(R.string.all_apps_tv)
-        Column(Modifier.width(54.dp).clip(RoundedCornerShape(14.dp)).clickable(onClick = openAll).semantics { contentDescription = all },
+        Column(Modifier.width(tile).clip(RoundedCornerShape(14.dp)).clickable(onClick = openAll).semantics { contentDescription = all },
             horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(5.dp)) {
-            AllAppsMark(52.dp)
+            AllAppsMark(tile)
             Text(stringResource(R.string.all_apps), fontSize = 10.sp, color = Quiet.muted, maxLines = 1)
         }
     }

@@ -219,6 +219,34 @@ import UniformTypeIdentifiers
     func showSampleKeepWatching(_ list: KeepWatchingList) { keepWatching = list }
     #endif
 
+    // MARK: Inputs (Home 17)
+
+    /// The TV's inputs as Home's own menu lists them; the last list is kept per TV so the sheet opens at once.
+    @Published private(set) var inputRows: [TVInputRow] = []
+    private static func inputsKey(_ host: String) -> String { "tvInputRows." + host }
+    func cachedInputs(for host: String) {
+        guard let data = UserDefaults.standard.data(forKey: Self.inputsKey(host)),
+              let list = try? JSONDecoder().decode(TVInputList.self, from: data), (try? list.validate()) != nil else { inputRows = []; return }
+        inputRows = list.inputs
+    }
+    func loadInputs() async {
+        guard ready, snapshot?.home?.supports("inputs") == true, let host = model?.host else { return }
+        let token = generation
+        guard let list = try? await client.request("inputs", as: TVInputList.self), generation == token, (try? list.validate()) != nil else { return }
+        inputRows = list.inputs
+        if let data = try? JSONEncoder().encode(list) { UserDefaults.standard.set(data, forKey: Self.inputsKey(host)) }
+    }
+    /// Switches the TV to that input through Home (its own vendor routes apply). Connects first if needed.
+    func openInput(_ input: TVInputRow, model: RemoteModel) async throws {
+        if !ready {
+            connect(model: model, force: true)
+            for _ in 0..<40 where !ready { try await Task.sleep(for: .milliseconds(250)) }
+        }
+        guard ready else { throw RemoteFailure.message(String(localized: "TV Home did not answer")) }
+        guard snapshot?.home?.supports("inputs") == true else { throw RemoteFailure.message(String(localized: "Update Home screen to switch inputs from the phone.")) }
+        _ = try await client.request("openInput", payload: ["id": input.id], as: Confirmation.self)
+    }
+
     func sleepTimer(minutes: Int) async throws {
         guard ready, (0...240).contains(minutes) else { throw RemoteFailure.message(String(localized: "Wait for TV Home to connect to schedule a sleep timer")) }
         let token = generation

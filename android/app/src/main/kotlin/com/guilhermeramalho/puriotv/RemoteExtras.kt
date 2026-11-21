@@ -345,3 +345,57 @@ private fun AllAppsRow(id: String, name: String, enabled: Boolean, onClick: () -
         Text(name, color = Color.White, fontSize = 15.sp)
     }
 }
+
+
+/**
+ * The Inputs key on Android TV (1.3, TVInputsSheet on the iPhone): the TV's inputs exactly as its Home screen's
+ * Inputs menu lists them; tap one to switch. Opens at once with the last list seen; refreshes when Home answers.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TvInputsSheet(model: RemoteModel, onDismiss: () -> Unit) {
+    val editor by model.editor.state.collectAsState()
+    val inputs by model.editor.inputs.collectAsState()
+    val tv by model.state.collectAsState()
+    val scope = rememberCoroutineScope()
+    var switching by remember { mutableStateOf<String?>(null) }
+    var problem by remember { mutableStateOf("") }
+    LaunchedEffect(Unit) {
+        model.editor.cachedInputs(tv.host)
+        if (editor.ready) model.editor.loadInputs() else model.editor.autoConnect()
+    }
+    LaunchedEffect(editor.ready) { if (editor.ready) model.editor.loadInputs() }
+    ModalBottomSheet(onDismissRequest = onDismiss, containerColor = Quiet.background) {
+        Column(Modifier.padding(horizontal = 20.dp).padding(bottom = 16.dp).navigationBarsPadding().verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text(stringResource(R.string.key_inputs), style = MaterialTheme.typography.titleLarge)
+            if (inputs.isEmpty()) Text(stringResource(if (editor.ready) R.string.inputs_none else R.string.inputs_from_home), fontSize = 13.sp, color = Quiet.muted)
+            inputs.forEach { input ->
+                Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(Quiet.panel)
+                    .clickable(enabled = switching == null) {
+                        switching = input.id; problem = ""
+                        scope.launch {
+                            try { model.editor.openInput(input); onDismiss() }
+                            catch (e: Exception) { problem = (e as? UserMessage)?.message ?: e.message ?: "" }
+                            finally { switching = null }
+                        }
+                    }.padding(horizontal = 14.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text(input.name, color = Color.White, fontSize = 15.sp)
+                        when (input.connected) {
+                            true -> Text(stringResource(R.string.input_connected), fontSize = 12.sp, color = Quiet.green)
+                            false -> Text(stringResource(R.string.input_nothing_connected), fontSize = 12.sp, color = Quiet.muted)
+                            null -> {}
+                        }
+                    }
+                    if (switching == input.id) CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp, color = Quiet.muted)
+                }
+            }
+            if (problem.isNotEmpty()) Text(problem, fontSize = 13.sp, color = Quiet.amber)
+            TextButton(onClick = { model.tap(com.guilhermeramalho.puriotv.core.TVKey.INPUTS); onDismiss() }, enabled = tv.ready) {
+                Text(stringResource(R.string.inputs_tv_menu), color = Quiet.cyan)
+            }
+        }
+    }
+}

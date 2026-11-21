@@ -423,4 +423,11 @@
     <string name="all_apps">Toutes les apps</string>
     <string name="all_apps_tv">Toutes les apps de la TV</string>
     <string name="all_apps_partial">Tant que l’écran d’accueil de Purio n’est pas connecté (la TV sur son écran d’accueil), seules les apps de la télécommande sont listées.</string>
+    <string name="editor_no_answer">TV Home n\'a pas répondu</string>
+    <string name="inputs_need_update">Mettez à jour l’écran d’accueil pour changer d’entrée depuis le téléphone.</string>
+    <string name="inputs_none">Cette TV n’indique aucune entrée.</string>
+    <string name="inputs_from_home">Purio lit les entrées depuis l’écran d’accueil de la TV : appuyez une fois sur Accueil sur la TV et elles apparaissent ici.</string>
+    <string name="input_connected">Connecté</string>
+    <string name="input_nothing_connected">Rien de branché</string>
+    <string name="inputs_tv_menu">Ouvrir le menu des entrées de la TV</string>
 </resources>

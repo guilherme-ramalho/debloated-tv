@@ -79,6 +79,17 @@ data class HomeLayout(
 @Serializable
 data class TVInput(val id: String, val name: String, val launchURL: String)
 
+/** One of the TV's inputs as Home's own Inputs menu lists it (Home 18, editor request "inputs"; TVInputRow in Swift). */
+@Serializable
+data class TvInputRow(val id: String, val name: String, val kind: String, val connected: Boolean? = null)
+
+@Serializable
+data class TvInputList(val inputs: List<TvInputRow>) {
+    fun validate() {
+        require(inputs.size <= 40 && inputs.all { it.id.isNotEmpty() && it.id.length <= 512 && it.name.length <= 120 && it.kind in setOf("hdmi", "av", "live") }) { "Invalid TV editor response" }
+    }
+}
+
 /** The `home` part of a snapshot (1.1+ launchers); null from older ones. */
 @Serializable
 data class LauncherHome(

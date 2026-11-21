@@ -423,4 +423,11 @@
     <string name="all_apps">Todos os apps</string>
     <string name="all_apps_tv">Todos os apps da TV</string>
     <string name="all_apps_partial">Até a tela inicial do Purio conectar (a TV na tela inicial), só aparecem os apps do controle.</string>
+    <string name="editor_no_answer">O TV Home não respondeu</string>
+    <string name="inputs_need_update">Atualize a tela inicial para trocar de entrada pelo celular.</string>
+    <string name="inputs_none">Esta TV não lista nenhuma entrada.</string>
+    <string name="inputs_from_home">O Purio lê as entradas da tela inicial da TV: aperte Home na TV uma vez e elas aparecem aqui.</string>
+    <string name="input_connected">Conectado</string>
+    <string name="input_nothing_connected">Nada conectado</string>
+    <string name="inputs_tv_menu">Abrir o menu de entradas da TV</string>
 </resources>
