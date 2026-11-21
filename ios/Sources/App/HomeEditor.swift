@@ -32,7 +32,7 @@ import UniformTypeIdentifiers
     static let applyDelay: Duration = .milliseconds(800)
 
     func close() {
-        generation += 1; wanted = false; snapshot = nil; keepWatching = nil; operation?.cancel(); operation = nil; client.close()
+        generation += 1; wanted = false; snapshot = nil; keepWatching = nil; keepWatchingReadAt = nil; operation?.cancel(); operation = nil; client.close()
         ready = false; busy = false; waitingFor = nil; backedUp = false
         message = String(localized: "TV Home connects when you open the TV tab with the TV on.")
     }
@@ -182,8 +182,17 @@ import UniformTypeIdentifiers
     }
     // MARK: Keep watching (Home 14+)
 
-    /// The TV's Continue watching list, read through Home when the TV tab connects. nil until read or not supported.
+    /// The TV's Continue watching list, read through Home when it connects. nil until read or not supported.
     @Published private(set) var keepWatching: KeepWatchingList?
+    private var keepWatchingReadAt: Date?
+    /// The list is read again when Home comes back to the front, at most every 5 minutes (each read makes the TV
+    /// fetch posters from the apps' servers).
+    static let keepWatchingFreshFor: TimeInterval = 300
+
+    func freshenKeepWatching() async {
+        if let at = keepWatchingReadAt, Date().timeIntervalSince(at) < Self.keepWatchingFreshFor { return }
+        await loadKeepWatching()
+    }
 
     /// Reads it once (Home reads the TV's list only when asked; nothing polls).
     func loadKeepWatching() async {
@@ -191,7 +200,7 @@ import UniformTypeIdentifiers
         let token = generation
         guard let list = try? await client.request("keepWatching", as: KeepWatchingList.self), generation == token,
               (try? list.validate()) != nil else { return }
-        keepWatching = list
+        keepWatching = list; keepWatchingReadAt = Date()
     }
     /// Opens the show in its app on the TV, where it left off (the app's own link).
     func resume(_ show: WatchingShow) async throws {

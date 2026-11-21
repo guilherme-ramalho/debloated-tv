@@ -12,7 +12,7 @@
     <string name="finding_address">Adresse wird ermittelt…</string>
     <string name="tv_can_full">Fernbedienung, Einrichtung und Auf dem Fernseher zeigen</string>
     <string name="tv_can_basic">Fernbedienung und Einrichtung</string>
-    <string name="tv_remote_apps">Fernbedienung und Apps</string>
+    <string name="tv_remote_apps">Fernbedienung und Apps · Beta</string>
     <string name="problem_roku_limited">Der Roku lehnt dieses Telefon ab. Am Roku: Einstellungen › System › Erweiterte Systemeinstellungen › Steuerung durch mobile Apps › Netzwerkzugriff: Aktiviert (oder Freizügig).</string>
     <string name="problem_lg_refused">Der Fernseher hat dieses Telefon nicht angenommen. Bestätige es am Fernseher, wenn er fragt, und prüfe, ob LG Connect Apps in den Netzwerkeinstellungen des Fernsehers aktiviert ist.</string>
     <string name="problem_samsung_refused">Der Fernseher hat dieses Telefon nicht zugelassen. Wähle am Fernseher „Zulassen“, wenn er fragt (oder erlaube es unter Einstellungen › Allgemein › Externe Geräteverwaltung › Geräteverbindungsmanager).</string>
@@ -24,10 +24,12 @@
     <string name="pair_allow_title">Purio am Fernseher erlauben</string>
     <string name="pair_allow_detail">%1$s fragt, ob dieses Handy erlaubt werden soll. Wähle „Zulassen“ (oder „Akzeptieren“) mit der Fernbedienung des Fernsehers.</string>
     <string name="brand_tv_notice">Die TV-Einrichtung und Purios Startbildschirm funktionieren auf Android TV und Google TV. Auf diesem Fernseher ist Purio die Fernbedienung: Tasten, Apps und Tippen.</string>
+    <string name="brand_tv_beta">Die Fernbedienung für diesen Fernseher ist eine Beta. Wenn eine Taste nicht funktioniert, nenn uns das Modell deines Fernsehers und wir beheben es.</string>
+    <string name="brand_tv_report">Problem melden</string>
     <string name="tv_not_yet">Noch nicht unterstützt</string>
     <string name="tv_is_chromecast">Das ist ein Chromecast. Purio kann ihn noch nicht steuern.</string>
     <string name="not_listed">Mein Fernseher fehlt: Adresse eingeben</string>
-    <string name="connect_footer">Funktioniert mit Android TV, Google TV, Roku, LG und Samsung. Danach zeigt dein Fernseher einen Code oder fragt, ob er dieses Handy erlauben soll.</string>
+    <string name="connect_footer">Funktioniert mit Android TV und Google TV, als Beta auch mit Roku, LG und Samsung. Danach zeigt dein Fernseher einen Code oder fragt, ob er dieses Handy erlauben soll.</string>
     <string name="connect_none_title">Noch kein Fernseher gefunden</string>
     <string name="connect_none_hint">Die Suche läuft weiter. Das hilft meistens:</string>
     <string name="tip_on">Schalte den Fernseher ein</string>

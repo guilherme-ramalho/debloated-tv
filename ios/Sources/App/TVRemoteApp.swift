@@ -55,6 +55,7 @@ struct RemoteView: View {
     @State private var assistantButton = false
     @AppStorage(AssistantSettings.key) private var assistantOn = false
     @EnvironmentObject private var preferences: AppSettings
+    @EnvironmentObject private var editor: HomeEditor
     @State private var keyboard = false
     @State private var inputs = false
     @State private var showOnTV = false
@@ -64,6 +65,18 @@ struct RemoteView: View {
     @GestureState private var padTouching = false
     @Environment(\.scenePhase) private var phase
     private let ink = Color(red: 0.075, green: 0.085, blue: 0.11)
+    /// Keep watching on the remote: only while the TV shows Purio Home (choosing what to watch), so asking it for the
+    /// list never interrupts something playing; on Android TV, switched on in Settings, and with shows to list.
+    private var onPurioHome: Bool { model.foregroundPackage == HomeEditor.homePackage || UITestHooks.onPurioHome }
+    private var keepWatchingShows: [WatchingShow]? {
+        guard preferences.value.showsKeepWatching, model.kind == .androidTV, onPurioHome,
+              let list = editor.keepWatching, list.allowed, !list.items.isEmpty else { return nil }
+        return list.items
+    }
+    private func keepWatchingIfOnHome() {
+        guard preferences.value.showsKeepWatching, model.kind == .androidTV, model.foregroundPackage == HomeEditor.homePackage else { return }
+        if editor.ready { Task { await editor.freshenKeepWatching() } } else { editor.autoConnect(model: model) }
+    }
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -125,6 +138,9 @@ struct RemoteView: View {
                             }
                         }
                     }
+                    if let shows = keepWatchingShows {
+                        KeepWatchingStrip(tvName: model.tvName, shows: shows).padding(.top, 10)
+                    }
                 }.padding(.horizontal, 30).padding(.top, 4).padding(.bottom, 12)
                 }
             }
@@ -137,7 +153,8 @@ struct RemoteView: View {
             }
             .sheet(isPresented: $keyboard) { KeyboardView(model: model) }
             .sheet(isPresented: $assistant) { AssistantSheet(remote: model, apps: preferences.value.apps) }
-            .onAppear { assistantButton = AssistantSettings.showsButton }
+            .onAppear { assistantButton = AssistantSettings.showsButton; keepWatchingIfOnHome() }
+            .onChange(of: model.foregroundPackage) { _, _ in keepWatchingIfOnHome() }
             .onChange(of: assistantOn) { _, _ in assistantButton = AssistantSettings.showsButton }
             .onChange(of: settings) { _, open in if !open { assistantButton = AssistantSettings.showsButton } }
             .sheet(isPresented: $inputs) { NavigationStack { InputSettingsView(model: model).toolbar { Button("Done") { inputs = false } } } }
@@ -280,6 +297,8 @@ enum UITestHooks {
     }
     /// `-uiTestRemote YES`: the remote's controls without a paired TV (header layout and Show on TV tests).
     static var showsRemote: Bool { UserDefaults.standard.bool(forKey: "uiTestRemote") }
+    /// The TV shows Purio Home (Keep watching on the remote).
+    static var onPurioHome: Bool { UserDefaults.standard.bool(forKey: "uiTestKeepWatching") }
     /// `-showConnect YES` (Dev builds): the Connect screen even with a paired TV, to check discovery on a real network.
     static var showsConnect: Bool { UserDefaults.standard.bool(forKey: "showConnect") }
     /// `-uiTestKeepWatching YES`: the TV tab's Keep watching strip with sample shows (no TV, no posters).
@@ -298,5 +317,5 @@ enum UITestHooks {
     }
 }
 #else
-enum UITestHooks { static let showsRemote = false; static let showsConnect = false; static let foundTVs: [DiscoveredTV] = [] }
+enum UITestHooks { static let showsRemote = false; static let onPurioHome = false; static let showsConnect = false; static let foundTVs: [DiscoveredTV] = [] }
 #endif

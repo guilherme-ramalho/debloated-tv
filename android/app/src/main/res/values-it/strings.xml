@@ -12,7 +12,7 @@
     <string name="finding_address">Ricerca dell\'indirizzo…</string>
     <string name="tv_can_full">Telecomando, configurazione e Mostra sulla TV</string>
     <string name="tv_can_basic">Telecomando e configurazione</string>
-    <string name="tv_remote_apps">Telecomando e app</string>
+    <string name="tv_remote_apps">Telecomando e app · Beta</string>
     <string name="problem_roku_limited">Il Roku rifiuta questo telefono. Sul Roku: Impostazioni › Sistema › Impostazioni di sistema avanzate › Controllo tramite app mobili › Accesso alla rete: Attivato (o Permissivo).</string>
     <string name="problem_lg_refused">La TV non ha accettato questo telefono. Accettalo sulla TV quando lo chiede e controlla che LG Connect Apps sia attivo nelle impostazioni di rete della TV.</string>
     <string name="problem_samsung_refused">La TV non ha consentito questo telefono. Scegli Consenti sulla TV quando lo chiede (o consentilo in Impostazioni › Generali › Gestione dispositivi esterni › Gestione connessione dispositivo).</string>
@@ -24,10 +24,12 @@
     <string name="pair_allow_title">Consenti Purio sulla TV</string>
     <string name="pair_allow_detail">%1$s chiede se consentire questo telefono. Scegli Consenti (o Accetta) con il telecomando della TV.</string>
     <string name="brand_tv_notice">La configurazione della TV e la schermata Home di Purio funzionano su Android TV e Google TV. Su questa TV Purio è il telecomando: tasti, app e digitazione.</string>
+    <string name="brand_tv_beta">Il telecomando per questa TV è in beta. Se un tasto non funziona, dicci il modello della tua TV e lo sistemiamo.</string>
+    <string name="brand_tv_report">Segnala un problema</string>
     <string name="tv_not_yet">Non ancora supportato</string>
     <string name="tv_is_chromecast">È un Chromecast. Purio non può ancora controllarlo.</string>
     <string name="not_listed">La mia TV non c\'è: inserisci l\'indirizzo</string>
-    <string name="connect_footer">Funziona con Android TV, Google TV, Roku, LG e Samsung. Poi la TV mostra un codice o chiede di consentire questo telefono.</string>
+    <string name="connect_footer">Funziona con Android TV e Google TV, e in beta con Roku, LG e Samsung. Poi la TV mostra un codice o chiede di consentire questo telefono.</string>
     <string name="connect_none_title">Ancora nessuna TV trovata</string>
     <string name="connect_none_hint">Ancora in ricerca. Di solito questo risolve:</string>
     <string name="tip_on">Accendi la TV</string>

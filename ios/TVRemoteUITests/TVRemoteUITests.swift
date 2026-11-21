@@ -185,11 +185,8 @@ final class TVRemoteUITests: XCTestCase {
 
     /// KWT-04: the TV tab's Keep watching strip (sample shows), and a tap opens Resume on TV.
     func testKeepWatchingStripOpensResume() throws {
-        let app = XCUIApplication()
-        app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestTVState", "installed", "-uiTestOffer", "NO", "-uiTestKeepWatching", "YES",
-                               "-e2eNoDiscovery", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
-        app.launch()
-        app.tabBars.buttons["TV"].tap()
+        // Keep watching sits on the Remote tab while the TV shows Purio Home (1.3).
+        let app = launchRemote(extra: keepWatchingArguments)
         let cards = app.buttons.matching(identifier: "keepWatchingCard")
         XCTAssertTrue(cards.firstMatch.waitForExistence(timeout: 5))
         XCTAssertEqual(cards.count, 3)
@@ -204,11 +201,7 @@ final class TVRemoteUITests: XCTestCase {
 
     /// KWT-06: See all opens the full list; a row opens Resume on TV.
     func testKeepWatchingSeeAllListsEveryShow() throws {
-        let app = XCUIApplication()
-        app.launchArguments = ["-tvHost", "192.0.2.10", "-uiTestTVState", "installed", "-uiTestOffer", "NO", "-uiTestKeepWatching", "YES",
-                               "-e2eNoDiscovery", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
-        app.launch()
-        app.tabBars.buttons["TV"].tap()
+        let app = launchRemote(extra: keepWatchingArguments)
         let seeAll = app.buttons["keepWatchingSeeAll"]
         XCTAssertTrue(seeAll.waitForExistence(timeout: 5))
         seeAll.tap()
@@ -221,6 +214,28 @@ final class TVRemoteUITests: XCTestCase {
         XCTAssertTrue(app.buttons["resumeOnTV"].waitForExistence(timeout: 5))
     }
 
+    private let keepWatchingArguments = ["-uiTestTVState", "installed", "-uiTestOffer", "NO", "-uiTestKeepWatching", "YES", "-e2eNoDiscovery"]
+
+    /// KWT-07: Settings › Keep watching on the remote hides the row and brings it back.
+    func testKeepWatchingSettingHidesTheRow() throws {
+        let app = launchRemote(extra: keepWatchingArguments)
+        let cards = app.buttons.matching(identifier: "keepWatchingCard")
+        XCTAssertTrue(cards.firstMatch.waitForExistence(timeout: 5))
+        app.tabBars.buttons["Settings"].tap()
+        let toggle = app.switches["keepWatchingSetting"].exists ? app.switches["keepWatchingSetting"] : app.descendants(matching: .any)["keepWatchingSetting"]
+        var tries = 0
+        while !toggle.isHittable && tries < 4 { app.swipeUp(); tries += 1 }
+        toggle.tap()
+        app.tabBars.buttons["Remote"].tap()
+        XCTAssertFalse(cards.firstMatch.waitForExistence(timeout: 2), "the row stays hidden while the setting is off")
+        app.tabBars.buttons["Settings"].tap()
+        tries = 0
+        while !toggle.isHittable && tries < 4 { app.swipeUp(); tries += 1 }
+        toggle.tap()   // back on, so other runs start from the default
+        app.tabBars.buttons["Remote"].tap()
+        XCTAssertTrue(cards.firstMatch.waitForExistence(timeout: 5))
+    }
+
     /// CON-17: each found TV says what it is and what Purio can do on it; a Chromecast can't be picked.
     func testFoundTVsSayWhatTheyAreAndOnlyAndroidTVsPair() {
         let app = XCUIApplication()
@@ -231,7 +246,7 @@ final class TVRemoteUITests: XCTestCase {
         XCTAssertTrue(rows.firstMatch.waitForExistence(timeout: 5))
         XCTAssertEqual(rows.count, 4)
         let lg = rows.matching(NSPredicate(format: "value == '192.0.2.20'")).firstMatch
-        XCTAssertTrue(lg.label.contains("LG webOS · Remote and apps"), lg.label)
+        XCTAssertTrue(lg.label.contains("LG webOS · Remote and apps · Beta"), lg.label)
         XCTAssertTrue(lg.isEnabled)
         let cast = rows.matching(NSPredicate(format: "value == '192.0.2.21'")).firstMatch
         XCTAssertTrue(cast.label.contains("Chromecast · Not supported yet"), cast.label)

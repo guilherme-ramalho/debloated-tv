@@ -283,6 +283,12 @@ struct SettingsView: View {
                         }
                     }.toggleStyle(QuietToggleStyle()).padding(.horizontal, 13).padding(.vertical, 10)
                     AssistantSettingRow()
+                    Toggle(isOn: settings.binding(\.showsKeepWatching)) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Keep watching on the remote").font(.system(size: 14, weight: .medium))
+                            Text("Shows you left halfway, while the TV is on Purio's Home screen").font(.system(size: 12)).foregroundStyle(QuietTheme.muted)
+                        }
+                    }.toggleStyle(QuietToggleStyle()).padding(.horizontal, 13).padding(.vertical, 10).accessibilityIdentifier("keepWatchingSetting")
                 }
                 Button("Credits & licenses") { credits = true }.font(.footnote).foregroundStyle(QuietTheme.muted).frame(minHeight: 44)
                     .sheet(isPresented: $credits) {

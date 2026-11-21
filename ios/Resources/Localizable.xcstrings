@@ -5863,6 +5863,40 @@
         }
       }
     },
+    "Keep watching on the remote" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiterschauen auf der Fernbedienung"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguir viendo en el mando"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reprendre sur la télécommande"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua a guardare sul telecomando"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar assistindo no controle"
+          }
+        }
+      }
+    },
     "List from cleanyourtv, tested by its community on this model, not by Purio TV. Switch on anything you want to keep; the rest is disabled." : {
       "localizations" : {
         "de" : {
@@ -13222,6 +13256,40 @@
         }
       }
     },
+    "Remote and apps · Beta" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fernbedienung und Apps · Beta"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mando y apps · Beta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Télécommande et apps · Bêta"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telecomando e app · Beta"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controle e apps · Beta"
+          }
+        }
+      }
+    },
     "Remote and setup" : {
       "localizations" : {
         "de" : {
@@ -13524,6 +13592,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Substitui o launcher original, que é desativado quando o novo já está funcionando. Necessário para editar o TV Home neste app."
+          }
+        }
+      }
+    },
+    "Report a problem" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem melden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informar de un problema"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signaler un problème"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Segnala un problema"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relatar um problema"
           }
         }
       }
@@ -15536,6 +15638,40 @@
         }
       }
     },
+    "Shows you left halfway, while the TV is on Purio's Home screen" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angefangene Sendungen, solange der Fernseher Purios Startbildschirm zeigt"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lo que dejaste a medias, mientras la TV muestra la pantalla de inicio de Purio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce que vous avez laissé en cours, quand la TV affiche l’écran d’accueil de Purio"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quello che hai lasciato a metà, mentre la TV mostra la schermata Home di Purio"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que você parou na metade, enquanto a TV está na tela inicial do Purio"
+          }
+        }
+      }
+    },
     "Siri & Shortcuts" : {
       "localizations" : {
         "de" : {
@@ -16964,6 +17100,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "O controle e a edição do TV Home não precisam de depuração. Só outra configuração ou uma restauração precisam."
+          }
+        }
+      }
+    },
+    "The remote for this TV is in beta. If a button doesn't work, tell us your TV's model and we'll fix it." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Fernbedienung für diesen Fernseher ist eine Beta. Wenn eine Taste nicht funktioniert, nenn uns das Modell deines Fernsehers und wir beheben es."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El mando para esta TV está en beta. Si un botón no funciona, dinos el modelo de tu TV y lo arreglamos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La télécommande pour cette TV est en bêta. Si un bouton ne fonctionne pas, indiquez-nous le modèle de votre TV et nous corrigerons."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il telecomando per questa TV è in beta. Se un tasto non funziona, dicci il modello della tua TV e lo sistemiamo."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O controle para esta TV está em beta. Se um botão não funcionar, diga o modelo da sua TV e nós corrigimos."
           }
         }
       }
@@ -22725,6 +22895,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Senha do Wi-Fi %@, de novo"
+          }
+        }
+      }
+    },
+    "Works with Android TV and Google TV, and in beta with Roku, LG and Samsung TVs. Next, your TV shows a code or asks you to allow this iPhone." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funktioniert mit Android TV und Google TV, als Beta auch mit Roku, LG und Samsung. Danach zeigt dein Fernseher einen Code oder fragt, ob er dieses iPhone erlauben soll."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funciona con Android TV y Google TV, y en beta con Roku, LG y Samsung. Después, tu TV muestra un código o te pide permitir este iPhone."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fonctionne avec Android TV et Google TV, et en bêta avec Roku, LG et Samsung. Ensuite, votre TV affiche un code ou demande d'autoriser cet iPhone."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funziona con Android TV e Google TV, e in beta con Roku, LG e Samsung. Poi la TV mostra un codice o chiede di consentire questo iPhone."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funciona com Android TV e Google TV, e em beta com Roku, LG e Samsung. Em seguida, a TV mostra um código ou pede para permitir este iPhone."
           }
         }
       }

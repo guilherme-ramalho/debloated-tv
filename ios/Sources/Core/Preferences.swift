@@ -127,6 +127,9 @@ public struct RemotePreferences: Codable, Equatable {
     /// Swipes on the pad move the other way (1.2). Optional so settings saved by older versions still load.
     public var reverseSwipe: Bool?
     public var reversesSwipes: Bool { get { reverseSwipe ?? false } set { reverseSwipe = newValue } }
+    /// Keep watching on the Remote tab while the TV shows Purio Home (1.3). Optional for settings saved before it.
+    public var keepWatchingOnRemote: Bool?
+    public var showsKeepWatching: Bool { get { keepWatchingOnRemote ?? true } set { keepWatchingOnRemote = newValue } }
     public init() { profileID = profiles.first?.id }
     /// The remote's app buttons (1.3): the TV Home dock's apps first, in the dock's order, then the Remote
     /// shortcuts list (Netflix, YouTube, Prime Video, Disney+, HBO Max, Crunchyroll unless changed) for the rest,

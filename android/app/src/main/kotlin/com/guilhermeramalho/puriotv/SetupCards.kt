@@ -40,6 +40,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,6 +81,12 @@ fun TVTab(model: RemoteModel, open: (TVRoute) -> Unit) {
                 Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("${state.tvName} · ${state.kind.label}", fontWeight = FontWeight.SemiBold)
                     Caption(stringResource(R.string.brand_tv_notice))
+                    // Roku, LG and Samsung remotes are new in 1.3 and not yet tried on every model: ask for reports.
+                    Caption(stringResource(R.string.brand_tv_beta))
+                    val uri = LocalUriHandler.current
+                    TextButton(onClick = { uri.openUri("https://github.com/guilherme-ramalho/debloated-tv/issues/new?title=Remote%20for%20my%20TV") }) {
+                        Text(stringResource(R.string.brand_tv_report), color = Quiet.cyan)
+                    }
                 }
             }
             info.homeInstalled -> {

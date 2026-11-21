@@ -23,12 +23,15 @@ struct TVHomeView: View {
                             Label { Text(verbatim: "\(model.tvName) · \(model.kind.label)") } icon: { Image(systemName: "tv") }.font(.system(size: 15, weight: .semibold))
                             Text("TV setup and Purio's Home screen work on Android TV and Google TV. On this TV, Purio is the remote: keys, apps, typing, widgets and quick actions.")
                                 .font(.system(size: 13)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true)
+                            // Roku, LG and Samsung remotes are new in 1.3 and not yet tried on every model: ask for reports.
+                            Text("The remote for this TV is in beta. If a button doesn't work, tell us your TV's model and we'll fix it.")
+                                .font(.system(size: 13)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true)
+                            Link("Report a problem", destination: URL(string: "https://github.com/guilherme-ramalho/debloated-tv/issues/new?title=Remote%20for%20my%20TV")!)
+                                .font(.system(size: 13, weight: .medium)).foregroundStyle(QuietTheme.cyan).frame(minHeight: 44)
                         }.padding(14)
                     }.accessibilityIdentifier("brandTVNotice")
                 } else if info.homeInstalled {
-                    if let list = editor.keepWatching, list.allowed, !list.items.isEmpty {
-                        KeepWatchingStrip(tvName: model.tvName, shows: list.items)
-                    } else if editor.keepWatching?.allowed == false {
+                    if editor.keepWatching?.allowed == false {
                         QuietCaption(text: "Keep watching needs the latest Home screen. Update Home screen to turn it on.")
                     }
                     NavigationLink { TVSetupManageView(host: model.host) } label: { TVSetupStrip(info: info) }.buttonStyle(.plain)

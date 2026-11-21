@@ -59,7 +59,7 @@ struct ConnectTVView: View {
                 .font(.system(size: 14)).foregroundStyle(QuietTheme.cyan).frame(maxWidth: .infinity, minHeight: 44)
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: "info.circle").foregroundStyle(QuietTheme.muted).accessibilityHidden(true)
-                Text("Works with Android TV, Google TV, Roku, LG and Samsung TVs. Next, your TV shows a code or asks you to allow this iPhone.")
+                Text("Works with Android TV and Google TV, and in beta with Roku, LG and Samsung TVs. Next, your TV shows a code or asks you to allow this iPhone.")
                     .font(.system(size: 12)).foregroundStyle(QuietTheme.muted).fixedSize(horizontal: false, vertical: true)
             }.padding(12).background(.white.opacity(0.045), in: RoundedRectangle(cornerRadius: 14))
         }
@@ -191,7 +191,7 @@ extension TVSupport {
         switch self {
         case .full(showOnTV: true): String(localized: "Remote, setup and Show on TV")
         case .full(showOnTV: false): String(localized: "Remote and setup")
-        case .remote: String(localized: "Remote and apps")
+        case .remote: String(localized: "Remote and apps · Beta")
         case .notYet: String(localized: "Not supported yet")
         }
     }
