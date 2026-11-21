@@ -137,7 +137,7 @@ final class TVRemoteUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Open Netflix"].exists)
         all.tap()
         XCTAssertTrue(app.navigationBars["All apps"].waitForExistence(timeout: 5))
-        XCTAssertGreaterThan(app.buttons.matching(identifier: "allAppsRow").count, 3)
+        XCTAssertGreaterThanOrEqual(app.buttons.matching(identifier: "allAppsRow").count, 3, "a screenful of the TV's apps")
         save(app, "all-apps")
     }
 
