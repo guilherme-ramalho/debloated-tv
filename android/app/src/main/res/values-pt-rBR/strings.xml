@@ -412,4 +412,15 @@
     <string name="tile_label">Liga/desliga TV</string>
     <string name="reverse_swipe">Inverter o deslize</string>
     <string name="reverse_swipe_detail">Deslize para a esquerda para ir à direita e para cima para descer</string>
+    <string name="pad_dpad">Direcional</string>
+    <string name="pad_numbers">Números</string>
+    <string name="key_delete">Apagar</string>
+    <string name="pill_volume">VOL</string>
+    <string name="pill_volume_level">VOL %1$d</string>
+    <string name="pill_channel">CH</string>
+    <string name="key_channel_up">Próximo canal</string>
+    <string name="key_channel_down">Canal anterior</string>
+    <string name="all_apps">Todos os apps</string>
+    <string name="all_apps_tv">Todos os apps da TV</string>
+    <string name="all_apps_partial">Até a tela inicial do Purio conectar (a TV na tela inicial), só aparecem os apps do controle.</string>
 </resources>

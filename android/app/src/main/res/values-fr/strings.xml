@@ -412,4 +412,15 @@
     <string name="tile_label">TV marche/arrêt</string>
     <string name="reverse_swipe">Inverser le balayage</string>
     <string name="reverse_swipe_detail">Balayez vers la gauche pour aller à droite, vers le haut pour descendre</string>
+    <string name="pad_dpad">Croix</string>
+    <string name="pad_numbers">Chiffres</string>
+    <string name="key_delete">Effacer</string>
+    <string name="pill_volume">VOL</string>
+    <string name="pill_volume_level">VOL %1$d</string>
+    <string name="pill_channel">CH</string>
+    <string name="key_channel_up">Chaîne suivante</string>
+    <string name="key_channel_down">Chaîne précédente</string>
+    <string name="all_apps">Toutes les apps</string>
+    <string name="all_apps_tv">Toutes les apps de la TV</string>
+    <string name="all_apps_partial">Tant que l’écran d’accueil de Purio n’est pas connecté (la TV sur son écran d’accueil), seules les apps de la télécommande sont listées.</string>
 </resources>

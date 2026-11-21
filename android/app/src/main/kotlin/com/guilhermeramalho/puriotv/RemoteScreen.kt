@@ -29,6 +29,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Input
+import androidx.compose.material.icons.automirrored.outlined.Backspace
 import androidx.compose.material.icons.automirrored.rounded.Undo
 import androidx.compose.material.icons.outlined.ClosedCaption
 import androidx.compose.material.icons.outlined.Keyboard
@@ -108,37 +109,185 @@ fun RemoteScreen(state: RemoteModel.State, model: RemoteModel) {
     var keyboard by rememberSaveable { mutableStateOf(false) }
     var inputs by rememberSaveable { mutableStateOf(false) }
     var showOnTv by rememberSaveable { mutableStateOf(false) }
+    var allApps by rememberSaveable { mutableStateOf(false) }
+    // 1.3: the pad or the number pad (TVs with number keys); swipes on the pad still move the focus.
+    var numbers by rememberSaveable { mutableStateOf(false) }
     val prefs by model.settings.value.collectAsState()
     val enabled = state.ready
+    val hasNumbers = state.supports(TVKey.DIGIT_1)
     Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 30.dp).padding(top = 4.dp, bottom = 12.dp),
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 24.dp).padding(top = 4.dp, bottom = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Header(state, model, { details = true }, { keyboard = true }, { inputs = true }, { showOnTv = true })
-        DPad(enabled, prefs.reverseSwipe, model)
-        Row(horizontalArrangement = Arrangement.spacedBy(25.dp)) {
-            Command(Icons.AutoMirrored.Rounded.Undo, R.string.key_back, enabled) { model.tap(TVKey.BACK) }
-            Command(Icons.Rounded.Home, R.string.key_home, enabled) { model.tap(TVKey.HOME) }
-            Command(PlayPauseIcon, R.string.key_play_pause, enabled) { model.tap(TVKey.PLAY_PAUSE) }
+        Header(state, model, { details = true }, { keyboard = true }, { showOnTv = true })
+        if (hasNumbers) PadModeSwitch(numbers) { numbers = it }
+        if (numbers && hasNumbers) NumberPad(enabled, model) else DPad(enabled, prefs.reverseSwipe, model)
+        // Volume and channels as pills, the other keys round between them.
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+            VolumePill(state, model)
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    GridKey(Icons.AutoMirrored.Rounded.Undo, R.string.key_back, state.supports(TVKey.BACK), enabled) { model.tap(TVKey.BACK) }
+                    GridKey(Icons.Rounded.Home, R.string.key_home, state.supports(TVKey.HOME), enabled) { model.tap(TVKey.HOME) }
+                    GridKey(Icons.Outlined.Settings, R.string.key_settings, state.supports(TVKey.SETTINGS), enabled) { model.tap(TVKey.SETTINGS) }
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    GridKey(Icons.Rounded.FastRewind, R.string.key_rewind, state.supports(TVKey.REWIND), enabled) { model.tap(TVKey.REWIND) }
+                    GridKey(PlayPauseIcon, R.string.key_play_pause, true, enabled) { model.tap(TVKey.PLAY_PAUSE) }
+                    GridKey(Icons.Rounded.FastForward, R.string.key_fast_forward, state.supports(TVKey.FAST_FORWARD), enabled) { model.tap(TVKey.FAST_FORWARD) }
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    GridKey(Icons.Outlined.ClosedCaption, R.string.key_captions, state.supports(TVKey.CAPTIONS), enabled) { model.tap(TVKey.CAPTIONS) }
+                    val muted = state.volume?.muted == true
+                    GridKey(if (muted) Icons.AutoMirrored.Outlined.VolumeUp else Icons.AutoMirrored.Outlined.VolumeOff,
+                        if (muted) R.string.key_unmute else R.string.key_mute, true, enabled) { model.tap(TVKey.MUTE) }
+                    // Favourite inputs need Purio's TV Home (Android TV); other TVs get their own input menu, where they have one.
+                    if (state.kind == TvKind.ANDROID_TV) GridKey(Icons.AutoMirrored.Outlined.Input, R.string.favorite_inputs, true, true) { inputs = true }
+                    else GridKey(Icons.AutoMirrored.Outlined.Input, R.string.key_inputs, state.supports(TVKey.INPUTS), enabled) { model.tap(TVKey.INPUTS) }
+                }
+            }
+            if (state.supports(TVKey.CHANNEL_UP)) ChannelPill(enabled, model) else Box(Modifier.size(66.dp, 182.dp))
         }
-        // A key this TV doesn't have (a Roku has no subtitles button) is left out; the row stays centred.
-        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            Command(Icons.Rounded.FastRewind, R.string.key_rewind, enabled) { model.tap(TVKey.REWIND) }
-            Command(Icons.Rounded.FastForward, R.string.key_fast_forward, enabled) { model.tap(TVKey.FAST_FORWARD) }
-            if (state.supports(TVKey.CAPTIONS)) Command(Icons.Outlined.ClosedCaption, R.string.key_captions, enabled) { model.tap(TVKey.CAPTIONS) }
-            if (state.supports(TVKey.SETTINGS)) Command(Icons.Outlined.Settings, R.string.key_settings, enabled) { model.tap(TVKey.SETTINGS) }
-        }
-        Volume(state, model)
-        Apps(enabled, if (state.kind == TvKind.ANDROID_TV) prefs.remoteApps else prefs.shortcutApps, model)
+        AppRow(enabled, (if (state.kind == TvKind.ANDROID_TV) prefs.remoteApps else prefs.shortcutApps).take(5), model) { allApps = true }
     }
     if (details) ConnectionSheet(state, model) { details = false }
     if (keyboard) KeyboardSheet(model) { keyboard = false }
     if (inputs) InputsSheet(model) { inputs = false }
+    if (allApps) AllAppsSheet(state, model) { allApps = false }
     if (showOnTv) ShowOnTvScreen(model, state) { showOnTv = false }
 }
 
+/** D-pad or Numbers: slim, so the pad keeps its full size. */
 @Composable
-private fun Header(state: RemoteModel.State, model: RemoteModel, openDetails: () -> Unit, openKeyboard: () -> Unit, openInputs: () -> Unit, openShowOnTv: () -> Unit) {
+private fun PadModeSwitch(numbers: Boolean, onChange: (Boolean) -> Unit) {
+    Row(Modifier.background(Quiet.panel, CircleShape).padding(2.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        listOf(false to R.string.pad_dpad, true to R.string.pad_numbers).forEach { (mode, label) ->
+            val on = numbers == mode
+            Box(Modifier.clip(CircleShape).background(if (on) Color.White.copy(alpha = 0.16f) else Color.Transparent)
+                .clickable { onChange(mode) }.padding(horizontal = 14.dp).height(26.dp), contentAlignment = Alignment.Center) {
+                Text(stringResource(label), fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = if (on) Color.White else Quiet.muted)
+            }
+        }
+    }
+}
+
+/** 1 to 9, Delete, 0, OK: channel numbers on Live TV or a set-top box, PINs on the TV. */
+@Composable
+private fun NumberPad(enabled: Boolean, model: RemoteModel) {
+    val haptics = rememberHaptics()
+    @Composable
+    fun Key(modifier: Modifier, description: String, onClick: () -> Unit, content: @Composable () -> Unit) {
+        Surface(onClick = { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); onClick() }, enabled = enabled, shape = CircleShape, color = Quiet.ink,
+            modifier = modifier.height(62.dp).semantics { contentDescription = description }) { Box(contentAlignment = Alignment.Center) { content() } }
+    }
+    Column(Modifier.size(284.dp).alpha(if (enabled) 1f else 0.45f), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        listOf(listOf(1, 2, 3), listOf(4, 5, 6), listOf(7, 8, 9)).forEach { row ->
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                row.forEach { n -> Key(Modifier.weight(1f), "$n", { model.tap(TVKey.DIGITS[n]) }) { Text("$n", fontSize = 24.sp, fontWeight = FontWeight.Medium) } }
+            }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            val delete = stringResource(R.string.key_delete)
+            Key(Modifier.weight(1f), delete, { model.tap(TVKey.DELETE) }) { Icon(Icons.AutoMirrored.Outlined.Backspace, null, tint = Color.White, modifier = Modifier.size(22.dp)) }
+            Key(Modifier.weight(1f), "0", { model.tap(TVKey.DIGIT_0) }) { Text("0", fontSize = 24.sp, fontWeight = FontWeight.Medium) }
+            val ok = stringResource(R.string.key_select)
+            Key(Modifier.weight(1f), ok, { model.tap(TVKey.SELECT) }) { Text(ok, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
+        }
+    }
+}
+
+/** Volume as a tall pill: hold + or − to keep changing it, the TV's level between. */
+@Composable
+private fun VolumePill(state: RemoteModel.State, model: RemoteModel) {
+    val enabled = state.ready
+    val v = state.volume
+    Column(Modifier.size(66.dp, 182.dp).alpha(if (enabled) 1f else 0.45f).background(Quiet.ink, CircleShape),
+        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceBetween) {
+        HoldKey(Icons.Rounded.Add, stringResource(R.string.key_volume_up), TVKey.VOLUME_UP, enabled, model, Modifier.size(66.dp, 64.dp))
+        Text(if (v == null || v.muted) stringResource(R.string.pill_volume) else stringResource(R.string.pill_volume_level, v.level),
+            fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = Quiet.muted, maxLines = 1)
+        HoldKey(Icons.Rounded.Remove, stringResource(R.string.key_volume_down), TVKey.VOLUME_DOWN, enabled, model, Modifier.size(66.dp, 64.dp))
+    }
+}
+
+/** Channel up and down (Live TV, set-top boxes) as a tall pill. */
+@Composable
+private fun ChannelPill(enabled: Boolean, model: RemoteModel) {
+    val haptics = rememberHaptics()
+    Column(Modifier.size(66.dp, 182.dp).alpha(if (enabled) 1f else 0.45f).background(Quiet.ink, CircleShape),
+        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceBetween) {
+        listOf(TVKey.CHANNEL_UP to Icons.Rounded.KeyboardArrowUp, null to null, TVKey.CHANNEL_DOWN to Icons.Rounded.KeyboardArrowDown).forEach { (key, icon) ->
+            if (key == null || icon == null) Text(stringResource(R.string.pill_channel), fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = Quiet.muted)
+            else {
+                val label = stringResource(if (key == TVKey.CHANNEL_UP) R.string.key_channel_up else R.string.key_channel_down)
+                Box(Modifier.size(66.dp, 64.dp).clip(CircleShape).clickable(enabled = enabled) { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.tap(key) }
+                    .semantics { contentDescription = label }, contentAlignment = Alignment.Center) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(28.dp)) }
+            }
+        }
+    }
+}
+
+/** A round key between the pills; one this TV doesn't have keeps its place, empty. */
+@Composable
+private fun GridKey(icon: ImageVector, @StringRes label: Int, available: Boolean, enabled: Boolean, onClick: () -> Unit) {
+    if (!available) { Box(Modifier.size(54.dp)); return }
+    val haptics = rememberHaptics()
+    val text = stringResource(label)
+    Surface(
+        onClick = { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); onClick() }, enabled = enabled, shape = CircleShape, color = Quiet.ink,
+        modifier = Modifier.size(54.dp).alpha(if (enabled) 1f else 0.45f).semantics { contentDescription = text },
+    ) { Box(contentAlignment = Alignment.Center) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(22.dp)) } }
+}
+
+/** Five app buttons (the TV Home dock's apps first) and All apps, which lists every app on the TV. */
+@Composable
+private fun AppRow(enabled: Boolean, apps: List<com.guilhermeramalho.puriotv.core.RemoteApp>, model: RemoteModel, openAll: () -> Unit) {
+    val haptics = rememberHaptics()
+    Row(Modifier.fillMaxWidth().padding(top = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+        apps.forEach { app ->
+            val open = stringResource(R.string.open_app, app.name)
+            Column(Modifier.width(54.dp).clip(RoundedCornerShape(14.dp)).clickable(enabled = enabled) { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.open(app) }
+                .semantics { contentDescription = open }.alpha(if (enabled) 1f else 0.45f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                AppTile(app.id, app.name, 52.dp)
+                Text(app.name, fontSize = 10.sp, color = Quiet.muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+        }
+        repeat(5 - apps.size) { Box(Modifier.width(54.dp)) }
+        val all = stringResource(R.string.all_apps_tv)
+        Column(Modifier.width(54.dp).clip(RoundedCornerShape(14.dp)).clickable(onClick = openAll).semantics { contentDescription = all },
+            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(5.dp)) {
+            AllAppsMark(52.dp)
+            Text(stringResource(R.string.all_apps), fontSize = 10.sp, color = Quiet.muted, maxLines = 1)
+        }
+    }
+}
+
+/** The app's colour and white logo in a rounded square (or its first letters). */
+@Composable
+fun AppTile(id: String, name: String, size: Dp) {
+    Box(Modifier.size(size).background(Brand.color(id), RoundedCornerShape(size * 0.27f)).border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(size * 0.27f)),
+        contentAlignment = Alignment.Center) {
+        val logo = Brand.logo(id)
+        if (logo != null) Image(painterResource(logo), null, colorFilter = ColorFilter.tint(Color.White), modifier = Modifier.padding(size * 0.18f))
+        else Text(name.take(2), fontSize = (size.value * 0.32f).sp, fontWeight = FontWeight.Bold, color = Color.White)
+    }
+}
+
+/** All apps: nine coloured squares, "more apps" at a glance. */
+@Composable
+fun AllAppsMark(size: Dp) {
+    val colors = listOf(Color(0xFFE5484D), Color(0xFFF5A524), Color(0xFFF5D90A), Color(0xFF46A758), Color(0xFF12A594), Color(0xFF3E8EF7),
+        Color(0xFF6E56CF), Color(0xFFD6409F), Quiet.cyan)
+    Box(Modifier.size(size).background(Quiet.ink, RoundedCornerShape(size * 0.27f)).border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(size * 0.27f)),
+        contentAlignment = Alignment.Center) {
+        Column(verticalArrangement = Arrangement.spacedBy(3.5.dp)) {
+            colors.chunked(3).forEach { row -> Row(horizontalArrangement = Arrangement.spacedBy(3.5.dp)) { row.forEach { Box(Modifier.size(8.dp).background(it, RoundedCornerShape(2.dp))) } } }
+        }
+    }
+}
+
+@Composable
+private fun Header(state: RemoteModel.State, model: RemoteModel, openDetails: () -> Unit, openKeyboard: () -> Unit, openShowOnTv: () -> Unit) {
     val powerAvailable = state.pairing == null && state.link != RemoteModel.Link.CONNECTING
     // Narrow phones get smaller round keys so the TV's name keeps its room (CST-01).
     val narrow = androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp < 390
@@ -149,9 +298,7 @@ private fun Header(state: RemoteModel.State, model: RemoteModel, openDetails: ()
         ConnectionChip(state, model, openDetails, Modifier.weight(1f))
         RoundKey(Icons.Outlined.PhotoLibrary, stringResource(R.string.show_photos_on_tv), key, Quiet.inputs, null, true, Quiet.cyan, openShowOnTv)
         RoundKey(Icons.Outlined.Keyboard, stringResource(R.string.type_on_tv), key, Quiet.panel, null, true, onClick = openKeyboard)
-        // Favourite inputs need Purio's TV Home (Android TV); other TVs get their own input menu, where they have one.
-        if (state.kind == TvKind.ANDROID_TV) RoundKey(Icons.AutoMirrored.Outlined.Input, stringResource(R.string.favorite_inputs), key, Quiet.inputs, null, true, onClick = openInputs)
-        else if (state.supports(TVKey.INPUTS)) RoundKey(Icons.AutoMirrored.Outlined.Input, stringResource(R.string.key_inputs), key, Quiet.inputs, null, state.ready) { model.tap(TVKey.INPUTS) }
+        // Inputs moved to the round keys under the pad (1.3).
     }
 }
 
@@ -206,18 +353,6 @@ private fun RoundKey(icon: ImageVector, label: String, size: Dp, fill: Color, st
         border = stroke?.let { androidx.compose.foundation.BorderStroke(1.dp, it) },
         modifier = Modifier.size(size).alpha(if (enabled) 1f else 0.45f).semantics { contentDescription = label },
     ) { Box(contentAlignment = Alignment.Center) { Icon(icon, null, tint = tint, modifier = Modifier.size(22.dp)) } }
-}
-
-/** Back, Home, Play and the media row: 65 × 50 rounded keys. */
-@Composable
-private fun Command(icon: ImageVector, @StringRes label: Int, enabled: Boolean, onClick: () -> Unit) {
-    val haptics = rememberHaptics()
-    val text = stringResource(label)
-    Surface(
-        onClick = { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); onClick() }, enabled = enabled,
-        shape = RoundedCornerShape(21.dp), color = Quiet.ink, border = androidx.compose.foundation.BorderStroke(1.dp, Quiet.edge),
-        modifier = Modifier.width(65.dp).height(50.dp).alpha(if (enabled) 1f else 0.45f).semantics { contentDescription = text },
-    ) { Box(contentAlignment = Alignment.Center) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(25.dp)) } }
 }
 
 /**
@@ -310,43 +445,16 @@ private fun PadKey(icon: ImageVector, highlighted: Boolean, modifier: Modifier, 
     ) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(34.dp)) }
 }
 
-/** Volume: hold − or + to keep changing it, the TV's level in the middle, mute on the right. */
-@Composable
-private fun Volume(state: RemoteModel.State, model: RemoteModel) {
-    val enabled = state.ready
-    Row(Modifier.fillMaxWidth().alpha(if (enabled) 1f else 0.45f).background(Quiet.ink, CircleShape).border(1.dp, Quiet.edge, CircleShape),
-        verticalAlignment = Alignment.CenterVertically) {
-        HoldKey(Icons.Rounded.Remove, stringResource(R.string.key_volume_down), TVKey.VOLUME_DOWN, enabled, model)
-        val v = state.volume
-        Text(
-            when { v == null -> stringResource(R.string.volume_title); v.muted -> stringResource(R.string.muted)
-                v.maximum == 100 -> stringResource(R.string.volume, v.level); else -> stringResource(R.string.volume_of, v.level, v.maximum) },
-            fontSize = 15.sp, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f), textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-        )
-        HoldKey(Icons.Rounded.Add, stringResource(R.string.key_volume_up), TVKey.VOLUME_UP, enabled, model)
-        val haptics = rememberHaptics()
-        // Shows what a tap does, from the TV's own mute state: muted → speaker (unmute).
-        val muted = v?.muted == true
-        val mute = stringResource(if (muted) R.string.key_unmute else R.string.key_mute)
-        Box(Modifier.size(48.dp, 56.dp).clip(CircleShape).clickable(enabled = enabled) { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.tap(TVKey.MUTE) }
-            .semantics { contentDescription = mute }, contentAlignment = Alignment.Center) {
-            Crossfade(muted, label = "mute") { m ->
-                Icon(if (m) Icons.AutoMirrored.Outlined.VolumeUp else Icons.AutoMirrored.Outlined.VolumeOff, null, tint = Color.White, modifier = Modifier.size(21.dp))
-            }
-        }
-    }
-}
-
 /** A key that stays pressed on the TV while the finger is down (HoldKey). */
 @Composable
-private fun HoldKey(icon: ImageVector, label: String, key: TVKey, enabled: Boolean, model: RemoteModel) {
+private fun HoldKey(icon: ImageVector, label: String, key: TVKey, enabled: Boolean, model: RemoteModel, modifier: Modifier = Modifier.size(64.dp, 56.dp)) {
     val haptics = rememberHaptics()
     val source = remember { MutableInteractionSource() }
     val pressed by source.collectIsPressedAsState()
     var down by remember { mutableStateOf(false) }
     DisposableEffect(Unit) { onDispose { if (down) model.release(key) } }
     Box(
-        Modifier.size(64.dp, 56.dp).clip(CircleShape)
+        modifier.clip(CircleShape)
             .background(Color.White.copy(alpha = if (down || pressed) 0.13f else 0f))
             .semantics { contentDescription = label; role = Role.Button; onClick { model.tap(key); true } }
             .pointerInput(enabled) {
@@ -375,35 +483,6 @@ fun rememberHaptics(): androidx.compose.ui.hapticfeedback.HapticFeedback {
 }
 
 val LocalHapticsOn = androidx.compose.runtime.staticCompositionLocalOf { true }
-
-/** App shortcuts: two columns of brand-coloured buttons with the logo, as on the iPhone (Settings › Remote shortcuts). */
-@Composable
-private fun Apps(enabled: Boolean, apps: List<com.guilhermeramalho.puriotv.core.RemoteApp>, model: RemoteModel) {
-    val haptics = rememberHaptics()
-    Column(Modifier.fillMaxWidth().padding(top = 4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        apps.chunked(2).forEach { pair ->
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                pair.forEach { app ->
-                    val open = stringResource(R.string.open_app, app.name)
-                    Surface(
-                        onClick = { haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove); model.open(app) }, enabled = enabled,
-                        shape = RoundedCornerShape(17.dp), color = Brand.color(app.id), border = androidx.compose.foundation.BorderStroke(1.dp, Quiet.edge),
-                        modifier = Modifier.weight(1f).height(58.dp).alpha(if (enabled) 1f else 0.45f).semantics { contentDescription = open },
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            val logo = Brand.logo(app.id)
-                            if (logo != null) {
-                                Image(painterResource(logo), null, colorFilter = ColorFilter.tint(Color.White),
-                                    modifier = Modifier.height(Brand.logoHeight(app.id).dp).widthIn(max = 108.dp))
-                            } else Text(app.name, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
-                        }
-                    }
-                }
-                if (pair.size == 1) Box(Modifier.weight(1f))
-            }
-        }
-    }
-}
 
 /**
  * Play and pause side by side (the iPhone's playpause.fill, Google's TV remote): one toggle key, because the remote

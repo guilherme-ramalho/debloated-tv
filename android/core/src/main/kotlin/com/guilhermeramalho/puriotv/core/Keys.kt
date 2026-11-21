@@ -7,10 +7,18 @@ import kotlin.math.max
 enum class TVKey(val code: Long) {
     HOME(3), BACK(4), UP(19), DOWN(20), LEFT(21), RIGHT(22), SELECT(23),
     DELETE(67), VOLUME_UP(24), VOLUME_DOWN(25), POWER(26), PLAY_PAUSE(85), PLAY(126), PAUSE(127), MUTE(164),
-    SETTINGS(176), INPUTS(178), REWIND(89), FAST_FORWARD(90), CAPTIONS(175);
+    SETTINGS(176), INPUTS(178), REWIND(89), FAST_FORWARD(90), CAPTIONS(175),
+    /** 1.3: channels (Live TV, set-top boxes) and the number pad. */
+    CHANNEL_UP(166), CHANNEL_DOWN(167),
+    DIGIT_0(7), DIGIT_1(8), DIGIT_2(9), DIGIT_3(10), DIGIT_4(11), DIGIT_5(12), DIGIT_6(13), DIGIT_7(14), DIGIT_8(15), DIGIT_9(16);
+
+    /** The digit a number-pad key types, or null. */
+    val digit: Int? get() = DIGITS.indexOf(this).takeIf { it >= 0 }
 
     companion object {
         fun of(code: Long): TVKey? = entries.firstOrNull { it.code == code }
+        /** 0 to 9, in order, for the number pad. */
+        val DIGITS: List<TVKey> by lazy { listOf(DIGIT_0, DIGIT_1, DIGIT_2, DIGIT_3, DIGIT_4, DIGIT_5, DIGIT_6, DIGIT_7, DIGIT_8, DIGIT_9) }
 
         /**
          * Screen coordinates: right/down are positive. A short drag is not a swipe. [reversed] (the "Reverse swipe

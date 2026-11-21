@@ -15,6 +15,7 @@ PHONE = {"de": [("dieses iPhone", "dieses Handy"), ("diesem iPhone", "diesem Han
          "pt-BR": [("iPhone", "celular")]}
 # Strings with no iPhone equivalent (or reworded for Android).
 ANDROID_ONLY = {
+    "pill_volume_level": {"de": "VOL %1$d", "es": "VOL %1$d", "fr": "VOL %1$d", "it": "VOL %1$d", "pt-BR": "VOL %1$d"},
     "brand_tv_notice": {
         "de": "Die TV-Einrichtung und Purios Startbildschirm funktionieren auf Android TV und Google TV. Auf diesem Fernseher ist Purio die Fernbedienung: Tasten, Apps und Tippen.",
         "es": "La configuración de la TV y la pantalla de inicio de Purio funcionan en Android TV y Google TV. En esta TV, Purio es el mando: teclas, apps y escritura.",

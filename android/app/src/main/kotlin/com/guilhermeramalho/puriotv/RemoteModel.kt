@@ -185,6 +185,12 @@ class RemoteModel(application: Application) : AndroidViewModel(application) {
             catch (e: Exception) { Log.w(TAG, "open ${app.name}: $e") }
         }
     }
+    /** Every app a Roku, LG or Samsung TV reports (All apps); null on Android TV, where Purio's Home lists them. */
+    suspend fun brandApps(): List<com.guilhermeramalho.puriotv.core.BrandApp>? = brand?.apps()
+    fun launch(app: com.guilhermeramalho.puriotv.core.BrandApp) {
+        val b = brand ?: return
+        viewModelScope.launch { try { b.launch(app) } catch (e: Exception) { Log.w(TAG, "launch ${app.name}: $e") } }
+    }
     /** Opens an app by name on any TV (quick actions): false when the TV doesn't have it. */
     suspend fun open(name: String, link: String): Boolean {
         brand?.let { return it.launch(name) }

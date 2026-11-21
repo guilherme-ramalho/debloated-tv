@@ -134,3 +134,23 @@ final class KeepWatchingTests: XCTestCase {
         XCTAssertThrowsError(try bad.validate())
     }
 }
+
+
+/// REM-25: channel and number keys reach every kind of TV under its own name; Roku has no number keys.
+final class RemoteKeysTests: XCTestCase {
+    func testChannelAndNumberKeysPerTV() {
+        XCTAssertEqual(TVKey.channelUp.rawValue, 166)
+        XCTAssertEqual(TVKey.digits.map(\.rawValue), Array(7...16))
+        XCTAssertEqual(TVKey.digit7.digit, 7)
+        XCTAssertNil(TVKey.home.digit)
+        XCTAssertEqual(RokuRemote.keyName(.channelDown), "ChannelDown")
+        XCTAssertNil(RokuRemote.keyName(.digit1))
+        XCTAssertFalse(TVKind.roku.supports(.digit1))
+        XCTAssertEqual(LGRemote.button(.digit5), "5")
+        XCTAssertEqual(LGRemote.button(.channelUp), "CHANNELUP")
+        XCTAssertEqual(SamsungRemote.code(.digit0), "KEY_0")
+        XCTAssertEqual(SamsungRemote.code(.channelDown), "KEY_CHDOWN")
+        XCTAssertTrue(TVKind.samsung.supports(.digit9))
+        XCTAssertEqual(AssistantCommands.key(named: "channel up"), .channelUp)
+    }
+}

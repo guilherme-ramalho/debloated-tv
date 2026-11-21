@@ -412,4 +412,15 @@
     <string name="tile_label">Accensione TV</string>
     <string name="reverse_swipe">Inverti lo scorrimento</string>
     <string name="reverse_swipe_detail">Scorri a sinistra per andare a destra e in alto per scendere</string>
+    <string name="pad_dpad">Croce</string>
+    <string name="pad_numbers">Numeri</string>
+    <string name="key_delete">Cancella</string>
+    <string name="pill_volume">VOL</string>
+    <string name="pill_volume_level">VOL %1$d</string>
+    <string name="pill_channel">CH</string>
+    <string name="key_channel_up">Canale successivo</string>
+    <string name="key_channel_down">Canale precedente</string>
+    <string name="all_apps">Tutte le app</string>
+    <string name="all_apps_tv">Tutte le app della TV</string>
+    <string name="all_apps_partial">Finché la schermata Home di Purio non si collega (la TV sulla sua Home), sono elencate solo le app del telecomando.</string>
 </resources>

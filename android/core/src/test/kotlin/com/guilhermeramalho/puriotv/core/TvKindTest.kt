@@ -79,4 +79,20 @@ class TvKindTest {
         assertEquals(PortKnock.Answer.SILENT, PortKnock.answer("192.0.2.10", 8009, 1000))
         ServerSocket(0).use { assertEquals(PortKnock.Answer.OPEN, PortKnock.answer("127.0.0.1", it.localPort, 1000)) }
     }
+
+    /** REM-25: channel and number keys reach every kind of TV under its own name; Roku has no number keys. */
+    @Test fun channelAndNumberKeysPerTv() {
+        assertEquals(166L, TVKey.CHANNEL_UP.code)
+        assertEquals((7L..16L).toList(), TVKey.DIGITS.map { it.code })
+        assertEquals(7, TVKey.DIGIT_7.digit)
+        assertNull(TVKey.HOME.digit)
+        assertEquals("ChannelDown", RokuRemote.keyName(TVKey.CHANNEL_DOWN))
+        assertNull(RokuRemote.keyName(TVKey.DIGIT_1))
+        assertFalse(TvKind.ROKU.supports(TVKey.DIGIT_1))
+        assertEquals("5", LgRemote.button(TVKey.DIGIT_5))
+        assertEquals("CHANNELUP", LgRemote.button(TVKey.CHANNEL_UP))
+        assertEquals("KEY_0", SamsungRemote.code(TVKey.DIGIT_0))
+        assertEquals("KEY_CHDOWN", SamsungRemote.code(TVKey.CHANNEL_DOWN))
+        assertTrue(TvKind.SAMSUNG.supports(TVKey.DIGIT_9))
+    }
 }

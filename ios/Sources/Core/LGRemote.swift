@@ -45,6 +45,9 @@ public final class LGRemote: BrandRemote, @unchecked Sendable {
         case .captions: "CC"
         case .settings: "MENU"
         case .inputs: "INPUT_HUB"
+        case .channelUp: "CHANNELUP"
+        case .channelDown: "CHANNELDOWN"
+        case .digit0, .digit1, .digit2, .digit3, .digit4, .digit5, .digit6, .digit7, .digit8, .digit9: key.digit.map(String.init)
         case .volumeUp, .volumeDown, .mute, .power, .playPause, .delete: nil
         }
     }

@@ -43,7 +43,10 @@ public final class RokuRemote: BrandRemote, @unchecked Sendable {
         case .rewind: "Rev"
         case .fastForward: "Fwd"
         case .settings: "Info"
-        case .captions, .inputs: nil
+        case .channelUp: "ChannelUp"
+        case .channelDown: "ChannelDown"
+        // Roku remotes have no number keys (Lit_ types into a field, not a channel number).
+        case .captions, .inputs, .digit0, .digit1, .digit2, .digit3, .digit4, .digit5, .digit6, .digit7, .digit8, .digit9: nil
         }
     }
     public func supports(_ key: TVKey) -> Bool { kind.supports(key) }

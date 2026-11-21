@@ -333,6 +333,15 @@ import Security
             catch { self.error = error.localizedDescription }
         }
     }
+    /// Every app a Roku, LG or Samsung TV reports (All apps); nil on Android TV, where Purio's Home lists them.
+    func brandApps() async throws -> [BrandApp]? {
+        guard let brand else { return nil }
+        return try await brand.apps()
+    }
+    func launch(_ app: BrandApp) {
+        guard ready, let brand else { return }
+        Task { do { try await brand.launch(app) } catch { self.error = error.localizedDescription } }
+    }
     /// Opens an app by name on any TV (quick actions, Siri): false when the TV doesn't have it.
     func open(named name: String, link: String) async throws -> Bool {
         if let brand { return try await brand.launch(named: name) }

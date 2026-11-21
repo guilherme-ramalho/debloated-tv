@@ -146,7 +146,10 @@ class RokuRemote(host: String, private val scope: CoroutineScope, private val ba
             TVKey.HOME -> "Home"; TVKey.BACK -> "Back"; TVKey.UP -> "Up"; TVKey.DOWN -> "Down"; TVKey.LEFT -> "Left"; TVKey.RIGHT -> "Right"
             TVKey.SELECT -> "Select"; TVKey.DELETE -> "Backspace"; TVKey.VOLUME_UP -> "VolumeUp"; TVKey.VOLUME_DOWN -> "VolumeDown"
             TVKey.MUTE -> "VolumeMute"; TVKey.POWER -> "Power"; TVKey.PLAY_PAUSE, TVKey.PLAY, TVKey.PAUSE -> "Play"
-            TVKey.REWIND -> "Rev"; TVKey.FAST_FORWARD -> "Fwd"; TVKey.SETTINGS -> "Info"; TVKey.CAPTIONS, TVKey.INPUTS -> null
+            TVKey.REWIND -> "Rev"; TVKey.FAST_FORWARD -> "Fwd"; TVKey.SETTINGS -> "Info"
+            TVKey.CHANNEL_UP -> "ChannelUp"; TVKey.CHANNEL_DOWN -> "ChannelDown"
+            // Roku remotes have no number keys (Lit_ types into a field, not a channel number).
+            else -> null
         }
         fun tag(name: String, xml: String): String? {
             val open = xml.indexOf("<$name").takeIf { it >= 0 } ?: return null
@@ -256,7 +259,8 @@ class LgRemote(host: String, private val scope: CoroutineScope, private val urls
             TVKey.HOME -> "HOME"; TVKey.BACK -> "BACK"; TVKey.UP -> "UP"; TVKey.DOWN -> "DOWN"; TVKey.LEFT -> "LEFT"; TVKey.RIGHT -> "RIGHT"
             TVKey.SELECT -> "ENTER"; TVKey.PLAY -> "PLAY"; TVKey.PAUSE -> "PAUSE"; TVKey.REWIND -> "REWIND"; TVKey.FAST_FORWARD -> "FASTFORWARD"
             TVKey.CAPTIONS -> "CC"; TVKey.SETTINGS -> "MENU"; TVKey.INPUTS -> "INPUT_HUB"
-            else -> null
+            TVKey.CHANNEL_UP -> "CHANNELUP"; TVKey.CHANNEL_DOWN -> "CHANNELDOWN"
+            else -> key.digit?.toString()
         }
         const val SIGNATURE = "eyJhbGdvcml0aG0iOiJSU0EtU0hBMjU2Iiwia2V5SWQiOiJ0ZXN0LXNpZ25pbmctY2VydCIsInNpZ25hdHVyZVZlcnNpb24iOjF9.hrVRgjCwXVvE2OOSpDZ58hR+59aFNwYDyjQgKk3auukd7pcegmE2CzPCa0bJ0ZsRAcKkCTJrWo5iDzNhMBWRyaMOv5zWSrthlf7G128qvIlpMT0YNY+n/FaOHE73uLrS/g7swl3/qH/BGFG2Hu4RlL48eb3lLKqTt2xKHdCs6Cd4RMfJPYnzgvI4BNrFUKsjkcu+WD4OO2A27Pq1n50cMchmcaXadJhGrOqH5YmHdOCj5NSHzJYrsW0HPlpuAx/ECMeIZYDh6RMqaFM2DXzdKX9NmmyqzJ3o/0lkk/N97gfVRLW5hA29yeAwaCViZNCP8iC9aO0q9fQojoa7NQnAtw=="
         private val PERMISSIONS = listOf("LAUNCH", "LAUNCH_WEBAPP", "APP_TO_APP", "CLOSE", "TEST_OPEN", "TEST_PROTECTED", "CONTROL_AUDIO",
@@ -453,7 +457,9 @@ class SamsungRemote(host: String, private val scope: CoroutineScope, private val
             TVKey.RIGHT -> "KEY_RIGHT"; TVKey.SELECT -> "KEY_ENTER"; TVKey.VOLUME_UP -> "KEY_VOLUP"; TVKey.VOLUME_DOWN -> "KEY_VOLDOWN"
             TVKey.MUTE -> "KEY_MUTE"; TVKey.POWER -> "KEY_POWER"; TVKey.PLAY -> "KEY_PLAY"; TVKey.PAUSE -> "KEY_PAUSE"; TVKey.REWIND -> "KEY_REWIND"
             TVKey.FAST_FORWARD -> "KEY_FF"; TVKey.CAPTIONS -> "KEY_CAPTION"; TVKey.SETTINGS -> "KEY_MENU"; TVKey.INPUTS -> "KEY_SOURCE"
+            TVKey.CHANNEL_UP -> "KEY_CHUP"; TVKey.CHANNEL_DOWN -> "KEY_CHDOWN"
             TVKey.PLAY_PAUSE, TVKey.DELETE -> null
+            else -> key.digit?.let { "KEY_$it" }
         }
         /** Encoded strictly: a "+" in the base64 name would otherwise reach the TV as a space. */
         private fun encode(text: String) = URLEncoder.encode(text, "UTF-8").replace("+", "%20")

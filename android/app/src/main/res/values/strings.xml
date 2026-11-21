@@ -424,4 +424,16 @@
     <string name="tile_label">TV power</string>
     <string name="reverse_swipe">Reverse swipe direction</string>
     <string name="reverse_swipe_detail">Swipe left to move right, and up to move down</string>
+    <!-- Remote, 1.3 layout -->
+    <string name="pad_dpad">D-pad</string>
+    <string name="pad_numbers">Numbers</string>
+    <string name="key_delete">Delete</string>
+    <string name="pill_volume">VOL</string>
+    <string name="pill_volume_level">VOL %1$d</string>
+    <string name="pill_channel">CH</string>
+    <string name="key_channel_up">Channel up</string>
+    <string name="key_channel_down">Channel down</string>
+    <string name="all_apps">All apps</string>
+    <string name="all_apps_tv">All apps on the TV</string>
+    <string name="all_apps_partial">Only the remote\'s own apps are listed until Purio\'s Home screen connects (the TV on its Home screen).</string>
 </resources>

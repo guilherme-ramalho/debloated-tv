@@ -1053,6 +1053,74 @@
         }
       }
     },
+    "All apps" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Apps"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las apps"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes les apps"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutte le app"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos os apps"
+          }
+        }
+      }
+    },
+    "All apps on the TV" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Apps auf dem Fernseher"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las apps de la tele"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes les apps de la TV"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutte le app della TV"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos os apps da TV"
+          }
+        }
+      }
+    },
     "Allow Local Network" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2622,6 +2690,40 @@
         }
       }
     },
+    "CH" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CH"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CH"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CH"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CH"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CH"
+          }
+        }
+      }
+    },
     "Change what stays, or update the Home screen" : {
       "localizations" : {
         "de" : {
@@ -2686,6 +2788,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "As alterações são aplicadas na TV automaticamente."
+          }
+        }
+      }
+    },
+    "Channel down" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sender runter"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canal anterior"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaîne précédente"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canale precedente"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canal anterior"
+          }
+        }
+      }
+    },
+    "Channel up" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sender hoch"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canal siguiente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaîne suivante"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canale successivo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Próximo canal"
           }
         }
       }
@@ -5387,6 +5557,40 @@
         }
       }
     },
+    "D-pad" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steuerkreuz"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cruceta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Croix"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Croce"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Direcional"
+          }
+        }
+      }
+    },
     "Debloat & new Home" : {
       "localizations" : {
         "de" : {
@@ -6373,6 +6577,40 @@
         }
       }
     },
+    "Numbers" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zahlen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Números"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiffres"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Numeri"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Números"
+          }
+        }
+      }
+    },
     "On the TV, open Settings › Network & Internet, forget the network and join it again. The setup wizard no longer owns it then, and nothing needs typing here. Then review again." : {
       "localizations" : {
         "de" : {
@@ -6437,6 +6675,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Na TV, abra Configurações › Sistema › Opções do desenvolvedor."
+          }
+        }
+      }
+    },
+    "Only the remote's own apps are listed until Purio's Home screen connects (the TV on its Home screen)." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bis Purios Startbildschirm verbunden ist (der Fernseher auf dem Startbildschirm), stehen hier nur die Apps der Fernbedienung."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hasta que conecte la pantalla de inicio de Purio (la tele en su pantalla de inicio), solo aparecen las apps del mando."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tant que l’écran d’accueil de Purio n’est pas connecté (la TV sur son écran d’accueil), seules les apps de la télécommande sont listées."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finché la schermata Home di Purio non si collega (la TV sulla sua Home), sono elencate solo le app del telecomando."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Até a tela inicial do Purio conectar (a TV na tela inicial), só aparecem os apps do controle."
           }
         }
       }
@@ -22309,6 +22581,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Atalhos visíveis: %lld"
+          }
+        }
+      }
+    },
+    "VOL" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VOL"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VOL"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VOL"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VOL"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VOL"
           }
         }
       }

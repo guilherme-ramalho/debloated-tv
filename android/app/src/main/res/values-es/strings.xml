@@ -412,4 +412,15 @@
     <string name="tile_label">Encender TV</string>
     <string name="reverse_swipe">Invertir el deslizamiento</string>
     <string name="reverse_swipe_detail">Desliza a la izquierda para ir a la derecha y hacia arriba para bajar</string>
+    <string name="pad_dpad">Cruceta</string>
+    <string name="pad_numbers">Números</string>
+    <string name="key_delete">Borrar</string>
+    <string name="pill_volume">VOL</string>
+    <string name="pill_volume_level">VOL %1$d</string>
+    <string name="pill_channel">CH</string>
+    <string name="key_channel_up">Canal siguiente</string>
+    <string name="key_channel_down">Canal anterior</string>
+    <string name="all_apps">Todas las apps</string>
+    <string name="all_apps_tv">Todas las apps de la tele</string>
+    <string name="all_apps_partial">Hasta que conecte la pantalla de inicio de Purio (la tele en su pantalla de inicio), solo aparecen las apps del mando.</string>
 </resources>

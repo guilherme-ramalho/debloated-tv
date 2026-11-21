@@ -98,6 +98,14 @@ public enum TVKey: UInt64 {
     case home = 3, back = 4, up = 19, down = 20, left = 21, right = 22, select = 23
     case delete = 67, volumeUp = 24, volumeDown = 25, power = 26, playPause = 85, play = 126, pause = 127, mute = 164, settings = 176, inputs = 178
     case rewind = 89, fastForward = 90, captions = 175
+    /// 1.3: channels (Live TV, set-top boxes) and the number pad.
+    case channelUp = 166, channelDown = 167
+    case digit0 = 7, digit1 = 8, digit2 = 9, digit3 = 10, digit4 = 11, digit5 = 12, digit6 = 13, digit7 = 14, digit8 = 15, digit9 = 16
+
+    /// 0 to 9, in order, for the number pad.
+    public static let digits: [TVKey] = [.digit0, .digit1, .digit2, .digit3, .digit4, .digit5, .digit6, .digit7, .digit8, .digit9]
+    /// The digit a number-pad key types, or nil.
+    public var digit: Int? { TVKey.digits.firstIndex(of: self) }
 }
 
 /// Only an explicit wake action may survive reconnection, once and for at most 30 seconds.

@@ -412,4 +412,15 @@
     <string name="tile_label">TV ein/aus</string>
     <string name="reverse_swipe">Wischrichtung umkehren</string>
     <string name="reverse_swipe_detail">Nach links wischen bewegt nach rechts, nach oben wischen nach unten</string>
+    <string name="pad_dpad">Steuerkreuz</string>
+    <string name="pad_numbers">Zahlen</string>
+    <string name="key_delete">Löschen</string>
+    <string name="pill_volume">VOL</string>
+    <string name="pill_volume_level">VOL %1$d</string>
+    <string name="pill_channel">CH</string>
+    <string name="key_channel_up">Sender hoch</string>
+    <string name="key_channel_down">Sender runter</string>
+    <string name="all_apps">Alle Apps</string>
+    <string name="all_apps_tv">Alle Apps auf dem Fernseher</string>
+    <string name="all_apps_partial">Bis Purios Startbildschirm verbunden ist (der Fernseher auf dem Startbildschirm), stehen hier nur die Apps der Fernbedienung.</string>
 </resources>

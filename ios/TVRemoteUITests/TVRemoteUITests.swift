@@ -21,10 +21,11 @@ final class TVRemoteUITests: XCTestCase {
     func testHeaderFitsShowOnTV() throws {
         let app = launchRemote()
         let chip = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'offline' OR label CONTAINS[c] 'standby' OR label CONTAINS[c] '192.0.2'")).firstMatch
-        let buttons = [app.buttons["showOnTV"], app.buttons["typeOnTV"], app.buttons["Favorite inputs"]]
+        // 1.3: Inputs moved from the header to the round keys under the pad.
+        let buttons = [app.buttons["showOnTV"], app.buttons["typeOnTV"]]
         for button in buttons { XCTAssertTrue(button.waitForExistence(timeout: 5)); XCTAssertTrue(button.isHittable, button.identifier) }
         let width = app.windows.firstMatch.frame.width
-        XCTAssertLessThanOrEqual(buttons[2].frame.maxX, width - 8, "inputs button off the edge")
+        XCTAssertLessThanOrEqual(buttons[1].frame.maxX, width - 8, "typing button off the edge")
         XCTAssertLessThan(buttons[0].frame.maxX, buttons[1].frame.minX)
         if chip.exists { XCTAssertGreaterThanOrEqual(chip.frame.width, 90, "the TV's name lost its room") }
         save(app, "header-\(Int(width))")
@@ -34,10 +35,10 @@ final class TVRemoteUITests: XCTestCase {
     /// buttons); it opens the Ask Purio sheet with a text field (dictation is the keyboard's mic).
     func testHeaderFitsTheAssistantButton() throws {
         let app = launchRemote(extra: ["-uiTestAssistant"])
-        let buttons = [app.buttons["askPurio"], app.buttons["showOnTV"], app.buttons["typeOnTV"], app.buttons["Favorite inputs"]]
+        let buttons = [app.buttons["askPurio"], app.buttons["showOnTV"], app.buttons["typeOnTV"]]
         for button in buttons { XCTAssertTrue(button.waitForExistence(timeout: 5), button.identifier); XCTAssertTrue(button.isHittable, button.identifier) }
         let width = app.windows.firstMatch.frame.width
-        XCTAssertLessThanOrEqual(buttons[3].frame.maxX, width - 8, "inputs button off the edge")
+        XCTAssertLessThanOrEqual(buttons[2].frame.maxX, width - 8, "typing button off the edge")
         let chip = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'offline' OR label CONTAINS[c] 'standby' OR label CONTAINS[c] '192.0.2' OR label CONTAINS[c] 'connection'")).firstMatch
         if chip.exists { XCTAssertGreaterThanOrEqual(chip.frame.width, 60, "the TV's name lost its room") }
         save(app, "header-assistant-\(Int(width))")
@@ -106,7 +107,38 @@ final class TVRemoteUITests: XCTestCase {
         XCTAssertTrue(app.buttons["remote-gearshape"].exists, "Roku's * (options) key")
         XCTAssertFalse(app.buttons["Inputs"].exists || app.buttons["Favorite inputs"].exists, "Roku has no input menu")
         XCTAssertTrue(app.buttons["showOnTV"].exists)
+        XCTAssertFalse(app.descendants(matching: .any)["padMode"].exists, "Roku has no number keys")
         save(app, "remote-roku")
+    }
+
+    /// REM-25: D-pad / Numbers swaps the pad for a number pad and back; the channel pill and the round keys sit
+    /// between volume and channels; Inputs is a round key.
+    func testNumberPadAndChannelPill() throws {
+        let app = launchRemote()
+        let numbers = app.buttons["Numbers"]
+        XCTAssertTrue(numbers.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Channel up"].exists && app.buttons["Channel down"].exists)
+        XCTAssertTrue(app.buttons["Favorite inputs"].exists, "Inputs among the round keys")
+        XCTAssertTrue(app.buttons["remote-house.fill"].exists && app.buttons["remote-gearshape"].exists)
+        save(app, "remote-dpad")
+        numbers.tap()
+        for n in 0...9 { XCTAssertTrue(app.buttons["digit-\(n)"].waitForExistence(timeout: 2), "digit \(n)") }
+        XCTAssertTrue(app.buttons["numberOK"].exists && app.buttons["Delete"].exists)
+        save(app, "remote-numbers")
+        app.buttons["D-pad"].tap()
+        XCTAssertFalse(app.buttons["digit-5"].waitForExistence(timeout: 1))
+    }
+
+    /// REM-26: the app row ends with All apps, which lists the TV's apps A to Z.
+    func testAllAppsListsTheTVsApps() throws {
+        let app = launchRemote()
+        let all = app.buttons["allApps"]
+        XCTAssertTrue(all.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Open Netflix"].exists)
+        all.tap()
+        XCTAssertTrue(app.navigationBars["All apps"].waitForExistence(timeout: 5))
+        XCTAssertGreaterThan(app.buttons.matching(identifier: "allAppsRow").count, 3)
+        save(app, "all-apps")
     }
 
     private func launchRemote(host: String = "192.0.2.10", extra: [String] = []) -> XCUIApplication {

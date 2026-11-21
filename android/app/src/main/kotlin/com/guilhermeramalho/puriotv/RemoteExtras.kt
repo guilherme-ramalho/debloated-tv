@@ -1,5 +1,13 @@
 package com.guilhermeramalho.puriotv
 
+import androidx.compose.foundation.background
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -293,3 +301,47 @@ fun <T> List<T>.moved(from: Int, to: Int): List<T> {
 }
 
 fun Modifier.clickableIf(enabled: Boolean, onClick: () -> Unit): Modifier = this.clickable(enabled = enabled, onClick = onClick)
+
+
+/**
+ * Every app on the TV, A to Z; tap one to open it there (AllAppsSheet on the iPhone). Android TV: the apps Purio's
+ * Home reports (or the remote's known apps until it connects). Roku, LG, Samsung: the TV's own list.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AllAppsSheet(state: RemoteModel.State, model: RemoteModel, onDismiss: () -> Unit) {
+    val editor by model.editor.state.collectAsState()
+    val prefs by model.settings.value.collectAsState()
+    var brandApps by remember { mutableStateOf<List<com.guilhermeramalho.puriotv.core.BrandApp>?>(null) }
+    var problem by remember { mutableStateOf("") }
+    LaunchedEffect(Unit) {
+        if (state.kind == com.guilhermeramalho.puriotv.core.TvKind.ANDROID_TV) { if (editor.snapshot == null) model.editor.autoConnect() }
+        else try { brandApps = model.brandApps() ?: emptyList() } catch (e: Exception) { problem = e.message ?: "" }
+    }
+    ModalBottomSheet(onDismissRequest = onDismiss, containerColor = Quiet.background) {
+        Column(Modifier.padding(horizontal = 20.dp).padding(bottom = 16.dp).navigationBarsPadding().verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text(stringResource(R.string.all_apps), style = MaterialTheme.typography.titleLarge)
+            if (state.kind == com.guilhermeramalho.puriotv.core.TvKind.ANDROID_TV) {
+                if (editor.snapshot == null) Text(stringResource(R.string.all_apps_partial), fontSize = 13.sp, color = Quiet.muted)
+                (editor.snapshot?.apps ?: prefs.apps).sortedBy { it.name.lowercase() }.forEach { app ->
+                    AllAppsRow(app.id, app.name, state.ready) { model.open(app); onDismiss() }
+                }
+            } else {
+                val list = brandApps
+                if (list == null && problem.isEmpty()) CircularProgressIndicator(Modifier.size(24.dp), color = Quiet.muted)
+                list?.sortedBy { it.name.lowercase() }?.forEach { app -> AllAppsRow(app.id, app.name, state.ready) { model.launch(app); onDismiss() } }
+            }
+            if (problem.isNotEmpty()) Text(problem, fontSize = 13.sp, color = Quiet.amber)
+        }
+    }
+}
+
+@Composable
+private fun AllAppsRow(id: String, name: String, enabled: Boolean, onClick: () -> Unit) {
+    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(Quiet.panel).clickable(enabled = enabled, onClick = onClick).padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        AppTile(id, name, 36.dp)
+        Text(name, color = Color.White, fontSize = 15.sp)
+    }
+}

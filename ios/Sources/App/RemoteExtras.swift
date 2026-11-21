@@ -242,3 +242,84 @@ private struct InputForm: View {
         return regions.first { $0.1.contains(point) }?.0
     }
 }
+
+
+/// The All apps button: nine coloured squares, "more apps" at a glance (1.3).
+struct AllAppsMark: View {
+    private let colors: [Color] = [
+        Color(red: 0.90, green: 0.28, blue: 0.30), Color(red: 0.96, green: 0.65, blue: 0.14), Color(red: 0.96, green: 0.85, blue: 0.04),
+        Color(red: 0.27, green: 0.65, blue: 0.35), Color(red: 0.07, green: 0.65, blue: 0.58), Color(red: 0.24, green: 0.56, blue: 0.97),
+        Color(red: 0.43, green: 0.34, blue: 0.81), Color(red: 0.84, green: 0.25, blue: 0.62), QuietTheme.cyan]
+    var body: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.fixed(8), spacing: 3.5), count: 3), spacing: 3.5) {
+            ForEach(colors.indices, id: \.self) { i in RoundedRectangle(cornerRadius: 2).fill(colors[i]).frame(width: 8, height: 8) }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(red: 0.075, green: 0.085, blue: 0.11), in: RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14).stroke(.white.opacity(0.1), lineWidth: 1))
+        .accessibilityHidden(true)
+    }
+}
+
+/// Every app on the TV, A to Z; tap one to open it there. Android TV: the apps Purio's Home reports (or the
+/// remote's known apps until it connects). Roku, LG, Samsung: the TV's own list.
+struct AllAppsSheet: View {
+    @ObservedObject var model: RemoteModel
+    @EnvironmentObject private var editor: HomeEditor
+    @EnvironmentObject private var settings: AppSettings
+    @Environment(\.dismiss) private var dismiss
+    @State private var brandApps: [BrandApp]?
+    @State private var problem = ""
+
+    private var androidApps: [RemoteApp] {
+        (editor.snapshot?.apps ?? settings.value.apps).sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+    }
+    var body: some View {
+        NavigationStack {
+            List {
+                if model.kind == .androidTV {
+                    if editor.snapshot == nil {
+                        Text("Only the remote's own apps are listed until Purio's Home screen connects (the TV on its Home screen).")
+                            .font(.footnote).foregroundStyle(QuietTheme.muted)
+                    }
+                    ForEach(androidApps) { app in
+                        row(app.name, id: app.id) { model.open(app); dismiss() }
+                    }
+                } else if let brandApps {
+                    ForEach(brandApps.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }, id: \.id) { app in
+                        row(app.name, id: app.id) { model.launch(app); dismiss() }
+                    }
+                } else if problem.isEmpty {
+                    ProgressView().frame(maxWidth: .infinity)
+                }
+                if !problem.isEmpty { Text(verbatim: problem).font(.footnote).foregroundStyle(.orange) }
+            }
+            .scrollContentBackground(.hidden).background(QuietTheme.background)
+            .navigationTitle("All apps").navigationBarTitleDisplayMode(.inline)
+            .toolbar { Button("Done") { dismiss() } }
+            .task {
+                if model.kind == .androidTV {
+                    if !editor.ready { editor.autoConnect(model: model) }
+                } else {
+                    do { brandApps = try await model.brandApps() ?? [] } catch { problem = error.localizedDescription }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
+    }
+    private func row(_ name: String, id: String, open: @escaping () -> Void) -> some View {
+        Button(action: open) {
+            HStack(spacing: 12) {
+                let logo = StreamingBrand.logo(id) ?? ""
+                Group {
+                    if !logo.isEmpty { Image(logo).resizable().renderingMode(.template).scaledToFit().padding(7) }
+                    else { Text(String(name.prefix(1))).font(.system(size: 15, weight: .bold)) }
+                }
+                .foregroundStyle(.white).frame(width: 36, height: 36)
+                .background(StreamingBrand.color(id), in: RoundedRectangle(cornerRadius: 10))
+                Text(verbatim: name).foregroundStyle(.white)
+                Spacer()
+            }
+        }.listRowBackground(QuietTheme.panel).disabled(!model.ready).accessibilityIdentifier("allAppsRow")
+    }
+}

@@ -6,7 +6,7 @@ import Foundation
 public enum AssistantCommands {
     /// The names offered to the model, in the order it sees them.
     public static let keyNames = ["up", "down", "left", "right", "ok", "back", "home", "playPause", "play", "pause",
-                                  "rewind", "fastForward", "volumeUp", "volumeDown", "mute", "subtitles", "settings", "inputs"]
+                                  "rewind", "fastForward", "volumeUp", "volumeDown", "mute", "subtitles", "settings", "inputs", "channelUp", "channelDown"]
 
     public static func key(named name: String) -> TVKey? {
         switch name.lowercased().filter({ $0.isLetter }) {
@@ -28,6 +28,8 @@ public enum AssistantCommands {
         case "subtitles", "captions", "cc": .captions
         case "settings", "menu", "options": .settings
         case "inputs", "input", "source", "hdmi": .inputs
+        case "channelup", "nextchannel": .channelUp
+        case "channeldown", "previouschannel": .channelDown
         default: nil
         }
     }

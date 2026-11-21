@@ -59,6 +59,10 @@ struct RemoteView: View {
     @State private var keyboard = false
     @State private var inputs = false
     @State private var showOnTV = false
+    @State private var allApps = false
+    /// The pad or the number pad (1.3); the pad when the TV has no number keys.
+    enum PadMode: Hashable { case dpad, numbers }
+    @State private var padMode = PadMode.dpad
     @ObservedObject var model: RemoteModel
     @State private var settings = false
     @StateObject private var pad = DPadGestureController()
@@ -85,63 +89,46 @@ struct RemoteView: View {
                 } else {
                 VStack(spacing: 12) {
                     controlsHeader
-                    ZStack {
-                        Circle().fill(ink).overlay(Circle().stroke(.white.opacity(0.08), lineWidth: 1))
-                        HoldKey(symbol: "chevron.up", key: .up, model: model, externallyPressed: pad.highlighted == .up)
-                            .frame(width: 100, height: 66).offset(y: -103)
-                        HoldKey(symbol: "chevron.down", key: .down, model: model, externallyPressed: pad.highlighted == .down)
-                            .frame(width: 100, height: 66).offset(y: 103)
-                        HoldKey(symbol: "chevron.left", key: .left, model: model, externallyPressed: pad.highlighted == .left)
-                            .frame(width: 66, height: 100).offset(x: -103)
-                        HoldKey(symbol: "chevron.right", key: .right, model: model, externallyPressed: pad.highlighted == .right)
-                            .frame(width: 66, height: 100).offset(x: 103)
-                        HoldKey(symbol: "", key: .select, model: model, externallyPressed: pad.highlighted == .select)
-                            .frame(width: 116, height: 116)
-                            .background(.white.opacity(0.09), in: Circle())
-                            .overlay(Circle().stroke(.white.opacity(0.12), lineWidth: 1))
-                    }.frame(width: 284, height: 284).opacity(model.ready ? 1 : 0.45)
-                        .coordinateSpace(name: "dpad").contentShape(Circle())
-                        .highPriorityGesture(DragGesture(minimumDistance: 0, coordinateSpace: .named("dpad"))
-                            .updating($padTouching) { _, active, _ in active = true }
-                            .onChanged { pad.changed($0, model: model, reversed: preferences.value.reversesSwipes) }.onEnded { pad.ended($0) })
-                        .onChange(of: padTouching) { _, touching in if !touching { pad.gestureReset() } }
-                        .onChange(of: model.ready) { _, ready in if !ready { pad.cancel() } }
-                        .onChange(of: phase) { _, value in if value != .active { pad.cancel() } }
-                        .onDisappear { pad.cancel() }
-
-                    HStack(spacing: 25) {
-                        command("arrow.uturn.backward", "Back", .back)
-                        command("house.fill", "Home", .home)
-                        command("playpause.fill", "Play or pause", .playPause)
+                    // 1.3: the pad or the number pad (TVs with number keys); swipes on the pad still move the focus.
+                    if hasNumberPad {
+                        // Slim, so the pad keeps today's full size.
+                        HStack(spacing: 2) {
+                            padModeButton("D-pad", .dpad)
+                            padModeButton("Numbers", .numbers)
+                        }
+                        .padding(2).background(QuietTheme.panel, in: Capsule())
+                        .accessibilityElement(children: .contain).accessibilityIdentifier("padMode")
                     }
-                    // 1.1: media skip, subtitles and the TV's own settings, same buttons as the row above.
-                    HStack(spacing: 14) {
-                        command("backward.fill", "Rewind", .rewind)
-                        command("forward.fill", "Fast-forward", .fastForward)
-                        command("captions.bubble", "Subtitles", .captions)
-                        command("gearshape", "TV settings", .settings)
-                    }
-                    HStack(spacing: 0) {
-                        HoldKey(symbol: "minus", key: .volumeDown, model: model).frame(width: 64, height: 56)
-                        Text(model.volume).font(.subheadline.weight(.medium)).frame(maxWidth: .infinity)
-                        HoldKey(symbol: "plus", key: .volumeUp, model: model).frame(width: 64, height: 56)
-                        // Shows what a tap does, from the TV's own mute state: muted → speaker (unmute).
-                        Button { model.tap(.mute) } label: {
-                            Image(systemName: model.muted ? "speaker.wave.2" : "speaker.slash").font(.system(size: 19)).frame(width: 48, height: 56)
-                                .contentTransition(.symbolEffect(.replace))
-                        }.tint(.white).accessibilityLabel(model.muted ? "Unmute" : "Mute").disabled(!model.ready).buttonStyle(RemotePressStyle())
-                    }.background(ink, in: Capsule())
-                    VStack(alignment: .leading, spacing: 12) {
-                        LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 8) {
-                            ForEach(model.kind == .androidTV ? preferences.remoteApps : preferences.shortcutApps) { item in
-                                app(item, StreamingBrand.logo(item.id) ?? item.logo ?? "", StreamingBrand.color(item.id))
-                            }
+                    if padMode == .numbers && hasNumberPad { numberPad } else { dpad }
+                    // Volume and channels as pills, the other keys round between them.
+                    HStack(alignment: .center, spacing: 0) {
+                        pill(up: .volumeUp, upSymbol: "plus", label: Text(verbatim: model.volume.allSatisfy(\.isNumber) && !model.volume.isEmpty ? "VOL \(model.volume)" : "VOL"), down: .volumeDown, downSymbol: "minus", hold: true)
+                            .accessibilityIdentifier("volumePill")
+                        Spacer(minLength: 8)
+                        LazyVGrid(columns: Array(repeating: GridItem(.fixed(54), spacing: 10), count: 3), spacing: 10) {
+                            roundKey("arrow.uturn.backward", "Back", .back)
+                            roundKey("house.fill", "Home", .home)
+                            roundKey("gearshape", "TV settings", .settings)
+                            roundKey("backward.fill", "Rewind", .rewind)
+                            roundKey("playpause.fill", "Play or pause", .playPause)
+                            roundKey("forward.fill", "Fast-forward", .fastForward)
+                            roundKey("captions.bubble", "Subtitles", .captions)
+                            muteKey
+                            inputsKey
+                        }.frame(width: 182)
+                        Spacer(minLength: 8)
+                        if model.supports(.channelUp) {
+                            pill(up: .channelUp, upSymbol: "chevron.up", label: Text("CH"), down: .channelDown, downSymbol: "chevron.down", hold: false)
+                                .accessibilityIdentifier("channelPill")
+                        } else {
+                            Color.clear.frame(width: 66, height: 182)
                         }
                     }
+                    appRow
                     if let shows = keepWatchingShows {
                         KeepWatchingStrip(tvName: model.tvName, shows: shows).padding(.top, 10)
                     }
-                }.padding(.horizontal, 30).padding(.top, 4).padding(.bottom, 12)
+                }.padding(.horizontal, 24).padding(.top, 4).padding(.bottom, 12)
                 }
             }
             .background(QuietTheme.background).tint(.white)
@@ -159,9 +146,153 @@ struct RemoteView: View {
             .onChange(of: settings) { _, open in if !open { assistantButton = AssistantSettings.showsButton } }
             .sheet(isPresented: $inputs) { NavigationStack { InputSettingsView(model: model).toolbar { Button("Done") { inputs = false } } } }
             .fullScreenCover(isPresented: $showOnTV) { ShowOnTVView(remote: model) }
+            .sheet(isPresented: $allApps) { AllAppsSheet(model: model) }
 
         }
     }
+    // MARK: 1.3 layout: the pad, the number pad, the pills, the round keys and the app row
+
+    private var hasNumberPad: Bool { model.supports(.digit1) }
+
+    private func padModeButton(_ title: LocalizedStringKey, _ mode: PadMode) -> some View {
+        Button { padMode = mode } label: {
+            Text(title).font(.system(size: 12, weight: .semibold)).padding(.horizontal, 14).frame(height: 26)
+                .foregroundStyle(padMode == mode ? .white : QuietTheme.muted)
+                .background(padMode == mode ? Color.white.opacity(0.16) : .clear, in: Capsule())
+        }.buttonStyle(.plain).accessibilityAddTraits(padMode == mode ? .isSelected : [])
+    }
+
+    private var dpad: some View {
+        ZStack {
+            Circle().fill(ink).overlay(Circle().stroke(.white.opacity(0.08), lineWidth: 1))
+            HoldKey(symbol: "chevron.up", key: .up, model: model, externallyPressed: pad.highlighted == .up)
+                .frame(width: 100, height: 66).offset(y: -103)
+            HoldKey(symbol: "chevron.down", key: .down, model: model, externallyPressed: pad.highlighted == .down)
+                .frame(width: 100, height: 66).offset(y: 103)
+            HoldKey(symbol: "chevron.left", key: .left, model: model, externallyPressed: pad.highlighted == .left)
+                .frame(width: 66, height: 100).offset(x: -103)
+            HoldKey(symbol: "chevron.right", key: .right, model: model, externallyPressed: pad.highlighted == .right)
+                .frame(width: 66, height: 100).offset(x: 103)
+            HoldKey(symbol: "", key: .select, model: model, externallyPressed: pad.highlighted == .select)
+                .frame(width: 116, height: 116)
+                .background(.white.opacity(0.09), in: Circle())
+                .overlay(Circle().stroke(.white.opacity(0.12), lineWidth: 1))
+        }.frame(width: 284, height: 284).opacity(model.ready ? 1 : 0.45)
+            .coordinateSpace(name: "dpad").contentShape(Circle())
+            .highPriorityGesture(DragGesture(minimumDistance: 0, coordinateSpace: .named("dpad"))
+                .updating($padTouching) { _, active, _ in active = true }
+                .onChanged { pad.changed($0, model: model, reversed: preferences.value.reversesSwipes) }.onEnded { pad.ended($0) })
+            .onChange(of: padTouching) { _, touching in if !touching { pad.gestureReset() } }
+            .onChange(of: model.ready) { _, ready in if !ready { pad.cancel() } }
+            .onChange(of: phase) { _, value in if value != .active { pad.cancel() } }
+            .onDisappear { pad.cancel() }
+    }
+
+    /// 1 to 9, Delete, 0, OK: channel numbers on Live TV or a set-top box, PINs on the TV.
+    private var numberPad: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 3), spacing: 12) {
+            ForEach(1..<10, id: \.self) { digitKey($0) }
+            Button { model.tap(.delete) } label: {
+                Image(systemName: "delete.left").font(.system(size: 20, weight: .medium)).frame(maxWidth: .infinity).frame(height: 62)
+                    .background(ink, in: Capsule())
+            }.tint(.white).buttonStyle(RemotePressStyle(radius: 31)).disabled(!model.ready).accessibilityLabel("Delete")
+            digitKey(0)
+            Button { model.tap(.select) } label: {
+                Text("OK").font(.system(size: 17, weight: .semibold)).frame(maxWidth: .infinity).frame(height: 62)
+                    .background(ink, in: Capsule())
+            }.tint(.white).buttonStyle(RemotePressStyle(radius: 31)).disabled(!model.ready).accessibilityIdentifier("numberOK")
+        }.frame(width: 284, height: 284).opacity(model.ready ? 1 : 0.45).accessibilityIdentifier("numberPad")
+    }
+    private func digitKey(_ n: Int) -> some View {
+        Button { model.tap(TVKey.digits[n]) } label: {
+            Text(verbatim: "\(n)").font(.system(size: 24, weight: .medium)).frame(maxWidth: .infinity).frame(height: 62)
+                .background(ink, in: Capsule())
+        }.tint(.white).buttonStyle(RemotePressStyle(radius: 31)).disabled(!model.ready).accessibilityIdentifier("digit-\(n)")
+    }
+
+    /// A tall pill: + / − (held repeats, for volume) or up / down, with its label between.
+    private func pill(up: TVKey, upSymbol: String, label: Text, down: TVKey, downSymbol: String, hold: Bool) -> some View {
+        VStack(spacing: 0) {
+            pillKey(up, upSymbol, hold: hold)
+            label.font(.system(size: 11, weight: .semibold)).tracking(0.8).foregroundStyle(QuietTheme.muted)
+                .lineLimit(1).minimumScaleFactor(0.7).frame(height: 54)
+            pillKey(down, downSymbol, hold: hold)
+        }.frame(width: 66, height: 182).background(ink, in: Capsule()).opacity(model.ready ? 1 : 0.45)
+    }
+    @ViewBuilder private func pillKey(_ key: TVKey, _ symbol: String, hold: Bool) -> some View {
+        if hold {
+            HoldKey(symbol: symbol, key: key, model: model).frame(width: 66, height: 64)
+        } else {
+            Button { model.tap(key) } label: {
+                Image(systemName: symbol).font(.system(size: 21, weight: .semibold)).frame(width: 66, height: 64)
+            }.tint(.white).buttonStyle(RemotePressStyle(radius: 33)).disabled(!model.ready)
+                .accessibilityLabel(key == .channelUp ? Text("Channel up") : Text("Channel down"))
+        }
+    }
+
+    /// A round key; one this TV doesn't have (a Roku has no subtitles key) keeps its place, empty.
+    @ViewBuilder private func roundKey(_ symbol: String, _ label: LocalizedStringKey, _ key: TVKey) -> some View {
+        if model.supports(key) {
+            Button { model.tap(key) } label: {
+                Image(systemName: symbol).font(.system(size: 19, weight: .medium)).frame(width: 54, height: 54)
+                    .background(ink, in: Circle())
+            }.accessibilityLabel(Text(label)).accessibilityIdentifier("remote-\(symbol)").disabled(!model.ready).tint(.white)
+                .buttonStyle(RemotePressStyle(radius: 27)).opacity(model.ready ? 1 : 0.45)
+        } else {
+            Color.clear.frame(width: 54, height: 54)
+        }
+    }
+    /// Shows what a tap does, from the TV's own mute state: muted → speaker (unmute).
+    private var muteKey: some View {
+        Button { model.tap(.mute) } label: {
+            Image(systemName: model.muted ? "speaker.wave.2" : "speaker.slash").font(.system(size: 18)).frame(width: 54, height: 54)
+                .background(ink, in: Circle()).contentTransition(.symbolEffect(.replace))
+        }.tint(.white).accessibilityLabel(model.muted ? "Unmute" : "Mute").disabled(!model.ready)
+            .buttonStyle(RemotePressStyle(radius: 27)).opacity(model.ready ? 1 : 0.45)
+    }
+    /// Favourite inputs need Purio's TV Home (Android TV); other TVs get their own input menu, where they have one.
+    @ViewBuilder private var inputsKey: some View {
+        if model.kind == .androidTV || model.supports(.inputs) {
+            Button { if model.kind == .androidTV { inputs = true } else { model.tap(.inputs) } } label: {
+                Image(systemName: "rectangle.on.rectangle").font(.system(size: 18, weight: .medium)).frame(width: 54, height: 54)
+                    .background(ink, in: Circle())
+            }.tint(.white).accessibilityLabel(model.kind == .androidTV ? "Favorite inputs" : "Inputs")
+                .buttonStyle(RemotePressStyle(radius: 27)).disabled(model.kind != .androidTV && !model.ready)
+        } else {
+            Color.clear.frame(width: 54, height: 54)
+        }
+    }
+
+    /// Five app buttons (the TV Home dock's apps first) and All apps, which lists every app on the TV.
+    private var appRow: some View {
+        let apps = Array((model.kind == .androidTV ? preferences.remoteApps : preferences.shortcutApps).prefix(5))
+        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 6), spacing: 6) {
+            ForEach(apps) { item in appTile(item) }
+            Button { allApps = true } label: {
+                VStack(spacing: 5) {
+                    AllAppsMark().frame(width: 52, height: 52)
+                    Text("All apps").font(.system(size: 10)).foregroundStyle(QuietTheme.muted).lineLimit(1)
+                }
+            }.buttonStyle(.plain).accessibilityIdentifier("allApps").accessibilityLabel("All apps on the TV")
+        }.padding(.top, 4)
+    }
+    private func appTile(_ item: RemoteApp) -> some View {
+        let logo = StreamingBrand.logo(item.id) ?? item.logo ?? ""
+        return Button { model.open(item) } label: {
+            VStack(spacing: 5) {
+                Group {
+                    if !logo.isEmpty { Image(logo).resizable().renderingMode(.template).scaledToFit().padding(item.name == "Netflix" ? 12 : 9) }
+                    else { Text(item.name.prefix(2)).font(.system(size: 17, weight: .bold)) }
+                }
+                .foregroundStyle(.white).frame(width: 52, height: 52)
+                .background(StreamingBrand.color(item.id), in: RoundedRectangle(cornerRadius: 14))
+                .overlay(RoundedRectangle(cornerRadius: 14).stroke(.white.opacity(0.1), lineWidth: 1))
+                Text(item.name).font(.system(size: 10)).foregroundStyle(QuietTheme.muted).lineLimit(1).minimumScaleFactor(0.8)
+            }
+        }.buttonStyle(RemotePressStyle(radius: 14)).disabled(!model.ready).opacity(model.ready ? 1 : 0.45)
+            .accessibilityLabel("Open " + item.name)
+    }
+
     /// Remote 1: power, then the TV and the app on screen (tap for connection settings), then Show on TV, typing
     /// and inputs. Narrow phones (4.7-inch SE) get smaller round buttons so the TV's name keeps its room.
     private var controlsHeader: some View {
@@ -186,13 +317,6 @@ struct RemoteView: View {
             }
             roundButton("keyboard", side: side, fill: QuietTheme.panel) { keyboard = true }
                 .accessibilityLabel("Type on TV").accessibilityIdentifier("typeOnTV")
-            // Favourite inputs need Purio's TV Home (Android TV); other TVs get their own input menu, where they have one.
-            if model.kind == .androidTV || model.supports(.inputs) {
-                roundButton("rectangle.on.rectangle", side: side, fill: Color(red: 22/255, green: 48/255, blue: 79/255)) {
-                    if model.kind == .androidTV { inputs = true } else { model.tap(.inputs) }
-                }
-                .accessibilityLabel(model.kind == .androidTV ? "Favorite inputs" : "Inputs")
-            }
         }
     }
     private func roundButton(_ symbol: String, side: CGFloat, fill: Color, tint: Color = .white, _ action: @escaping () -> Void) -> some View {

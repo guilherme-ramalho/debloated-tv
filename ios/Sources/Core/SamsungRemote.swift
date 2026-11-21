@@ -50,6 +50,9 @@ public final class SamsungRemote: BrandRemote, @unchecked Sendable {
         case .captions: "KEY_CAPTION"
         case .settings: "KEY_MENU"
         case .inputs: "KEY_SOURCE"
+        case .channelUp: "KEY_CHUP"
+        case .channelDown: "KEY_CHDOWN"
+        case .digit0, .digit1, .digit2, .digit3, .digit4, .digit5, .digit6, .digit7, .digit8, .digit9: key.digit.map { "KEY_\($0)" }
         case .playPause, .delete: nil
         }
     }
