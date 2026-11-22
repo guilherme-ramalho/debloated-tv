@@ -11,19 +11,22 @@
 # Shots 08-09 need a recent photo and, newest of all, a 4K video in each simulator's library
 # (xcrun simctl addmedia <udid> <file>): the 1.2 shots used Apple's sample flowers and a slow zoom on its waterfall.
 #   scripts/store-shots-auto.sh --pair           open both simulators to pair them with the TV first (once)
+#   scripts/store-shots-auto.sh --demo           no TV: the Dev app's store demo (-storeDemo), shots 01 (remote with
+#                                                Keep watching) and 10 (Inputs); the other shots stay as they were
 
 #
 # Output: ios/build/store-shots-auto/<size>/<lang>/NN-name.png, and JPEG copies without alpha (App Store Connect
 # refuses an alpha channel) in ios/build/store-shots-auto/upload/<size>/<lang>/.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-LANGS="en,de,es,fr,it,pt-BR"; PAIR=0; ONLY=""
+LANGS="en,de,es,fr,it,pt-BR"; PAIR=0; ONLY=""; DEMO=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --langs) LANGS="$2"; shift ;;
     --only) ONLY="$2"; shift ;;
     --pair) PAIR=1 ;;
-    *) sed -n '2,14p' "$0"; exit 1 ;;
+    --demo) DEMO=1 ;;
+    *) sed -n '2,16p' "$0"; exit 1 ;;
   esac
   shift
 done
@@ -46,6 +49,7 @@ say "Simulators…"
 BIG="$(sim "Debloated Store Shots" "iPhone 17 Pro Max")"      # the 1.0 shots' simulator, already paired then
 SMALL="$(sim "Purio Store Shots 6.3" "iPhone 17 Pro")"
 
+if [ "$DEMO" = 0 ]; then
 say "Building the release app for the simulator…"
 DD="$ROOT/ios/build/store-shots-dd"
 (cd "$ROOT/ios" && xcodebuild build -project TVRemote.xcodeproj -scheme "Debloated TV" -configuration Release \
@@ -62,10 +66,11 @@ if [ "$PAIR" = 1 ]; then
   say "In each simulator: connect to the TV and enter the code it shows. Put the TV on its Home screen. Then press Enter."
   read -r _
 fi
+fi   # DEMO = 0: the demo uses the Dev app the test run installs
 
 shoot() {   # udid, size label
   say "Screenshots on the $2 simulator ($LANGS)…"
-  (cd "$ROOT/ios" && TEST_RUNNER_STORE_SHOTS_DIR="$OUT/$2" TEST_RUNNER_STORE_SHOTS_LANGS="$LANGS" TEST_RUNNER_STORE_SHOTS_ONLY="$ONLY" \
+  (cd "$ROOT/ios" && TEST_RUNNER_STORE_SHOTS_DIR="$OUT/$2" TEST_RUNNER_STORE_SHOTS_LANGS="$LANGS" TEST_RUNNER_STORE_SHOTS_ONLY="$ONLY" TEST_RUNNER_STORE_SHOTS_DEMO="$DEMO" \
     xcodebuild test -project TVRemote.xcodeproj -scheme "Debloated TV Dev" -destination "id=$1" \
     -only-testing:TVRemoteUITests/StoreScreenshots -parallel-testing-enabled NO -derivedDataPath "$ROOT/ios/build/store-shots-test-dd" 2>&1 \
     | grep -E "STORE-SHOTS|error:|failed|\*\* TEST" || true)

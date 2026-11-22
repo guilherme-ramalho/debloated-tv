@@ -1,72 +1,78 @@
 {
   "_comment": "Store frames (scripts/store-frames.py): store order, the raw shot each frame uses, and its label and two-line headline per language. \\n breaks the headline.",
-  "order": ["01-remote", "08-show-on-tv", "09-show-video", "02-tv-home", "07-look", "03-setup-review", "04-type", "05-actions", "06-action-steps"],
+  "order": ["01-remote", "03-setup-review", "11-keep-watching", "02-tv-home", "08-show-on-tv", "09-show-video", "10-inputs", "07-look", "04-type", "05-actions"],
   "text": {
     "en": [
       ["TV remote", "Your iPhone is\nthe remote"],
+      ["Debloat", "Turn off the clutter,\nsafely"],
+      ["Keep watching", "Pick up where\nyou left off"],
+      ["New Home screen", "A clean, fast\nHome for your TV"],
       ["Show on TV", "Your photos,\non the big screen"],
       ["4K videos", "Your videos play\nsmoothly on the TV"],
-      ["New Home screen", "A clean, fast\nHome for your TV"],
+      ["Inputs", "Switch inputs\nwith one tap"],
       ["Four looks", "Make it yours\nin one tap"],
-      ["Debloat", "Turn off the clutter,\nsafely"],
       ["Keyboard", "Type on the TV\nfrom your phone"],
-      ["Quick actions", "One tap for\nmovie night"],
-      ["Siri & Shortcuts", "Build your own\nroutines"]
+      ["Quick actions", "One tap for\nmovie night"]
     ],
     "de": [
       ["TV-Fernbedienung", "Dein iPhone ist\ndie Fernbedienung"],
+      ["Aufräumen", "Ballast abschalten,\nsicher"],
+      ["Weiterschauen", "Genau da weiter,\nwo du aufgehört hast"],
+      ["Neuer Startbildschirm", "Ein aufgeräumter,\nschneller Start"],
       ["Auf dem TV zeigen", "Deine Fotos\nganz groß"],
       ["4K-Videos", "Deine Videos laufen\nflüssig am TV"],
-      ["Neuer Startbildschirm", "Ein aufgeräumter,\nschneller Start"],
+      ["Eingänge", "Eingang wechseln\nmit einem Tipp"],
       ["Vier Looks", "Dein Stil\nmit einem Tipp"],
-      ["Aufräumen", "Ballast abschalten,\nsicher"],
       ["Tastatur", "Auf dem TV tippen,\nvom iPhone aus"],
-      ["Schnellaktionen", "Ein Tipp für\nden Filmabend"],
-      ["Siri & Kurzbefehle", "Eigene Abläufe\nerstellen"]
+      ["Schnellaktionen", "Ein Tipp für\nden Filmabend"]
     ],
     "es": [
       ["Mando de TV", "Tu iPhone es\nel mando"],
+      ["Limpieza", "Quita lo que sobra,\nsin riesgos"],
+      ["Seguir viendo", "Sigue donde\nlo dejaste"],
+      ["Nueva pantalla de inicio", "Un inicio limpio\ny rápido para tu TV"],
       ["Mostrar en la tele", "Tus fotos,\nen la pantalla grande"],
       ["Vídeos 4K", "Tus vídeos, fluidos\nen la tele"],
-      ["Nueva pantalla de inicio", "Un inicio limpio\ny rápido para tu TV"],
+      ["Entradas", "Cambia de entrada\ncon un toque"],
       ["Cuatro estilos", "Hazlo tuyo\ncon un toque"],
-      ["Limpieza", "Quita lo que sobra,\nsin riesgos"],
       ["Teclado", "Escribe en la TV\ndesde tu iPhone"],
-      ["Acciones rápidas", "Un toque para\nla noche de cine"],
-      ["Siri y Atajos", "Crea tus\npropias rutinas"]
+      ["Acciones rápidas", "Un toque para\nla noche de cine"]
     ],
     "fr": [
       ["Télécommande", "Votre iPhone devient\nla télécommande"],
+      ["Nettoyage", "Désactivez le superflu,\nen toute sécurité"],
+      ["Reprendre", "Reprenez où\nvous en étiez"],
+      ["Nouvel écran d'accueil", "Un accueil épuré\net rapide pour votre TV"],
       ["Afficher sur la TV", "Vos photos\nsur grand écran"],
       ["Vidéos 4K", "Vos vidéos, fluides\nsur la TV"],
-      ["Nouvel écran d'accueil", "Un accueil épuré\net rapide pour votre TV"],
+      ["Entrées", "Changez d'entrée\nen un geste"],
       ["Quatre styles", "À votre goût,\nen un geste"],
-      ["Nettoyage", "Désactivez le superflu,\nen toute sécurité"],
       ["Clavier", "Écrivez sur la TV\ndepuis votre iPhone"],
-      ["Actions rapides", "Un geste pour\nla soirée film"],
-      ["Siri et Raccourcis", "Créez vos\npropres routines"]
+      ["Actions rapides", "Un geste pour\nla soirée film"]
     ],
     "it": [
       ["Telecomando", "Il tuo iPhone è\nil telecomando"],
+      ["Pulizia", "Spegni il superfluo,\nin sicurezza"],
+      ["Continua a guardare", "Riprendi da dove\neri rimasto"],
+      ["Nuova schermata Home", "Una Home pulita\ne veloce per la TV"],
       ["Mostra sulla TV", "Le tue foto\nsul grande schermo"],
       ["Video 4K", "I tuoi video, fluidi\nsulla TV"],
-      ["Nuova schermata Home", "Una Home pulita\ne veloce per la TV"],
+      ["Ingressi", "Cambia ingresso\ncon un tocco"],
       ["Quattro stili", "Rendila tua\ncon un tocco"],
-      ["Pulizia", "Spegni il superfluo,\nin sicurezza"],
       ["Tastiera", "Scrivi sulla TV\ndall'iPhone"],
-      ["Azioni rapide", "Un tocco per\nla serata film"],
-      ["Siri e Comandi Rapidi", "Crea le tue\nroutine"]
+      ["Azioni rapide", "Un tocco per\nla serata film"]
     ],
     "pt-BR": [
       ["Controle remoto", "Seu iPhone é\no controle"],
+      ["Limpeza", "Desative o excesso\ncom segurança"],
+      ["Continuar assistindo", "Continue de onde\nvocê parou"],
+      ["Nova tela inicial", "Uma tela inicial\nlimpa e rápida"],
       ["Mostrar na TV", "Suas fotos\nna tela grande"],
       ["Vídeos 4K", "Seus vídeos fluidos\nna TV"],
-      ["Nova tela inicial", "Uma tela inicial\nlimpa e rápida"],
+      ["Entradas", "Troque de entrada\ncom um toque"],
       ["Quatro visuais", "Do seu jeito,\ncom um toque"],
-      ["Limpeza", "Desative o excesso\ncom segurança"],
       ["Teclado", "Digite na TV\npelo iPhone"],
-      ["Ações rápidas", "Um toque para\na noite de filme"],
-      ["Siri e Atalhos", "Crie suas\npróprias rotinas"]
+      ["Ações rápidas", "Um toque para\na noite de filme"]
     ]
   }
 }

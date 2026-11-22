@@ -105,7 +105,7 @@ final class TVRemoteUITests: XCTestCase {
         XCTAssertTrue(app.buttons["remote-backward.fill"].exists)
         XCTAssertFalse(app.buttons["remote-captions.bubble"].exists, "Roku has no subtitles key")
         XCTAssertTrue(app.buttons["remote-gearshape"].exists, "Roku's * (options) key")
-        XCTAssertFalse(app.buttons["Inputs"].exists || app.buttons["Favorite inputs"].exists, "Roku has no input menu")
+        XCTAssertFalse(app.buttons["inputsKey"].exists, "Roku has no input menu")
         XCTAssertTrue(app.buttons["showOnTV"].exists)
         XCTAssertFalse(app.descendants(matching: .any)["padMode"].exists, "Roku has no number keys")
         save(app, "remote-roku")
@@ -118,7 +118,7 @@ final class TVRemoteUITests: XCTestCase {
         let numbers = app.buttons["Numbers"]
         XCTAssertTrue(numbers.waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["Channel up"].exists && app.buttons["Channel down"].exists)
-        XCTAssertTrue(app.buttons["Favorite inputs"].exists, "Inputs among the round keys")
+        XCTAssertTrue(app.buttons["inputsKey"].exists, "Inputs among the round keys")
         XCTAssertTrue(app.buttons["remote-house.fill"].exists && app.buttons["remote-gearshape"].exists)
         save(app, "remote-dpad")
         numbers.tap()
@@ -334,12 +334,14 @@ final class StoreScreenshots: XCTestCase {
         for lang in languages {
             dir = out + "/" + lang
             try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
-            app = XCUIApplication(bundleIdentifier: "com.guilhermeramalho.TVRemote")
+            let demo = env["STORE_SHOTS_DEMO"] == "1"
+            app = XCUIApplication(bundleIdentifier: demo ? "com.guilhermeramalho.TVRemote.dev" : "com.guilhermeramalho.TVRemote")
             let locale = lang == "en" ? "en_US" : lang.replacingOccurrences(of: "-", with: "_")
-            app.launchArguments = ["-AppleLanguages", "(\(lang))", "-AppleLocale", locale]
+            app.launchArguments = ["-AppleLanguages", "(\(lang))", "-AppleLocale", locale] + (demo ? ["-storeDemo", "YES"] : [])
             app.launch()
             let tabs = app.tabBars.buttons
             XCTAssertTrue(tabs.element(boundBy: 0).waitForExistence(timeout: 10), "\(lang): app didn't start")
+            if demo { demoShots(tabs); app.terminate(); continue }
             if env["STORE_SHOTS_ONLY"] == "03" { setupReview(tabs); app.terminate(); continue }
             if env["STORE_SHOTS_ONLY"] == "cast" { tabs.element(boundBy: 0).tap(); pause(5); castShots(); app.terminate(); continue }
 
@@ -401,6 +403,23 @@ final class StoreScreenshots: XCTestCase {
         if app.buttons["stopOnTV"].exists { app.buttons["stopOnTV"].tap(); pause(2) }
         app.buttons["viewerBack"].tap(); pause(1)
         app.buttons["closeShowOnTV"].tap(); pause(1)
+    }
+
+    /// 1.3: the Dev app's store demo (`-storeDemo`, no TV): the remote on Purio Home, the remote scrolled to its
+    /// Keep watching row, and the Inputs sheet with the TV's inputs.
+    private func demoShots(_ tabs: XCUIElementQuery) {
+        tabs.element(boundBy: 0).tap(); pause(2)
+        shot("01-remote")
+        let inputs = app.buttons["inputsKey"]
+        if inputs.waitForExistence(timeout: 3) {
+            inputs.tap(); pause(2)
+            shot("10-inputs")
+            app.navigationBars.buttons.firstMatch.tap(); pause(1)
+        } else { print("STORE-SHOTS: no Inputs key") }
+        // Last: a slow drag below the pad (no fling) to the end of the remote, Keep watching above the tab bar.
+        let from = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8)), to = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.35))
+        from.press(forDuration: 0.05, thenDragTo: to, withVelocity: XCUIGestureVelocity(400), thenHoldForDuration: 0.5)
+        pause(2); shot("11-keep-watching")
     }
 
     private func pause(_ seconds: UInt32) { sleep(seconds) }

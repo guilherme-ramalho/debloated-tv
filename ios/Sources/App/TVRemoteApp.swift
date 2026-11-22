@@ -22,6 +22,7 @@ import SwiftUI
                 #if DEBUG
                 UITestHooks.apply(setup: setup, host: model.host)
                 if UserDefaults.standard.bool(forKey: "uiTestKeepWatching") { editor.showSampleKeepWatching(UITestHooks.sampleKeepWatching) }
+                if UITestHooks.storeDemo { editor.showStoreDemo(keepWatching: UITestHooks.demoKeepWatching(), inputs: UITestHooks.demoInputs) }
                 #endif
                 model.setAutoReconnect(settings.value.autoReconnect); if phase == .active { model.activate() }
             }
@@ -251,13 +252,13 @@ struct RemoteView: View {
         }.tint(.white).accessibilityLabel(model.muted ? "Unmute" : "Mute").disabled(!model.ready)
             .buttonStyle(RemotePressStyle(radius: 27)).opacity(model.ready ? 1 : 0.45)
     }
-    /// Favourite inputs need Purio's TV Home (Android TV); other TVs get their own input menu, where they have one.
+    /// Android TVs list their inputs through Purio's TV Home; other TVs get their own input menu, where they have one.
     @ViewBuilder private var inputsKey: some View {
         if model.kind == .androidTV || model.supports(.inputs) {
             Button { if model.kind == .androidTV { inputs = true } else { model.tap(.inputs) } } label: {
                 Image(systemName: "rectangle.on.rectangle").font(.system(size: 18, weight: .medium)).frame(width: 54, height: 54)
                     .background(ink, in: Circle())
-            }.tint(.white).accessibilityLabel(model.kind == .androidTV ? "Favorite inputs" : "Inputs")
+            }.tint(.white).accessibilityLabel("Inputs").accessibilityIdentifier("inputsKey")
                 .buttonStyle(RemotePressStyle(radius: 27)).disabled(model.kind != .androidTV && !model.ready)
         } else {
             Color.clear.frame(width: 54, height: 54)
@@ -424,9 +425,45 @@ enum UITestHooks {
         if defaults.bool(forKey: "uiTestOffer") { setup.offerFor = host }
     }
     /// `-uiTestRemote YES`: the remote's controls without a paired TV (header layout and Show on TV tests).
-    static var showsRemote: Bool { UserDefaults.standard.bool(forKey: "uiTestRemote") }
+    static var showsRemote: Bool { UserDefaults.standard.bool(forKey: "uiTestRemote") || storeDemo }
     /// The TV shows Purio Home (Keep watching on the remote).
-    static var onPurioHome: Bool { UserDefaults.standard.bool(forKey: "uiTestKeepWatching") }
+    static var onPurioHome: Bool { UserDefaults.standard.bool(forKey: "uiTestKeepWatching") || storeDemo }
+    /// `-storeDemo YES` (scripts/store-shots-auto.sh --demo): a connected "Living room TV" on Purio Home with made-up
+    /// shows and inputs, for store screenshots without a TV. Nothing is sent anywhere.
+    static var storeDemo: Bool { UserDefaults.standard.bool(forKey: "storeDemo") }
+    static let demoInputs = [
+        TVInputRow(id: "hdmi1", name: "HDMI 1", kind: "hdmi", connected: true),
+        TVInputRow(id: "hdmi2", name: "HDMI 2", kind: "hdmi", connected: true),
+        TVInputRow(id: "hdmi3", name: "HDMI 3", kind: "hdmi", connected: false),
+        TVInputRow(id: "av", name: "AV", kind: "av", connected: nil),
+        TVInputRow(id: "live-tv", name: String(localized: "Live TV"), kind: "live", connected: nil),
+    ]
+    /// Made-up titles with drawn posters (no real show's artwork).
+    @MainActor static func demoKeepWatching() -> KeepWatchingList {
+        func poster(_ top: UIColor, _ bottom: UIColor, _ sun: UIColor) -> Data? {
+            let size = CGSize(width: 480, height: 270)
+            let image = UIGraphicsImageRenderer(size: size).image { context in
+                let cg = context.cgContext
+                let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: [top.cgColor, bottom.cgColor] as CFArray, locations: [0, 1])!
+                cg.drawLinearGradient(gradient, start: .zero, end: CGPoint(x: 0, y: size.height), options: [])
+                cg.setFillColor(sun.cgColor); cg.fillEllipse(in: CGRect(x: 300, y: 50, width: 110, height: 110))
+                cg.setFillColor(UIColor.black.withAlphaComponent(0.35).cgColor)
+                let hills = UIBezierPath(); hills.move(to: CGPoint(x: 0, y: 200))
+                hills.addCurve(to: CGPoint(x: 480, y: 180), controlPoint1: CGPoint(x: 140, y: 120), controlPoint2: CGPoint(x: 300, y: 250))
+                hills.addLine(to: CGPoint(x: 480, y: 270)); hills.addLine(to: CGPoint(x: 0, y: 270)); hills.close()
+                cg.addPath(hills.cgPath); cg.fillPath()
+            }
+            return image.jpegData(compressionQuality: 0.85)
+        }
+        return KeepWatchingList(allowed: true, items: [
+            WatchingShow(id: "1", package: "com.netflix.ninja", title: "The Quiet Coast", episode: "S2 · E5", positionMs: 1_900_000, durationMs: 3_280_000, lastWatched: 1_794_900_000,
+                         posterJPEG: poster(UIColor(red: 0.98, green: 0.55, blue: 0.35, alpha: 1), UIColor(red: 0.35, green: 0.12, blue: 0.35, alpha: 1), UIColor(red: 1, green: 0.85, blue: 0.5, alpha: 1))),
+            WatchingShow(id: "2", package: "com.amazon.amazonvideo.livingroom", title: "Northern Lights", episode: "", positionMs: 3_700_000, durationMs: 6_180_000, lastWatched: 1_794_800_000,
+                         posterJPEG: poster(UIColor(red: 0.08, green: 0.2, blue: 0.4, alpha: 1), UIColor(red: 0.1, green: 0.55, blue: 0.5, alpha: 1), UIColor(red: 0.8, green: 0.95, blue: 1, alpha: 1))),
+            WatchingShow(id: "3", package: "com.wbd.stream", title: "Orbit Kitchen", episode: "S1 · E3", positionMs: 611_000, durationMs: 1_632_000, lastWatched: 1_794_700_000,
+                         posterJPEG: poster(UIColor(red: 0.2, green: 0.1, blue: 0.45, alpha: 1), UIColor(red: 0.9, green: 0.3, blue: 0.5, alpha: 1), UIColor(red: 1, green: 0.95, blue: 0.7, alpha: 1))),
+        ])
+    }
     /// `-showConnect YES` (Dev builds): the Connect screen even with a paired TV, to check discovery on a real network.
     static var showsConnect: Bool { UserDefaults.standard.bool(forKey: "showConnect") }
     /// `-uiTestKeepWatching YES`: the TV tab's Keep watching strip with sample shows (no TV, no posters).

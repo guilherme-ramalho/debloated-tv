@@ -32,6 +32,9 @@ import UniformTypeIdentifiers
     static let applyDelay: Duration = .milliseconds(800)
 
     func close() {
+        #if DEBUG
+        if UITestHooks.storeDemo { return }
+        #endif
         generation += 1; wanted = false; snapshot = nil; keepWatching = nil; keepWatchingReadAt = nil; operation?.cancel(); operation = nil; client.close()
         ready = false; busy = false; waitingFor = nil; backedUp = false
         message = String(localized: "TV Home connects when you open the TV tab with the TV on.")
@@ -39,6 +42,9 @@ import UniformTypeIdentifiers
 
     /// Called whenever the TV's state changes while the TV tab is visible.
     func autoConnect(model: RemoteModel) {
+        #if DEBUG
+        if UITestHooks.storeDemo { return }
+        #endif
         self.model = model
         guard !ready, !busy else { return }
         guard model.ready else { waitingFor = nil; message = String(localized: "Waiting for the TV. Drafts are saved on this iPhone."); return }
@@ -217,6 +223,10 @@ import UniformTypeIdentifiers
     }
     #if DEBUG
     func showSampleKeepWatching(_ list: KeepWatchingList) { keepWatching = list }
+    /// Store screenshots (`-storeDemo`): the shows and inputs a TV on Purio Home would send.
+    func showStoreDemo(keepWatching list: KeepWatchingList, inputs: [TVInputRow]) {
+        keepWatching = list; keepWatchingReadAt = Date(); inputRows = inputs
+    }
     #endif
 
     // MARK: Inputs (Home 17)
@@ -225,6 +235,9 @@ import UniformTypeIdentifiers
     @Published private(set) var inputRows: [TVInputRow] = []
     private static func inputsKey(_ host: String) -> String { "tvInputRows." + host }
     func cachedInputs(for host: String) {
+        #if DEBUG
+        if UITestHooks.storeDemo { return }
+        #endif
         guard let data = UserDefaults.standard.data(forKey: Self.inputsKey(host)),
               let list = try? JSONDecoder().decode(TVInputList.self, from: data), (try? list.validate()) != nil else { inputRows = []; return }
         inputRows = list.inputs

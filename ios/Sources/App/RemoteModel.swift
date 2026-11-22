@@ -57,6 +57,9 @@ import Security
     static func makeBrand(_ kind: TVKind, host: String) -> BrandRemote? { BrandRemotes.make(kind, host: host) }
 
     func activate() {
+        #if DEBUG
+        if UITestHooks.storeDemo { showStoreDemo(); return }
+        #endif
         guard !active else { return }
         active = true; hasSavedPairing = pin() != nil
         if kind != .androidTV { preparing = false; attempt = 0; connect(); return }
@@ -90,8 +93,20 @@ import Security
         if pairing { pairing = false; showingPIN = false; approving = false }
     }
 
+    #if DEBUG
+    /// `-storeDemo YES` (store screenshots): a connected Android TV on Purio Home, nothing sent anywhere.
+    private func showStoreDemo() {
+        preparing = false; hasSavedPairing = true; ready = true; powerOn = true; volume = "14"
+        foregroundPackage = HomeEditor.homePackage; status = String(localized: "Connected")
+    }
+    #endif
+
     /// The TV's own name, as found on the network, for the host; the address when there's none.
-    var tvName: String { (UserDefaults.standard.dictionary(forKey: "tvNames") as? [String: String])?[host] ?? host }
+    var tvName: String {
+        #if DEBUG
+        if UITestHooks.storeDemo { return String(localized: "Living room TV") }
+        #endif
+        return (UserDefaults.standard.dictionary(forKey: "tvNames") as? [String: String])?[host] ?? host }
 
     /// Picks a TV (found on the network or typed) and starts pairing with it.
     func pair(with host: String, name: String?, kind: TVKind = .androidTV) {
