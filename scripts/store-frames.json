@@ -1,6 +1,6 @@
 {
   "_comment": "Store frames (scripts/store-frames.py): store order, the raw shot each frame uses, and its label and two-line headline per language. \\n breaks the headline.",
-  "order": ["01-remote", "03-setup-review", "11-keep-watching", "02-tv-home", "08-show-on-tv", "09-show-video", "10-inputs", "07-look", "04-type", "05-actions"],
+  "order": ["01-remote", "03-setup-review", "11-keep-watching", "02-tv-home", "08-show-on-tv", "09-show-video", "07-look", "04-type", "05-actions", "06-action-steps"],
   "text": {
     "en": [
       ["TV remote", "Your iPhone is\nthe remote"],
@@ -9,10 +9,10 @@
       ["New Home screen", "A clean, fast\nHome for your TV"],
       ["Show on TV", "Your photos,\non the big screen"],
       ["4K videos", "Your videos play\nsmoothly on the TV"],
-      ["Inputs", "Switch inputs\nwith one tap"],
       ["Four looks", "Make it yours\nin one tap"],
       ["Keyboard", "Type on the TV\nfrom your phone"],
-      ["Quick actions", "One tap for\nmovie night"]
+      ["Quick actions", "One tap for\nmovie night"],
+      ["Siri & Shortcuts", "Build your own\nroutines"]
     ],
     "de": [
       ["TV-Fernbedienung", "Dein iPhone ist\ndie Fernbedienung"],
@@ -21,10 +21,10 @@
       ["Neuer Startbildschirm", "Ein aufgeräumter,\nschneller Start"],
       ["Auf dem TV zeigen", "Deine Fotos\nganz groß"],
       ["4K-Videos", "Deine Videos laufen\nflüssig am TV"],
-      ["Eingänge", "Eingang wechseln\nmit einem Tipp"],
       ["Vier Looks", "Dein Stil\nmit einem Tipp"],
       ["Tastatur", "Auf dem TV tippen,\nvom iPhone aus"],
-      ["Schnellaktionen", "Ein Tipp für\nden Filmabend"]
+      ["Schnellaktionen", "Ein Tipp für\nden Filmabend"],
+      ["Siri & Kurzbefehle", "Eigene Abläufe\nerstellen"]
     ],
     "es": [
       ["Mando de TV", "Tu iPhone es\nel mando"],
@@ -33,10 +33,10 @@
       ["Nueva pantalla de inicio", "Un inicio limpio\ny rápido para tu TV"],
       ["Mostrar en la tele", "Tus fotos,\nen la pantalla grande"],
       ["Vídeos 4K", "Tus vídeos, fluidos\nen la tele"],
-      ["Entradas", "Cambia de entrada\ncon un toque"],
       ["Cuatro estilos", "Hazlo tuyo\ncon un toque"],
       ["Teclado", "Escribe en la TV\ndesde tu iPhone"],
-      ["Acciones rápidas", "Un toque para\nla noche de cine"]
+      ["Acciones rápidas", "Un toque para\nla noche de cine"],
+      ["Siri y Atajos", "Crea tus\npropias rutinas"]
     ],
     "fr": [
       ["Télécommande", "Votre iPhone devient\nla télécommande"],
@@ -45,10 +45,10 @@
       ["Nouvel écran d'accueil", "Un accueil épuré\net rapide pour votre TV"],
       ["Afficher sur la TV", "Vos photos\nsur grand écran"],
       ["Vidéos 4K", "Vos vidéos, fluides\nsur la TV"],
-      ["Entrées", "Changez d'entrée\nen un geste"],
       ["Quatre styles", "À votre goût,\nen un geste"],
       ["Clavier", "Écrivez sur la TV\ndepuis votre iPhone"],
-      ["Actions rapides", "Un geste pour\nla soirée film"]
+      ["Actions rapides", "Un geste pour\nla soirée film"],
+      ["Siri et Raccourcis", "Créez vos\npropres routines"]
     ],
     "it": [
       ["Telecomando", "Il tuo iPhone è\nil telecomando"],
@@ -57,10 +57,10 @@
       ["Nuova schermata Home", "Una Home pulita\ne veloce per la TV"],
       ["Mostra sulla TV", "Le tue foto\nsul grande schermo"],
       ["Video 4K", "I tuoi video, fluidi\nsulla TV"],
-      ["Ingressi", "Cambia ingresso\ncon un tocco"],
       ["Quattro stili", "Rendila tua\ncon un tocco"],
       ["Tastiera", "Scrivi sulla TV\ndall'iPhone"],
-      ["Azioni rapide", "Un tocco per\nla serata film"]
+      ["Azioni rapide", "Un tocco per\nla serata film"],
+      ["Siri e Comandi Rapidi", "Crea le tue\nroutine"]
     ],
     "pt-BR": [
       ["Controle remoto", "Seu iPhone é\no controle"],
@@ -69,10 +69,10 @@
       ["Nova tela inicial", "Uma tela inicial\nlimpa e rápida"],
       ["Mostrar na TV", "Suas fotos\nna tela grande"],
       ["Vídeos 4K", "Seus vídeos fluidos\nna TV"],
-      ["Entradas", "Troque de entrada\ncom um toque"],
       ["Quatro visuais", "Do seu jeito,\ncom um toque"],
       ["Teclado", "Digite na TV\npelo iPhone"],
-      ["Ações rápidas", "Um toque para\na noite de filme"]
+      ["Ações rápidas", "Um toque para\na noite de filme"],
+      ["Siri e Atalhos", "Crie suas\npróprias rotinas"]
     ]
   }
 }
