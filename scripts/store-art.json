@@ -1,0 +1,69 @@
+{
+  "_comment": "Store screenshots v2 (scripts/store-art.py): the text of the 8 frames per language. <br> breaks a line; headlines shrink to fit.",
+  "en": {
+    "f1": ["Your TV today:", "ads<br>everywhere"], "f1list": ["Sponsored banners", "Pop-up offers", "Apps you never asked for"],
+    "f2": ["With Purio:", "just your<br>apps"], "f2list": ["Only the apps you choose", "A fast Home, no ads", "Undo it any time"], "f2note": "Set up from your iPhone.<br>No computer needed.",
+    "f3": ["Your iPhone is", "the remote"],
+    "f4": ["Photos &amp; videos", "on the big<br>screen"], "f4body": "Play the photos and videos on your iPhone straight on your TV. No cables, nothing to install on the TV.",
+    "f5": ["Four looks,", "one tap"], "looks": ["Cinema", "Calm", "Glass", "Gallery"], "f5note": "Pick a look on your iPhone.<br>The TV changes right away.",
+    "f6": ["Forget the", "on-screen<br>keyboard"], "f6chip": "No more arrow-key typing",
+    "f7": ["Just say", "“Movie<br>time”"], "f7bubble": "“Hey Siri, movie time”",
+    "f8": ["Purio TV is", "free"], "f8note": "No ads. No account.<br>Collects nothing.", "f8tv": "For Android TV<br>&amp; Google TV",
+    "ad": {"tabs": ["Home", "For you", "Movies", "Shop", "Apps"], "offer": "OFFER", "sponsored": "SPONSORED", "sale": "MEGA SEASON<br>SALE", "trailer": "Watch trailer", "subscribe": "Subscribe now", "adTag": "AD", "popup": "Try Premium free for 30 days!", "start": "Start now", "row1": "Sponsored for you", "row2": "Apps you might like · Promoted"}
+  },
+  "de": {
+    "f1": ["Dein TV heute:", "überall<br>Werbung"], "f1list": ["Gesponserte Banner", "Pop-up-Angebote", "Apps, die du nie wolltest"],
+    "f2": ["Mit Purio:", "nur deine<br>Apps"], "f2list": ["Nur die Apps, die du wählst", "Schneller Start, ohne Werbung", "Jederzeit rückgängig"], "f2note": "Einrichten mit dem iPhone.<br>Kein Computer nötig.",
+    "f3": ["Dein iPhone ist", "die Fern-<br>bedienung"],
+    "f4": ["Fotos &amp; Videos", "groß auf<br>dem TV"], "f4body": "Zeig die Fotos und Videos von deinem iPhone direkt auf dem TV. Ohne Kabel, ohne App auf dem TV.",
+    "f5": ["Vier Looks,", "ein Tipp"], "looks": ["Kino", "Ruhig", "Glas", "Galerie"], "f5note": "Wähl einen Look auf dem iPhone.<br>Der TV wechselt sofort.",
+    "f6": ["Schluss mit der", "Bildschirm-<br>tastatur"], "f6chip": "Kein Tippen mehr mit Pfeiltasten",
+    "f7": ["Sag einfach", "„Movie<br>time“"], "f7bubble": "„Hey Siri, Movie time“",
+    "f8": ["Purio TV ist", "gratis"], "f8note": "Keine Werbung. Kein Konto.<br>Sammelt nichts.", "f8tv": "Für Android TV<br>&amp; Google TV",
+    "ad": {"tabs": ["Start", "Für dich", "Filme", "Shop", "Apps"], "offer": "ANGEBOT", "sponsored": "GESPONSERT", "sale": "MEGA-<br>SALE", "trailer": "Trailer ansehen", "subscribe": "Jetzt abonnieren", "adTag": "ANZEIGE", "popup": "Premium 30 Tage gratis testen!", "start": "Jetzt starten", "row1": "Gesponsert für dich", "row2": "Apps für dich · Beworben"}
+  },
+  "es": {
+    "f1": ["Tu tele hoy:", "llena de<br>anuncios"], "f1list": ["Banners patrocinados", "Ofertas emergentes", "Apps que nunca pediste"],
+    "f2": ["Con Purio:", "solo tus<br>apps"], "f2list": ["Solo las apps que eliges", "Un inicio rápido, sin anuncios", "Deshazlo cuando quieras"], "f2note": "Se configura desde tu iPhone.<br>Sin ordenador.",
+    "f3": ["Tu iPhone es", "el mando"],
+    "f4": ["Fotos y vídeos", "en la pantalla<br>grande"], "f4body": "Muestra las fotos y vídeos de tu iPhone directamente en la tele. Sin cables ni nada que instalar en la tele.",
+    "f5": ["Cuatro estilos,", "un toque"], "looks": ["Cine", "Calma", "Cristal", "Galería"], "f5note": "Elige un estilo en tu iPhone.<br>La tele cambia al instante.",
+    "f6": ["Olvídate del", "teclado<br>en pantalla"], "f6chip": "Se acabó escribir con flechas",
+    "f7": ["Solo di", "«Movie<br>time»"], "f7bubble": "«Oye Siri, movie time»",
+    "f8": ["Purio TV es", "gratis"], "f8note": "Sin anuncios. Sin cuenta.<br>No recopila nada.", "f8tv": "Para Android TV<br>y Google TV",
+    "ad": {"tabs": ["Inicio", "Para ti", "Películas", "Tienda", "Apps"], "offer": "OFERTA", "sponsored": "PATROCINADO", "sale": "MEGA<br>REBAJAS", "trailer": "Ver tráiler", "subscribe": "Suscríbete ya", "adTag": "ANUNCIO", "popup": "¡Prueba Premium gratis 30 días!", "start": "Empezar", "row1": "Patrocinado para ti", "row2": "Apps que te pueden gustar · Promocionado"}
+  },
+  "fr": {
+    "f1": ["Votre TV aujourd’hui :", "des pubs<br>partout"], "f1list": ["Bannières sponsorisées", "Offres en pop-up", "Des applis jamais demandées"],
+    "f2": ["Avec Purio :", "juste vos<br>applis"], "f2list": ["Seulement les applis choisies", "Un accueil rapide, sans pub", "Annulable à tout moment"], "f2note": "Se configure depuis l’iPhone.<br>Sans ordinateur.",
+    "f3": ["Votre iPhone est", "la télé-<br>commande"],
+    "f4": ["Photos et vidéos", "sur grand<br>écran"], "f4body": "Affichez les photos et vidéos de votre iPhone directement sur la TV. Sans câble, rien à installer sur la TV.",
+    "f5": ["Quatre styles,", "un geste"], "looks": ["Cinéma", "Calme", "Verre", "Galerie"], "f5note": "Choisissez un style sur l’iPhone.<br>La TV change aussitôt.",
+    "f6": ["Oubliez le", "clavier<br>à l’écran"], "f6chip": "Fini la saisie aux flèches",
+    "f7": ["Dites juste", "« Movie<br>time »"], "f7bubble": "« Dis Siri, movie time »",
+    "f8": ["Purio TV est", "gratuit"], "f8note": "Sans pub. Sans compte.<br>Ne collecte rien.", "f8tv": "Pour Android TV<br>et Google TV",
+    "ad": {"tabs": ["Accueil", "Pour vous", "Films", "Boutique", "Applis"], "offer": "OFFRE", "sponsored": "SPONSORISÉ", "sale": "MÉGA<br>SOLDES", "trailer": "Bande-annonce", "subscribe": "S’abonner", "adTag": "PUB", "popup": "Premium gratuit pendant 30 jours !", "start": "Commencer", "row1": "Sponsorisé pour vous", "row2": "Applis suggérées · Promu"}
+  },
+  "it": {
+    "f1": ["La tua TV oggi:", "pubblicità<br>ovunque"], "f1list": ["Banner sponsorizzati", "Offerte pop-up", "App mai richieste"],
+    "f2": ["Con Purio:", "solo le tue<br>app"], "f2list": ["Solo le app che scegli", "Una Home veloce, senza pubblicità", "Annulli quando vuoi"], "f2note": "Si configura dall’iPhone.<br>Senza computer.",
+    "f3": ["Il tuo iPhone è", "il telecomando"],
+    "f4": ["Foto e video", "sul grande<br>schermo"], "f4body": "Mostra foto e video del tuo iPhone direttamente sulla TV. Senza cavi, niente da installare sulla TV.",
+    "f5": ["Quattro stili,", "un tocco"], "looks": ["Cinema", "Calmo", "Vetro", "Galleria"], "f5note": "Scegli uno stile sull’iPhone.<br>La TV cambia subito.",
+    "f6": ["Dimentica la", "tastiera<br>a schermo"], "f6chip": "Basta scrivere con le frecce",
+    "f7": ["Di’ solo", "«Movie<br>time»"], "f7bubble": "«Ehi Siri, movie time»",
+    "f8": ["Purio TV è", "gratis"], "f8note": "Niente pubblicità. Niente account.<br>Non raccoglie nulla.", "f8tv": "Per Android TV<br>e Google TV",
+    "ad": {"tabs": ["Home", "Per te", "Film", "Negozio", "App"], "offer": "OFFERTA", "sponsored": "SPONSORIZZATO", "sale": "MEGA<br>SALDI", "trailer": "Guarda il trailer", "subscribe": "Abbonati ora", "adTag": "ANNUNCIO", "popup": "Prova Premium gratis per 30 giorni!", "start": "Inizia", "row1": "Sponsorizzati per te", "row2": "App consigliate · Promosse"}
+  },
+  "pt-BR": {
+    "f1": ["Sua TV hoje:", "anúncios<br>por todo lado"], "f1list": ["Banners patrocinados", "Ofertas em pop-up", "Apps que você nunca pediu"],
+    "f2": ["Com o Purio:", "só os seus<br>apps"], "f2list": ["Só os apps que você escolhe", "Tela inicial rápida, sem anúncios", "Desfaça quando quiser"], "f2note": "Configure pelo iPhone.<br>Sem computador.",
+    "f3": ["Seu iPhone é", "o controle"],
+    "f4": ["Fotos e vídeos", "na tela<br>grande"], "f4body": "Mostre as fotos e vídeos do seu iPhone direto na TV. Sem cabos, nada para instalar na TV.",
+    "f5": ["Quatro estilos,", "um toque"], "looks": ["Cinema", "Calmo", "Vidro", "Galeria"], "f5note": "Escolha um estilo no iPhone.<br>A TV muda na hora.",
+    "f6": ["Esqueça o", "teclado<br>na tela"], "f6chip": "Chega de digitar com as setas",
+    "f7": ["É só dizer", "“Movie<br>time”"], "f7bubble": "“E aí, Siri, movie time”",
+    "f8": ["Purio TV é", "grátis"], "f8note": "Sem anúncios. Sem conta.<br>Não coleta nada.", "f8tv": "Para Android TV<br>e Google TV",
+    "ad": {"tabs": ["Início", "Para você", "Filmes", "Loja", "Apps"], "offer": "OFERTA", "sponsored": "PATROCINADO", "sale": "MEGA<br>PROMOÇÃO", "trailer": "Ver trailer", "subscribe": "Assine já", "adTag": "ANÚNCIO", "popup": "Teste o Premium grátis por 30 dias!", "start": "Começar", "row1": "Patrocinado para você", "row2": "Apps sugeridos · Promovidos"}
+  }
+}
